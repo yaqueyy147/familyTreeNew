@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- AOP Use aspectj define -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceMethod" expression="execution(public * com.witkey.familyTree.service..*Service.*(..))" />
+		<aop:pointcut id="methodCache" expression="execution(public * com.witkey.familyTree.service..*Service.*(..))" />
+		<aop:advisor pointcut-ref="methodCache" advice-ref="methodCacheInterceptor" order="1" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" order="99" />
+	</aop:config>
+
+	<!-- Base transaction define -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="do*" />
+			<tx:method name="save*" />
+			<tx:method name="create*" />
+			<tx:method name="update*" />
+			<tx:method name="remove*" />
+			<tx:method name="delete*" />
+			<tx:method name="*" read-only="true" isolation="READ_UNCOMMITTED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<tx:advice id="txJdbcAdvice" transaction-manager="txJdbcTransactionManager">
+		<tx:attributes>
+			<tx:method name="do*" />
+			<tx:method name="save*" />
+			<tx:method name="create*" />
+			<tx:method name="update*" />
+			<tx:method name="remove*" />
+			<tx:method name="delete*" />
+			<tx:method name="*" read-only="true" isolation="READ_UNCOMMITTED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="methodCacheInterceptor" class="com.witkey.familyTree.aop.MethodCacheInterceptor">
+	</bean>
+</beans>
