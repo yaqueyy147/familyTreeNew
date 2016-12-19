@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by suyx on 2016/12/18.
  */
-@Repository
+@Repository("tUserFrontDao")
 public class TUserFrontDao extends EntityHibernateDao<TUserFront> {
 }
