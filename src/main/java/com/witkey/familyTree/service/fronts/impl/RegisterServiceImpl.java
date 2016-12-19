@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
-    @Autowired
+    @Resource
     private TUserFrontDao tUserFrontDao;
 
     @Resource
