@@ -10,18 +10,12 @@
 <html>
 <head>
     <title>族谱</title>
-    <link href="/static/css/login.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.html"%>
-    <style>
-        body{
-            background: #ffd306;
-        }
-
-    </style>
 </head>
 <body>
-这是 首页
-${tUserFront.userName}
+<%@include file="common/header.jsp" %>
+<%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.html"%>
 </body>
 </html>

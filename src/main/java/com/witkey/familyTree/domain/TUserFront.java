@@ -2,14 +2,15 @@ package com.witkey.familyTree.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * Created by Administrator on 2016/12/18.
+ * Created by suyx on 2016/12/20 0020.
  */
 @Entity
 @Table(name = "t_user_front")
 public class TUserFront implements Serializable {
-    private static final long serialVersionUID = -7274629203921879941L;
+    private static final long serialVersionUID = 8877469314125403688L;
     private int id;
     private String userName;
     private String password;
@@ -19,11 +20,18 @@ public class TUserFront implements Serializable {
     private String wechart;
     private String qqNum;
     private String remark;
+    private Date createTime;
+    private String province;
+    private String city;
+    private String district;
+    private String county;
+    private String town;
+    private String detailAddr;
 
     public TUserFront() {
     }
 
-    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark) {
+    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -33,6 +41,13 @@ public class TUserFront implements Serializable {
         this.wechart = wechart;
         this.qqNum = qqNum;
         this.remark = remark;
+        this.createTime = createTime;
+        this.province = province;
+        this.city = city;
+        this.district = district;
+        this.county = county;
+        this.town = town;
+        this.detailAddr = detailAddr;
     }
 
     @Id
@@ -125,6 +140,76 @@ public class TUserFront implements Serializable {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "create_time")
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Basic
+    @Column(name = "province")
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "district")
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    @Basic
+    @Column(name = "county")
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    @Basic
+    @Column(name = "town")
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    @Basic
+    @Column(name = "detail_addr")
+    public String getDetailAddr() {
+        return detailAddr;
+    }
+
+    public void setDetailAddr(String detailAddr) {
+        this.detailAddr = detailAddr;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -141,6 +226,13 @@ public class TUserFront implements Serializable {
         if (wechart != null ? !wechart.equals(that.wechart) : that.wechart != null) return false;
         if (qqNum != null ? !qqNum.equals(that.qqNum) : that.qqNum != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (province != null ? !province.equals(that.province) : that.province != null) return false;
+        if (city != null ? !city.equals(that.city) : that.city != null) return false;
+        if (district != null ? !district.equals(that.district) : that.district != null) return false;
+        if (county != null ? !county.equals(that.county) : that.county != null) return false;
+        if (town != null ? !town.equals(that.town) : that.town != null) return false;
+        if (detailAddr != null ? !detailAddr.equals(that.detailAddr) : that.detailAddr != null) return false;
 
         return true;
     }
@@ -156,6 +248,13 @@ public class TUserFront implements Serializable {
         result = 31 * result + (wechart != null ? wechart.hashCode() : 0);
         result = 31 * result + (qqNum != null ? qqNum.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (province != null ? province.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
+        result = 31 * result + (county != null ? county.hashCode() : 0);
+        result = 31 * result + (town != null ? town.hashCode() : 0);
+        result = 31 * result + (detailAddr != null ? detailAddr.hashCode() : 0);
         return result;
     }
 }

@@ -8,8 +8,8 @@
 
 	<!-- AOP Use aspectj define -->
 	<aop:config proxy-target-class="true">
-		<aop:pointcut id="serviceMethod" expression="execution(public * com.witkey.familyTree.service..*Service.*(..))" />
-		<aop:pointcut id="methodCache" expression="execution(public * com.witkey.familyTree.service..*Service.*(..))" />
+		<aop:pointcut id="serviceMethod" expression="execution(public * com.witkey.familyTree.service.*.*Service.*(..))" />
+		<aop:pointcut id="methodCache" expression="execution(public * com.witkey.familyTree.service.*.*Service.*(..))" />
 		<aop:advisor pointcut-ref="methodCache" advice-ref="methodCacheInterceptor" order="1" />
 		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" order="99" />
 	</aop:config>
@@ -17,25 +17,13 @@
 	<!-- Base transaction define -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="do*" />
-			<tx:method name="save*" />
-			<tx:method name="create*" />
-			<tx:method name="update*" />
-			<tx:method name="remove*" />
-			<tx:method name="delete*" />
-			<tx:method name="*" read-only="true" isolation="READ_UNCOMMITTED" />
-		</tx:attributes>
-	</tx:advice>
-
-	<tx:advice id="txJdbcAdvice" transaction-manager="txJdbcTransactionManager">
-		<tx:attributes>
-			<tx:method name="do*" />
-			<tx:method name="save*" />
-			<tx:method name="create*" />
-			<tx:method name="update*" />
-			<tx:method name="remove*" />
-			<tx:method name="delete*" />
-			<tx:method name="*" read-only="true" isolation="READ_UNCOMMITTED" />
+			<tx:method name="do*" propagation="REQUIRED" />
+			<tx:method name="save*" rollback-for="Exception" propagation="REQUIRED" />
+			<tx:method name="create*" rollback-for="Exception" propagation="REQUIRED" />
+			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED" />
+			<tx:method name="remove*" rollback-for="Exception" propagation="REQUIRED" />
+			<tx:method name="delete*" rollback-for="Exception" propagation="REQUIRED" />
+			<tx:method name="*" isolation="READ_UNCOMMITTED" propagation="SUPPORTS" />
 		</tx:attributes>
 	</tx:advice>
 

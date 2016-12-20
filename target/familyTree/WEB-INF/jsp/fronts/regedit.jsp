@@ -10,21 +10,20 @@
 <html>
 <head>
     <title>注册</title>
-    <link href="/static/css/login.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.html"%>
     <style>
-        body{
-            background: #ffd306;
-        }
+
         .bbtt {
             margin-bottom: 30px;
         }
+
     </style>
 </head>
 <body>
-<div class="login-box">
-    <div class="login-title text-center">注&nbsp;&nbsp;&nbsp;&nbsp;册</div>
-    <div class="login-content">
+<div class="regedit-box">
+    <div class="regedit-title text-center">注&nbsp;&nbsp;&nbsp;&nbsp;册</div>
+    <div class="regedit-content">
         <div class="form">
             <form id="regeditForm" action="" method="post">
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2">
@@ -38,6 +37,16 @@
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
                     <input class="form-control" id="idCard" name="idCard" placeholder="身份证号" type="text" />
+                </div>
+                <div class="form-group col-xs-12 form-actions col-xs-offset-2" style="margin-top: 15px">
+                    <div data-toggle="distpicker">
+                        <select name="province" data-province="---- 选择省 ----"></select>
+                        <select name="city" data-city="---- 选择市 ----"></select>
+                        <select name="district" data-district="---- 选择区 ----"></select>
+                    </div>
+                </div>
+                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                    <input class="form-control" id="detailAttr" name="detailAttr" placeholder="详细地址" type="text" />
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
                     <input class="form-control" id="phone" name="phone" placeholder="手机号码" type="text" />
@@ -59,6 +68,8 @@
     </div>
 </div>
 <%@include file="common/commonJS.html"%>
+<script type="text/javascript" src="/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="/static/frontJs/regedit.js"></script>
 </body>
 </html>

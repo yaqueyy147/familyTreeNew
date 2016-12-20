@@ -5,8 +5,7 @@
 <hibernate-configuration>
 	<!--session-factory name="ecsc"-->
 	<session-factory>
-        <property name="connection.url">
-            <![CDATA[jdbc:mysql://127.0.0.1:3306/family_tree?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull]]></property>
+        <property name="connection.url"><![CDATA[jdbc:mysql://127.0.0.1:3306/family_tree?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull]]></property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <mapping class="com.witkey.familyTree.domain.TUserBase"/>
         <mapping class="com.witkey.familyTree.domain.TUserFront"/>
