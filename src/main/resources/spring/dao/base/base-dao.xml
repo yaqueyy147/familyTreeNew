@@ -6,4 +6,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.fronts.TPeopleDao" id="tPeopleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.fronts.TFamilyDao" id="tFamilyDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 </beans>

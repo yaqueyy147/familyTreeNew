@@ -1,0 +1,45 @@
+body,table{
+    font-size: 12px;
+    font-family: "Microsoft YaHei";
+}
+table tr td{
+    text-align: right;
+    padding: 2px;
+}
+.inputSm{
+    width:50px;
+}
+.inputLg{
+    width:270px;
+}
+.tdSm{
+
+    width:70px;
+}
+.tdXSm{
+    width:20px;
+}
+.tdMi{
+    padding: 2px;
+}
+.tdLg{
+
+    padding: 2px;
+}
+.photoBox{
+    width:150px;
+    border: solid 2px #9d9d9d;
+}
+.rightBorder{
+    border-right: solid 2px #9d9d9d;
+}
+.topBorder{
+    border-top: solid 2px #9d9d9d;
+}
+.bottomBorder{
+    border-bottom: solid 2px #9d9d9d;
+}
+.leftBorder{
+    border-left: solid 2px #9d9d9d;
+}
+

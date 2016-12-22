@@ -14,16 +14,26 @@
 		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" order="99" />
 	</aop:config>
 
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="hibernateMethod" expression="execution(public * com.witkey.familyTree.hibernate.*(..))" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/>
+	</aop:config>
+
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="daoMethod" expression="execution(public * com.witkey.familyTree.dao.*..*(..))" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/>
+	</aop:config>
+
 	<!-- Base transaction define -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="do*" propagation="REQUIRED" />
-			<tx:method name="save*" rollback-for="Exception" propagation="REQUIRED" />
-			<tx:method name="create*" rollback-for="Exception" propagation="REQUIRED" />
-			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED" />
-			<tx:method name="remove*" rollback-for="Exception" propagation="REQUIRED" />
-			<tx:method name="delete*" rollback-for="Exception" propagation="REQUIRED" />
-			<tx:method name="*" isolation="READ_UNCOMMITTED" propagation="SUPPORTS" />
+			<tx:method name="do*" propagation="REQUIRED" read-only="false" />
+			<tx:method name="save*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
+			<tx:method name="create*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
+			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
+			<tx:method name="remove*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
+			<tx:method name="delete*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
+			<tx:method name="*" isolation="READ_UNCOMMITTED" propagation="SUPPORTS" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
 

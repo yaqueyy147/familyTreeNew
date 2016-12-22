@@ -6,10 +6,7 @@ import com.witkey.familyTree.util.GenericsUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.LockMode;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.metadata.ClassMetadata;
@@ -26,7 +23,7 @@ import java.util.*;
 
 public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	protected final Logger log = Logger.getLogger(BaseHibernateDao.class);
-	
+
 	@Autowired
 	public void setSessionFactoryOverride(SessionFactory sessionFactory){
 		super.setSessionFactory(sessionFactory);
@@ -94,6 +91,7 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param o
 	 */
 	public Serializable create(Object o) {
+
 		return super.getHibernateTemplate().save(o);
 	}
 

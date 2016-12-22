@@ -19,6 +19,7 @@
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.cache.use_query_cache">false</prop>
 				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="current_session_context_class">thread</prop>
 			</props>
 		</property>
 	</bean>

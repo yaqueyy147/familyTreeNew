@@ -9,5 +9,8 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <mapping class="com.witkey.familyTree.domain.TUserBase"/>
         <mapping class="com.witkey.familyTree.domain.TUserFront"/>
+        <mapping class="com.witkey.familyTree.domain.TFamily"/>
+        <mapping class="com.witkey.familyTree.domain.TMate"/>
+        <mapping class="com.witkey.familyTree.domain.TPeople"/>
     </session-factory>
 </hibernate-configuration>
