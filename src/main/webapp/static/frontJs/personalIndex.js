@@ -35,6 +35,13 @@ $(function () {
             processData: false,
             contentType: false,
             success:function (data) {
+                if(data.code == 1){
+                    var tFamily = data.tFamily;
+                    var familyImg = tFamily.photoUrl;
+                    var img = "<img src=\"" + familyImg + "\" />"
+                    $("#familyShow").html(img);
+                    $("#addFamilyModal").modal('hide');
+                }
                 alert(data.msg);
             },
             error:function (data) {

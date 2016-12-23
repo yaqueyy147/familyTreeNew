@@ -38,7 +38,7 @@
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
                     <input class="form-control" id="idCard" name="idCard" placeholder="身份证号" type="text" />
                 </div>
-                <div class="form-group col-xs-12 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
                     <div data-toggle="distpicker">
                         <select name="province" data-province="---- 选择省 ----"></select>
                         <select name="city" data-city="---- 选择市 ----"></select>

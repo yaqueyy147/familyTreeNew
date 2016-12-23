@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.*;
 import java.util.*;
@@ -1750,6 +1751,29 @@ public class CommonUtil {
 		return "";
 	}
 
+	/**
+	 * 上传文件
+	 * @param path
+	 * @param file
+	 * @return
+	 */
+	public static String uploadFile(String path, MultipartFile file) throws IOException{
+
+		String filePath = "";
+
+		String fileName = file.getOriginalFilename();
+		String prefix = fileName.substring(fileName.lastIndexOf("."));
+		fileName = UUID.randomUUID().toString() + prefix;
+		// System.out.println("保存路径 " + path);
+		File targetFile = new File(path, fileName);
+		if(!targetFile.exists()){
+			targetFile.mkdirs();
+		}
+		file.transferTo(targetFile);
+		filePath = path + "/" + fileName;
+		return filePath;
+	}
+
 	public static void main(String[] args) throws Exception
 	{
 //		for(int i=0;i<5;i++)
@@ -1767,10 +1791,8 @@ public class CommonUtil {
 //			}
 //		}
 
-		List<Integer> list = new ArrayList<Integer>();
-		for (int i : list) {
-			System.out.println("::" + i + "::");
-		}
+		String ss = "e:/a/b/c/d/static/upload";
+		System.out.println(ss.substring(ss.indexOf("/static")));
 
 	}
 	

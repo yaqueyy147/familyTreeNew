@@ -4,8 +4,9 @@
 	
    <!--个人信息-->
 	<bean id="familyService" class="com.witkey.familyTree.service.fronts.impl.FamilyServiceImpl">
-		<property name="tPeopleDao" ref="tPeopleDao" />
+
 		<property name="tFamilyDao" ref="tFamilyDao" />
+		<property name="tPeopleDao" ref="tPeopleDao" />
 	</bean>
 	
 </beans>

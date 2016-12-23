@@ -10,7 +10,10 @@
         <div class="userInfo">
             首页&nbsp;|&nbsp;
             <c:if test="${not empty tUserFront}">
-                欢迎您，${tUserFront.userName}
+                欢迎您，
+                <a href="/family/personalIndex">
+                ${tUserFront.userName}
+                </a>
                 &nbsp;|&nbsp;
                 <a href="/sign/logout">退出</a>
 

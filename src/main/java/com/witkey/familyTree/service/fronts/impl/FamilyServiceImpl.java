@@ -17,17 +17,17 @@ import javax.annotation.Resource;
 public class FamilyServiceImpl implements FamilyService {
 
     @Resource
-    private TPeopleDao tPeopleDao;
-
-    public void settPeopleDao(TPeopleDao tPeopleDao) {
-        this.tPeopleDao = tPeopleDao;
-    }
-
-    @Resource
     private TFamilyDao tFamilyDao;
 
     public void settFamilyDao(TFamilyDao tFamilyDao) {
         this.tFamilyDao = tFamilyDao;
+    }
+
+    @Resource
+    private TPeopleDao tPeopleDao;
+
+    public void settPeopleDao(TPeopleDao tPeopleDao) {
+        this.tPeopleDao = tPeopleDao;
     }
 
     /**

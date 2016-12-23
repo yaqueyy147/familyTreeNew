@@ -25,7 +25,7 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	protected final Logger log = Logger.getLogger(BaseHibernateDao.class);
 
 	@Autowired
-	public void setSessionFactoryOverride(SessionFactory sessionFactory){
+	public void setSuperSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
 
@@ -91,8 +91,10 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param o
 	 */
 	public Serializable create(Object o) {
-
-		return super.getHibernateTemplate().save(o);
+		this.getHibernateTemplate().getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
+		Serializable ss = super.getHibernateTemplate().save(o);
+		this.flush();
+		return ss;
 	}
 
 	/**
@@ -101,7 +103,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param o
 	 */
 	public void update(Object o) {
-		super.getHibernateTemplate().update(o);
+		super.currentSession().setFlushMode(FlushMode.AUTO);
+		getHibernateTemplate().update(o);
+		this.flush();
 	}
 
 	/**
@@ -110,7 +114,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param o
 	 */
 	public void save(Object o) {
+		super.currentSession().setFlushMode(FlushMode.AUTO);
 		getHibernateTemplate().merge(o);
+		this.flush();
 	}
 
 	/**
@@ -119,7 +125,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param o
 	 */
 	public void remove(Object o) {
+		super.currentSession().setFlushMode(FlushMode.AUTO);
 		getHibernateTemplate().delete(o);
+		this.flush();
 	}
 
 	/**
@@ -128,7 +136,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param id
 	 */
 	public void removeById(Serializable id) {
+		super.currentSession().setFlushMode(FlushMode.AUTO);
 		remove(get(id));
+		this.flush();
 	}
 
 	/**
@@ -155,7 +165,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param c
 	 */
 	public void saveAll(Collection c) {
-		super.getHibernateTemplate().saveOrUpdate(c);
+		super.currentSession().setFlushMode(FlushMode.AUTO);
+		getHibernateTemplate().saveOrUpdate(c);
+		this.flush();
 	}
 
 	/**
@@ -164,7 +176,9 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 * @param c
 	 */
 	public void removeAll(Collection c) {
-		super.getHibernateTemplate().deleteAll(c);
+		super.currentSession().setFlushMode(FlushMode.AUTO);
+		getHibernateTemplate().deleteAll(c);
+		this.flush();
 	}
 
 	/**

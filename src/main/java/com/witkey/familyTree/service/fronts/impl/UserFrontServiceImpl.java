@@ -5,6 +5,7 @@ import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.CommonUtil;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,12 @@ public class UserFrontServiceImpl implements UserFrontService {
     public int createUserFront(TUserFront tUserFront) {
 
         tUserFront.setPassword(CommonUtil.string2MD5(tUserFront.getPassword()));
-
-        int id = CommonUtil.parseInt(tUserFrontDao.create(tUserFront));
-
+        int id = 0;
+        try {
+            id = CommonUtil.parseInt(tUserFrontDao.create(tUserFront));
+        }catch (Exception da){
+            da.printStackTrace();
+        }
         return id;
     }
 

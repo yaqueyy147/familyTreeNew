@@ -50,4 +50,41 @@ $(function () {
         });
     });
 
+    var setting = {
+        view: {
+            addDiyDom: addDiyDom
+        }
+    };
+
+    var zNodes =[
+        {id:1, name:"hover事件显示控件", open:true,
+            children:[
+                {id:11, name:"按钮1"},
+                {id:12, name:"按钮2"},
+                {id:13, name:"下拉框"},
+                {id:141, name:"文本1"},
+                {id:142, name:"文本2"},
+                {id:15, name:"超链接"}
+
+            ]},
+        {id:2, name:"始终显示控件", open:true,
+            children:[
+                {id:21, name:"按钮1"},
+                {id:22, name:"按钮2"},
+                {id:23, name:"下拉框"},
+                {id:24, name:"文本"},
+                {id:25, name:"超链接"}
+            ]}
+    ];
+
+    $.fn.zTree.init($("#familyTree"), setting, zNodes);
+
 });
+function addDiyDom(treeId, treeNode) {
+    var IDMark_A = "_a";
+    var aObj = $("#" + treeNode.tId + IDMark_A);
+
+    var editStr = "<a id='diyBtn1_" +treeNode.id+ "' onclick='alert(1);return false;'>链接1</a>" +
+        "<a id='diyBtn2_" +treeNode.id+ "' onclick='alert(2);return false;'>链接2</a>";
+    aObj.after(editStr);
+}

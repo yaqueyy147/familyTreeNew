@@ -6,37 +6,5 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- AOP Use aspectj define -->
-	<aop:config proxy-target-class="true">
-		<aop:pointcut id="serviceMethod" expression="execution(public * com.witkey.familyTree.service.*.*Service.*(..))" />
-		<aop:pointcut id="methodCache" expression="execution(public * com.witkey.familyTree.service.*.*Service.*(..))" />
-		<aop:advisor pointcut-ref="methodCache" advice-ref="methodCacheInterceptor" order="1" />
-		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" order="99" />
-	</aop:config>
 
-	<aop:config proxy-target-class="true">
-		<aop:pointcut id="hibernateMethod" expression="execution(public * com.witkey.familyTree.hibernate.*(..))" />
-		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/>
-	</aop:config>
-
-	<aop:config proxy-target-class="true">
-		<aop:pointcut id="daoMethod" expression="execution(public * com.witkey.familyTree.dao.*..*(..))" />
-		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/>
-	</aop:config>
-
-	<!-- Base transaction define -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="do*" propagation="REQUIRED" read-only="false" />
-			<tx:method name="save*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
-			<tx:method name="create*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
-			<tx:method name="update*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
-			<tx:method name="remove*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
-			<tx:method name="delete*" rollback-for="Exception" propagation="REQUIRED" read-only="false" />
-			<tx:method name="*" isolation="READ_UNCOMMITTED" propagation="SUPPORTS" read-only="true" />
-		</tx:attributes>
-	</tx:advice>
-
-	<bean id="methodCacheInterceptor" class="com.witkey.familyTree.aop.MethodCacheInterceptor">
-	</bean>
 </beans>
