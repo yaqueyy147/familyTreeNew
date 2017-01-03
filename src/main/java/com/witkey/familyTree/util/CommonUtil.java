@@ -1,23 +1,16 @@
 package com.witkey.familyTree.util;
 
+import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.InetAddress;
 import java.net.URLDecoder;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
-import org.apache.jasper.tagplugins.jstl.ForEach;
+import com.witkey.familyTree.domain.TMate;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.*;
@@ -31,8 +24,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 普通的工具类
@@ -1774,6 +1765,44 @@ public class CommonUtil {
 		return filePath;
 	}
 
+	/**
+	 * 根据路径判断文件是否存在
+	 * @param path
+	 * @return
+	 */
+	public static boolean isFile(String path){
+
+		File file = new File(path);
+
+		if(file.exists()){
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * 将实体类对象转换成map
+	 * @param object
+	 * @return
+	 */
+	public static Map<String,Object> bean2Map(Object object){
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+			PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(object);
+			for (int i = 0; i < descriptors.length; i++) {
+				String name = descriptors[i].getName();
+				if (!"class".equals(name)) {
+					params.put(name, propertyUtilsBean.getNestedProperty(object, name));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return params;
+	}
+
 	public static void main(String[] args) throws Exception
 	{
 //		for(int i=0;i<5;i++)
@@ -1791,8 +1820,12 @@ public class CommonUtil {
 //			}
 //		}
 
-		String ss = "e:/a/b/c/d/static/upload";
-		System.out.println(ss.substring(ss.indexOf("/static")));
+		TMate tMate = new TMate(1,1,1,"1",1);
+		Map<String,Object> map = bean2Map(tMate);
+
+		for(String key : map.keySet()){
+			System.out.println(map.get(key));
+		}
 
 	}
 	

@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: suyx
@@ -6,18 +7,52 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>个人中心</title>
     <%@include file="common/commonCss.html"%>
+    <style rel="stylesheet">
+        body{
+            width:100%;
+            height: 100%;
+            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
+            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+            -moz-background-size:100% 100%;
+            background-size:100% 100%;
+        }
+    </style>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container" style="margin-top: 50px">
+<div class="container" style="margin-top: 50px;">
     <a href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
-    <div id="familyShow"></div>
+    <div id="familyShow">
+        <div class="row">
+        <c:forEach var="family" items="${familyList}">
+
+            <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                    <%--<img data-src="holder.js/300x300" alt="...">--%>
+                    <div class="caption">
+                        <h3>${family.familyFirstName}氏族谱（${family.id}）</h3>
+                        <p>状态：
+                            <c:if test="${family.visitStatus == 0}">加密</c:if>
+                            <c:if test="${family.visitStatus == 1}">开放</c:if>
+                            <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
+                        </p>
+                        <p>${family.familyName}</p>
+                        <p>${family.familyDesc}</p>
+                    </div>
+                </div>
+            </div>
+
+        </c:forEach>
+        </div>
+    </div>
 </div>
-<!-- 添加族人 Modal -->
+<!-- 添加族谱 Modal -->
 <div class="modal fade" id="addFamilyModal" tabindex="-1" role="dialog" aria-labelledby="addFamilyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -28,7 +63,7 @@
             <div class="modal-body">
                 <!-- 族人信息页面 -->
                 <div class="tab-content">
-                    <form enctype="multipart/form-data" class="form-horizontal" id="familyForm" action="" method="post">
+                    <form class="form-horizontal" id="familyForm" action="" method="post">
                         <div class="form-group">
                             <label for="familyFirstName" class="col-sm-2 control-label">家族姓氏</label>
                             <div class="col-sm-10">
@@ -64,7 +99,7 @@
                         <div class="form-group">
                             <label for="familyName" class="col-sm-2 control-label">展示图片</label>
                             <div class="col-sm-10">
-                                <input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true" data-min-file-count="1">
+                                <input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">
                             </div>
                         </div>
 
@@ -78,8 +113,33 @@
         </div>
     </div>
 </div>
+<!-- 添加族谱 Modal -->
+<div class="modal fade" id="visitPasswordModal" tabindex="-1" role="dialog" aria-labelledby="visitPasswordModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">您需要输入密码才能访问该族谱</h4>
+            </div>
+            <div class="modal-body">
+                <!-- 族人信息页面 -->
+                <div class="tab-content">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="访问密码">
+                    <input type="hidden" class="form-control" id="passwordPre" name="passwordPre">
+                    <input type="hidden" class="form-control" id="visitFamilyId" name="visitFamilyId">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="checkPassword">提 交</button>
+                <button class="btn btn-default" id="closePassword" data-dismiss="modal">取 消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.html"%>
-<script type="text/javascript" src="/static/frontJs/personalIndex.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ public class LoginController {
 
     @RequestMapping(value = "/main")
     public ModelAndView mainPage(Model model){
-        return new ModelAndView("/main");
+        return new ModelAndView("/consoles/main");
     }
 
 }

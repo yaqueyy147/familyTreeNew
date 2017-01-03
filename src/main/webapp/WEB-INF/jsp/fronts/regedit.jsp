@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>注册</title>
-    <link href="/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
+    <link href="<%=request.getContextPath()%>/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.html"%>
     <style>
 
@@ -67,9 +67,10 @@
         </div>
     </div>
 </div>
+<%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJS.html"%>
-<script type="text/javascript" src="/static/js/distpicker.data.min.js"></script>
-<script type="text/javascript" src="/static/js/distpicker.min.js"></script>
-<script type="text/javascript" src="/static/frontJs/regedit.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/regedit.js"></script>
 </body>
 </html>

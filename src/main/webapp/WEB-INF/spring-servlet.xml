@@ -15,11 +15,17 @@
     <context:component-scan base-package="com.witkey.familyTree.controller.fronts" />
     <context:component-scan base-package="com.witkey.familyTree.service.fronts" />
     <context:component-scan base-package="com.witkey.familyTree.service.consoles" />
-    <context:component-scan base-package="com.witkey.familyTree.dao.consoles" />
+    <!--<context:component-scan base-package="com.witkey.familyTree.dao.consoles" />-->
     <context:component-scan base-package="com.witkey.familyTree.dao.fronts" />
     <context:component-scan base-package="com.witkey.familyTree.domain" />
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
@@ -50,5 +56,15 @@
     </bean>
 
     <mvc:resources mapping="/static/**" location="/static/" />
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/static/**" />
+            <bean class="com.witkey.familyTree.interceptor.TestInterceptor">
+            </bean>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
 
 </beans>

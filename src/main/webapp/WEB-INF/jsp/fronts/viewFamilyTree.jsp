@@ -9,14 +9,26 @@
 <html>
 <head>
     <title>族谱展示</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/fronts/viewFamilyTree.css" />
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="common/commonCss.html"%>
+    <style rel="stylesheet">
+        body{
+            width:100%;
+            height: 100%;
+            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
+            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+            -moz-background-size:100% 100%;
+            background-size:100% 100%;
+        }
+    </style>
 </head>
 <body>
+
 <%@include file="common/header.jsp" %>
 
 <div class="container" style="margin-top: 50px">
-    <a href="#addModal" data-toggle="modal" data-target="#addModal">添加族人</a>
+    <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
+    <a href="javascript:void 0;" id="addPeople">添加族人</a>
     <div id="familyTree" class="ztree"></div>
 </div>
 <!-- 添加族人 Modal -->
@@ -31,22 +43,31 @@
                 <!--族人信息标签-->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#baseInfo" role="tab" data-toggle="tab">基本信息</a></li>
-                    <li role="presentation"><a href="#mateInfo" role="tab" data-toggle="tab">配偶信息</a></li>
-                    <li role="presentation"><a href="#history" role="tab" data-toggle="tab">家族往事</a></li>
                 </ul>
                 <!-- 族人信息页面 -->
                 <div class="tab-content">
 
                     <div role="tabpanel" class="tab-pane active" id="baseInfo">
-                        <form id="peopleForm" action="" method="post">
+                        <form id="peopleForm" action="/family/savePeople" method="post">
                             <table>
                                 <tr style="border: solid 2px #9d9d9d;">
-                                    <td class="tdLg" style="text-align: left" colspan="9">编号:</td>
+                                    <td class="tdLg" style="text-align: left" colspan="9">
+                                        <input name="familyId" id="familyId" type="hidden" value="${familyId}" />
+
+                                        &nbsp;&nbsp;
+                                        第<input id="generation" name="generation" type="text" style="width:20px" value="0" />代
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input name="peopleType" id="peopleType" type="hidden" value="1" />
+                                        <span id="peopleInfo"></span>
+                                    </td>
                                 </tr>
                                 <tr style="height: 15px;"><td colspan="9"></td></tr>
                                 <tr class="topBorder rightBorder">
-                                    <td class="photoBox" rowspan="8" colspan="3">
-
+                                    <td class="photoBox" rowspan="8" colspan="3" style="text-align: center" id="photo">
+                                        <div id="progress_bar" style="display: none"></div>
+                                        <input id="photoUrl" name="photoUrl" type="hidden" />
+                                        <input type="file" name="imgFile" id="imgFile" />
+                                        <a id="show_img"><img style="display: none;" id="result_img" class="img-responsive" /></a>
                                     </td>
                                     <td class="tdSm">
                                         姓名：
@@ -75,14 +96,14 @@
                                 </tr>
                                 <tr class="rightBorder">
                                     <td class="tdSm">性别：</td>
-                                    <td>
+                                    <td style="text-align: left">
                                         <select name="sex" id="sex">
                                             <option value="1">男</option>
                                             <option value="0">女</option>
                                         </select>
                                     </td>
                                     <td colspan="2">
-                                        <select name="mateType" id="mateType" disabled>
+                                        <select name="mateType" id="mateType">
                                             <option value="0"></option>
                                             <option value="1">妻子</option>
                                             <option value="2">丈夫</option>
@@ -98,7 +119,7 @@
                                 <tr class="rightBorder">
                                     <td class="tdSm">辈分：</td>
                                     <td class="tdXSm">
-                                        <input name="familyGeneration" id="familyGeneration" class="inputSm" type="text" />
+                                        <input name="familyGeneration" id="familyGeneration" class="inputSm" type="text" value="0" />
                                     </td>
                                     <td class="tdXSm">字：</td>
                                     <td class="tdXSm">
@@ -112,7 +133,7 @@
                                 <tr class="rightBorder">
                                     <td class="tdSm">排行：</td>
                                     <td>
-                                        <input name="familyRank" id="familyRank" class="inputSm" type="text" />
+                                        <input name="familyRank" id="familyRank" class="inputSm" type="text" value="0" />
                                     </td>
                                     <td class="tdXSm">号：</td>
                                     <td>
@@ -143,8 +164,11 @@
                                         <input name="nationality" id="nationality" type="text" />
                                     </td>
                                     <td class="tdSm">父亲：</td>
-                                    <td>
-                                        <input name="" type="text" />
+                                    <td style="text-align: left">
+                                        <select name="fatherId" id="fatherId">
+
+                                        </select>
+                                        <%--<input name="fatherId" id="fatherId" type="text" value="0" />--%>
                                     </td>
                                 </tr>
                                 <tr class="bottomBorder rightBorder">
@@ -153,18 +177,23 @@
                                         <input name="nation" id="nation" type="text" />
                                     </td>
                                     <td class="tdSm">母亲：</td>
-                                    <td><input type="text" /></td>
+                                    <td style="text-align: left">
+                                        <select name="motherId" id="motherId">
+
+                                        </select>
+                                        <%--<input name="motherId" id="motherId" type="text" value="0" />--%>
+                                    </td>
                                 </tr>
                                 <tr style="height: 15px;"><td colspan="9"></td></tr>
                                 <tr class="topBorder rightBorder leftBorder">
                                     <td>出生时间：</td>
                                     <td colspan="7">
-                                        <input name="birthTime" id="birthTime" class="form-datetime inputLg" type="text" />
+                                        <input name="birth_time" id="birth_time" class="form-datetime inputLg" type="text" />
                                     </td>
                                     <td rowspan="5" style="text-align: center">状态：<br/>
-                                        <label><input type="radio" name="state" />&nbsp;在世</label>
+                                        <label><input type="radio" name="state" checked value="1" />&nbsp;在世</label>
                                         <br/>
-                                        <label><input type="radio" name="state" />&nbsp;已逝</label>
+                                        <label><input type="radio" name="state" value="0" />&nbsp;已逝</label>
                                     </td>
                                 </tr>
                                 <tr class="rightBorder leftBorder">
@@ -176,7 +205,7 @@
                                 <tr class="leftBorder rightBorder">
                                     <td>去世时间：</td>
                                     <td colspan="7">
-                                        <input name="dieTime" id="dieTime" class="form-datetime inputLg" type="text" />
+                                        <input name="die_time" id="die_time" class="form-datetime inputLg" type="text" />
                                     </td>
                                 </tr>
                                 <tr class="leftBorder rightBorder">
@@ -201,179 +230,58 @@
                         </form>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane" id="mateInfo">
-                        <form id="mateForm" action="" method="post">
-                            <table>
-                                <tr style="border: solid 2px #9d9d9d;">
-                                    <td class="tdLg" style="text-align: left" colspan="9">编号:</td>
-                                </tr>
-                                <tr style="height: 15px;"><td colspan="9"></td></tr>
-                                <tr class="topBorder rightBorder">
-                                    <td class="photoBox" rowspan="8" colspan="3">
-
-                                    </td>
-                                    <td class="tdSm">
-                                        姓名：
-                                    </td>
-                                    <td colspan="3">
-                                        <input name="name" id="matename" type="text"/>
-                                    </td>
-                                    <td class="tdSm">
-                                        特殊说明：
-                                    </td>
-                                    <td><input name="specialRemark" id="matespecialRemark" type="text" /></td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">
-                                        曾用名：
-                                    </td>
-                                    <td colspan="3">
-                                        <input name="usedName" id="mateusedName" type="text"/>
-                                    </td>
-                                    <td class="tdSm">
-                                        学历：
-                                    </td>
-                                    <td>
-                                        <input name="education" id="mateeducation" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">性别：</td>
-                                    <td>
-                                        <select name="sex" id="matesex">
-                                            <option value="1">男</option>
-                                            <option value="0">女</option>
-                                        </select>
-                                    </td>
-                                    <td colspan="2">
-                                        <select name="mateType" id="matemateType" disabled>
-                                            <option value="0"></option>
-                                            <option value="1">妻子</option>
-                                            <option value="2">丈夫</option>
-                                        </select>
-                                    </td>
-                                    <td class="tdSm">
-                                        职业：
-                                    </td>
-                                    <td>
-                                        <input name="job" id="matejob" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">辈分：</td>
-                                    <td class="tdXSm">
-                                        <input name="familyGeneration" id="matefamilyGeneration" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdXSm">字：</td>
-                                    <td class="tdXSm">
-                                        <input name="cName" id="matecName" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdSm">身份证：</td>
-                                    <td>
-                                        <input name="idCard" id="mateidCard" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">排行：</td>
-                                    <td>
-                                        <input name="familyRank" id="matefamilyRank" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdXSm">号：</td>
-                                    <td>
-                                        <input name="artName" id="mateartName" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdSm">电话：</td>
-                                    <td>
-                                        <input name="phone" id="matephone" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">字辈：</td>
-                                    <td>
-                                        <input name="generationActor" id="mategenerationActor" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdXSm">行：</td>
-                                    <td>
-                                        <input name="xing" id="matexing" class="inputSm" type="text" />
-                                    </td>
-                                    <td class="tdSm">邮箱：</td>
-                                    <td>
-                                        <input name="email" id="mateemail" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder">
-                                    <td class="tdSm">国籍：</td>
-                                    <td colspan="3">
-                                        <input name="nationality" id="matenationality" type="text" />
-                                    </td>
-                                    <td class="tdSm">父亲：</td>
-                                    <td>
-                                        <input name="" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="bottomBorder rightBorder">
-                                    <td class="tdSm">民族：</td>
-                                    <td colspan="3">
-                                        <input name="nation" id="matenation" type="text" />
-                                    </td>
-                                    <td class="tdSm">母亲：</td>
-                                    <td><input type="text" /></td>
-                                </tr>
-                                <tr style="height: 15px;"><td colspan="9"></td></tr>
-                                <tr class="topBorder rightBorder leftBorder">
-                                    <td>出生时间：</td>
-                                    <td colspan="7">
-                                        <input name="birthTime" id="matebirthTime" class="form-datetime inputLg" type="text" />
-                                    </td>
-                                    <td rowspan="5" style="text-align: center">状态：<br/>
-                                        <label><input type="radio" name="state" />&nbsp;在世</label>
-                                        <br/>
-                                        <label><input type="radio" name="state" />&nbsp;已逝</label>
-                                    </td>
-                                </tr>
-                                <tr class="rightBorder leftBorder">
-                                    <td>出生地点：</td>
-                                    <td colspan="7">
-                                        <input name="birthAddr" id="matebirthAddr" class="inputLg" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="leftBorder rightBorder">
-                                    <td>去世时间：</td>
-                                    <td colspan="7">
-                                        <input name="dieTime" id="matedieTime" class="form-datetime inputLg" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="leftBorder rightBorder">
-                                    <td>卒葬地点：</td>
-                                    <td colspan="7">
-                                        <input name="dieAddr" id="matedieAddr" class="inputLg" type="text" />
-                                    </td>
-                                </tr>
-                                <tr class="leftBorder rightBorder bottomBorder">
-                                    <td>居住地址：</td>
-                                    <td colspan="7">
-                                        <input name="liveAddr" id="mateliveAddr" class="inputLg" type="text" />
-                                    </td>
-                                </tr>
-                                <tr style="height: 15px;"><td colspan="9"></td></tr>
-                                <tr>
-                                    <td colspan="9" style="text-align: right">
-                                        <input id="saveMate" type="button" class="btn btn-primary" value="保 存" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="history">
-                        <textarea cols="30" rows="10" style="width: 100%"></textarea>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<%@ include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.html"%>
-<script type="text/javascript" src="/static/frontJs/viewFamilyTree.js"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree.js"></script>
+<script type="text/javascript">
+    var familyId = "${familyId}";
+    var familyFirstName = "#{tFamily.familyFirstName}";
+    $(function () {
+        $('#imgFile').uploadify({
+            'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
+            'uploader'      : projectUrl + '/family/uploadImg',
+            'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
+            'auto'          : true,
+            'queueID'       : 'progress_bar',
+            'fileObjName'   : 'uploadFile',
+            "buttonCursor"  : "hand",
+            "buttonText"    : "选择图片",
+            'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+            'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+            'onUploadSuccess' : function(file, data, response) {
+                var result = eval('(' + data + ')');
+                var imgPath = result.filePath;
+                $("#result_img").attr('src',imgPath);
+                $("#result_img").show();
+                $("#imgFile").hide();
+                $("#photoUrl").attr('value',imgPath);
+                $("#show_img").mouseover(function(){
+                    $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+                });
+                $("#show_img").mouseout(function(){
+                    $("#result_img").attr('src',imgPath);
+                });
+                $("#result_img").click(function(){
+                    $("#result_img").hide();
+                    $("#imgFile").show();
+                    $("#photoUrl").removeAttr('value');
+                    $("#show_img").unbind('mouseover');
+                    $("#show_img").unbind('mouseout');
+
+                });
+            },
+            onUploadError:function (file, errorCode, errorMsg, errorString) {
+                alert("error-->" + errorString);
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 $(function () {
 
     $("#regedit").click(function () {
-        $("#regeditForm").attr("action","/sign/regester");
+        $("#regeditForm").attr("action",projectUrl + "/sign/regester");
         $("#regeditForm").submit();
     });
 
