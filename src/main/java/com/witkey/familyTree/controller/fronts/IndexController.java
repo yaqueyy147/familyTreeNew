@@ -1,8 +1,12 @@
 package com.witkey.familyTree.controller.fronts;
 
+import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by suyx on 2016/12/18.
@@ -20,6 +26,9 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping(value = "familyTree")
 public class IndexController {
 
+    @Autowired
+    private FamilyService familyService;
+
     @RequestMapping(value = {"","/","index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 
@@ -27,6 +36,17 @@ public class IndexController {
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userFront");
         TUserFront tUserFront1 = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
         model.addAttribute("tUserFront",tUserFront1);
+        List<List<TFamily>> list = new ArrayList<List<TFamily>>();
+        List<TFamily> listMainland = familyService.getFamilyList("ceshi123",1);
+
+        list.add(listMainland);
+        List<TFamily> listHongKong = familyService.getFamilyList("ceshi123",2);
+        list.add(listHongKong);
+        List<TFamily> listTaiwan = familyService.getFamilyList("ceshi123",3);
+        list.add(listTaiwan);
+        List<TFamily> listAoMen = familyService.getFamilyList("ceshi123",4);
+        list.add(listAoMen);
+        model.addAttribute("familyList",list);
         return new ModelAndView("/fronts/index");
     }
 

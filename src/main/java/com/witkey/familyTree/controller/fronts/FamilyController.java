@@ -3,6 +3,7 @@ package com.witkey.familyTree.controller.fronts;
 import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
@@ -31,7 +32,6 @@ import java.util.*;
 @RequestMapping(value = "/family")
 public class FamilyController {
 
-    private static final String DEFAULT_FAMILY_IMG = "/static/images/defaultFamily.jpg";
 
     private static final Logger LOGGER = Logger.getLogger(FamilyController.class);
 
@@ -46,17 +46,7 @@ public class FamilyController {
     @RequestMapping(value = "/personalIndex")
     public ModelAndView personalIndex(Model model){
 
-        List<TFamily> list = familyService.getFamilyList("ceshi123");
-
-        for (TFamily tFamily : list) {
-            String photoUrl = tFamily.getPhotoUrl();
-            if(CommonUtil.isBlank(photoUrl)){
-                tFamily.setPhotoUrl(DEFAULT_FAMILY_IMG);
-            }
-            else if(!CommonUtil.isFile(photoUrl)){
-                tFamily.setPhotoUrl(DEFAULT_FAMILY_IMG);
-            }
-        }
+        List<TFamily> list = familyService.getFamilyList("ceshi123",0);
 
         model.addAttribute("familyList",list);
 
@@ -125,7 +115,7 @@ public class FamilyController {
             int familyId = familyService.createFamily(tFamily);
             //将返回的族谱ID设置到family
             tFamily.setId(familyId);
-            tFamily.setPhotoUrl(DEFAULT_FAMILY_IMG);
+            tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
 
         } catch (Exception e){
             LOGGER.error("创建族谱出错-->",e);

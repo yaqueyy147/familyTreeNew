@@ -6,6 +6,7 @@ import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 @Service("familyService")
 public class FamilyServiceImpl implements FamilyService {
+
 
     @Resource
     private TFamilyDao tFamilyDao;
@@ -68,11 +70,25 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
-    public List<TFamily> getFamilyList(String userName) {
+    public List<TFamily> getFamilyList(String userName, int familyArea) {
         Map<String,Object> filter = new HashMap<String,Object>();
         filter.put("createMan",userName);
+        if(familyArea != 0){
+            filter.put("familyArea",familyArea);
+        }
+
 
         List<TFamily> list = tFamilyDao.find(filter);
+
+        for (TFamily tFamily : list) {
+            String photoUrl = tFamily.getPhotoUrl();
+            if(CommonUtil.isBlank(photoUrl)){
+                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            }
+            else if(!CommonUtil.isFile(photoUrl)){
+                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            }
+        }
 
         return list;
     }

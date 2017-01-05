@@ -18,7 +18,7 @@ public interface FamilyService {
     public int savePeople(TPeople tPeople);
 
     //查询family
-    public List<TFamily> getFamilyList(String userName);
+    public List<TFamily> getFamilyList(String userName, int familyArea);
 
     //查询族谱的成员
     public List<TPeople> getPeopleList(int familyId);

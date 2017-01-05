@@ -15,7 +15,74 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
+<div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
+<c:forEach var="familyList" items="${familyList}">
+    <div id="mainlandFamily" class="panel panel-info">
+        <div class="panel-heading" style="cursor: pointer">
+            <c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>
+            <c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>
+            <c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>
+            <c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>
+            <div style="float: right;">
+                <i class="fa fa-chevron-up"></i>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <c:forEach var="family" items="${familyList}">
+
+                    <div class="col-sm-6 col-md-2">
+                        <div class="thumbnail">
+                            <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                                <%--<img data-src="holder.js/300x300" alt="...">--%>
+                            <div class="caption">
+                                <h4>${family.familyFirstName}氏族谱（${family.id}）</h4>
+                                <p>状态：
+                                    <c:if test="${family.visitStatus == 0}">加密</c:if>
+                                    <c:if test="${family.visitStatus == 1}">开放</c:if>
+                                    <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
+                                </p>
+                                <p>${family.familyName}</p>
+                                <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                                        ${family.familyDesc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</c:forEach>
+</div>
+<!-- 族谱密码 Modal -->
+<div class="modal fade" id="visitPasswordModal" tabindex="-1" role="dialog" aria-labelledby="visitPasswordModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">您需要输入密码才能访问该族谱</h4>
+            </div>
+            <div class="modal-body">
+                <!-- 族人信息页面 -->
+                <div class="tab-content">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="访问密码">
+                    <input type="hidden" class="form-control" id="passwordPre" name="passwordPre">
+                    <input type="hidden" class="form-control" id="visitFamilyId" name="visitFamilyId">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="checkPassword">提 交</button>
+                <button class="btn btn-default" id="closePassword" data-dismiss="modal">取 消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.html"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/index.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 </body>
 </html>

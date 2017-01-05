@@ -113,7 +113,7 @@
         </div>
     </div>
 </div>
-<!-- 添加族谱 Modal -->
+<!-- 族谱密码 Modal -->
 <div class="modal fade" id="visitPasswordModal" tabindex="-1" role="dialog" aria-labelledby="visitPasswordModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

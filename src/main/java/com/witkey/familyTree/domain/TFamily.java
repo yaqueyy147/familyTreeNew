@@ -22,11 +22,12 @@ public class TFamily implements Serializable {
     private Integer state;
     private String remark;
     private String familyDesc;
+    private int familyArea;
 
     public TFamily() {
     }
 
-    public TFamily(int id, String familyFirstName, String familyName, String photoUrl, String createMan, Integer visitStatus, String visitPassword, Date createTime, Integer state, String remark, String familyDesc) {
+    public TFamily(int id, String familyFirstName, String familyName, String photoUrl, String createMan, Integer visitStatus, String visitPassword, Date createTime, Integer state, String remark, String familyDesc, int familyArea) {
         this.id = id;
         this.familyFirstName = familyFirstName;
         this.familyName = familyName;
@@ -38,6 +39,7 @@ public class TFamily implements Serializable {
         this.state = state;
         this.remark = remark;
         this.familyDesc = familyDesc;
+        this.familyArea = familyArea;
     }
 
     @Id
@@ -150,6 +152,16 @@ public class TFamily implements Serializable {
         this.familyDesc = familyDesc;
     }
 
+    @Basic
+    @Column(name = "family_area")
+    public int getFamilyArea() {
+        return familyArea;
+    }
+
+    public void setFamilyArea(int familyArea) {
+        this.familyArea = familyArea;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -170,6 +182,7 @@ public class TFamily implements Serializable {
         if (state != null ? !state.equals(tFamily.state) : tFamily.state != null) return false;
         if (remark != null ? !remark.equals(tFamily.remark) : tFamily.remark != null) return false;
         if (familyDesc != null ? !familyDesc.equals(tFamily.familyDesc) : tFamily.familyDesc != null) return false;
+        if (familyArea != tFamily.familyArea) return false;
 
         return true;
     }
@@ -187,6 +200,7 @@ public class TFamily implements Serializable {
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (familyDesc != null ? familyDesc.hashCode() : 0);
+        result = 31 * result + familyArea;
         return result;
     }
 }
