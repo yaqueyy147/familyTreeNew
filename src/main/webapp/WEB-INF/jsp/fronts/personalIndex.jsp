@@ -31,7 +31,7 @@
         <div class="row">
         <c:forEach var="family" items="${familyList}">
 
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -43,7 +43,9 @@
                             <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
                         </p>
                         <p>${family.familyName}</p>
-                        <p>${family.familyDesc}</p>
+                        <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                            ${family.familyDesc}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -99,7 +101,15 @@
                         <div class="form-group">
                             <label for="familyName" class="col-sm-2 control-label">展示图片</label>
                             <div class="col-sm-10">
-                                <input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">
+                                <div id="progress_bar" style="display: none"></div>
+                                <input id="photoUrl" name="photoUrl" type="hidden" />
+                                <div class="row">
+                                    <div class="col-xs-10 col-md-6">
+                                        <input type="file" name="imgFile" id="imgFile" />
+                                        <a id="show_img"><img style="display: none;" id="result_img" class="img-responsive" /></a>
+                                    </div>
+                                </div>
+                                <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>
                             </div>
                         </div>
 
@@ -141,5 +151,45 @@
 <%@include file="common/commonJS.html"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
+<script type="text/javascript">
+    $('#imgFile').uploadify({
+        'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
+        'uploader'      : projectUrl + '/family/uploadImg',
+        'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
+        'auto'          : true,
+        "formData"      : {targetFile : '/static/upload/familyImg'},
+        'queueID'       : 'progress_bar',
+        'fileObjName'   : 'uploadFile',
+        "buttonCursor"  : "hand",
+        "buttonText"    : "选择图片",
+        'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+        'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+        'onUploadSuccess' : function(file, data, response) {
+            var result = eval('(' + data + ')');
+            var imgPath = result.filePath;
+            $("#result_img").attr('src',imgPath);
+            $("#result_img").show();
+            $("#imgFile").hide();
+            $("#photoUrl").attr('value',imgPath);
+            $("#show_img").mouseover(function(){
+                $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+            });
+            $("#show_img").mouseout(function(){
+                $("#result_img").attr('src',imgPath);
+            });
+            $("#result_img").click(function(){
+                $("#result_img").hide();
+                $("#imgFile").show();
+                $("#photoUrl").removeAttr('value');
+                $("#show_img").unbind('mouseover');
+                $("#show_img").unbind('mouseout');
+
+            });
+        },
+        onUploadError:function (file, errorCode, errorMsg, errorString) {
+            alert("error-->" + errorString);
+        }
+    });
+</script>
 </body>
 </html>

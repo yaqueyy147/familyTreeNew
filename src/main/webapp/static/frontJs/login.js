@@ -3,10 +3,13 @@
  */
 var checkCodePre;
 $(function () {
-    checkCodePre = drawPic();
     if(loginCode == -1){
         $("#loginFail").text("登录失败：用户名或密码错误!");
     }
+    if(loginCode == -2){
+        $("#loginFail").text("未登录或登录已失效!");
+    }
+    checkCodePre = drawPic();
 
     $("#signIn").click(function () {
         var checkCode = $("#checkCode").val();

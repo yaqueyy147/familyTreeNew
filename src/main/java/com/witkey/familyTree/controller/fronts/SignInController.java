@@ -39,6 +39,9 @@ public class SignInController {
      */
     @RequestMapping(value = {"","/","/login"})
     public ModelAndView frontLogin(Model model, @ModelAttribute("loginCode") String loginCode){
+
+        model.addAttribute("loginCode", loginCode);
+
         return new ModelAndView("/fronts/login");
     }
 

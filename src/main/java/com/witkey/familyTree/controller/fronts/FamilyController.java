@@ -53,53 +53,7 @@ public class FamilyController {
         return new ModelAndView("/fronts/personalIndex");
     }
 
-    @RequestMapping(value = "/saveFamilyWithImg")
-    @ResponseBody
-    public Map<String,Object> saveFamilyWithImg(TFamily tFamily, MultipartFile imgFile, HttpServletRequest request){
-
-        Map<String,Object> map = new HashMap<String,Object>();
-        String path = request.getSession().getServletContext().getRealPath("/static/upload/familyImg");
-        String finalPath = "";
-        try {
-            //如果图片不为空，上传图片
-            if(!imgFile.isEmpty()) {
-                finalPath = CommonUtil.uploadFile(path, imgFile);
-                finalPath = finalPath.replace("\\", "/");
-                finalPath = finalPath.substring(finalPath.indexOf("/static"));
-            }
-            //将图片路径添加到family
-            tFamily.setPhotoUrl(finalPath);
-            tFamily.setCreateMan("ceshi123");
-            tFamily.setCreateTime(new Date());
-            String visitPassword = tFamily.getVisitPassword();
-            if(!CommonUtil.isBlank(visitPassword)){
-                tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
-            }
-            //保存族谱
-            int familyId = familyService.createFamily(tFamily);
-            //将返回的族谱ID设置到family
-            tFamily.setId(familyId);
-
-        } catch (IOException e){
-            LOGGER.error("上传图片错误-->",e);
-            map.put("tFamily",tFamily);
-            map.put("code",-2);
-            map.put("msg","上传图片出错！-->" + e.getMessage());
-            return map;
-        } catch (DataAccessException de){
-            LOGGER.error("创建族谱出错-->",de);
-            map.put("tFamily",tFamily);
-            map.put("code",-1);
-            map.put("msg","创建族谱出错！-->" + de.getMessage());
-            return map;
-        }
-        map.put("tFamily",tFamily);
-        map.put("code",1);
-        map.put("msg","创建成功！");
-        return map;
-    }
-
-    @RequestMapping(value = "/saveFamilyNoImg")
+    @RequestMapping(value = "/saveFamily")
     @ResponseBody
     public Map<String,Object> saveFamily(TFamily tFamily, HttpServletRequest request){
 
@@ -206,9 +160,9 @@ public class FamilyController {
 
     @RequestMapping(value = "uploadImg")
     @ResponseBody
-    public String uploadImg(MultipartFile uploadFile, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public String uploadImg(MultipartFile uploadFile, String targetFile, HttpServletRequest request, HttpServletResponse response) throws IOException{
 
-        String path = request.getSession().getServletContext().getRealPath("/static/uploads");
+        String path = request.getSession().getServletContext().getRealPath(targetFile);
         String filePath = CommonUtil.uploadFile(path, uploadFile);
         filePath = filePath.replace("\\","/");
 

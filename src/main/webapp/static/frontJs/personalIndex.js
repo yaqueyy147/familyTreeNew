@@ -2,17 +2,12 @@
  * Created by suyx on 2016/12/22 0022.
  */
 $(function () {
-    $("#imgFile").fileinput({
-        uploadUrl: '#', // you must set a valid URL here else you will get an error
-        allowedFileExtensions : ['jpg', 'png','gif'],
-        overwriteInitial: false,
-        maxFileSize: 1000,
-        maxFilesNum: 1,
-        showUpload: false,
-        //allowedFileTypes: ['image', 'video', 'flash'],
-        slugCallback: function(filename) {
-            return filename.replace('(', '_').replace(']', '_');
-        }
+    $("p[name='familyDesc']").mouseover(function () {
+        $(this).popover('show');
+    });
+
+    $("p[name='familyDesc']").mouseout(function () {
+        $(this).popover('hide');
     });
 
     $("input[name='visitStatus']").click(function () {
@@ -26,36 +21,42 @@ $(function () {
     });
 
     $("#saveFamily").click(function () {
-        // enctype="multipart/form-data"
-        // $("#familyForm").attr("action","/family/savePeople");
-        var fileUrl = $("#imgFile").val();
-        var formData;
-        var postUrl = projectUrl + "/family/saveFamilyNoImg";
-        if($.trim(fileUrl).length > 0){
-            $("#familyForm").attr("enctype","multipart/form-data");
-            formData = new FormData($("#familyForm")[0]);
-            postUrl = projectUrl + "/family/saveFamilyWithImg";
-        } else {
-            var testData = $("#familyForm").serializeArray();
-            formData = {};
-            for (var item in testData) {
-                formData["" + testData[item].name + ""] = testData[item].value;
-            }
-            postUrl = projectUrl + "/family/saveFamilyNoImg";
+        var formData = {};
+        var postUrl = projectUrl + "/family/saveFamily";
+        var testData = $("#familyForm").serializeArray();
+
+        for (var item in testData) {
+            formData["" + testData[item].name + ""] = testData[item].value;
         }
         $.ajax({
             type:'post',
             url:postUrl,
             dataType:'json',
             data:formData,
-            processData: false,
-            contentType: false,
             success:function (data) {
                 if(data.code == 1){
                     var tFamily = data.tFamily;
                     var familyImg = tFamily.photoUrl;
-                    var img = "<a href=\"" + projectUrl + "/family/viewFamily?familyId="+tFamily.id+"\"><img src=\"" + familyImg + "\" width='100px' height='100px' /></a>";
-                    $("#familyShow").append(img);
+
+                    var visitStatus = tFamily.visitStatus;
+                    var statusDesc = "开放";
+                    if(visitStatus == 0){
+                        statusDesc = "加密";
+                    } else if(visitStatus == 1){
+                        statusDesc = "开放";
+                    } else if(visitStatus == 2){
+                        statusDesc = "仅族人查看";
+                    }
+                    var imgHtml = "<div class=\"col-sm-6 col-md-2\"><div class=\"thumbnail\">";
+                    imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\">";
+                    imgHtml += "<img src=\"" + familyImg + "\" class=\"img-thumbnail\"/></a>";
+                    imgHtml += "<div class=\"caption\">";
+                    imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
+                    imgHtml += "<p>状态：" + statusDesc + "</p>";
+                    imgHtml += "<p>" + tFamily.familyName + "</p>";
+                    imgHtml += "<p name=\"familyDesc\" style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";
+                    imgHtml += "</div></div></div>";
+                    $("#familyShow").append(imgHtml);
                     $("#addFamilyModal").modal('hide');
                 }
                 alert(data.msg);

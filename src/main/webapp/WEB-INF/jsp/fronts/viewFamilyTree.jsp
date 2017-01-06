@@ -249,6 +249,7 @@
             'uploader'      : projectUrl + '/family/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
+            "formData"      : {targetFile : '/static/upload/personImg'},
             'queueID'       : 'progress_bar',
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",
