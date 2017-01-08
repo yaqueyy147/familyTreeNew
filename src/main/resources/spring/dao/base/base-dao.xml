@@ -14,4 +14,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.fronts.TCompanySponsorDao" id="tCompanySponsorDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.fronts.TCompanyPhotoDao" id="tCompanyPhotoDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.fronts.TCompanyMoneyDao" id="tCompanyMoneyDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 </beans>

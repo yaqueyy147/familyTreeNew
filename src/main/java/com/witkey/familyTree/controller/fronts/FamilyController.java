@@ -158,21 +158,4 @@ public class FamilyController {
         return result;
     }
 
-    @RequestMapping(value = "uploadImg")
-    @ResponseBody
-    public String uploadImg(MultipartFile uploadFile, String targetFile, HttpServletRequest request, HttpServletResponse response) throws IOException{
-
-        String path = request.getSession().getServletContext().getRealPath(targetFile);
-        String filePath = CommonUtil.uploadFile(path, uploadFile);
-        filePath = filePath.replace("\\","/");
-
-        filePath = filePath.substring(filePath.indexOf("/static"));
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("msg","进来了!");
-        map.put("filePath",filePath);
-        String resultStr = JSONObject.fromObject(map).toString();
-        return resultStr;
-    }
-
-
 }

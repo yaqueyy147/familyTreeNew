@@ -8,4 +8,9 @@ $(function () {
         $("#regeditForm").submit();
     });
 
+    $("#companyRegeditbb").click(function () {
+        $("#companyForm").attr("action",projectUrl + "/sign/companyRegester");
+        $("#companyForm").submit();
+    });
+
 });

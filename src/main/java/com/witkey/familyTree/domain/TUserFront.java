@@ -27,11 +27,12 @@ public class TUserFront implements Serializable {
     private String county;
     private String town;
     private String detailAddr;
+    private int isVolunteer;
 
     public TUserFront() {
     }
 
-    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr) {
+    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr, int isVolunteer) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -48,6 +49,7 @@ public class TUserFront implements Serializable {
         this.county = county;
         this.town = town;
         this.detailAddr = detailAddr;
+        this.isVolunteer = isVolunteer;
     }
 
     @Id
@@ -210,6 +212,16 @@ public class TUserFront implements Serializable {
         this.detailAddr = detailAddr;
     }
 
+    @Basic
+    @Column(name = "is_volunteer")
+    public int getIsVolunteer() {
+        return isVolunteer;
+    }
+
+    public void setIsVolunteer(int isVolunteer) {
+        this.isVolunteer = isVolunteer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -233,6 +245,7 @@ public class TUserFront implements Serializable {
         if (county != null ? !county.equals(that.county) : that.county != null) return false;
         if (town != null ? !town.equals(that.town) : that.town != null) return false;
         if (detailAddr != null ? !detailAddr.equals(that.detailAddr) : that.detailAddr != null) return false;
+        if (isVolunteer != that.isVolunteer) return false;
 
         return true;
     }
@@ -255,6 +268,7 @@ public class TUserFront implements Serializable {
         result = 31 * result + (county != null ? county.hashCode() : 0);
         result = 31 * result + (town != null ? town.hashCode() : 0);
         result = 31 * result + (detailAddr != null ? detailAddr.hashCode() : 0);
+        result = 31 * result + isVolunteer;
         return result;
     }
 }

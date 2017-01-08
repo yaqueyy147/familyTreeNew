@@ -246,7 +246,7 @@
     $(function () {
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-            'uploader'      : projectUrl + '/family/uploadImg',
+            'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
             "formData"      : {targetFile : '/static/upload/personImg'},

@@ -65,8 +65,9 @@
                 <property name="excludeMappings">
                     <list>
                         <value>/</value>
-                        <value>/login</value>
-                        <value>/sign</value>
+                        <value>/login/**</value>
+                        <value>/sign/**</value>
+                        <value>/upload/**</value>
                         <value>/static/**</value>
                         <value>/scripts/**</value>
                         <value>/familyTree</value>

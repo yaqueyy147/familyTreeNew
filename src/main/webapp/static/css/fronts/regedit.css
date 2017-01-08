@@ -1,20 +1,11 @@
-body{
-    background: url("/static/images/bag.jpg") no-repeat;
-    filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-    -moz-background-size:100% 100%;
-    background-size:100% 100%;
-}
-html,body {
-    height: 100%;
-}
+
+
 .box {
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6699FF', endColorstr='#6699FF'); /*  IE */
     background: #ffd306;
 
     margin: 0 auto;
     position: relative;
-    width: 100%;
-    height: 100%;
 }
 .regedit-box {
     width: 100%;
@@ -39,7 +30,7 @@ html,body {
     width: 100%;
     max-width:500px;
     height: 275px;
-    margin: 25px auto 0px auto;
+    margin: 5px auto 0px auto;
     padding-top: 25px;
 }
 .regedit-content {
@@ -63,8 +54,8 @@ html,body {
     margin-bottom: 0px !important;
 }
 .regedit-title {
-    padding: 20px 10px;
-    background-color: #5cb85c;
+    padding: 5px 5px;
+    background-color: #A7F43D;
     font-size: 18px;
 }
 .regedit-title h1 {

@@ -12,5 +12,8 @@
         <mapping class="com.witkey.familyTree.domain.TFamily"/>
         <mapping class="com.witkey.familyTree.domain.TMate"/>
         <mapping class="com.witkey.familyTree.domain.TPeople"/>
+        <mapping class="com.witkey.familyTree.domain.TCompanyMoney"/>
+        <mapping class="com.witkey.familyTree.domain.TCompanyPhoto"/>
+        <mapping class="com.witkey.familyTree.domain.TCompanySponsor"/>
     </session-factory>
 </hibernate-configuration>

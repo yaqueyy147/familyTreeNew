@@ -1,6 +1,8 @@
 package com.witkey.familyTree.controller.fronts;
 
+import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -31,6 +33,9 @@ public class SignInController {
 
     @Autowired
     private UserFrontService userFrontService;
+
+    @Autowired
+    private CompanyService companyService;
 
     /**
      * 前台登录页面
@@ -96,6 +101,22 @@ public class SignInController {
         tUserFront.setId(id);
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userFront", JSONObject.fromObject(tUserFront).toString(),response);
+        return new RedirectView("/familyTree/index");
+    }
+
+    /**
+     * 注册
+     * @param tCompanySponsor
+     * @return
+     */
+    @RequestMapping(value = "/companyRegester")
+    public RedirectView companyRegester(TCompanySponsor tCompanySponsor, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+        //注册，创建用户
+        int id= companyService.createCompanyUser(tCompanySponsor);
+        //设置用户ID为返回的id
+        tCompanySponsor.setId(id);
+        //注册成功，自动登录，添加cookie
+        CookieUtil.addCookie("userFront", JSONObject.fromObject(tCompanySponsor).toString(),response);
         return new RedirectView("/familyTree/index");
     }
 

@@ -27,8 +27,7 @@
 <%@include file="common/header.jsp" %>
 <div class="container" style="margin-top: 50px;">
     <a href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
-    <div id="familyShow">
-        <div class="row">
+        <div id="familyShow" class="row">
         <c:forEach var="family" items="${familyList}">
 
             <div class="col-sm-6 col-md-2">
@@ -52,7 +51,6 @@
 
         </c:forEach>
         </div>
-    </div>
 </div>
 <!-- 添加族谱 Modal -->
 <div class="modal fade" id="addFamilyModal" tabindex="-1" role="dialog" aria-labelledby="addFamilyModalLabel" aria-hidden="true">
@@ -99,7 +97,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="familyName" class="col-sm-2 control-label">展示图片</label>
+                            <label class="col-sm-2 control-label">展示图片</label>
                             <div class="col-sm-10">
                                 <div id="progress_bar" style="display: none"></div>
                                 <input id="photoUrl" name="photoUrl" type="hidden" />
@@ -154,7 +152,7 @@
 <script type="text/javascript">
     $('#imgFile').uploadify({
         'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-        'uploader'      : projectUrl + '/family/uploadImg',
+        'uploader'      : projectUrl + '/upload/uploadImg',
         'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
         'auto'          : true,
         "formData"      : {targetFile : '/static/upload/familyImg'},
