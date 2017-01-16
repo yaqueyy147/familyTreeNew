@@ -15,5 +15,10 @@
         <mapping class="com.witkey.familyTree.domain.TCompanyMoney"/>
         <mapping class="com.witkey.familyTree.domain.TCompanyPhoto"/>
         <mapping class="com.witkey.familyTree.domain.TCompanySponsor"/>
+        <mapping class="com.witkey.familyTree.domain.TResource"/>
+        <mapping class="com.witkey.familyTree.domain.TRole"/>
+        <mapping class="com.witkey.familyTree.domain.TRoleResource"/>
+        <mapping class="com.witkey.familyTree.domain.TUserResource"/>
+        <mapping class="com.witkey.familyTree.domain.TVolunteer"/>
     </session-factory>
 </hibernate-configuration>

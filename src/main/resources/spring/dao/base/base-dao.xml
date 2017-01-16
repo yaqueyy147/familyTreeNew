@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- fronts -->
 	<bean class="com.witkey.familyTree.dao.fronts.TUserFrontDao" id="tUserFrontDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -23,6 +24,11 @@
 	</bean>
 
 	<bean class="com.witkey.familyTree.dao.fronts.TCompanyMoneyDao" id="tCompanyMoneyDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- consoles -->
+	<bean class="com.witkey.familyTree.dao.consoles.TVolunteerDao" id="tVolunteerDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 

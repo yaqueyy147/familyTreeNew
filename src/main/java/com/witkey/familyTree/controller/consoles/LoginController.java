@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 @Controller
+@RequestMapping(value = "/consoles")
 public class LoginController {
 
     @RequestMapping(value = "/main")
