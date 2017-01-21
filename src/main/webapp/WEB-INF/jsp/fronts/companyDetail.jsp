@@ -31,7 +31,7 @@
     已赞助：
     <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
     &nbsp;&nbsp;
-    <a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">充 值</a>
+    <a class="btn btn-primary" href="#moneyModal" data-toggle="modal" data-target="#moneyModal">充 值</a>
     <div id="companyShow" class="row">
         <c:forEach var="companyDetail" items="${companyDetailList}">
 
@@ -93,6 +93,7 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">添加图片</label>
                             <div class="col-sm-10">
                                 <div id="progress_bar" style="display: none"></div>
                                 <input id="publicityPhoto" name="publicityPhoto" type="hidden" />

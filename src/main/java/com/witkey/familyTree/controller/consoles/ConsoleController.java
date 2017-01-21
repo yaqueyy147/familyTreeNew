@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,7 +37,7 @@ public class ConsoleController {
 
     @RequestMapping(value = "/auditVolunteer")
     @ResponseBody
-    public Map<String,Object> auditVolunteer(Map<String,Object> params){
+    public Map<String,Object> auditVolunteer(@RequestParam Map<String,Object> params){
         params.put("auditMan","ceshi123");
         int i = 0;
         Map<String,Object> map = new HashMap<String,Object>();
@@ -49,7 +50,19 @@ public class ConsoleController {
             map.put("msg","系统错误");
             map.put("code",-1);
         }
-
+        map.put("msg","审核完成");
+        map.put("code",1);
         return map;
     }
+
+    @RequestMapping(value = "companyList")
+    public ModelAndView companyList(Model model){
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("state",0);
+        List<Map<String,Object>> list = consoleService.getCompanyList(params);
+        model.addAttribute("companyList",list);
+        return new ModelAndView("/consoles/companyList");
+    }
+
 }

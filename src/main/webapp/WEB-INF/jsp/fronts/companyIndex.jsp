@@ -24,7 +24,7 @@
 
                 <div class="col-sm-6 col-md-2">
                     <div class="thumbnail">
-                        <a href="<%=request.getContextPath()%>/company/detail" ><img src="${company.companyPhoto}" class="img-thumbnail"/></a>
+                        <a href="<%=request.getContextPath()%>/company/detail?companyId=${company.id}" ><img src="${company.companyPhoto}" class="img-thumbnail"/></a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
                         <div class="caption">
                             <h3>${company.companyName}</h3>

@@ -11,6 +11,7 @@
     <title>族谱管理系统</title>
     <%@ include file="common/commonCss.html" %>
     <style type="text/css">
+
         .easyui-tabs div iframe{
             width:100%;
             height:100%;
@@ -23,12 +24,12 @@
     <div data-options="region:'north'" style="height:50px">这是顶部</div>
 
     <div data-options="region:'west',split:true" title="菜单" style="width:15%;">
-        <ul id="tt" class="easyui-tree">
+        <ul id="menuTT" class="easyui-tree">
             <li>
                 <span>Folder</span>
                 <ul>
-                    <li><span>志愿者审核</span></li>
-                    <li><span>File 2</span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','志愿者审核','/consoles/volunteerList')">志愿者审核</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/companyList')">赞助商列表</a></span></li>
                     <li><span>File 3</span></li>
                 </ul>
             </li>
@@ -36,15 +37,17 @@
         </ul>
     </div>
     <div data-options="region:'center'">
-        <div class="easyui-tabs" data-options="border:false,fit:true">
-            <div title="About" data-options="closable:false" style="padding:10px"></div>
-            <div title="志愿者审核" data-options="closable:true">
-                <iframe src="<%=request.getContextPath()%>/consoles/volunteerList"></iframe>
-            </div>
+        <div id="tabTT" class="easyui-tabs" data-options="border:false,fit:true">
+            <div title="首页" data-options="closable:false" style="padding:10px"></div>
+            <%--<div id="volunteerList" title="志愿者审核" data-options="closable:true" selected>--%>
+                <%--<iframe src="<%=request.getContextPath()%>/consoles/volunteerList"></iframe>--%>
+            <%--</div>--%>
         </div>
     </div>
     <div data-options="region:'south',split:true"></div>
 </div>
+<%@include file="common/springUrl.jsp"%>
 <%@ include file="common/commonJs.html" %>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/mainJs.js"></script>
 </body>
 </html>

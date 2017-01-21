@@ -4,6 +4,7 @@ import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
+import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,13 +66,23 @@ public class SignInController {
         //根据读取的用户名和密码查询用户
 //        List<Map<String,Object>> listUser = userFrontService.signIn(tUserFront);
 
+        //个人用户
         List<TUserFront> listUser = userFrontService.getUserInfo(tUserFront);
-
-        //如果用户存在，则登录，跳转首页
+        //公司用户
+        List<Map<String,Object>> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUserFront));
+        Map<String,Object> mapUserInfo = new HashMap<String,Object>();
+        //如果用户存在则为个人用户，则登录，跳转首页
         if(listUser != null && listUser.size() > 0){
-
+            mapUserInfo = CommonUtil.bean2Map(listUser.get(0));
+            mapUserInfo.put("userType",1);//设置用户类型为个人用户
             //将用户信息添加到cookie
-            CookieUtil.addCookie("userFront", JSONObject.fromObject(listUser.get(0)).toString(),response);
+            CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
+            return new RedirectView("/familyTree/index");
+        }else if(listCompanyUser != null && listCompanyUser.size() > 0){//否则检查是否公司用户
+            mapUserInfo = listCompanyUser.get(0);
+            mapUserInfo.put("userType",2);//设置用户类型为企业用户
+            //将用户信息添加到cookie
+            CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
             return new RedirectView("/familyTree/index");
         }
         //否则跳回登录页面
@@ -112,6 +124,8 @@ public class SignInController {
     @RequestMapping(value = "/companyRegester")
     public RedirectView companyRegester(TCompanySponsor tCompanySponsor, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
         //注册，创建用户
+        //加密密码
+        tCompanySponsor.setCompanyLoginPassword(CommonUtil.string2MD5(tCompanySponsor.getCompanyLoginPassword()));
         int id= companyService.createCompanyUser(tCompanySponsor);
         //设置用户ID为返回的id
         tCompanySponsor.setId(id);

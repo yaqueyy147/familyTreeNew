@@ -21,7 +21,10 @@ $(function () {
 
                             alert(data.msg);
                             if(data.code == 1){
-
+                                var obj = $("#volunteer-" + volunteerId);
+                                $(obj).parent().parent().parent().find("td:eq(5)").find("div").text("是");
+                                $(obj).parent().parent().parent().find("td:eq(6)").find("div").html("已审核");
+                                closeDialog("auditDialog");
                             }
                         },
                         error:function (data) {
@@ -33,10 +36,7 @@ $(function () {
             {
                 "text":"取消",
                 handler:function () {
-                    $("#volunteerId").val("");
-                    $("#auditState").val("");
-                    $("#applyManId").val("");
-                    $(this).dialog("close");
+                    closeDialog("auditDialog");
                 }
             }
         ]
@@ -48,6 +48,11 @@ function auditVolunteer(volunteerId,state,applyManId){
     $("#auditState").val(state);
     $("#applyManId").val(applyManId);
     $("#auditDialog").dialog("open");
-
-
+}
+function closeDialog(dialogId){
+    $("#volunteerId").val("");
+    $("#auditState").val("");
+    $("#applyManId").val("");
+    $("#auditDesc").val("");
+    $("#" + dialogId).dialog("close");
 }

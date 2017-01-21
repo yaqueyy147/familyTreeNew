@@ -61,7 +61,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<TCompanyMoney> getCompanyMoney(Map<String, Object> params) {
-
+        params.put("companyId",CommonUtil.parseInt(params.get("companyId")));
         List<TCompanyMoney> list = tCompanyMoneyDao.find(params);
         return list;
     }
@@ -75,11 +75,21 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public double getTotalCompanyMoney(int companyId) {
-        String sql = "select company_id, sum(pay_money) totalMoney where company_id=?";
-        List<Map<String,Object>> listMoney = jdbcTemplate.queryForList(sql,companyId);
+    public List<Map<String, Object>> getCompanyInfo(Map<String, Object> params) {
+        String sql = "select * from t_company_sponsor where company_login_name=? and company_login_password=?";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,params.get("userName"),CommonUtil.string2MD5(params.get("password")+""));
 
-        double total = CommonUtil.parseDouble(listMoney.get(0).get("totalMoney"));
+        return list;
+    }
+
+    @Override
+    public double getTotalCompanyMoney(int companyId) {
+        String sql = "select company_id, sum(pay_money) totalMoney from t_company_money where company_id=? group by company_id";
+        List<Map<String,Object>> listMoney = jdbcTemplate.queryForList(sql,companyId);
+        double total = 0.0;
+        if(listMoney != null && listMoney.size() > 0){
+            total = CommonUtil.parseDouble(listMoney.get(0).get("totalMoney"));
+        }
 
         return total;
     }

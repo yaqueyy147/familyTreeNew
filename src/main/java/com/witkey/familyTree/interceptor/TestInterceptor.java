@@ -34,27 +34,28 @@ public class TestInterceptor implements HandlerInterceptor {
     }
 
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String url = urlPathHelper.getLookupPathForRequest(httpServletRequest);
-        //查找到，表示不需要权限控制
-        if(!StringUtils.isEmpty(lookupGroup(url))){
-            return Boolean.TRUE;
-        }
-        //从cookie中读取用户信息
-        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userFront");
-        if(!CommonUtil.isBlank(jsonUser)){
-            return true;
-        }
-        httpServletResponse.sendRedirect("/sign?loginCode=-2");
-        return false;
+//        String url = urlPathHelper.getLookupPathForRequest(httpServletRequest);
+//        //查找到，表示不需要权限控制
+//        if(!StringUtils.isEmpty(lookupGroup(url))){
+//            return Boolean.TRUE;
+//        }
+//        //从cookie中读取用户信息
+//        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
+//        if(!CommonUtil.isBlank(jsonUser)){
+//            return true;
+//        }
+//        httpServletResponse.sendRedirect("/sign?loginCode=-2");
+//        return false;
+        return true;
     }
 
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
 
         //从cookie获取用户信息
-        TUserFront tUserFront = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
-
+//        TUserFront tUserFront = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
+        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("tUserFront",tUserFront);
+        map.put("userInfo",jsonUser);
 
         modelAndView.addAllObjects(map);
 

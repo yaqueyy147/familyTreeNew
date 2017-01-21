@@ -13,7 +13,12 @@
     <%@include file="common/commonCss.html"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
     <style>
-
+        body{
+            background: url("<%=request.getContextPath()%>/static/images/bag.jpg") no-repeat;
+            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+            -moz-background-size:100% 100%;
+            background-size:100% 100%;
+        }
         .bbtt {
             margin-bottom: 30px;
         }
@@ -77,63 +82,68 @@
         </div>
         <div role="tabpanel" class="form tab-pane" id="companyRegedit">
             <form id="companyForm" action="" method="post">
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2">
+                <div class="form-group col-xs-6 has-error has-feedback">
                     <input class="form-control" id="companyLoginName" name="companyLoginName" placeholder="用户名(登录用)" type="text" />
+                    <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 has-error form-actions">
                     <input class="form-control" id="companyName" name="companyName" placeholder="公司名称" type="text" />
+                    <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 has-error form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyLoginPassword" name="companyLoginPassword" placeholder="密 码" type="password" />
+                    <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyArea" name="companyArea" placeholder="公司地址" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyMobilePhone" name="companyMobilePhone" placeholder="手机号码" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyTelephone" name="companyTelephone" placeholder="固定电话" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyFax" name="companyFax" placeholder="传 真" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyWechart" name="companyWechart" placeholder="微 信" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <input class="form-control" id="companyQq" name="companyQq" placeholder="QQ" type="text" />
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
                     <textarea class="form-control" id="companyDesc" name="companyDesc" placeholder="公司简介" type="text"></textarea>
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <div class="col-xs-12 col-sm-12" style="height:140px">
                         <div id="progress_bar" style="display: none"></div>
                         <input id="companyPhoto" name="companyPhoto" type="hidden" />
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <a id="imgFile" />
-                                <a id="show_img"><img style="display: none;" id="result_img" class="img-thumbnail" /></a>
+                                <a id="show_img"><img style="display: none;" id="result_img"  height="128px" width="128px" /></a>
                             </div>
                         </div>
+                        上传公司展示图片
                         <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>
                     </div>
                 </div>
-                <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
+                <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                     <div class="col-xs-12 col-sm-12" style="height:140px">
                         <div id="progress_bar" style="display: none"></div>
                         <input id="businessLicense" name="businessLicense" type="hidden" />
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <input type="file" name="imgFile1" id="imgFile1" />
-                                <a id="show_img1"><img style="display: none;" id="result_img1" class="img-thumbnail" /></a>
+                                <a id="show_img1"><img style="display: none;" id="result_img1" height="128px" width="128px" /></a>
                             </div>
                         </div>
+                        上传公司营业执照<span class="glyphicon glyphicon-asterisk" style="color: #a94442"></span>
                         <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>
                     </div>
                 </div>
-                <div class="form-group col-xs-9 form-actions col-xs-offset-4" style="margin-top: 15px">
+                <div class="form-group col-xs-9 form-actions col-xs-offset-4" style="margin-top: 50px">
                     <button class="btn btn-primary bbtt" id="companyRegeditbb" type="button">注 册</button>
                     &nbsp;&nbsp;
                     <a class="btn btn-primary bbtt" href="/familyTree/index" type="button">取 消</a>
@@ -201,6 +211,9 @@
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",
             "buttonText"    : "选择图片",
+            "buttonImage"   : projectUrl + "/static/images/defaultUpload.gif",
+            "buttonClass"   : "img-thumbnail",
+            "height"         : "140",
             'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
             'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
             'onUploadSuccess' : function(file, data, response) {

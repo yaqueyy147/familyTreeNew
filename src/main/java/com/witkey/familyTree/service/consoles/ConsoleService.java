@@ -13,4 +13,6 @@ public interface ConsoleService {
     public List<Map<String,Object>> getVolunteerApplyList(Map<String,Object> params);
 
     public int auditVolunteer(Map<String,Object> params);
+
+    public List<Map<String,Object>> getCompanyList(Map<String,Object> params);
 }

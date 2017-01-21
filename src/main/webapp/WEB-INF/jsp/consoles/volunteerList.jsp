@@ -14,6 +14,7 @@
     <%@include file="common/commonCss.html"%>
 </head>
 <body>
+
 <table id="tt" class="easyui-datagrid" style="width:100%;height:100%"
        url="datagrid24_getdata.php" toolbar="#tb"
        title="志愿申请列表" iconCls="icon-save"
@@ -23,8 +24,8 @@
             <th field="序号" width="80">序号</th>
             <th field="user_name" width="80">申请人</th>
             <th field="phone" width="80">联系电话</th>
-            <th field="apply_desc" width="80">申请说明</th>
-            <th field="applyTime" width="120">申请时间</th>
+            <th field="apply_desc" width="120">申请说明</th>
+            <th field="applyTime" width="150">申请时间</th>
             <th field="is_volunteer" width="80">是否志愿者</th>
             <th field="操作" width="120">操作</th>
         </tr>
@@ -32,7 +33,9 @@
     <tbody>
     <c:forEach var="volunteer" items="${volunteerApplyList}" varStatus="status">
         <tr>
-            <td>${status.index + 1}</td>
+            <td>${status.index + 1}
+                <input type="hidden" id="volunteer-${volunteer.volunteerId}" name="volunteer-${volunteer.volunteerId}" value="${volunteer.volunteerId}" />
+            </td>
             <td>${volunteer.user_name}</td>
             <td>${volunteer.phone}</td>
             <td>${volunteer.apply_desc}</td>
@@ -42,8 +45,13 @@
                 <c:if test="${volunteer.is_volunteer != 1}">否</c:if>
             </td>
             <td>
-                <a href="javascript:void 0;" onclick="auditVolunteer('${volunteer.id}',1,'${volunteer.userId}')">同意</a>
-                <a href="javascript:void 0;" onclick="auditVolunteer('${volunteer.id}',0,'${volunteer.userId}')">不同意</a>
+                <c:if test="${volunteer.is_volunteer != 0}">
+                    已审核
+                </c:if>
+                <c:if test="${volunteer.is_volunteer == 0}">
+                    <a href="javascript:void 0;" onclick="auditVolunteer('${volunteer.volunteerId}',1,'${volunteer.userId}')">同意</a>
+                    <a href="javascript:void 0;" onclick="auditVolunteer('${volunteer.volunteerId}',0,'${volunteer.userId}')">不同意</a>
+                </c:if>
             </td>
         </tr>
     </c:forEach>
