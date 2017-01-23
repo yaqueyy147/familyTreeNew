@@ -29,8 +29,8 @@
                 <span>Folder</span>
                 <ul>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','志愿者审核','/consoles/volunteerList')">志愿者审核</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/companyList')">赞助商列表</a></span></li>
-                    <li><span>File 3</span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/company')">赞助商列表</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
                 </ul>
             </li>
             <li><span>File21</span></li>

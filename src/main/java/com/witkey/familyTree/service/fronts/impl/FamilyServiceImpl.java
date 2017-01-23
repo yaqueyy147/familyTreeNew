@@ -72,7 +72,9 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TFamily> getFamilyList(String userName, int familyArea) {
         Map<String,Object> filter = new HashMap<String,Object>();
-        filter.put("createMan",userName);
+        if(!CommonUtil.isBlank(userName)){
+            filter.put("createMan",userName);
+        }
         if(familyArea != 0){
             filter.put("familyArea",familyArea);
         }

@@ -55,7 +55,7 @@ $(function () {
     });
 
     var params = {};
-    $("#companyList").datagrid({loadFilter:companyFilter}).datagrid('loadData', getData("/consoles/companyList",params));
+    $("#familyList").datagrid({loadFilter:familyFilter}).datagrid('loadData', getData("/consoles/familyList",params));
 
 });
 function auditVolunteer(volunteerId,state,applyManId){
@@ -110,22 +110,9 @@ function pagerFilter(data){
     return data;
 }
 
-function companyFilter(data){
+function familyFilter(data){
     if(data){
-        for(var i=0;i<data.length;i++){
-            data[i].company_photo = "<img src=\"" + projectUrl + data[i].company_photo + "\" width=\"100px\" height=\"50px\" />";
-            data[i].business_license = "<img src=\"" + projectUrl + data[i].business_license + "\" width=\"100px\" height=\"50px\" />";
-            data[i].totalMoney = "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + data[i].id + "')\">" + data[i].totalMoney + "</a>";
-            data[i].phone = data[i].company_mobile_phone + "," + data[i].company_telephone;
-            if(data[i].state != 0){
-                data[i].operate = "已审核";
-            }else{
-                data[i].operate = "<a href=\"javascript:void 0;\" onclick=\"auditCompany('" + data[i].id + "',1,'')\">同意</a>";
-                data[i].operate += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditCompany('" + data[i].id + "',0,'')\">不同意</a>";
-            }
 
-
-        }
     }
     if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
         data = {

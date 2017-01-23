@@ -80,7 +80,7 @@ public class CompanyController {
         Map<String,Object> result = new HashMap<String,Object>();
         List<TCompanyMoney> list = companyService.getCompanyMoney(params);
 
-        result.put("moneyList",list);
+        result.put("dataList",list);
         return result;
     }
 }

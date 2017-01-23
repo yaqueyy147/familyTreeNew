@@ -52,7 +52,7 @@ $(function () {
             data:{"companyId" : companyId},
             success:function (data) {
                 if(data){
-                    var moneyList = data.moneyList;
+                    var moneyList = data.dataList;
                     var moneyHtml = "<tr><th>序号</th><th>充值金额</th><th>充值说明</th><th>充值时间</th><th>充值人</th></tr><tr>";
                     for(var i=0;i<moneyList.length;i++){
                         var ii = moneyList[i];

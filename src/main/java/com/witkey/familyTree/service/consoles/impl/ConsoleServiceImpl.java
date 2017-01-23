@@ -62,8 +62,8 @@ public class ConsoleServiceImpl implements ConsoleService {
     @Override
     public List<Map<String, Object>> getCompanyList(Map<String, Object> params) {
 
-        String sql = "select * from t_company_sponsor where state=?";
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql,params.get("state"));
+        String sql = "select * from t_company_sponsor";// where state=?
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);//,params.get("state")
 
         for (Map<String,Object> map : list) {
             int companyId = CommonUtil.parseInt(map.get("id"));

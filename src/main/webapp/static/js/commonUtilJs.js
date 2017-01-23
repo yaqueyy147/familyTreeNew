@@ -40,3 +40,21 @@ $(function () {
         }
     });
 });
+
+function getData(url,params){
+    var result;
+    $.ajax({
+        type:'post',
+        url: projectUrl + url,
+        dataType:'json',
+        async:false,
+        data:params,
+        success:function (data) {
+            result = data.dataList;
+        },
+        error:function (data) {
+            alert(JSON.stringify(data));
+        }
+    });
+    return result;
+}
