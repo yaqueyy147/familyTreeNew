@@ -92,7 +92,7 @@ public class BaseHibernateDao<E> extends HibernateDaoSupport {
 	 */
 	public Serializable create(Object o) {
 		this.getHibernateTemplate().getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
-		Serializable ss = super.getHibernateTemplate().save(o);
+		Serializable ss = this.getHibernateTemplate().save(o);
 		this.flush();
 		return ss;
 	}

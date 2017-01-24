@@ -57,7 +57,10 @@ public class TestInterceptor implements HandlerInterceptor {
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("userInfo",jsonUser);
 
-        modelAndView.addAllObjects(map);
+        if(!CommonUtil.isBlank(map)){
+            modelAndView.addAllObjects(map);
+        }
+
 
     }
 

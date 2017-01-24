@@ -10,24 +10,15 @@
 <head>
     <title>族谱展示</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="../fronts/common/commonCss.html"%>
     <style rel="stylesheet">
-        body{
-            width:100%;
-            height: 100%;
-            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
-            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-            -moz-background-size:100% 100%;
-            background-size:100% 100%;
-        }
+
     </style>
 </head>
 <body>
-
-<%@include file="common/header.jsp" %>
-
 <div class="container" style="margin-top: 50px">
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
+    <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="localBack">返回</a>
     <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
     <div id="familyTree" class="ztree"></div>
 </div>
@@ -238,10 +229,9 @@
     </div>
 </div>
 <%@ include file="common/springUrl.jsp"%>
-<%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@ include file="../fronts/common/commonJS.html"%>
 
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/familyTree_console.js"></script>
 <script type="text/javascript">
     var familyId = "${familyId}";
     var familyFirstName = "${tFamily.familyFirstName}";

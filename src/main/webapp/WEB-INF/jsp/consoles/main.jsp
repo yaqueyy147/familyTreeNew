@@ -17,11 +17,14 @@
             height:100%;
             border: none;
         }
+        #topRegion{
+            background-color: #e3d4b7;
+        }
     </style>
 </head>
 <body class="layout">
 <div class="easyui-layout" style="width:100%;height:100%;">
-    <div data-options="region:'north'" style="height:50px">这是顶部</div>
+    <div id="topRegion" data-options="region:'north'" style="height:70px;">这是顶部</div>
 
     <div data-options="region:'west',split:true" title="菜单" style="width:15%;">
         <ul id="menuTT" class="easyui-tree">

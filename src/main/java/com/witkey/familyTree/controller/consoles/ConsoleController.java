@@ -88,7 +88,7 @@ public class ConsoleController {
 
     @RequestMapping(value = "familyList")
     @ResponseBody
-    public Map<String,Object> getfamilyList(@RequestParam Map<String,Object> params){
+    public Map<String,Object> getFamilyList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
         List<TFamily> list = familyService.getFamilyList("",0);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
@@ -105,6 +105,24 @@ public class ConsoleController {
             list1.add(map);
         }
         result.put("dataList",list1);
+        return result;
+    }
+
+    @RequestMapping(value = "familyTree")
+    public ModelAndView familyTree(Model model, @RequestParam Map<String,Object> map){
+        String familyId = map.get("familyId") + "";
+        model.addAttribute("familyId",familyId);
+        TFamily tFamily = familyService.getFamilyListFromId(CommonUtil.parseInt(familyId));
+        model.addAttribute("tFamily",tFamily);
+        return new ModelAndView("/consoles/familyTree_console");
+    }
+
+    @RequestMapping(value = "getPeopleInfo")
+    @ResponseBody
+    public Map<String,Object> getPeopleInfo(int peopleId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        TPeople tPeople = familyService.getPeopleInfo(peopleId);
+        result.put("tPeople",tPeople);
         return result;
     }
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by chenxiaowei on 2017/1/11.
  */
 @Entity
-@Table(name = "t_role_resource", schema = "family_tree", catalog = "")
+@Table(name = "t_role_resource")
 public class TRoleResource {
     private int id;
     private int roleId;
@@ -15,7 +15,8 @@ public class TRoleResource {
     private String remark;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

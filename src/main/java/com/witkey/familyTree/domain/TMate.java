@@ -19,8 +19,7 @@ public class TMate implements Serializable {
     public TMate() {
     }
 
-    public TMate(int id, int peopleId, int mateId, String remark, Integer mateType) {
-        this.id = id;
+    public TMate(int peopleId, int mateId, String remark, Integer mateType) {
         this.peopleId = peopleId;
         this.mateId = mateId;
         this.remark = remark;
@@ -28,7 +27,8 @@ public class TMate implements Serializable {
     }
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

@@ -1,8 +1,10 @@
 package com.witkey.familyTree.service.fronts.impl;
 
 import com.witkey.familyTree.dao.fronts.TFamilyDao;
+import com.witkey.familyTree.dao.fronts.TMateDao;
 import com.witkey.familyTree.dao.fronts.TPeopleDao;
 import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TMate;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -39,6 +41,13 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Resource
+    private TMateDao tMateDao;
+
+    public void settMateDao(TMateDao tMateDao) {
+        this.tMateDao = tMateDao;
+    }
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -63,6 +72,20 @@ public class FamilyServiceImpl implements FamilyService {
     public int savePeople(TPeople tPeople) {
         int peopleId = CommonUtil.parseInt(tPeopleDao.create(tPeople));
         return peopleId;
+    }
+
+    @Override
+    public void updatePeople(TPeople tPeople) {
+        tPeopleDao.update(tPeople);
+
+    }
+
+    @Override
+    public int saveMateInfo(TMate tMate) {
+
+        int id = CommonUtil.parseInt(tMateDao.create(tMate));
+
+        return id;
     }
 
     /**
@@ -104,7 +127,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getPeopleList(int familyId) {
         Map<String,Object> filter = new HashMap<String,Object>();
         filter.put("familyId",familyId);
-
+        filter.put("peopleType",1);
         List<TPeople> list = tPeopleDao.find(filter);
         return list;
     }
@@ -122,7 +145,7 @@ public class FamilyServiceImpl implements FamilyService {
         //查询父母辈可能作为父亲的人
         Map<String,Object> filter = new HashMap<String,Object>();
         filter.put("familyId",familyId);
-        filter.put("generation",generation-1);
+        filter.put("generation",generation);
         filter.put("sex",1);
         List<TPeople> listFather = tPeopleDao.find(filter);
         result.put("fatherList",listFather);
@@ -130,7 +153,7 @@ public class FamilyServiceImpl implements FamilyService {
         //查询父母辈可能作为母亲的人
         filter = new HashMap<String,Object>();
         filter.put("familyId",familyId);
-        filter.put("generation",generation-1);
+        filter.put("generation",generation);
         filter.put("sex",0);
         List<TPeople> listMother = tPeopleDao.find(filter);
         result.put("motherList",listMother);
@@ -161,5 +184,13 @@ public class FamilyServiceImpl implements FamilyService {
         List<TPeople> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TPeople>(TPeople.class),peopleId);
 
         return list;
+    }
+
+    @Override
+    public TPeople getPeopleInfo(int peopleId) {
+
+        TPeople tPeople = tPeopleDao.get(peopleId);
+
+        return tPeople;
     }
 }

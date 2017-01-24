@@ -100,6 +100,10 @@ $(function () {
         initParent(generation-1);
     });
 
+    $("#localBack").click(function () {
+        history.back();
+    });
+
 });
 
 function initFamilyTree(zNodes,setting) {
@@ -121,8 +125,8 @@ function addDiyDom(treeId, treeNode) {
         editStr += "  配偶:" + treeNode.mateName;
     }
 
-    editStr += "<a id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
-    editStr += "<a id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
+    editStr += "&nbsp;&nbsp;<a id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    editStr += "&nbsp;&nbsp;<a id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
     aObj.after(editStr);
 }
 

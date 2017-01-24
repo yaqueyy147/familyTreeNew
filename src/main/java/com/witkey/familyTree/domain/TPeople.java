@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.hibernate.annotations.Generated;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,8 +13,8 @@ import java.util.Date;
 @Table(name = "t_people")
 public class TPeople implements Serializable {
     private static final long serialVersionUID = 8603696737469498574L;
-    private int id;
-    private int familyId;
+    private Integer id;
+    private Integer familyId;
     private Integer generation;
     private String name;
     private String usedName;
@@ -44,11 +46,12 @@ public class TPeople implements Serializable {
     private String createMan;
     private Date createTime;
     private Integer mateType;
+    private Integer peopleType;
 
     public TPeople() {
     }
 
-    public TPeople(int id, int familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType) {
+    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType) {
         this.id = id;
         this.familyId = familyId;
         this.generation = generation;
@@ -82,25 +85,27 @@ public class TPeople implements Serializable {
         this.createMan = createMan;
         this.createTime = createTime;
         this.mateType = mateType;
+        this.peopleType = peopleType;
     }
 
     @Id
-    @Column(name = "id")
-    public int getId() {
+    @Column(name = "id",unique = true)
+    @GeneratedValue
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "family_id")
-    public int getFamilyId() {
+    public Integer getFamilyId() {
         return familyId;
     }
 
-    public void setFamilyId(int familyId) {
+    public void setFamilyId(Integer familyId) {
         this.familyId = familyId;
     }
 
@@ -414,6 +419,16 @@ public class TPeople implements Serializable {
         this.mateType = mateType;
     }
 
+    @Basic
+    @Column(name = "people_type")
+    public Integer getPeopleType() {
+        return peopleType;
+    }
+
+    public void setPeopleType(Integer peopleType) {
+        this.peopleType = peopleType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -457,7 +472,7 @@ public class TPeople implements Serializable {
         if (createMan != null ? !createMan.equals(tPeople.createMan) : tPeople.createMan != null) return false;
         if (createTime != null ? !createTime.equals(tPeople.createTime) : tPeople.createTime != null) return false;
         if (mateType != null ? !mateType.equals(tPeople.mateType) : tPeople.mateType != null) return false;
-
+        if (peopleType != null ? !peopleType.equals(tPeople.peopleType) : tPeople.peopleType != null) return false;
         return true;
     }
 
@@ -496,6 +511,7 @@ public class TPeople implements Serializable {
         result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
+        result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
         return result;
     }
 }

@@ -15,7 +15,8 @@ public class TUserResource {
     private String remark;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

@@ -1820,13 +1820,6 @@ public class CommonUtil {
 //			}
 //		}
 
-		TMate tMate = new TMate(1,1,1,"1",1);
-		Map<String,Object> map = bean2Map(tMate);
-
-		for(String key : map.keySet()){
-			System.out.println(map.get(key));
-		}
-
 	}
 	
 }

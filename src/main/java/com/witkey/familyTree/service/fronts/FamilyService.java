@@ -1,6 +1,7 @@
 package com.witkey.familyTree.service.fronts;
 
 import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TMate;
 import com.witkey.familyTree.domain.TPeople;
 
 import java.util.List;
@@ -17,6 +18,12 @@ public interface FamilyService {
     //保存家族成员
     public int savePeople(TPeople tPeople);
 
+    //修改成员信息
+    public void updatePeople(TPeople tPeople);
+
+    //保存配偶信息
+    public int saveMateInfo(TMate tMate);
+
     //查询family
     public List<TFamily> getFamilyList(String userName, int familyArea);
 
@@ -31,5 +38,8 @@ public interface FamilyService {
 
     //根据peopleID查询配偶
     public List<TPeople> getMateList(int peopleId);
+
+    //根据peopleID查询people信息
+    public TPeople getPeopleInfo(int peopleId);
 
 }

@@ -79,7 +79,10 @@ function showMoneyList(companyId){
     $("#moneyListDialog").dialog('open');
 }
 
-function pagerFilter(data){
+function pagerFilter(result){
+
+    var data = result.dataList;
+
     if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
         data = {
             total: data.length,
@@ -110,7 +113,8 @@ function pagerFilter(data){
     return data;
 }
 
-function companyFilter(data){
+function companyFilter(result){
+    var data = result.dataList;
     if(data){
         for(var i=0;i<data.length;i++){
             data[i].company_photo = "<img src=\"" + projectUrl + data[i].company_photo + "\" width=\"100px\" height=\"50px\" />";

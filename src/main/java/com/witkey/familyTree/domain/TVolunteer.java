@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Created by chenxiaowei on 2017/1/11.
  */
 @Entity
-@Table(name = "t_volunteer", schema = "family_tree", catalog = "")
+@Table(name = "t_volunteer", schema = "family_tree")
 public class TVolunteer {
     private int id;
     private int userId;
@@ -21,7 +21,8 @@ public class TVolunteer {
     private String remark;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Created by Administrator on 2017/1/6.
  */
 @Entity
-@Table(name = "t_company_photo", schema = "family_tree", catalog = "")
+@Table(name = "t_company_photo")
 public class TCompanyPhoto {
     private int id;
     private int companyId;
@@ -18,7 +18,8 @@ public class TCompanyPhoto {
     private String createMan;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

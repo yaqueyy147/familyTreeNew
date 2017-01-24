@@ -53,7 +53,8 @@ public class TUserFront implements Serializable {
     }
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package com.witkey.familyTree.controller.fronts;
 
 import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TMate;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.BaseUtil;
@@ -136,7 +137,7 @@ public class FamilyController {
      */
     @RequestMapping(value = "/savePeople")
     @ResponseBody
-    public Map<String,Object> savePeople(TPeople tPeople,String birth_time,String die_time) throws Exception{
+    public Map<String,Object> savePeople(TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();
         if(!CommonUtil.isBlank(birth_time)){
             tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
@@ -144,8 +145,23 @@ public class FamilyController {
         if(!CommonUtil.isBlank(die_time)){
             tPeople.setBirthTime(CommonUtil.ObjToDate(die_time));
         }
-        familyService.savePeople(tPeople);
-        map.put("msg","保存成功!");
+
+        String msg = "保存成功";
+        //修改成员信息
+        if(tPeople.getId() > 0){
+            familyService.updatePeople(tPeople);
+            msg = "修改成功";
+        }else{//新建成员
+            int peopleId = familyService.savePeople(tPeople);
+            tPeople.setId(peopleId);
+            //如果是添加配偶
+            if(tPeople.getPeopleType() == 0){
+                //保存配偶信息
+                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
+                familyService.saveMateInfo(tMate);
+            }
+        }
+        map.put("msg",msg);
         map.put("code",1);
         return map;
     }

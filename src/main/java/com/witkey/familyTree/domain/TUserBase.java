@@ -25,7 +25,8 @@ public class TUserBase implements Serializable {
     private String remark;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }

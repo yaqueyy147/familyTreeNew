@@ -50,7 +50,7 @@ function getData(url,params){
         async:false,
         data:params,
         success:function (data) {
-            result = data.dataList;
+            result = data;
         },
         error:function (data) {
             alert(JSON.stringify(data));
@@ -74,3 +74,39 @@ Date.prototype.Format = function (fmt) { //author: meizz
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+$.fn.populateForm = function(data){
+    return this.each(function(){
+        var formElem, name;
+        if(data == null){this.reset(); return; }
+        for(var i = 0; i < this.length; i++){
+            formElem = this.elements[i];
+            //checkbox的name可能是name[]数组形式
+            name = (formElem.type == "checkbox")? formElem.name.replace(/(.+)\[\]$/, "$1") : formElem.name;
+            if(data[name] == undefined) continue;
+            switch(formElem.type){
+                case "checkbox":
+                    if(data[name] == ""){
+                        formElem.checked = false;
+                    }else{
+                        //数组查找元素
+                        if(data[name].indexOf(formElem.value) > -1){
+                            formElem.checked = true;
+                        }else{
+                            formElem.checked = false;
+                        }
+                    }
+                    break;
+                case "radio":
+                    if($.trim(data[name]).length <= 0){
+                        formElem.checked = false;
+                    }else if(formElem.value == data[name]){
+                        formElem.checked = true;
+                    }
+                    break;
+                case "button": break;
+                default: formElem.value = data[name];
+            }
+        }
+    });
+};
