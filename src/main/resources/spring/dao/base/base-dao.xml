@@ -36,4 +36,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.consoles.TUserBaseDao" id="tUserBaseDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

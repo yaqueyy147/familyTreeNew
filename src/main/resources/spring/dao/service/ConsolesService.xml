@@ -5,6 +5,7 @@
    <!--后台service-->
 	<bean id="consoleService" class="com.witkey.familyTree.service.consoles.impl.ConsoleServiceImpl">
 		<property name="tVolunteerDao" ref="tVolunteerDao" />
+		<property name="tUserBaseDao" ref="tUserBaseDao" />
 	</bean>
 
 </beans>

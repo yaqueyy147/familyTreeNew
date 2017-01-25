@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Created by Administrator on 2016/12/13 0013.
@@ -23,6 +24,12 @@ public class TUserBase implements Serializable {
     private String userNickName;
     private Integer state;
     private String remark;
+    private String userPhone;
+    private String userEmail;
+    private String userQq;
+    private String userWechart;
+    private Timestamp createTime;
+    private String createMan;
 
     @Id
     @Column(name = "id",unique = true)
@@ -115,6 +122,16 @@ public class TUserBase implements Serializable {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "user_phone")
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -133,7 +150,7 @@ public class TUserBase implements Serializable {
             return false;
         if (state != null ? !state.equals(tUserBase.state) : tUserBase.state != null) return false;
         if (remark != null ? !remark.equals(tUserBase.remark) : tUserBase.remark != null) return false;
-
+        if (userPhone != null ? !userPhone.equals(tUserBase.userPhone) : tUserBase.userPhone != null) return false;
         return true;
     }
 
@@ -148,7 +165,57 @@ public class TUserBase implements Serializable {
         result = 31 * result + (userNickName != null ? userNickName.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (userPhone != null ? userPhone.hashCode() : 0);
         return result;
     }
 
+    @Basic
+    @Column(name = "user_email")
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    @Basic
+    @Column(name = "user_qq")
+    public String getUserQq() {
+        return userQq;
+    }
+
+    public void setUserQq(String userQq) {
+        this.userQq = userQq;
+    }
+
+    @Basic
+    @Column(name = "user_wechart")
+    public String getUserWechart() {
+        return userWechart;
+    }
+
+    public void setUserWechart(String userWechart) {
+        this.userWechart = userWechart;
+    }
+
+    @Basic
+    @Column(name = "create_time")
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    @Basic
+    @Column(name = "create_man")
+    public String getCreateMan() {
+        return createMan;
+    }
+
+    public void setCreateMan(String createMan) {
+        this.createMan = createMan;
+    }
 }

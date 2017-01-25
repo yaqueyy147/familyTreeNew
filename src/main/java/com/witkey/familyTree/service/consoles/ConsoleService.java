@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.consoles;
 
+import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TVolunteer;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface ConsoleService {
     public int auditVolunteer(Map<String,Object> params);
 
     public List<Map<String,Object>> getCompanyList(Map<String,Object> params);
+
+    public List<TUserBase> getUserBase(Map<String,Object> params);
+
+    public int saveUserBase(TUserBase tUserBase);
 }

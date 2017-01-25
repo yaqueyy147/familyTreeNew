@@ -3,7 +3,23 @@
  */
 $(function () {
     var params = {};
-    $("#familyList").datagrid({loadFilter:familyFilter}).datagrid('loadData', getData("/consoles/familyList",params));
+    var dataList = getData("/consoles/familyList",params).dataList;
+    dataList = formatDataList(dataList);
+    // $("#familyList").datagrid({loadFilter:familyFilter}).datagrid('loadData', getData("/consoles/familyList",params).dataList);
+    $("#familyList").datagrid({
+        data:dataList,
+        loadMsg:"加载中...",
+        columns:[[
+            {field:"id",title:"族谱Id",width:"80",hidden:true},
+            {field:"familyName",title:"族谱名称",width:"150"},
+            {field:"familyFirstName",title:"族谱姓氏",width:"150"},
+            {field:"peopleCount",title:"族谱人数",width:"80"},
+            {field:"createMan",title:"创建人",width:"80"},
+            {field:"createTime",title:"创建时间",width:"180"},
+            {field:"familyArea",title:"族谱属地",width:"80"}
+        ]],
+        loadFilter:pagerFilter
+    });
 });
 
 function closeDialog(dialogId){
@@ -14,8 +30,7 @@ function closeDialog(dialogId){
     $("#" + dialogId).dialog("close");
 }
 
-function familyFilter(result){
-    var data = result.dataList;
+function formatDataList(data){
     if(data){
 
         for(var i=0;i<data.length;i++){
@@ -24,33 +39,6 @@ function familyFilter(result){
             data[i].familyArea = convertFamilyArea(data[i].familyArea);
         }
     }
-    if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
-        data = {
-            total: data.length,
-            rows: data
-        }
-    }
-    var dg = $(this);
-    var opts = dg.datagrid('options');
-    var pager = dg.datagrid('getPager');
-    pager.pagination({
-        onSelectPage:function(pageNum, pageSize){
-            opts.pageNumber = pageNum;
-            opts.pageSize = pageSize;
-            pager.pagination('refresh',{
-                pageNumber:pageNum,
-                pageSize:pageSize
-            });
-
-            dg.datagrid('loadData',data);
-        }
-    });
-    if (!data.originalRows){
-        data.originalRows = (data.rows);
-    }
-    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
-    var end = start + parseInt(opts.pageSize);
-    data.rows = (data.originalRows.slice(start, end));
     return data;
 }
 

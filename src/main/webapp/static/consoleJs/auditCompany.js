@@ -55,7 +55,8 @@ $(function () {
     });
 
     var params = {};
-    $("#companyList").datagrid({loadFilter:companyFilter}).datagrid('loadData', getData("/consoles/companyList",params));
+    var dataList = formatCompanyData(getData("/consoles/companyList",params).dataList);
+    $("#companyList").datagrid({loadFilter:pagerFilter}).datagrid('loadData', dataList);
 
 });
 function auditVolunteer(volunteerId,state,applyManId){
@@ -75,46 +76,11 @@ function closeDialog(dialogId){
 
 function showMoneyList(companyId){
     var params = {"companyId":companyId};
-    $("#moneyTable").datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData("/company/moneyList",params));
+    $("#moneyTable").datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData("/company/moneyList",params).dataList);
     $("#moneyListDialog").dialog('open');
 }
 
-function pagerFilter(result){
-
-    var data = result.dataList;
-
-    if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
-        data = {
-            total: data.length,
-            rows: data
-        }
-    }
-    var dg = $(this);
-    var opts = dg.datagrid('options');
-    var pager = dg.datagrid('getPager');
-    pager.pagination({
-        onSelectPage:function(pageNum, pageSize){
-            opts.pageNumber = pageNum;
-            opts.pageSize = pageSize;
-            pager.pagination('refresh',{
-                pageNumber:pageNum,
-                pageSize:pageSize
-            });
-
-            dg.datagrid('loadData',data);
-        }
-    });
-    if (!data.originalRows){
-        data.originalRows = (data.rows);
-    }
-    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
-    var end = start + parseInt(opts.pageSize);
-    data.rows = (data.originalRows.slice(start, end));
-    return data;
-}
-
-function companyFilter(result){
-    var data = result.dataList;
+function formatCompanyData(data) {
     if(data){
         for(var i=0;i<data.length;i++){
             data[i].company_photo = "<img src=\"" + projectUrl + data[i].company_photo + "\" width=\"100px\" height=\"50px\" />";
@@ -131,32 +97,5 @@ function companyFilter(result){
 
         }
     }
-    if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
-        data = {
-            total: data.length,
-            rows: data
-        }
-    }
-    var dg = $(this);
-    var opts = dg.datagrid('options');
-    var pager = dg.datagrid('getPager');
-    pager.pagination({
-        onSelectPage:function(pageNum, pageSize){
-            opts.pageNumber = pageNum;
-            opts.pageSize = pageSize;
-            pager.pagination('refresh',{
-                pageNumber:pageNum,
-                pageSize:pageSize
-            });
-
-            dg.datagrid('loadData',data);
-        }
-    });
-    if (!data.originalRows){
-        data.originalRows = (data.rows);
-    }
-    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
-    var end = start + parseInt(opts.pageSize);
-    data.rows = (data.originalRows.slice(start, end));
     return data;
 }

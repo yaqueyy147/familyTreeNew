@@ -2,6 +2,7 @@ package com.witkey.familyTree.controller.consoles;
 
 import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TPeople;
+import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -34,12 +35,21 @@ public class ConsoleController {
     @Autowired
     private FamilyService familyService;
 
-    @RequestMapping(value = "/volunteerList")
+    @RequestMapping(value = "/volunteer")
     public ModelAndView auditVolunteer(Model model){
-        Map<String,Object> params = new HashMap<String,Object>();
-        List<Map<String,Object>> list = consoleService.getVolunteerApplyList(params);
-        model.addAttribute("volunteerApplyList",list);
+//        Map<String,Object> params = new HashMap<String,Object>();
+//        List<Map<String,Object>> list = consoleService.getVolunteerApplyList(params);
+//        model.addAttribute("volunteerApplyList",list);
         return new ModelAndView("/consoles/volunteerList");
+    }
+
+    @RequestMapping(value= "/volunteerList")
+    @ResponseBody
+    public Map<String,Object> getVolunteerList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<Map<String,Object>> list = consoleService.getVolunteerApplyList(params);
+        result.put("dataList",list);
+        return result;
     }
 
     @RequestMapping(value = "/auditVolunteer")
@@ -123,6 +133,32 @@ public class ConsoleController {
         Map<String,Object> result = new HashMap<String,Object>();
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         result.put("tPeople",tPeople);
+        return result;
+    }
+
+    @RequestMapping(value = "user")
+    public ModelAndView user(){
+        return new ModelAndView("/consoles/userSetting");
+    }
+
+    @RequestMapping(value = "userList")
+    @ResponseBody
+    public Map<String,Object> getUserList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<TUserBase> list = consoleService.getUserBase(params);
+        result.put("dataList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "saveUserBase")
+    @ResponseBody
+    public Map<String,Object> saveUserBase(TUserBase tUserBase){
+        tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
+        int i = consoleService.saveUserBase(tUserBase);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("msg","保存成功!");
+        result.put("tUserBase",tUserBase);
+        result.put("code",i);
         return result;
     }
 

@@ -29,14 +29,19 @@
     <div data-options="region:'west',split:true" title="菜单" style="width:15%;">
         <ul id="menuTT" class="easyui-tree">
             <li>
-                <span>Folder</span>
+                <span>族谱管理</span>
                 <ul>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','志愿者审核','/consoles/volunteerList')">志愿者审核</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','志愿者审核','/consoles/volunteer')">志愿者审核</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/company')">赞助商列表</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
                 </ul>
             </li>
-            <li><span>File21</span></li>
+            <li><span>用户管理</span>
+                <ul>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('roleSetting','角色设置','/consoles/role')">角色设置</a></span></li>
+                </ul>
+            </li>
         </ul>
     </div>
     <div data-options="region:'center'">

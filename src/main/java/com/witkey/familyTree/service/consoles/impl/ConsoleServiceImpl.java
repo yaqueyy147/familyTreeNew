@@ -1,7 +1,8 @@
 package com.witkey.familyTree.service.consoles.impl;
 
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
-import com.witkey.familyTree.domain.TVolunteer;
+import com.witkey.familyTree.dao.consoles.TUserBaseDao;
+import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
@@ -27,6 +28,13 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Autowired
+    private TUserBaseDao tUserBaseDao;
+
+    public void settUserBaseDao(TUserBaseDao tUserBaseDao) {
+        this.tUserBaseDao = tUserBaseDao;
+    }
+
+    @Autowired
     private CompanyService companyService;
 
     @Resource
@@ -37,10 +45,10 @@ public class ConsoleServiceImpl implements ConsoleService {
 
         String sql = "select t1.id volunteerId,t1.apply_desc,t1.audit_state,t1.create_time applyTime, ";
         sql += " t2.id userId,t2.user_name,t2.phone,t2.is_volunteer";
-        sql += " from t_volunteer t1,t_user_front t2 where t1.user_id=t2.id and t1.audit_state=?";
+        sql += " from t_volunteer t1,t_user_front t2 where t1.user_id=t2.id";// and t1.audit_state=?
 
-        System.out.println(sql);
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,0);
+//        System.out.println(sql);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);//,0
 
         return list;
     }
@@ -82,6 +90,26 @@ public class ConsoleServiceImpl implements ConsoleService {
         }
 
         return list;
+    }
+
+    @Override
+    public List<TUserBase> getUserBase(Map<String, Object> params) {
+
+        List<TUserBase> list = tUserBaseDao.find(params);
+
+        return list;
+    }
+
+    @Override
+    public int saveUserBase(TUserBase tUserBase) {
+        int i = 0;
+        if(tUserBase.getId() == 0){
+            i = CommonUtil.parseInt(tUserBaseDao.create(tUserBase));
+        }else{
+            tUserBaseDao.save(tUserBase);
+            i ++ ;
+        }
+        return i;
     }
 }
 
