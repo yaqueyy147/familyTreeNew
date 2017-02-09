@@ -26,11 +26,13 @@ $(function () {
                         async:false,
                         dataType:'json',
                         data:formData,
+                        async:false,
                         success:function (data) {
 
                             alert(data.msg);
-                            if(data.code == 1){
-
+                            if(data.code >= 1){
+                                var params = {};
+                                loadDataGrid(params);
                                 $("#userInfoForm")[0].reset();
                                 closeDialog("userDialog");
                             }
@@ -55,6 +57,48 @@ $(function () {
         $("#userDialog").dialog('open');
     });
 
+    $("#toEdit").click(function () {
+        var selectRows = $("#userList").datagrid('getSelections');
+        if(selectRows.length > 1){
+            alert("只能编辑一条数据!");
+            return;
+        }
+        loadDataToForm(selectRows[0]);
+        $("#userDialog").dialog('open');
+    });
+
+    $("#toDel").click(function () {
+        var selectRows = $("#userList").datagrid('getSelections');
+        var selectIds = "";
+        var selectNames = [];
+        for(var i=0;i<selectRows.length;i++){
+            var ii = selectRows[i];
+            selectIds += "," + ii.id;
+            selectNames.push(ii.userName);
+        }
+        selectIds = selectIds.substring(1);
+        $.messager.confirm('Confirm','确定要删除用户(' + selectNames + ')  吗?',function(r){
+            if (r){
+                $.ajax({
+                    type:'post',
+                    url: "/consoles/deleteUser",
+                    async:false,
+                    dataType:'json',
+                    data:{ids:selectIds},
+                    async:false,
+                    success:function (data) {
+                        alert(data.msg);
+                        var params = {};
+                        loadDataGrid(params);
+                    },
+                    error:function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                });
+            }
+        });
+    });
+
     var params = {};
     loadDataGrid(params);
 
@@ -71,16 +115,20 @@ function loadDataGrid(params) {
         data:dataList,
         loadMsg:"加载中...",
         selectOnCheck:true,
+        singleSelect:false,
         columns:[[
+            {field:"ck",checkbox:"true"},
             {field:"id",title:"用户Id",width:"80",hidden:true},
             {field:"userName",title:"用户账号",width:"150"},
             {field:"userNickName",title:"用户昵称",width:"80"},
+            {field:"userPassword",title:"密码",width:"80",hidden:true},
             {field:"userDesc",title:"用户说明",width:"80"},
             {field:"userContact",title:"联系方式",width:"200"},
             {field:"createMan",title:"创建人",width:"80"},
             {field:"createTime",title:"创建时间",width:"150"},
-            {field:"state",title:"状态",width:"180"},
-            {field:"operate",title:"操作",width:"120"}
+            {field:"stateDesc",title:"状态",width:"180"},
+            {field:"state",title:"状态",width:"180",hidden:true}
+            // {field:"operate",title:"操作",width:"120"}
         ]],
         loadFilter:pagerFilter
     });
@@ -107,25 +155,34 @@ function formatDataList(data){
             data[i].userContact = data[i].userPhone + "," + data[i].userEmail + "," + data[i].userQq + "," + data[i].userWechart;
 
             if(data[i].state == 1){
-                data[i].state = "可用";
+                data[i].stateDesc = "可用";
             }else{
-                data[i].state = "不可用";
+                data[i].stateDesc = "不可用";
             }
 
-            data[i].operate = "<a href=\"javascript:void 0;\" class=\"easyui-linkbutton\" iconCls=\"icon-edit\" plain=\"true\" onclick=\"toEdit('" + data[i].id + "')\">编辑</a>";
-            data[i].operate += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" class=\"easyui-linkbutton\" iconCls=\"icon-remove\" plain=\"true\" onclick=\"toDel('" + data[i].id + "')\">删除</a>";
+            // data[i].operate = "<a href=\"javascript:void 0;\" class=\"easyui-linkbutton\" iconCls=\"icon-edit\" plain=\"true\" onclick=\"toEdit('" + data[i].id + "')\">编辑</a>";
+            // data[i].operate += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" class=\"easyui-linkbutton\" iconCls=\"icon-remove\" plain=\"true\" onclick=\"toDel('" + data[i].id + "')\">删除</a>";
         }
     }
     return data;
 }
 
-function toEdit(userId){
+function loadDataToForm(data){
 
-    var row = $('#userList').datagrid('getSelected');
+    var userContact = data.userContact;
+    var contacts = userContact.split(",");
 
-    if(row){
-        alert(JSON.stringify(row));
-    }
+    var userPassword = data.userPassword;
+    // userPassword
+    $("#userId").val(data.id);
+    $("#userName").val(data.userName);
+    $("#userNickName").val(data.userNickName);
+    $("#userPassword").val(data.userPassword);
+    $("#userPasswordAffirm").val(data.userPassword);
+    $("#userPhone").val(contacts[0]);
+    $("#userEmail").val(contacts[1]);
+    $("#userQq").val(contacts[2]);
+    $("#userWechart").val(contacts[3]);
+    $("#state").combobox("setValue",data.state);
 
-    $("#userDialog").dialog('open');
 }

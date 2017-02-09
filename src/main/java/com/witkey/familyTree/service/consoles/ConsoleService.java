@@ -20,4 +20,6 @@ public interface ConsoleService {
     public List<TUserBase> getUserBase(Map<String,Object> params);
 
     public int saveUserBase(TUserBase tUserBase);
+
+    public int deleteUser(Map<String,Object> params);
 }

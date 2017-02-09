@@ -162,4 +162,14 @@ public class ConsoleController {
         return result;
     }
 
+    @RequestMapping(value = "deleteUser")
+    @ResponseBody
+    public Map<String,Object> deleteUser(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.deleteUser(params);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+        return result;
+    }
+
 }
