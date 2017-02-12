@@ -3,6 +3,7 @@ package com.witkey.familyTree.service.consoles.impl;
 import com.witkey.familyTree.dao.consoles.TRoleDao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.consoles.TUserBaseDao;
+import com.witkey.familyTree.domain.TRole;
 import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
@@ -127,6 +128,39 @@ public class ConsoleServiceImpl implements ConsoleService {
         String[] id = ids.split(",");
 
         String sql = "delete from t_user_base where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+
+        return ii;
+    }
+
+    @Override
+    public List<TRole> getRole(Map<String, Object> params) {
+        List<TRole> list = tRoleDao.find(params);
+        return list;
+    }
+
+    @Override
+    public int saveRole(TRole tRole) {
+        int i = 0;
+        if(tRole.getId() == 0){
+            i = CommonUtil.parseInt(tRoleDao.create(tRole));
+        }else{
+            tRoleDao.save(tRole);
+            i ++ ;
+        }
+        return i;
+    }
+
+    @Override
+    public int deleteRole(Map<String, Object> params) {
+        String ids = params.get("ids") + "";
+        String[] id = ids.split(",");
+
+        String sql = "delete from t_role where id=?";
 
         int ii = 0;
         for(int i=0;i<id.length;i++){

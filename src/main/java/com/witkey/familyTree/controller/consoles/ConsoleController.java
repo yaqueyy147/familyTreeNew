@@ -1,9 +1,6 @@
 package com.witkey.familyTree.controller.consoles;
 
-import com.witkey.familyTree.domain.TFamily;
-import com.witkey.familyTree.domain.TPeople;
-import com.witkey.familyTree.domain.TUserBase;
-import com.witkey.familyTree.domain.TVolunteer;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
@@ -162,11 +159,38 @@ public class ConsoleController {
         return result;
     }
 
-    @RequestMapping(value = "deleteUser")
+
+
+    @RequestMapping(value = "role")
+    public ModelAndView role(Model model){
+        return new ModelAndView("/consoles/roleSetting");
+    }
+
+    @RequestMapping(value = "roleList")
     @ResponseBody
-    public Map<String,Object> deleteUser(@RequestParam Map<String,Object> params){
+    public Map<String,Object> getroleList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        int i = consoleService.deleteUser(params);
+        List<TRole> list = consoleService.getRole(params);
+        result.put("dataList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "saveRole")
+    @ResponseBody
+    public Map<String,Object> saveRole(TRole TRole){
+        int i = consoleService.saveRole(TRole);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("msg","保存成功!");
+        result.put("tUserBase",TRole);
+        result.put("code",i);
+        return result;
+    }
+
+    @RequestMapping(value = "deleteRole")
+    @ResponseBody
+    public Map<String,Object> deleteRole(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.deleteRole(params);
         result.put("code",i);
         result.put("msg","操作成功!");
         return result;

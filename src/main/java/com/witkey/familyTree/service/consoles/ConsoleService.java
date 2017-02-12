@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.consoles;
 
+import com.witkey.familyTree.domain.TRole;
 import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TVolunteer;
 
@@ -22,4 +23,10 @@ public interface ConsoleService {
     public int saveUserBase(TUserBase tUserBase);
 
     public int deleteUser(Map<String,Object> params);
+
+    public List<TRole> getRole(Map<String,Object> params);
+
+    public int saveRole(TRole tRole);
+
+    public int deleteRole(Map<String,Object> params);
 }
