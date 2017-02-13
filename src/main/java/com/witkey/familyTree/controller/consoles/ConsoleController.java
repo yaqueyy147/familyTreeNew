@@ -150,8 +150,14 @@ public class ConsoleController {
     @RequestMapping(value = "saveUserBase")
     @ResponseBody
     public Map<String,Object> saveUserBase(TUserBase tUserBase){
-        tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
-        int i = consoleService.saveUserBase(tUserBase);
+        int i = 0;
+        if(tUserBase.getId() > 0){//新建用户，需要设置加密密码
+            tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
+            i = consoleService.saveUserBase(tUserBase);
+        }else{//修改用户，不修改密码
+            i = consoleService.saveUserBase(tUserBase);
+        }
+
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("msg","保存成功!");
         result.put("tUserBase",tUserBase);
@@ -159,7 +165,11 @@ public class ConsoleController {
         return result;
     }
 
-
+    @RequestMapping(value = "modifyPassword")
+    @ResponseBody
+    public Map<String,Object> modifyPassword(@RequestParam Map<String,Object> params){
+        return null;
+    }
 
     @RequestMapping(value = "role")
     public ModelAndView role(Model model){

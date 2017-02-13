@@ -23,7 +23,7 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
 </div>
-<div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 25%;">
+<div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
     <div style="padding:10px 40px 20px 40px">
         <form id="userInfoForm" method="post">
             <input type="hidden" id="userId" name="id" value="0" />
@@ -34,7 +34,7 @@
                     <td>昵称:</td>
                     <td><input class="easyui-validatebox" type="text" id="userNickName" name="userNickName" /></td>
                 </tr>
-                <tr>
+                <tr id="passwordTr">
                     <td>密码:</td>
                     <td><input class="easyui-validatebox" type="password" id="userPassword" name="userPassword" value="123456" data-options="required:true" /></td>
                     <td>确认密码:</td>
@@ -62,7 +62,10 @@
                 </tr>
                 <tr>
                     <td>用户说明:</td>
-                    <td><input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" /></td>
+                    <td>
+                        <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
+                        <textarea class="text-area easyui-validatebox" id="userDesc" name="userDesc" rows="3" cols="14"></textarea>
+                    </td>
                     <td>状态:</td>
                     <td>
                         <select id="state" name="state" class="easyui-combobox" style="width:100px">

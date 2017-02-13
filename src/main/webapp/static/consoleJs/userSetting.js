@@ -33,7 +33,7 @@ $(function () {
                             if(data.code >= 1){
                                 var params = {};
                                 loadDataGrid(params);
-                                $("#userInfoForm")[0].reset();
+                                $("#userInfoForm").form('clear');
                                 closeDialog("userDialog");
                             }
                         },
@@ -46,7 +46,7 @@ $(function () {
             {
                 "text":"取消",
                 handler:function () {
-                    $("#userInfoForm")[0].reset();
+                    $("#userInfoForm").form('clear');
                     closeDialog("userDialog");
                 }
             }
@@ -54,22 +54,33 @@ $(function () {
     });
 
     $("#toAdd").click(function () {
+        $("#userInfoForm").form('clear');
+        $("#passwordTr").removeAttr("style");
         $("#userDialog").dialog('open');
     });
 
     $("#toEdit").click(function () {
+        $("#userInfoForm").form('clear');
+        $("#passwordTr").attr("style","display:none");
         var selectRows = $("#userList").datagrid('getSelections');
         if(selectRows.length > 1){
             alert("只能编辑一条数据!");
             return;
         }
-        alert(JSON.stringify(selectRows[0]));
+        if(selectRows.length < 1){
+            alert("请选择一条数据!");
+            return;
+        }
         loadDataToForm(selectRows[0]);
         $("#userDialog").dialog('open');
     });
 
     $("#toDel").click(function () {
         var selectRows = $("#userList").datagrid('getSelections');
+        if(selectRows.length < 1){
+            alert("请至少选择一条数据!");
+            return;
+        }
         var selectIds = "";
         var selectNames = [];
         for(var i=0;i<selectRows.length;i++){
@@ -106,6 +117,7 @@ $(function () {
 });
 
 function closeDialog(dialogId){
+    $("#userInfoForm").form('clear');
     $("#" + dialogId).dialog("close");
 }
 
@@ -180,10 +192,27 @@ function loadDataToForm(data){
     $("#userNickName").val(data.userNickName);
     $("#userPassword").val(data.userPassword);
     $("#userPasswordAffirm").val(data.userPassword);
-    $("#userPhone").val(contacts[0]);
-    $("#userEmail").val(contacts[1]);
-    $("#userQq").val(contacts[2]);
-    $("#userWechart").val(contacts[3]);
+    if(contacts[0] == "未设置电话"){
+        $("#userPhone").val("");
+    }else{
+        $("#userPhone").val(contacts[0]);
+    }
+    if(contacts[1] == "未设置邮箱"){
+        $("#userEmail").val("");
+    }else{
+        $("#userEmail").val(contacts[1]);
+    }
+    if(contacts[2] == "未设置qq"){
+        $("#userQq").val("");
+    }else{
+        $("#userQq").val(contacts[2]);
+    }
+    if(contacts[3] == "未设置微信"){
+        $("#userWechart").val("");
+    }else{
+        $("#userWechart").val(contacts[3]);
+    }
+
     $("#userDesc").val(data.Desc);
     $("#state").combobox("setValue",data.state);
 

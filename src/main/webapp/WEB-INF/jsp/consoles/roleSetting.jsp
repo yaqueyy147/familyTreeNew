@@ -22,8 +22,8 @@
 </table>
 <div id="tb">
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:alert('edit')">编辑</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:alert('del')">删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit">编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel">删除</a>
 </div>
 <div id="roleDialog" class="easyui-dialog" title="角色信息" style="width:100px;height:100px;padding:10px;top: 10%;left: 15%;">
     <div style="padding:10px 40px 20px 40px">
@@ -36,12 +36,12 @@
                 </tr>
                 <tr>
                     <td>角色说明:</td>
-                    <td><input class="easyui-validatebox" id="roleDesc" name="roleDesc" data-options="multiline:true" style="height:60px" /></td>
+                    <td><input class="easyui-validatebox" id="roleDesc" name="roleDesc" data-options="multiline:true" /></td>
                 </tr>
                 <tr>
                     <td>状态:</td>
                     <td>
-                        <select id="state" name="state">
+                        <select id="state" name="state" class="easyui-combobox" style="width:100px">
                             <option value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>

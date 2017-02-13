@@ -4,8 +4,8 @@
 $(function () {
 
     $("#roleDialog").dialog({
-        width: 600,
-        height: 400,
+        width: 400,
+        height: 300,
         closed: true,
         cache: false,
         modal: true,
@@ -33,8 +33,8 @@ $(function () {
                             if(data.code >= 1){
                                 var params = {};
                                 loadDataGrid(params);
-                                $("#userInfoForm")[0].reset();
-                                closeDialog("userDialog");
+                                $("#roleForm").form('clear');
+                                closeDialog("roleDialog");
                             }
                         },
                         error:function (data) {
@@ -46,21 +46,27 @@ $(function () {
             {
                 "text":"取消",
                 handler:function () {
-                    $("#userInfoForm")[0].reset();
-                    closeDialog("userDialog");
+                    $("#roleForm").form('clear');
+                    closeDialog("roleDialog");
                 }
             }
         ]
     });
 
     $("#toAdd").click(function () {
+        $("#roleForm").form('clear');
         $("#roleDialog").dialog('open');
     });
 
     $("#toEdit").click(function () {
+        $("#roleForm").form('clear');
         var selectRows = $("#roleList").datagrid('getSelections');
         if(selectRows.length > 1){
             alert("只能编辑一条数据!");
+            return;
+        }
+        if(selectRows.length < 1){
+            alert("请选择一条数据!");
             return;
         }
         loadDataToForm(selectRows[0]);
@@ -68,7 +74,12 @@ $(function () {
     });
 
     $("#toDel").click(function () {
+
         var selectRows = $("#roleList").datagrid('getSelections');
+        if(selectRows.length < 1){
+            alert("请至少选择一条数据!");
+            return;
+        }
         var selectIds = "";
         var selectNames = [];
         for(var i=0;i<selectRows.length;i++){
@@ -81,7 +92,7 @@ $(function () {
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deleteUser",
+                    url: "/consoles/deleteRole",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},
@@ -105,13 +116,14 @@ $(function () {
 });
 
 function closeDialog(dialogId){
+    $("#roleForm").form('clear');
     $("#" + dialogId).dialog("close");
 }
 
 function loadDataGrid(params) {
     var dataList = getData("/consoles/roleList",params).dataList;
     dataList = formatDataList(dataList);
-    $("#userList").datagrid({
+    $("#roleList").datagrid({
         data:dataList,
         loadMsg:"加载中...",
         selectOnCheck:true,
@@ -144,9 +156,9 @@ function formatDataList(data){
 }
 
 function loadDataToForm(data){
-    $("#roleId").val(data.id);
-    $("#roleName").val(data.userName);
-    $("#roleDesc").val(contacts[3]);
-    $("#state").combobox("setValue",data.state);
 
+    $("#roleId").val(data.id);
+    $("#roleName").val(data.roleName);
+    $("#roleDesc").val(data.roleDesc);
+    $("#state").combobox("setValue",data.state);
 }
