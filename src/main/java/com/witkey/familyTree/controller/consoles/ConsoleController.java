@@ -168,7 +168,11 @@ public class ConsoleController {
     @RequestMapping(value = "modifyPassword")
     @ResponseBody
     public Map<String,Object> modifyPassword(@RequestParam Map<String,Object> params){
-        return null;
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.modifyPassword(params);
+        result.put("msg","修改成功!");
+        result.put("code",i);
+        return result;
     }
 
     @RequestMapping(value = "role")

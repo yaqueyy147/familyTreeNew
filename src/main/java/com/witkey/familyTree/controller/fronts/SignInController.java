@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -147,6 +148,21 @@ public class SignInController {
         CookieUtil.destroyCookies(response,request);
         //返回登录页面
         return new ModelAndView("/fronts/index");
+    }
+
+    /**
+     * 修改用户信息
+     * @param tUserFront
+     * @return
+     */
+    @RequestMapping(value = "modifyPersonalInfo")
+    @ResponseBody
+    public Map<String,Object> modifyPersonalInfo(TUserFront tUserFront){
+        Map<String,Object> map = new HashMap<String,Object>();
+        int i = userFrontService.saveUserFront(tUserFront);
+        map.put("code",i);
+        map.put("msg","修改成功!");
+        return map;
     }
 
 }

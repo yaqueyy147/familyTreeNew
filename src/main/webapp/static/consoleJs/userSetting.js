@@ -53,6 +53,60 @@ $(function () {
         ]
     });
 
+    $("#modifyPasswordDialog").dialog({
+        width: 400,
+        height: 200,
+        closed: true,
+        cache: false,
+        modal: true,
+        "buttons":[
+            {
+                "text":"提交",
+                handler:function(){
+
+                    var newPassword = $("#newPassword").val();
+                    var newPasswordAffirm = $("#newPasswordAffirm").val();
+                    if(newPassword != newPasswordAffirm){
+                        alert("密码输入不一致!");
+                        return;
+                    }
+
+                    var postUrl = projectUrl + "/consoles/modifyPassword";
+                    var params = {};
+                    params.userId = $("#userIdForModify").val();
+                    params.newPassword = newPassword;
+                    $.ajax({
+                        type:'post',
+                        url: postUrl,
+                        async:false,
+                        dataType:'json',
+                        data:params,
+                        async:false,
+                        success:function (data) {
+                            if(data.code >= 1){
+                                alert(data.msg);
+                                var params = {};
+                                loadDataGrid(params);
+                                $("#modifyPasswordForm").form('clear');
+                                closeDialog("modifyPasswordDialog");
+                            }
+                        },
+                        error:function (data) {
+                            alert(JSON.stringify(data));
+                        }
+                    });
+                }
+            },
+            {
+                "text":"取消",
+                handler:function () {
+                    $("#modifyPasswordForm").form('clear');
+                    closeDialog("modifyPasswordDialog");
+                }
+            }
+        ]
+    });
+
     $("#toAdd").click(function () {
         $("#userInfoForm").form('clear');
         $("#passwordTr").removeAttr("style");
@@ -73,6 +127,21 @@ $(function () {
         }
         loadDataToForm(selectRows[0]);
         $("#userDialog").dialog('open');
+    });
+
+    $("#toModifyPassword").click(function () {
+        $("#modifyPasswordForm").form('clear');
+        var selectRows = $("#userList").datagrid('getSelections');
+        if(selectRows.length > 1){
+            alert("只能编辑一条数据!");
+            return;
+        }
+        if(selectRows.length < 1){
+            alert("请选择一条数据!");
+            return;
+        }
+        $("#userIdForModify").val(selectRows[0].id);
+        $("#modifyPasswordDialog").dialog('open');
     });
 
     $("#toDel").click(function () {

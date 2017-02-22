@@ -6,13 +6,13 @@
         margin-right: 0px;
     }
 </style>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="min-height: 0;">
     <div class="container">
         <div class="userInfo">
             首页&nbsp;|&nbsp;
             <c:if test="${not empty userInfo}">
                 【欢迎您，
-                <a href="/family/personalIndex">
+                <a href="/family/personalInfo">
                 ${userInfo.userName}
                 </a>
                 &nbsp;|&nbsp;

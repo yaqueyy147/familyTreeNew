@@ -22,6 +22,8 @@ public interface ConsoleService {
 
     public int saveUserBase(TUserBase tUserBase);
 
+    public int modifyPassword(Map<String,Object> params);
+
     public int deleteUser(Map<String,Object> params);
 
     public List<TRole> getRole(Map<String,Object> params);

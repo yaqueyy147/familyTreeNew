@@ -13,6 +13,9 @@ public interface UserFrontService {
     //创建一个用户
     public int createUserFront(TUserFront tUserFront);
 
+    //修改用户信息
+    public int saveUserFront(TUserFront tUserFront);
+
     //根据传入的用户信息查询用户主要用户名和密码，返回list<map>
     public List<Map<String,Object>> signIn(TUserFront tUserFront);
 

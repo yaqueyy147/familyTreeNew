@@ -21,6 +21,7 @@
 <div id="tb">
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toModifyPassword" >修改密码</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
 </div>
 <div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
@@ -75,6 +76,23 @@
                     </td>
                 </tr>
 
+            </table>
+        </form>
+    </div>
+</div>
+<div id="modifyPasswordDialog" class="easyui-dialog" title="修改密码" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+    <div style="padding:10px 40px 20px 40px">
+        <form id="modifyPasswordForm" method="post">
+            <input type="hidden" id="userIdForModify" name="id" value="0" />
+            <table cellpadding="5">
+                <tr>
+                    <td>新密码:</td>
+                    <td><input class="easyui-validatebox" type="password" id="newPassword" name="newPassword" value="123456" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>确认新密码:</td>
+                    <td><input class="easyui-validatebox" type="password" id="newPasswordAffirm" name="newPasswordAffirm" value="123456" data-options="required:true" /></td>
+                </tr>
             </table>
         </form>
     </div>

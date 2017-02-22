@@ -25,8 +25,8 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container" style="margin-top: 50px;">
-    <a href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
+<div class="container" style="margin-top: 50px;margin-bottom: 10px;">
+    <a class="btn btn-primary" href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
         <div id="familyShow" class="row">
         <c:forEach var="family" items="${familyList}">
 

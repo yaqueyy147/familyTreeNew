@@ -48,6 +48,19 @@ public class UserFrontServiceImpl implements UserFrontService {
         return id;
     }
 
+    @Override
+    public int saveUserFront(TUserFront tUserFront) {
+        int i = 0;
+        try {
+            tUserFrontDao.save(tUserFront);
+            i ++;
+        }catch (Exception e){
+
+        }
+
+        return i;
+    }
+
     /**
      * 用户登录
      * @param tUserFront

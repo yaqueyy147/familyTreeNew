@@ -122,6 +122,16 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public int modifyPassword(Map<String, Object> params) {
+
+        String sql = "update t_user_base set user_password=? where id=?";
+        String newPassword = CommonUtil.string2MD5(params.get("newPassword") + "");
+        int i = jdbcTemplate.update(sql,newPassword,params.get("userId"));
+
+        return i;
+    }
+
+    @Override
     public int deleteUser(Map<String, Object> params) {
 
         String ids = params.get("ids") + "";

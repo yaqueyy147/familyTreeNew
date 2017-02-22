@@ -6,6 +6,7 @@ import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
+import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -52,6 +54,14 @@ public class FamilyController {
         model.addAttribute("familyList",list);
 
         return new ModelAndView("/fronts/personalIndex");
+    }
+
+    @RequestMapping(value = "/personalInfo")
+    public ModelAndView personalInfo(Model model,HttpServletRequest request) throws UnsupportedEncodingException{
+
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        model.addAttribute("userInfo",jsonUser);
+        return new ModelAndView("/fronts/personalInfo");
     }
 
     @RequestMapping(value = "/saveFamily")

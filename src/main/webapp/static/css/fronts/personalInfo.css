@@ -14,7 +14,6 @@ body{
 }
 .regedit-box {
     width: 100%;
-    max-width:500px;
     height: auto;
     position: absolute;
     top: 30%;
@@ -23,14 +22,6 @@ body{
     /*设置负值，为要定位子盒子的一半高度*/
 
 }
-@media screen and (min-width:500px){
-    .regedit-box {
-        left: 50%;
-        /*设置负值，为要定位子盒子的一半宽度*/
-        margin-left: -250px;
-    }
-}
-
 .form {
     width: 100%;
     max-width:500px;
@@ -41,7 +32,6 @@ body{
 .regedit-content {
     height: auto;
     width: 100%;
-    max-width:500px;
     background-color: rgba(255, 250, 2550, .6);
     float: left;
 }
@@ -76,4 +66,29 @@ body{
 
 .form .form-group .form-control-feedback{
     right:10px;
+}
+
+.infoBox{
+    width: 100%;
+    display:-moz-box;
+    display:-webkit-box;
+    display:box;
+
+}
+.infoBox .infoDetail{
+    width:100px;
+}
+.infoBox .leftInfo{
+    -moz-box-flex:1;
+    -webkit-box-flex:1;
+    box-flex:1;
+    background-color: #ffffff;
+}
+
+.infoBox .rightInfo{
+    -moz-box-flex:3;
+    -webkit-box-flex:3;
+    box-flex:3;
+    margin-left: 20px;
+    background-color: #ffffff;
 }
