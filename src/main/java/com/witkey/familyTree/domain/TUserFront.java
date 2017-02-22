@@ -28,11 +28,12 @@ public class TUserFront implements Serializable {
     private String town;
     private String detailAddr;
     private int isVolunteer;
+    private String userPhoto;
 
     public TUserFront() {
     }
 
-    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr, int isVolunteer) {
+    public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr, int isVolunteer, String userPhoto) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -50,6 +51,7 @@ public class TUserFront implements Serializable {
         this.town = town;
         this.detailAddr = detailAddr;
         this.isVolunteer = isVolunteer;
+        this.userPhoto = userPhoto;
     }
 
     @Id
@@ -223,6 +225,16 @@ public class TUserFront implements Serializable {
         this.isVolunteer = isVolunteer;
     }
 
+    @Basic
+    @Column(name = "user_photo")
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -247,7 +259,7 @@ public class TUserFront implements Serializable {
         if (town != null ? !town.equals(that.town) : that.town != null) return false;
         if (detailAddr != null ? !detailAddr.equals(that.detailAddr) : that.detailAddr != null) return false;
         if (isVolunteer != that.isVolunteer) return false;
-
+        if (userPhoto != null ? !userPhoto.equals(that.userPhoto) : that.userPhoto != null) return false;
         return true;
     }
 
@@ -270,6 +282,7 @@ public class TUserFront implements Serializable {
         result = 31 * result + (town != null ? town.hashCode() : 0);
         result = 31 * result + (detailAddr != null ? detailAddr.hashCode() : 0);
         result = 31 * result + isVolunteer;
+        result = 31 * result + (userPhoto != null ? userPhoto.hashCode() : 0);
         return result;
     }
 }
