@@ -1,6 +1,7 @@
 package com.witkey.familyTree.service.fronts;
 
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.domain.TVolunteer;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,17 @@ public interface UserFrontService {
 
     //根据传入的用户信息查询用户主要用户名和密码，返回list<TUserFront>
     public List<TUserFront> getUserInfo(TUserFront tUserFront);
+
+    //修改密码
+    public int modifyPassword(Map<String,Object> params);
+
+    //申请志愿者
+    public int applyVolunteer(TVolunteer tVolunteer);
+
+    //修改头像
+    public int modifyPhoto(String userId, String photoPath, String userType);
+
+    //根据用户ID查询用户
+    public TUserFront getUserInfoFromId(int userId);
 
 }

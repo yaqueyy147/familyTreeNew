@@ -66,7 +66,6 @@ $(function () {
                     $("#moneyTable").html(moneyHtml);
                     $("#moneyModal").modal('show');
                 }
-                alert(data.msg);
             },
             error:function (data) {
                 alert(JSON.stringify(data));

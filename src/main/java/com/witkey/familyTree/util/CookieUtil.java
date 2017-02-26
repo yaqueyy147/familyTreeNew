@@ -115,6 +115,8 @@ public class CookieUtil {
         Cookie cookie = new Cookie(cookieName,getCookieValueFromName(request,cookieName));
         //设置生命周期为0  即表示销毁该名称的cookie
         cookie.setMaxAge(0);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
         //response添加此cookie 即表示销毁该名称的cookie
         response.addCookie(cookie);
     }
@@ -125,6 +127,8 @@ public class CookieUtil {
         //遍历设置cookie的什么周期为0  添加到response则表示销毁
         for (Cookie cookie : cookies){
             cookie.setMaxAge(0);
+            cookie.setDomain("localhost");
+            cookie.setPath("/");
             response.addCookie(cookie);
         }
 

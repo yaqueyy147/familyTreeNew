@@ -32,6 +32,13 @@ public class TUserFront implements Serializable {
 
     public TUserFront() {
     }
+    public TUserFront(String userName) {
+        this.userName = userName;
+    }
+    public TUserFront(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 
     public TUserFront(int id, String userName, String password, String idCard, String nickName, String phone, String wechart, String qqNum, String remark, Date createTime, String province, String city, String district, String county, String town, String detailAddr, int isVolunteer, String userPhoto) {
         this.id = id;

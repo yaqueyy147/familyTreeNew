@@ -15,6 +15,9 @@ public interface CompanyService {
     //公司注册
     public int createCompanyUser(TCompanySponsor tCompanySponsor);
 
+    //保存修改公司信息
+    public int saveCompanyInfo(TCompanySponsor tCompanySponsor);
+
     //获取赞助商list
     public List<TCompanySponsor> getCompanyList();
 

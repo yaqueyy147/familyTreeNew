@@ -10,7 +10,9 @@
 <html>
 <head>
     <title>登录</title>
-    <link href="<%=request.getContextPath()%>/static/css/fronts/login.css" rel="stylesheet" type="text/css" />
+    <link href="<%=request.getContextPath()%>/static/css/consoles/login.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap-theme.min.css" />
     <%@include file="common/commonCss.html"%>
 </head>
 <body>
@@ -25,12 +27,12 @@
                     <input class="form-control" id="userName" name="userName" placeholder="用户名" type="text" />
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
-                    <input class="form-control" id="password" name="password" placeholder="密 码" type="password" />
+                    <input class="form-control" id="userPassword" name="userPassword" placeholder="密 码" type="password" />
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
 
                     <div class="col-xs-7">
-                        <input class="form-control" id="checkCode" name="checkCode" placeholder="验证码" type="text" />
+                        <input class="form-control" id="checkCode" placeholder="验证码" type="text" />
                     </div>
                     <label for="checkCode" class="col-xs-4 control-label">
                         <canvas id="canvas"  width="100" height="34"></canvas>
@@ -39,22 +41,14 @@
                 <div class="form-group col-xs-4 form-actions col-xs-offset-5" style="margin-top: 15px">
                     <button class="btn btn-primary" id="signIn" type="button">登 录</button>
                 </div>
-                <div class="form-group col-xs-8 link col-xs-offset-8" >
-                    <p>还没注册？
-                        <a href="/sign/regedit"><small>免费注册</small></a>
-                    </p>
-                    <p style="margin-top: 0">
-                        <a href="/familyTree/index"><small>直接进入!</small></a>
-                    </p>
-                </div>
             </form>
         </div>
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJs.html"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/login.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/login.js"></script>
 
 <script>
     var loginCode = "${loginCode}";

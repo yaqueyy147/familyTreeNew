@@ -3,7 +3,9 @@ package com.witkey.familyTree.controller.fronts;
 import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TMate;
 import com.witkey.familyTree.domain.TPeople;
+import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
@@ -41,6 +43,9 @@ public class FamilyController {
     @Autowired
     private FamilyService familyService;
 
+    @Autowired
+    private UserFrontService userFrontService;
+
     /**
      * 个人中心
      * @param model
@@ -60,7 +65,9 @@ public class FamilyController {
     public ModelAndView personalInfo(Model model,HttpServletRequest request) throws UnsupportedEncodingException{
 
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         model.addAttribute("userInfo",jsonUser);
+        model.addAttribute("tUserFront",tUserFront);
         return new ModelAndView("/fronts/personalInfo");
     }
 

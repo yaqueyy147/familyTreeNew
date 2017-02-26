@@ -2,6 +2,7 @@ package com.witkey.familyTree.controller.fronts;
 
 import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.CommonUtil;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -67,6 +69,7 @@ public class SignInController {
         //根据读取的用户名和密码查询用户
 //        List<Map<String,Object>> listUser = userFrontService.signIn(tUserFront);
 
+        tUserFront.setPassword(CommonUtil.string2MD5(tUserFront.getPassword()));
         //个人用户
         List<TUserFront> listUser = userFrontService.getUserInfo(tUserFront);
         //公司用户
@@ -97,7 +100,8 @@ public class SignInController {
      * @return
      */
     @RequestMapping(value = "/regedit")
-    public ModelAndView regedit(Model model){
+    public ModelAndView regedit(Model model, String regCode){
+        model.addAttribute("regCode",regCode);
         return new ModelAndView("/fronts/regedit");
     }
 
@@ -113,7 +117,58 @@ public class SignInController {
         //设置用户ID为返回的id
         tUserFront.setId(id);
         //注册成功，自动登录，添加cookie
-        CookieUtil.addCookie("userFront", JSONObject.fromObject(tUserFront).toString(),response);
+        CookieUtil.addCookie("userInfo", JSONObject.fromObject(tUserFront).toString(),response);
+        return new RedirectView("/familyTree/index");
+    }
+
+    /**
+     * 注册
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/regesterNew")
+    public RedirectView regesterNew(@RequestParam Map<String,Object> params, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+        int id = 0;
+        JSONObject jsonObject = new JSONObject();
+        //个人用户
+        if("1".equals(params.get("userType"))){
+
+            //检查用户名是否已经存在了
+            List<TUserFront> list = userFrontService.getUserInfo(new TUserFront(params.get("userName")+""));
+
+            if(list != null && list.size() > 0){
+                return new RedirectView("/familyTree/regedit?regCode=-2");
+            }
+
+            TUserFront tUserFront = new TUserFront(params.get("userName")+"",CommonUtil.string2MD5(params.get("password")+""));
+            id= userFrontService.createUserFront(tUserFront);
+            tUserFront.setId(id);
+
+            jsonObject = JSONObject.fromObject(tUserFront);
+            jsonObject.put("userType",1);
+
+        }else {
+            //检查用户名是否已经存在了
+            Map<String,Object> params2 = new HashMap<String,Object>();
+            params2.put("userName",params.get("userName"));
+            List<Map<String,Object>> list = companyService.getCompanyInfo(params2);
+
+            if(list != null && list.size() > 0){
+                return new RedirectView("/familyTree/regedit?regCode=-2");
+            }
+
+            TCompanySponsor tCompanySponsor = new TCompanySponsor(params.get("userName")+"",CommonUtil.string2MD5(params.get("password")+""),params.get("companyName")+"");
+            id= companyService.createCompanyUser(tCompanySponsor);
+            tCompanySponsor.setId(id);
+            jsonObject = JSONObject.fromObject(tCompanySponsor);
+            jsonObject.put("userType",2);
+            jsonObject.put("company_name",tCompanySponsor.getCompanyName());
+            jsonObject.put("company_login_name",tCompanySponsor.getCompanyLoginName());
+
+        }
+        //注册成功，自动登录，添加cookie
+        CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
+
         return new RedirectView("/familyTree/index");
     }
 
@@ -131,7 +186,7 @@ public class SignInController {
         //设置用户ID为返回的id
         tCompanySponsor.setId(id);
         //注册成功，自动登录，添加cookie
-        CookieUtil.addCookie("userFront", JSONObject.fromObject(tCompanySponsor).toString(),response);
+        CookieUtil.addCookie("userInfo", JSONObject.fromObject(tCompanySponsor).toString(),response);
         return new RedirectView("/familyTree/index");
     }
 
@@ -146,6 +201,7 @@ public class SignInController {
     public ModelAndView logout(Model model, HttpServletResponse response, HttpServletRequest request){
         //销毁登录用户信息cookie
         CookieUtil.destroyCookies(response,request);
+        model.addAttribute("userInfo",null);
         //返回登录页面
         return new ModelAndView("/fronts/index");
     }
@@ -159,7 +215,97 @@ public class SignInController {
     @ResponseBody
     public Map<String,Object> modifyPersonalInfo(TUserFront tUserFront){
         Map<String,Object> map = new HashMap<String,Object>();
+
+        TUserFront tUserFront1 = userFrontService.getUserInfoFromId(tUserFront.getId());
+
+        tUserFront.setIsVolunteer(tUserFront1.getIsVolunteer());
+        tUserFront.setCreateTime(tUserFront1.getCreateTime());
+
         int i = userFrontService.saveUserFront(tUserFront);
+
+
+        map.put("code",i);
+        map.put("msg","修改成功!");
+        return map;
+    }
+
+    /**
+     * 修改密码
+     * @param request
+     * @param params
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping(value = "modifyPassword")
+    @ResponseBody
+    public Map<String,Object> modifyPassword(HttpServletRequest request,@RequestParam Map<String,Object> params) throws UnsupportedEncodingException{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        if(!CommonUtil.string2MD5(params.get("oldPassword") + "").equals(jsonUser.get("password"))){
+            map.put("code",2);
+            map.put("msg","原密码输入有误!");
+            return map;
+        }
+        params.put("userType",jsonUser.get("userType"));
+        int i = userFrontService.modifyPassword(params);
+
+        map.put("code",i);
+        map.put("msg","修改成功!");
+        return map;
+    }
+
+    /**
+     * 申请成为志愿者
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "applyVolunteer")
+    @ResponseBody
+    public Map<String,Object> applyVolunteer(HttpServletRequest request) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        TVolunteer tVolunteer = new TVolunteer();
+        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
+        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
+        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+        int i = userFrontService.applyVolunteer(tVolunteer);
+        map.put("code",i);
+        map.put("msg","申请成功!");
+        return map;
+    }
+
+    @RequestMapping(value = "/modifyPhoto")
+    @ResponseBody
+    public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+        map.put("code",i);
+        map.put("msg","修改成功!");
+        return map;
+    }
+
+    /**
+     * 修改公司信息
+     * @param tCompanySponsor
+     * @return
+     */
+    @RequestMapping(value = "modifyCompanyInfo")
+    @ResponseBody
+    public Map<String,Object> modifyCompanyInfo(TCompanySponsor tCompanySponsor) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+
+        TCompanySponsor tCompanySponsor1 = companyService.getCompanyFromId(tCompanySponsor.getId());
+
+        tCompanySponsor.setCreateMan(tCompanySponsor1.getCreateMan());
+        tCompanySponsor.setCreateTime(tCompanySponsor1.getCreateTime());
+
+        int i = companyService.saveCompanyInfo(tCompanySponsor);
+
+
         map.put("code",i);
         map.put("msg","修改成功!");
         return map;

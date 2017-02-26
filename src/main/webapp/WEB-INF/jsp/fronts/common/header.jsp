@@ -12,8 +12,15 @@
             首页&nbsp;|&nbsp;
             <c:if test="${not empty userInfo}">
                 【欢迎您，
+
+                <c:if test="${userInfo.userType == 1}">
                 <a href="/family/personalInfo">
-                ${userInfo.userName}
+                    ${userInfo.userName}
+                </c:if>
+                <c:if test="${userInfo.userType == 2}">
+                 <a href="/company/info">
+                    ${userInfo.company_name}
+                </c:if>
                 </a>
                 &nbsp;|&nbsp;
                 <a href="/sign/logout">退出</a>

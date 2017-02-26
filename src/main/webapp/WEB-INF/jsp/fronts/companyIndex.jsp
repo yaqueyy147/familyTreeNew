@@ -31,6 +31,9 @@
                             <p name="companyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${company.companyDesc}">
                                     ${company.companyDesc}
                             </p>
+                            <p name="companyMoney">
+                                    共充值: ￥&nbsp;${company.totalMoney}&nbsp;元
+                            </p>
                         </div>
                     </div>
                 </div>

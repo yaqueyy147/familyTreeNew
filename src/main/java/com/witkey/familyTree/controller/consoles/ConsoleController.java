@@ -150,15 +150,34 @@ public class ConsoleController {
     @RequestMapping(value = "saveUserBase")
     @ResponseBody
     public Map<String,Object> saveUserBase(TUserBase tUserBase){
+        Map<String,Object> result = new HashMap<String,Object>();
         int i = 0;
-        if(tUserBase.getId() > 0){//新建用户，需要设置加密密码
+
+        Map<String,Object> params = new HashMap<String,Object>();
+
+        if(tUserBase.getId() == 0){//新建用户，需要设置加密密码
+            //检查用户名是否已经存在了
+            params.put("userName",tUserBase.getUserName());
+            List<TUserBase> list = consoleService.getUserBase(params);
+            if(list != null && list.size() > 0){
+                result.put("msg","该用户已存在!");
+                result.put("tUserBase",tUserBase);
+                result.put("code",99);
+                return result;
+            }
+
             tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
             i = consoleService.saveUserBase(tUserBase);
         }else{//修改用户，不修改密码
+            params = new HashMap<String,Object>();
+            params.put("id",tUserBase.getId());
+            List<TUserBase> list = consoleService.getUserBase(params);
+            tUserBase.setCreateMan(list.get(0).getCreateMan());
+            tUserBase.setCreateTime(list.get(0).getCreateTime());
             i = consoleService.saveUserBase(tUserBase);
         }
 
-        Map<String,Object> result = new HashMap<String,Object>();
+
         result.put("msg","保存成功!");
         result.put("tUserBase",tUserBase);
         result.put("code",i);
@@ -169,6 +188,22 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> modifyPassword(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
+        Map<String,Object> condition = new HashMap<String,Object>();
+
+        condition.put("id",params.get("userId"));
+
+        List<TUserBase> list = consoleService.getUserBase(condition);
+
+        String oldPassword = CommonUtil.string2MD5(params.get("oldPassword") + "");
+
+        if(!CommonUtil.isBlank(oldPassword)){
+            if(oldPassword.equals(list.get(0).getUserPassword())){
+                result.put("msg","原密码输入有误!");
+                result.put("code",-2);
+                return result;
+            }
+        }
+
         int i = consoleService.modifyPassword(params);
         result.put("msg","修改成功!");
         result.put("code",i);
@@ -210,4 +245,13 @@ public class ConsoleController {
         return result;
     }
 
+    @RequestMapping(value = "deleteUser")
+    @ResponseBody
+    public Map<String,Object> deleteUser(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.deleteUser(params);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+        return result;
+    }
 }

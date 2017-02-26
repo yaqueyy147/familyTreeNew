@@ -2,6 +2,7 @@ package com.witkey.familyTree.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by chenxiaowei on 2017/1/11.
@@ -14,10 +15,10 @@ public class TVolunteer {
     private String applyDesc;
     private int auditState;
     private String auditDesc;
-    private Timestamp auditTime;
+    private Date auditTime;
     private String auditMan;
     private String createMan;
-    private Timestamp createTime;
+    private Date createTime;
     private String remark;
 
     @Id
@@ -73,11 +74,11 @@ public class TVolunteer {
 
     @Basic
     @Column(name = "audit_time")
-    public Timestamp getAuditTime() {
+    public Date getAuditTime() {
         return auditTime;
     }
 
-    public void setAuditTime(Timestamp auditTime) {
+    public void setAuditTime(Date auditTime) {
         this.auditTime = auditTime;
     }
 
@@ -103,11 +104,11 @@ public class TVolunteer {
 
     @Basic
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

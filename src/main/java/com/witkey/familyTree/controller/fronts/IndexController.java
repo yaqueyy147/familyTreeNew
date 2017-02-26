@@ -33,18 +33,17 @@ public class IndexController {
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 
         //从cookie获取用户信息
-        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userFront");
-        TUserFront tUserFront1 = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
-        model.addAttribute("tUserFront",tUserFront1);
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        model.addAttribute("userInfo",jsonUser);
         List<List<TFamily>> list = new ArrayList<List<TFamily>>();
-        List<TFamily> listMainland = familyService.getFamilyList("ceshi123",1);
+        List<TFamily> listMainland = familyService.getFamilyList("",1);
 
         list.add(listMainland);
-        List<TFamily> listHongKong = familyService.getFamilyList("ceshi123",2);
+        List<TFamily> listHongKong = familyService.getFamilyList("",2);
         list.add(listHongKong);
-        List<TFamily> listTaiwan = familyService.getFamilyList("ceshi123",3);
+        List<TFamily> listTaiwan = familyService.getFamilyList("",3);
         list.add(listTaiwan);
-        List<TFamily> listAoMen = familyService.getFamilyList("ceshi123",4);
+        List<TFamily> listAoMen = familyService.getFamilyList("",4);
         list.add(listAoMen);
         model.addAttribute("familyList",list);
         return new ModelAndView("/fronts/index");

@@ -53,6 +53,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public int saveCompanyInfo(TCompanySponsor tCompanySponsor) {
+        int i=0;
+        tCompanySponsorDao.save(tCompanySponsor);
+        i++;
+        return 0;
+    }
+
+    @Override
     public List<TCompanySponsor> getCompanyList() {
         List<TCompanySponsor> list = tCompanySponsorDao.list();
 
@@ -76,8 +84,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Map<String, Object>> getCompanyInfo(Map<String, Object> params) {
-        String sql = "select * from t_company_sponsor where company_login_name=? and company_login_password=?";
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,params.get("userName"),CommonUtil.string2MD5(params.get("password")+""));
+        String sql = "select * from t_company_sponsor where 1=1";
+
+        if(!CommonUtil.isBlank(params.get("userName"))){
+            sql += " and company_login_name='" + params.get("userName") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("password"))){
+            sql += " and company_login_password='" + params.get("password") + "'";
+        }
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
         return list;
     }

@@ -2,6 +2,7 @@ package com.witkey.familyTree.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/1/6.
@@ -24,9 +25,23 @@ public class TCompanySponsor {
     private String companyWechart;
     private String companyEmail;
     private String remark;
-    private Timestamp createTime;
+    private Date createTime;
     private String createMan;
     private Integer state;
+
+    public TCompanySponsor(){
+
+    }
+
+    public TCompanySponsor(String companyLoginName) {
+        this.companyLoginName = companyLoginName;
+    }
+
+    public TCompanySponsor(String companyLoginName, String companyLoginPassword, String companyName) {
+        this.companyLoginName = companyLoginName;
+        this.companyLoginPassword = companyLoginPassword;
+        this.companyName = companyName;
+    }
 
     @Id
     @Column(name = "id",unique = true)
@@ -181,11 +196,11 @@ public class TCompanySponsor {
 
     @Basic
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

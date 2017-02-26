@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -20,11 +21,33 @@
         #topRegion{
             background-color: #e3d4b7;
         }
+        .userInfo{
+            float: right;
+        }
     </style>
 </head>
 <body class="layout">
 <div class="easyui-layout" style="width:100%;height:100%;">
-    <div id="topRegion" data-options="region:'north'" style="height:70px;">这是顶部</div>
+    <div id="topRegion" data-options="region:'north'" style="height:70px;">
+        <div id="logoDiv">寻根问祖</div>
+        <div id="userInfoDiv" class="userInfo">
+            <a href="javascript:void 0;" class="easyui-menubutton"
+               data-options="menu:'#mm'">
+                <c:if test="${empty consoleUserInfo.userNickName}">
+                    ${consoleUserInfo.userName}
+                </c:if>
+                <c:if test="${!empty consoleUserInfo.userNickName}">
+                    ${consoleUserInfo.userNickName}
+                </c:if>
+            </a>
+            <div id="mm" style="width:150px;">
+                <div id="toEditUser">编辑用户信息</div>
+                <div id="toModifyPassword">修改密码</div>
+            </div>
+            &nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/consoles/logout">退出</a>
+        </div>
+    </div>
 
     <div data-options="region:'west',split:true" title="菜单" style="width:15%;">
         <ul id="menuTT" class="easyui-tree">
@@ -36,12 +59,14 @@
                     <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
                 </ul>
             </li>
+            <c:if test="${consoleUserInfo.userName == 'admin'}">
             <li><span>用户管理</span>
                 <ul>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('roleSetting','角色设置','/consoles/role')">角色设置</a></span></li>
                 </ul>
             </li>
+            </c:if>
         </ul>
     </div>
     <div data-options="region:'center'">
@@ -53,6 +78,80 @@
         </div>
     </div>
     <div data-options="region:'south',split:true"></div>
+</div>
+
+<div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+    <div style="padding:10px 40px 20px 40px">
+        <form id="userInfoForm" method="post">
+            <input type="hidden" id="userId" name="id" value="${consoleUserInfo.id}" />
+            <input type="hidden" id="state" name="state" value="${consoleUserInfo.state}" />
+            <table cellpadding="5">
+                <tr>
+                    <td>账号:</td>
+                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userName}" type="text" id="userName" name="userName" data-options="required:true" readonly /></td>
+                    <td>昵称:</td>
+                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userNickName}" type="text" id="userNickName" name="userNickName" /></td>
+                </tr>
+                <tr id="passwordTr" style="display: none">
+                    <td>密码:</td>
+                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userPassword}" type="password" id="userPassword" name="userPassword" value="123456" data-options="required:true" /></td>
+                    <td>确认密码:</td>
+                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userPassword}" type="password" id="userPasswordAffirm" name="userPasswordAffirm" value="123456" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>联系电话:</td>
+                    <td>
+                        <input class="easyui-validatebox" value="${consoleUserInfo.userPhone}" type="text" id="userPhone" name="userPhone"/>
+                    </td>
+                    <td>邮箱:</td>
+                    <td>
+                        <input class="easyui-validatebox" value="${consoleUserInfo.userEmail}" type="text" id="userEmail" name="userEmail" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>QQ:</td>
+                    <td>
+                        <input class="easyui-validatebox" value="${consoleUserInfo.userQq}" type="text" id="userQq" name="userQq"/>
+                    </td>
+                    <td>微信:</td>
+                    <td>
+                        <input class="easyui-validatebox" value="${consoleUserInfo.userWechart}" type="text" id="userWechart" name="userWechart" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>用户说明:</td>
+                    <td>
+                        <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
+                        <textarea class="text-area easyui-validatebox" id="userDesc" name="userDesc" rows="3" cols="14">
+                            ${consoleUserInfo.userDesc}
+                        </textarea>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
+<div id="modifyPasswordDialog" class="easyui-dialog" title="修改密码" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+    <div style="padding:10px 40px 20px 40px">
+        <form id="modifyPasswordForm" method="post">
+            <input type="hidden" id="userIdForModify" name="id" value="0" />
+            <table cellpadding="5">
+                <tr>
+                    <td>新原密码:</td>
+                    <td><input class="easyui-validatebox" type="password" id="oldPassword" name="oldPassword" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>新密码:</td>
+                    <td><input class="easyui-validatebox" type="password" id="newPassword" name="newPassword" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>确认新密码:</td>
+                    <td><input class="easyui-validatebox" type="password" id="newPasswordAffirm" name="newPasswordAffirm" data-options="required:true" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@ include file="common/commonJs.html" %>

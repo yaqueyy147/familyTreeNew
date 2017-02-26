@@ -16,15 +16,15 @@
         body{
             width:100%;
             height: 100%;
-            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
-            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-            -moz-background-size:100% 100%;
-            background-size:100% 100%;
+            <%--background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;--%>
+            /*filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";*/
+            /*-moz-background-size:100% 100%;*/
+            /*background-size:100% 100%;*/
         }
     </style>
 </head>
 <body>
-<%@include file="common/header.jsp" %>
+<%--<%@include file="common/header.jsp" %>--%>
 <div class="container" style="margin-top: 50px;margin-bottom: 10px;">
     <a class="btn btn-primary" href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
         <div id="familyShow" class="row">
@@ -145,7 +145,7 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/footer.jsp" %>
+<%--<%@include file="common/footer.jsp" %>--%>
 <%@include file="common/commonJS.html"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>

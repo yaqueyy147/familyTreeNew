@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<%@include file="common/header.jsp" %>
+<%--<%@include file="common/header.jsp" %>--%>
 
 <div class="container" style="margin-top: 50px">
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
@@ -238,7 +238,7 @@
     </div>
 </div>
 <%@ include file="common/springUrl.jsp"%>
-<%@include file="common/footer.jsp" %>
+<%--<%@include file="common/footer.jsp" %>--%>
 <%@include file="common/commonJS.html"%>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree.js"></script>

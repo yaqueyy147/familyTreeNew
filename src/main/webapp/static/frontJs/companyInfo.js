@@ -3,16 +3,16 @@
  */
 $(function () {
 
-    $("#regedit").click(function () {
+    $("#companyRegeditbb").click(function () {
 
-        var formData = $("#personalForm").serializeArray();
+        var formData = $("#companyForm").serializeArray();
         var testData = {};
         for (var item in formData) {
             testData["" + formData[item].name + ""] = formData[item].value;
         }
         $.ajax({
             type:'post',
-            url: projectUrl + '/sign/modifyPersonalInfo',
+            url: projectUrl + '/sign/modifyCompanyInfo',
             dataType: 'json',
             data:testData,
             async:false,
@@ -52,7 +52,7 @@ $(function () {
                         $("#oldPassword").val("");
                         $("#newPassword").val("")
                         $("#newPasswordAffirm").val("");
-                        $("#password").val(newP);
+                        $("#companyLoginPassword").val(newP);
                         $("#modifyModal").modal('hide');
                     }
 
@@ -62,25 +62,6 @@ $(function () {
                 }
             });
         }
-    });
-
-    $("#applyVolunteer").click(function () {
-        $.ajax({
-            type:'post',
-            url: projectUrl + '/sign/applyVolunteer',
-            dataType: 'json',
-            data:{},
-            async:false,
-            success:function (data) {
-                if(data.code >= 1){
-                    alert(data.msg);
-                    $("#applyVolunteer").replaceWith("<span>已申请志愿者，请等待审核！</span>");
-                }
-            },
-            error:function (data) {
-                alert(JSON.stringify(data));
-            }
-        });
     });
 
     $("#toModify-photo").click(function () {
@@ -95,7 +76,28 @@ $(function () {
                 if(data.code >= 1){
                     alert(data.msg);
                     $("#userPhotoBox img").attr("src",projectUrl + photoPath);
-                    $("#userphoto").val(photoPath);
+                    $("#companyphoto").val(photoPath);
+                    $("#photoModal").modal('hide');
+                }
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+    });
+    $("#toModify-license").click(function () {
+        var photoPath = $("#photoUrl1").val();
+        $.ajax({
+            type:'post',
+            url: projectUrl + '/sign/modifyPhoto',
+            dataType: 'json',
+            data:{photoPath:photoPath},
+            async:false,
+            success:function (data) {
+                if(data.code >= 1){
+                    alert(data.msg);
+                    $("#userPhotoBox img").attr("src",projectUrl + photoPath);
+                    $("#companyphoto").val(photoPath);
                     $("#photoModal").modal('hide');
                 }
             },

@@ -5,6 +5,8 @@ import com.witkey.familyTree.domain.TCompanyPhoto;
 import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
+import com.witkey.familyTree.util.CookieUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,15 +52,26 @@ public class CompanyController {
         return new ModelAndView("/fronts/companyIndex");
     }
 
+    @RequestMapping(value = "/info")
+    public ModelAndView companyInfo(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
+
+        model.addAttribute("userInfo",jsonUser);
+        model.addAttribute("companyInfo",tCompanySponsor);
+        return new ModelAndView("/fronts/companyInfo");
+    }
+
     @RequestMapping(value = "/detail")
-    public ModelAndView companyDetail(Model model, int companyId){
+    public ModelAndView companyDetail(Model model, int companyId,int xxx){
         TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(companyId);
         model.addAttribute("tCompanySponsor",tCompanySponsor);
         List<TCompanyPhoto> list = companyService.getCompanyPhoto(companyId);
         model.addAttribute("companyDetailList",list);
         double totalMoney = companyService.getTotalCompanyMoney(companyId);
         model.addAttribute("totalMoney",totalMoney);
-
+        model.addAttribute("xxx",xxx);
         return new ModelAndView("/fronts/companyDetail");
     }
 

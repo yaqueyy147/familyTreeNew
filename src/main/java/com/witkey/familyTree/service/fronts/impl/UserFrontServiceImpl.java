@@ -1,8 +1,10 @@
 package com.witkey.familyTree.service.fronts.impl;
 
+import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +27,13 @@ public class UserFrontServiceImpl implements UserFrontService {
 
     public void settUserFrontDao(TUserFrontDao tUserFrontDao) {
         this.tUserFrontDao = tUserFrontDao;
+    }
+
+    @Resource
+    private TVolunteerDao tVolunteerDao;
+
+    public void settVolunteerDao(TVolunteerDao tVolunteerDao) {
+        this.tVolunteerDao = tVolunteerDao;
     }
 
     @Resource
@@ -52,7 +61,7 @@ public class UserFrontServiceImpl implements UserFrontService {
     public int saveUserFront(TUserFront tUserFront) {
         int i = 0;
         try {
-            tUserFrontDao.save(tUserFront);
+            tUserFrontDao.update(tUserFront);
             i ++;
         }catch (Exception e){
 
@@ -83,12 +92,56 @@ public class UserFrontServiceImpl implements UserFrontService {
     @Override
     public List<TUserFront> getUserInfo(TUserFront tUserFront) {
         //将密码加密
-        String password = CommonUtil.string2MD5(tUserFront.getPassword());
+//        String password = CommonUtil.string2MD5(tUserFront.getPassword());
         String sql = "select * from t_user_front where user_name=? and password=?";
 
         //查询
-        List<TUserFront> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFront>(TUserFront.class),tUserFront.getUserName(),password);
+        List<TUserFront> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFront>(TUserFront.class),tUserFront.getUserName(),tUserFront.getPassword());
 
         return list;
+    }
+
+    @Override
+    public int modifyPassword(Map<String,Object> params) {
+        String userId = params.get("userId") + "";
+        String newPassword = CommonUtil.string2MD5(params.get("newPassword") + "");
+        String sql = "update t_user_front set password=? where id=?";
+
+        if("2".equals(params.get("userType"))){
+            sql = "update t_company_sponsor set company_login_password=? where id=?";
+        }
+
+        int i = jdbcTemplate.update(sql,newPassword,userId);
+
+        return i;
+    }
+
+    @Override
+    public int applyVolunteer(TVolunteer tVolunteer) {
+        int i = CommonUtil.parseInt(tVolunteerDao.create(tVolunteer));
+
+        String sql = "update t_user_front set is_volunteer=3 where id=?";
+        jdbcTemplate.update(sql,tVolunteer.getUserId());
+
+        return i;
+    }
+
+    @Override
+    public int modifyPhoto(String userId, String photoPath, String userType) {
+
+        String sql = "update t_user_front set user_photo=? where id=?";
+
+        if("2".equals(userType)){
+            sql = "update t_company_sponsor set company_photo=? where id=?";
+        }
+
+        int i = jdbcTemplate.update(sql,photoPath,userId);
+        return i;
+    }
+
+    @Override
+    public TUserFront getUserInfoFromId(int userId) {
+        TUserFront tUserFront = tUserFrontDao.get(userId);
+        return tUserFront;
     }
 }
