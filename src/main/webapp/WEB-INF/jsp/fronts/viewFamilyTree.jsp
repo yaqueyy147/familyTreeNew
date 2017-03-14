@@ -12,14 +12,14 @@
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="common/commonCss.html"%>
     <style rel="stylesheet">
-        body{
-            width:100%;
-            height: 100%;
-            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
-            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-            -moz-background-size:100% 100%;
-            background-size:100% 100%;
-        }
+        <%--body{--%>
+            <%--width:100%;--%>
+            <%--height: 100%;--%>
+            <%--background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;--%>
+            <%--filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";--%>
+            <%---moz-background-size:100% 100%;--%>
+            <%--background-size:100% 100%;--%>
+        <%--}--%>
     </style>
 </head>
 <body>
@@ -28,7 +28,11 @@
 
 <div class="container" style="margin-top: 50px">
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
-    <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+    <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <c:if test="${canOperate == 1}">
+        <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+    </c:if>
     <div id="familyTree" class="ztree"></div>
 </div>
 <!-- 添加族人 Modal -->
@@ -246,6 +250,10 @@
     var familyId = "${familyId}";
     var familyFirstName = "${tFamily.familyFirstName}";
     $(function () {
+        $("#goBack").click(function () {
+            window.history.back();
+        });
+
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
             'uploader'      : projectUrl + '/upload/uploadImg',

@@ -31,6 +31,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.fronts.TUserPointsDao" id="tUserPointsDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.fronts.TCompanyPointsDao" id="tCompanyPointsDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!-- consoles -->
 	<bean class="com.witkey.familyTree.dao.consoles.TVolunteerDao" id="tVolunteerDao">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -41,6 +49,14 @@
 	</bean>
 
 	<bean class="com.witkey.familyTree.dao.consoles.TRoleDao" id="tRoleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.consoles.TMeritocratAttrDao" id="tMeritocratAttrDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean class="com.witkey.familyTree.dao.fronts.TMeritocratDao" id="tMeritocratDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

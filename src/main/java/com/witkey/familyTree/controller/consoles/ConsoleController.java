@@ -40,6 +40,11 @@ public class ConsoleController {
         return new ModelAndView("/consoles/volunteerList");
     }
 
+    /**
+     * 志愿者列表
+     * @param params
+     * @return
+     */
     @RequestMapping(value= "/volunteerList")
     @ResponseBody
     public Map<String,Object> getVolunteerList(@RequestParam Map<String,Object> params){
@@ -49,6 +54,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 审核志愿者
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/auditVolunteer")
     @ResponseBody
     public Map<String,Object> auditVolunteer(@RequestParam Map<String,Object> params){
@@ -69,6 +79,11 @@ public class ConsoleController {
         return map;
     }
 
+    /**
+     * 公司列表页面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "company")
     public ModelAndView companyList(Model model){
 
@@ -79,6 +94,11 @@ public class ConsoleController {
         return new ModelAndView("/consoles/companyList");
     }
 
+    /**
+     * 赞助商列表数据
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "companyList")
     @ResponseBody
     public Map<String,Object> getCompanyList(@RequestParam Map<String,Object> params){
@@ -88,21 +108,34 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 族谱列表页面
+     * @return
+     */
     @RequestMapping(value = "family")
     public ModelAndView family(){
         return new ModelAndView("/consoles/familyList");
     }
 
+    /**
+     * 族谱列表数据
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "familyList")
     @ResponseBody
     public Map<String,Object> getFamilyList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        List<TFamily> list = familyService.getFamilyList("",0);
+
+        List<TFamily> list = familyService.getFamilyList(null);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
             int peopleCount = 0;
             Map<String,Object> map = new HashMap<String,Object>();
-            List<TPeople> peopleList = familyService.getPeopleList(tFamily.getId());
+            Map<String,Object> paramss = new HashMap<>();
+            paramss.put("familyId",tFamily.getId());
+            paramss.put("peopleType",1);
+            List<TPeople> peopleList = familyService.getPeopleList(paramss);
             if(peopleList != null && peopleList.size() > 0)
             {
                 peopleCount = peopleList.size();
@@ -115,15 +148,26 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 族谱内容页面
+     * @param model
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "familyTree")
     public ModelAndView familyTree(Model model, @RequestParam Map<String,Object> map){
         String familyId = map.get("familyId") + "";
         model.addAttribute("familyId",familyId);
-        TFamily tFamily = familyService.getFamilyListFromId(CommonUtil.parseInt(familyId));
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
         return new ModelAndView("/consoles/familyTree_console");
     }
 
+    /**
+     * 族谱组人数据
+     * @param peopleId
+     * @return
+     */
     @RequestMapping(value = "getPeopleInfo")
     @ResponseBody
     public Map<String,Object> getPeopleInfo(int peopleId){
@@ -133,11 +177,20 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 用户页面
+     * @return
+     */
     @RequestMapping(value = "user")
     public ModelAndView user(){
         return new ModelAndView("/consoles/userSetting");
     }
 
+    /**
+     * 用户列表数据
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "userList")
     @ResponseBody
     public Map<String,Object> getUserList(@RequestParam Map<String,Object> params){
@@ -147,6 +200,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 保存用户
+     * @param tUserBase
+     * @return
+     */
     @RequestMapping(value = "saveUserBase")
     @ResponseBody
     public Map<String,Object> saveUserBase(TUserBase tUserBase){
@@ -184,6 +242,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 修改密码
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "modifyPassword")
     @ResponseBody
     public Map<String,Object> modifyPassword(@RequestParam Map<String,Object> params){
@@ -210,11 +273,21 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 角色页面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "role")
     public ModelAndView role(Model model){
         return new ModelAndView("/consoles/roleSetting");
     }
 
+    /**
+     * 角色列表数据
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "roleList")
     @ResponseBody
     public Map<String,Object> getroleList(@RequestParam Map<String,Object> params){
@@ -224,6 +297,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 保存角色信息
+     * @param TRole
+     * @return
+     */
     @RequestMapping(value = "saveRole")
     @ResponseBody
     public Map<String,Object> saveRole(TRole TRole){
@@ -235,6 +313,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 删除角色
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "deleteRole")
     @ResponseBody
     public Map<String,Object> deleteRole(@RequestParam Map<String,Object> params){
@@ -245,6 +328,11 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 删除用户
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "deleteUser")
     @ResponseBody
     public Map<String,Object> deleteUser(@RequestParam Map<String,Object> params){
@@ -254,4 +342,73 @@ public class ConsoleController {
         result.put("msg","操作成功!");
         return result;
     }
+
+    /**
+     * 个人积分排名页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/personalPoints")
+    public ModelAndView personalPoints(Model model){
+        return new ModelAndView("/consoles/personalRank");
+    }
+
+    /**
+     * 个人积分排名数据
+     * @return
+     */
+    @RequestMapping(value = "/personalPointsList")
+    @ResponseBody
+    public Map<String,Object> personalPointsList(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        //个人积分排名
+        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(1);
+        result.put("listPersonalPoints",listPersonalPoints);
+        return result;
+
+    }
+
+    /**
+     * 赞助商积分排名页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/companyPoints")
+    public ModelAndView companyPoints(Model model){
+        return new ModelAndView("/consoles/companyRank");
+    }
+
+    /**
+     * 公司积分排名数据
+     * @return
+     */
+    @RequestMapping(value = "/companyPointsList")
+    @ResponseBody
+    public Map<String,Object> companyPointsList(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        //公司积分排名
+        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(2);
+        result.put("listCompanyPoints",listCompanyPoints);
+        return result;
+
+    }
+
+    /**
+     * 英才录页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/meritorcat")
+    public ModelAndView meritorcat(Model model){
+        //获取英才属性
+        List<TMeritocratAttr> listAttr = consoleService.getMeritocratAttrList(null);
+        model.addAttribute("meritorcatAttr",listAttr);
+        return new ModelAndView("");
+    }
+
+    @RequestMapping(value = "/merge")
+    public ModelAndView merge(Model model){
+        return new ModelAndView("");
+    }
+
 }

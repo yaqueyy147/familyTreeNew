@@ -20,5 +20,11 @@
         <mapping class="com.witkey.familyTree.domain.TRoleResource"/>
         <mapping class="com.witkey.familyTree.domain.TUserResource"/>
         <mapping class="com.witkey.familyTree.domain.TVolunteer"/>
+        <mapping class="com.witkey.familyTree.domain.TCompanyPoints"/>
+        <mapping class="com.witkey.familyTree.domain.TMeritocrat"/>
+        <mapping class="com.witkey.familyTree.domain.TPointsDic"/>
+        <mapping class="com.witkey.familyTree.domain.TUserPoints"/>
+        <mapping class="com.witkey.familyTree.domain.TMeritocratAttr"/>
+        <mapping class="com.witkey.familyTree.domain.TFamilyMerge"/>
     </session-factory>
 </hibernate-configuration>

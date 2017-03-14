@@ -9,7 +9,9 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="min-height: 0;">
     <div class="container">
         <div class="userInfo">
-            首页&nbsp;|&nbsp;
+            <a href="/familyTree/index">首页</a>&nbsp;|&nbsp;
+            <a href="/familyTree/meritorcat">何氏英才录</a>&nbsp;|&nbsp;
+            <a href="/familyTree/pointsRanking">积分排行榜</a>&nbsp;|&nbsp;
             <c:if test="${not empty userInfo}">
                 【欢迎您，
 

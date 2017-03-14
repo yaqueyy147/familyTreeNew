@@ -1,9 +1,6 @@
 package com.witkey.familyTree.controller.fronts;
 
-import com.witkey.familyTree.domain.TFamily;
-import com.witkey.familyTree.domain.TMate;
-import com.witkey.familyTree.domain.TPeople;
-import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.BaseUtil;
@@ -52,9 +49,13 @@ public class FamilyController {
      * @return
      */
     @RequestMapping(value = "/personalIndex")
-    public ModelAndView personalIndex(Model model){
+    public ModelAndView personalIndex(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 
-        List<TFamily> list = familyService.getFamilyList("ceshi123",0);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("userName",jsonUser.get("userName"));
+
+        List<TFamily> list = familyService.getFamilyList(params);
 
         model.addAttribute("familyList",list);
 
@@ -109,12 +110,33 @@ public class FamilyController {
      * @return
      */
     @RequestMapping(value = "/viewFamily")
-    public ModelAndView viewFamily(Model model, @RequestParam Map<String,Object> map){
+    public ModelAndView viewFamily(Model model, @RequestParam Map<String,Object> map, HttpServletRequest request) throws UnsupportedEncodingException{
         String familyId = map.get("familyId") + "";
         model.addAttribute("familyId",familyId);
-        TFamily tFamily = familyService.getFamilyListFromId(CommonUtil.parseInt(familyId));
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        if(!CommonUtil.isBlank(jsonUser) && tFamily.getCreateMan().equals(jsonUser.get("userName"))){
+            model.addAttribute("canOperate",1);
+        }
+
         return new ModelAndView("/fronts/viewFamilyTree");
+    }
+
+    /**
+     * 族谱树展示页面--仅供查看
+     * @param model
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/viewFamily_visitor")
+    public ModelAndView viewFamily_visitor(Model model, @RequestParam Map<String,Object> map, HttpServletRequest request) throws UnsupportedEncodingException{
+        String familyId = map.get("familyId") + "";
+        model.addAttribute("familyId",familyId);
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
+        model.addAttribute("tFamily",tFamily);
+        return new ModelAndView("/fronts/viewFamilyTree_visitor");
     }
 
     /**
@@ -127,7 +149,10 @@ public class FamilyController {
     public List<Map<String,Object>> getPeopleList(int familyId){
 
         //查询族人
-        List<TPeople> listPeople = familyService.getPeopleList(familyId);
+        Map<String,Object> paramss = new HashMap<>();
+        paramss.put("familyId",familyId);
+        paramss.put("peopleType",1);
+        List<TPeople> listPeople = familyService.getPeopleList(paramss);
 
         List<Map<String,Object>> list = new ArrayList<>();
 
@@ -154,13 +179,15 @@ public class FamilyController {
      */
     @RequestMapping(value = "/savePeople")
     @ResponseBody
-    public Map<String,Object> savePeople(TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
+    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
         Map<String,Object> map = new HashMap<String,Object>();
         if(!CommonUtil.isBlank(birth_time)){
             tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
         }
         if(!CommonUtil.isBlank(die_time)){
-            tPeople.setBirthTime(CommonUtil.ObjToDate(die_time));
+            tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
         }
 
         String msg = "保存成功";
@@ -169,8 +196,17 @@ public class FamilyController {
             familyService.updatePeople(tPeople);
             msg = "修改成功";
         }else{//新建成员
+            tPeople.setCreateMan(jsonUser.get("userName")+"");
+            tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);
+            //添加积分
+            //获取积分对应关系
+            List<TPointsDic> listDic = familyService.getPointsRelation(1);
+            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue());
+
+            familyService.setPoints(tUserPoints,1);
+
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){
                 //保存配偶信息
@@ -188,6 +224,48 @@ public class FamilyController {
     public Map<String,Object> getParent(int familyId,int generation){
         Map<String,Object> result = new HashMap<String,Object>();
         result = familyService.getParentFromGen(familyId,generation);
+        return result;
+    }
+
+    /**
+     * 匹配可以合并的族谱
+     * @param familyId
+     * @return
+     */
+    @RequestMapping(value = "/familyMatch")
+    @ResponseBody
+    public Map<String,Object> familyMatch(int familyId){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        Map<String,Object> paramss = new HashMap<>();
+        paramss.put("familyId",familyId);
+        paramss.put("peopleType",2);
+
+        List<TPeople> listPeople = familyService.getPeopleList(paramss);
+        Map<String,List<TPeople>> tempMap = new HashMap<String,List<TPeople>>();
+        for (TPeople tPeople : listPeople) {
+            //比对前两代人的相同度
+            if(tPeople.getGeneration() <= 2){
+                paramss.put("familyId",tPeople.getFamilyId());
+                paramss.put("peopleName",tPeople.getName());
+                paramss.put("generation",tPeople.getGeneration());
+                //查询前两代
+                List<TPeople> list1 = familyService.getPeopleList(paramss);
+
+                tempMap.put("peopleList" + tPeople.getGeneration(),list1);
+            }
+        }
+
+        //对比前两代匹配结果，如果都存在的，则加入结果集
+        List<TPeople> resultList = new ArrayList<TPeople>();
+        for (TPeople tPeople : tempMap.get("peopleList1")) {
+            for (TPeople tPeople1 : tempMap.get("peopleList2")) {
+                if(tPeople.getId() == tPeople1.getId()){
+                    resultList.add(tPeople);
+                }
+            }
+        }
+        result.put("resultPeopleList",resultList);
         return result;
     }
 

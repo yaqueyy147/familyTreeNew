@@ -1,18 +1,20 @@
 package com.witkey.familyTree.service.consoles.impl;
 
+import com.witkey.familyTree.dao.consoles.TMeritocratAttrDao;
 import com.witkey.familyTree.dao.consoles.TRoleDao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.consoles.TUserBaseDao;
-import com.witkey.familyTree.domain.TRole;
-import com.witkey.familyTree.domain.TUserBase;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,13 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     public void settRoleDao(TRoleDao tRoleDao) {
         this.tRoleDao = tRoleDao;
+    }
+
+    @Resource
+    private TMeritocratAttrDao tMeritocratAttrDao;
+
+    public void settMeritocratAttrDao(TMeritocratAttrDao tMeritocratAttrDao) {
+        this.tMeritocratAttrDao = tMeritocratAttrDao;
     }
 
     @Autowired
@@ -178,6 +187,42 @@ public class ConsoleServiceImpl implements ConsoleService {
         }
 
         return ii;
+    }
+
+    @Override
+    public List<TMeritocratAttr> getMeritocratAttrList(Map<String, Object> params) {
+
+//        Map<String,Object> filter = new HashMap<String,Object>();
+//        if(!CommonUtil.isBlank(params.get("id"))){
+//            filter.put("")
+//        }
+
+        List<TMeritocratAttr> list = tMeritocratAttrDao.find(params);
+
+        return list;
+    }
+
+    @Override
+    public List<Map<String, Object>> getMergeList(Map<String, Object> params) {
+
+        String sql = "select tMerge.id mergeId, tPrimary primaryId, tTarget.id targetId";
+        sql += " ,tPrimary.family_name primaryName, tTarget.family_name targetName ";
+        sql += " from t_family tPrimary, t_family tTarget, t_family_merge tMerge";
+        sql += " where tPrimary.id=tMerge.primary_family_id and tTarget.id=tMerge.target_family_id";
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+
+        return list;
+    }
+
+    @Override
+    public List<TFamily> getTargetMergeList(Map<String, Object> params) {
+        String sql = "select * from t_family where id=";
+        sql += "(select target_family_id from t_family_merge where id=?)";
+
+        List<TFamily> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TFamily>(TFamily.class));
+
+        return list;
     }
 }
 

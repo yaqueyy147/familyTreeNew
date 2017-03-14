@@ -198,12 +198,12 @@ public class SignInController {
      * @return
      */
     @RequestMapping(value = "/logout")
-    public ModelAndView logout(Model model, HttpServletResponse response, HttpServletRequest request){
+    public RedirectView logout(Model model, HttpServletResponse response, HttpServletRequest request){
         //销毁登录用户信息cookie
         CookieUtil.destroyCookies(response,request);
         model.addAttribute("userInfo",null);
         //返回登录页面
-        return new ModelAndView("/fronts/index");
+        return new RedirectView("/familyTree/index");
     }
 
     /**

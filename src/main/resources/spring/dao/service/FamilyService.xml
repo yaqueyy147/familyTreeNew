@@ -7,7 +7,9 @@
 
 		<property name="tFamilyDao" ref="tFamilyDao" />
 		<property name="tPeopleDao" ref="tPeopleDao" />
-		<property name="tMateDao" ref="tMateDao" />
+		<property name="tUserPointsDao" ref="tUserPointsDao" />
+		<property name="tCompanyPointsDao" ref="tCompanyPointsDao" />
+		<property name="tMeritocratDao" ref="tMeritocratDao" />
 	</bean>
 	
 </beans>

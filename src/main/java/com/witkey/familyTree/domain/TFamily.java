@@ -23,11 +23,18 @@ public class TFamily implements Serializable {
     private String remark;
     private String familyDesc;
     private int familyArea;
+    private String province;
+    private String city;
+    private String district;
+
 
     public TFamily() {
     }
 
-    public TFamily(int id, String familyFirstName, String familyName, String photoUrl, String createMan, Integer visitStatus, String visitPassword, Date createTime, Integer state, String remark, String familyDesc, int familyArea) {
+    public TFamily(int id, String familyFirstName, String familyName, String photoUrl,
+                   String createMan, Integer visitStatus, String visitPassword,
+                   Date createTime, Integer state, String remark, String familyDesc,
+                   int familyArea, String province, String city, String district) {
         this.id = id;
         this.familyFirstName = familyFirstName;
         this.familyName = familyName;
@@ -40,6 +47,9 @@ public class TFamily implements Serializable {
         this.remark = remark;
         this.familyDesc = familyDesc;
         this.familyArea = familyArea;
+        this.province = province;
+        this.city = city;
+        this.district = district;
     }
 
     @Id
@@ -163,6 +173,36 @@ public class TFamily implements Serializable {
         this.familyArea = familyArea;
     }
 
+    @Basic
+    @Column(name = "province")
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "district")
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -184,6 +224,9 @@ public class TFamily implements Serializable {
         if (remark != null ? !remark.equals(tFamily.remark) : tFamily.remark != null) return false;
         if (familyDesc != null ? !familyDesc.equals(tFamily.familyDesc) : tFamily.familyDesc != null) return false;
         if (familyArea != tFamily.familyArea) return false;
+        if (province != null ? !province.equals(tFamily.province) : tFamily.province != null) return false;
+        if (city != null ? !city.equals(tFamily.city) : tFamily.city != null) return false;
+        if (district != null ? !district.equals(tFamily.district) : tFamily.district != null) return false;
 
         return true;
     }
@@ -202,6 +245,9 @@ public class TFamily implements Serializable {
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (familyDesc != null ? familyDesc.hashCode() : 0);
         result = 31 * result + familyArea;
+        result = 31 * result + (province != null ? province.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
         return result;
     }
 }

@@ -1,8 +1,6 @@
 package com.witkey.familyTree.service.consoles;
 
-import com.witkey.familyTree.domain.TRole;
-import com.witkey.familyTree.domain.TUserBase;
-import com.witkey.familyTree.domain.TVolunteer;
+import com.witkey.familyTree.domain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -31,4 +29,10 @@ public interface ConsoleService {
     public int saveRole(TRole tRole);
 
     public int deleteRole(Map<String,Object> params);
+
+    public List<TMeritocratAttr> getMeritocratAttrList(Map<String,Object> params);
+
+    public List<Map<String, Object>> getMergeList(Map<String,Object> params);
+
+    public List<TFamily> getTargetMergeList(Map<String,Object> params);
 }

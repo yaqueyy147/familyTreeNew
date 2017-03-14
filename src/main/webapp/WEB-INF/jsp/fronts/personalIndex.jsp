@@ -35,7 +35,7 @@
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <h3>${family.familyFirstName}氏族谱（${family.id}）</h3>
+                        <h5>${family.familyFirstName}氏族谱（${family.id}）</h5>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>
@@ -91,11 +91,27 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="familyName" class="col-sm-2 control-label">家族属地</label>
+                            <div class="col-sm-10" data-toggle="distpicker">
+                                <select id="province" name="province" data-province="---- 选择省 ----"></select>
+                                <select id="city" name="city" data-city="---- 选择市 ----"></select>
+                                <select id="district" name="district" data-district="---- 选择区 ----"></select>
+                                <%--<select class="form-control" name="familyArea">--%>
+                                    <%--<option value="1">大陆</option>--%>
+                                    <%--<option value="2">香港</option>--%>
+                                    <%--<option value="3">台湾</option>--%>
+                                    <%--<option value="4">澳门</option>--%>
+                                    <%--<option value="5">其他</option>--%>
+                                <%--</select>--%>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="familyName" class="col-sm-2 control-label">家族简介</label>
                             <div class="col-sm-10">
                                 <textarea cols="30" rows="10" class="form-control" id="familyDesc" name="familyDesc"></textarea>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label">展示图片</label>
                             <div class="col-sm-10">
@@ -147,46 +163,51 @@
 <%@include file="common/springUrl.jsp"%>
 <%--<%@include file="common/footer.jsp" %>--%>
 <%@include file="common/commonJS.html"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 <script type="text/javascript">
-    $('#imgFile').uploadify({
-        'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-        'uploader'      : projectUrl + '/upload/uploadImg',
-        'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
-        'auto'          : true,
-        "formData"      : {targetFile : '/static/upload/familyImg'},
-        'queueID'       : 'progress_bar',
-        'fileObjName'   : 'uploadFile',
-        "buttonCursor"  : "hand",
-        "buttonText"    : "选择图片",
-        'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
-        'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
-        'onUploadSuccess' : function(file, data, response) {
-            var result = eval('(' + data + ')');
-            var imgPath = result.filePath;
-            $("#result_img").attr('src',imgPath);
-            $("#result_img").show();
-            $("#imgFile").hide();
-            $("#photoUrl").attr('value',imgPath);
-            $("#show_img").mouseover(function(){
-                $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
-            });
-            $("#show_img").mouseout(function(){
-                $("#result_img").attr('src',imgPath);
-            });
-            $("#result_img").click(function(){
-                $("#result_img").hide();
-                $("#imgFile").show();
-                $("#photoUrl").removeAttr('value');
-                $("#show_img").unbind('mouseover');
-                $("#show_img").unbind('mouseout');
+    $(function () {
 
-            });
-        },
-        onUploadError:function (file, errorCode, errorMsg, errorString) {
-            alert("error-->" + errorString);
-        }
+        $('#imgFile').uploadify({
+            'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
+            'uploader'      : projectUrl + '/upload/uploadImg',
+            'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
+            'auto'          : true,
+            "formData"      : {targetFile : '/static/upload/familyImg'},
+            'queueID'       : 'progress_bar',
+            'fileObjName'   : 'uploadFile',
+            "buttonCursor"  : "hand",
+            "buttonText"    : "选择图片",
+            'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+            'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+            'onUploadSuccess' : function(file, data, response) {
+                var result = eval('(' + data + ')');
+                var imgPath = result.filePath;
+                $("#result_img").attr('src',imgPath);
+                $("#result_img").show();
+                $("#imgFile").hide();
+                $("#photoUrl").attr('value',imgPath);
+                $("#show_img").mouseover(function(){
+                    $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+                });
+                $("#show_img").mouseout(function(){
+                    $("#result_img").attr('src',imgPath);
+                });
+                $("#result_img").click(function(){
+                    $("#result_img").hide();
+                    $("#imgFile").show();
+                    $("#photoUrl").removeAttr('value');
+                    $("#show_img").unbind('mouseover');
+                    $("#show_img").unbind('mouseout');
+
+                });
+            },
+            onUploadError:function (file, errorCode, errorMsg, errorString) {
+                alert("error-->" + errorString);
+            }
+        });
     });
 </script>
 </body>

@@ -16,45 +16,82 @@
 <body>
 <%@include file="common/header.jsp" %>
 <div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
-<c:forEach var="familyList" items="${familyList}">
-    <div id="mainlandFamily" class="panel panel-info">
-        <div class="panel-heading" style="cursor: pointer">
-            <c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>
-            <c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>
-            <c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>
-            <c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>
-            <div style="float: right;">
-                <i class="fa fa-chevron-up"></i>
-            </div>
+    <nav class="navbar navbar-default">
+    <form class="navbar-form navbar-left searchForm" role="search">
+        <div class="form-group">
+            <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
         </div>
-        <div class="panel-body">
-            <div class="row">
-                <c:forEach var="family" items="${familyList}">
+        <div class="form-group addressSelect" data-toggle="distpicker">
+            <select id="province" name="province" data-province="---- 选择省 ----"></select>
+            <select id="city" name="city" data-city="---- 选择市 ----"></select>
+            <select id="district" name="district" data-district="---- 选择区 ----"></select>
+        </div>
+        <button type="button" id="searchBtn" class="btn btn-default">查询</button>
+    </form>
+    </nav>
+<%--<c:forEach var="familyList" items="${familyList}">--%>
+    <%--<div id="mainlandFamily" class="panel panel-info">--%>
+        <%--<div class="panel-heading" style="cursor: pointer">--%>
+            <%--<c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>--%>
+            <%--<c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>--%>
+            <%--<c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>--%>
+            <%--<c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>--%>
+            <%--<div style="float: right;">--%>
+                <%--<i class="fa fa-chevron-up"></i>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="panel-body">--%>
+            <%--<div class="row">--%>
+                <%--<c:forEach var="family" items="${familyList}">--%>
 
-                    <div class="col-sm-6 col-md-2">
-                        <div class="thumbnail">
-                            <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
-                                <%--<img data-src="holder.js/300x300" alt="...">--%>
-                            <div class="caption">
-                                <h4>${family.familyFirstName}氏族谱（${family.id}）</h4>
-                                <p>状态：
-                                    <c:if test="${family.visitStatus == 0}">加密</c:if>
-                                    <c:if test="${family.visitStatus == 1}">开放</c:if>
-                                    <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
-                                </p>
-                                <p>${family.familyName}</p>
-                                <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
-                                        ${family.familyDesc}
-                                </p>
-                            </div>
-                        </div>
+                    <%--<div class="col-sm-3 col-md-2">--%>
+                        <%--<div class="thumbnail">--%>
+                            <%--<a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>--%>
+                                <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
+                            <%--<div class="caption">--%>
+                                <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
+                                <%--<p>状态：--%>
+                                    <%--<c:if test="${family.visitStatus == 0}">加密</c:if>--%>
+                                    <%--<c:if test="${family.visitStatus == 1}">开放</c:if>--%>
+                                    <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
+                                <%--</p>--%>
+                                <%--<p>${family.familyName}</p>--%>
+                                <%--<p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">--%>
+                                        <%--${family.familyDesc}--%>
+                                <%--</p>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+
+                <%--</c:forEach>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</c:forEach>--%>
+    <div class="row" id="familyContent">
+        <c:forEach var="family" items="${familyList}">
+
+            <div class="col-sm-3 col-md-2">
+                <div class="thumbnail">
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                        <%--<img data-src="holder.js/300x300" alt="...">--%>
+                    <div class="caption">
+                        <h6>${family.familyFirstName}氏族谱（${family.id}）</h6>
+                        <p>状态：
+                            <c:if test="${family.visitStatus == 0}">加密</c:if>
+                            <c:if test="${family.visitStatus == 1}">开放</c:if>
+                            <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
+                        </p>
+                        <p>${family.familyName}</p>
+                        <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                                ${family.familyDesc}
+                        </p>
                     </div>
-
-                </c:forEach>
+                </div>
             </div>
-        </div>
+
+        </c:forEach>
     </div>
-</c:forEach>
 </div>
 <!-- 族谱密码 Modal -->
 <div class="modal fade" id="visitPasswordModal" tabindex="-1" role="dialog" aria-labelledby="visitPasswordModal" aria-hidden="true">
@@ -82,6 +119,8 @@
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.html"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/index.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 </body>
