@@ -32,7 +32,20 @@ public interface ConsoleService {
 
     public List<TMeritocratAttr> getMeritocratAttrList(Map<String,Object> params);
 
+    public List<Map<String,Object>> getMeritocratList(Map<String,Object> params);
+
+    public int saveMeritocrat(TMeritocrat tMeritocrat);
+
+    public int deleteMeritocrat(Map<String,Object> params);
+
     public List<Map<String, Object>> getMergeList(Map<String,Object> params);
 
     public List<TFamily> getTargetMergeList(Map<String,Object> params);
+
+    public int rejectInclude(int mergeId,String rejectDesc,String auditMan);
+
+    public int savePointsRelation(TPointsDic tPointsDic);
+
+    public int deletePointsRelation(String ids);
+
 }

@@ -6,5 +6,6 @@ package com.witkey.familyTree.util;
 public class BaseUtil {
 
     public static final String DEFAULT_FAMILY_IMG = "/static/images/defaultFamily.jpg";
+    public static final String DEFAULT_MAN_IMG = "/static/images/defaultMan.png";
 
 }

@@ -23,6 +23,7 @@ body{
     float: left;
 }
 
-.searchForm .addressSelect select{
+.searchForm select{
     height:34px;
+    min-width: 100px;
 }

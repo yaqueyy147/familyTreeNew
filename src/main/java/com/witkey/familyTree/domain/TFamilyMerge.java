@@ -2,25 +2,40 @@ package com.witkey.familyTree.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/3/14.
  */
 @Entity
-@Table(name = "t_family_merge", schema = "family_tree", catalog = "")
+@Table(name = "t_family_merge", schema = "family_tree")
 public class TFamilyMerge {
     private int id;
     private Integer primaryFamilyId;
     private Integer targetFamilyId;
     private Integer state;
+    private String rejectDesc;
     private String applyMan;
-    private Timestamp applyTime;
+    private Date applyTime;
     private String auditMan;
-    private Timestamp auditTime;
+    private Date auditTime;
     private String remark;
 
+    public TFamilyMerge() {
+
+    }
+
+    public TFamilyMerge(Integer primaryFamilyId, Integer targetFamilyId, Integer state, String applyMan, Date applyTime) {
+        this.primaryFamilyId = primaryFamilyId;
+        this.targetFamilyId = targetFamilyId;
+        this.state = state;
+        this.applyMan = applyMan;
+        this.applyTime = applyTime;
+    }
+
     @Id
-    @Column(name = "id")
+    @Column(name = "id", unique = true)
+    @GeneratedValue
     public int getId() {
         return id;
     }
@@ -71,11 +86,11 @@ public class TFamilyMerge {
 
     @Basic
     @Column(name = "apply_time")
-    public Timestamp getApplyTime() {
+    public Date getApplyTime() {
         return applyTime;
     }
 
-    public void setApplyTime(Timestamp applyTime) {
+    public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
     }
 
@@ -91,11 +106,11 @@ public class TFamilyMerge {
 
     @Basic
     @Column(name = "audit_time")
-    public Timestamp getAuditTime() {
+    public Date getAuditTime() {
         return auditTime;
     }
 
-    public void setAuditTime(Timestamp auditTime) {
+    public void setAuditTime(Date auditTime) {
         this.auditTime = auditTime;
     }
 
@@ -109,6 +124,16 @@ public class TFamilyMerge {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "reject_desc")
+    public String getRejectDesc() {
+        return rejectDesc;
+    }
+
+    public void setRejectDesc(String rejectDesc) {
+        this.rejectDesc = rejectDesc;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,11 +142,12 @@ public class TFamilyMerge {
         TFamilyMerge that = (TFamilyMerge) o;
 
         if (id != that.id) return false;
-        if (primaryFamilyId != null ? !primaryFamilyId.equals(that.primaryFamilyId) : that.primaryFamilyId != null)
+        if (primaryFamilyId != that.primaryFamilyId)
             return false;
-        if (targetFamilyId != null ? !targetFamilyId.equals(that.targetFamilyId) : that.targetFamilyId != null)
+        if (targetFamilyId != that.targetFamilyId)
             return false;
-        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+        if (rejectDesc != null ? !rejectDesc.equals(that.rejectDesc) : that.rejectDesc != null) return false;
+        if (state != that.state) return false;
         if (applyMan != null ? !applyMan.equals(that.applyMan) : that.applyMan != null) return false;
         if (applyTime != null ? !applyTime.equals(that.applyTime) : that.applyTime != null) return false;
         if (auditMan != null ? !auditMan.equals(that.auditMan) : that.auditMan != null) return false;
@@ -134,9 +160,10 @@ public class TFamilyMerge {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (primaryFamilyId != null ? primaryFamilyId.hashCode() : 0);
-        result = 31 * result + (targetFamilyId != null ? targetFamilyId.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + primaryFamilyId;
+        result = 31 * result + targetFamilyId;
+        result = 31 * result + (rejectDesc != null ? rejectDesc.hashCode() : 0);
+        result = 31 * result + state;
         result = 31 * result + (applyMan != null ? applyMan.hashCode() : 0);
         result = 31 * result + (applyTime != null ? applyTime.hashCode() : 0);
         result = 31 * result + (auditMan != null ? auditMan.hashCode() : 0);

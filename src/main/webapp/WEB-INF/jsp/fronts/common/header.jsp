@@ -10,7 +10,7 @@
     <div class="container">
         <div class="userInfo">
             <a href="/familyTree/index">首页</a>&nbsp;|&nbsp;
-            <a href="/familyTree/meritorcat">何氏英才录</a>&nbsp;|&nbsp;
+            <a href="/familyTree/meritocrat">何氏英才录</a>&nbsp;|&nbsp;
             <a href="/familyTree/pointsRanking">积分排行榜</a>&nbsp;|&nbsp;
             <c:if test="${not empty userInfo}">
                 【欢迎您，

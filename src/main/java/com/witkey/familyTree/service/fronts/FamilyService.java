@@ -41,7 +41,7 @@ public interface FamilyService {
     public TPeople getPeopleInfo(int peopleId);
 
     //查询积分对应关系
-    public List<TPointsDic> getPointsRelation(int type);
+    public List<TPointsDic> getPointsRelation(int type,int state);
 
     //充值或者刷新积分
     public int setPoints(Object object,int type);
@@ -52,4 +52,18 @@ public interface FamilyService {
     //获取英才录
     public List<Map<String,Object>> getMeritocrat(Map<String,Object> params);
 
+    //根据条件获取英才总数
+    public int getTotalMeritocrat(Map<String,Object> params);
+
+    //获取所有英才的属地
+    public List<Map<String,Object>> getMeritocratArea();
+
+    //根据条件从t_people表中查询familyID
+    public List<Map<String,Object>> getFamilyIdForMerge(Map<String,Object> params);
+
+    //记录申请收录
+    public int saveInclude(TFamilyMerge tFamilyMerge);
+
+    //查询收录情况
+    public List<TFamilyMerge> getMergeList(Map<String,Object> params);
 }

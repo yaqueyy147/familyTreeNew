@@ -1,0 +1,29 @@
+body{
+    background: url("/static/images/bag2.jpg") no-repeat;
+    filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+    -moz-background-size:cover;
+    background-size:cover;
+}
+
+.searchForm select{
+    height:34px;
+    min-width: 100px;
+}
+
+#meritocratDiv{
+    overflow: auto;
+    position: relative;
+}
+#pageChanger{
+    position: absolute;
+    bottom: -25px;
+    height: 30px;
+    background-color: #ffffff;
+    width: 98%;
+}
+
+.active{
+    color: #2a6496;
+    text-decoration: underline;
+    cursor: default;
+}

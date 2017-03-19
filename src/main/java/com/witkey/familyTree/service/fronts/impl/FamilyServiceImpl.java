@@ -65,6 +65,13 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Resource
+    private TFamilyMergeDao tFamilyMergeDao;
+
+    public void settFamilyMergeDao(TFamilyMergeDao tFamilyMergeDao) {
+        this.tFamilyMergeDao = tFamilyMergeDao;
+    }
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -166,20 +173,35 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TPeople> getPeopleList(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
+
+        String sql = "select * from t_people where 1=1";
+
         if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
-            filter.put("familyId",params.get("familyId"));
+            sql += " and family_id=" + params.get("familyId");
+//            filter.put("familyId",params.get("familyId"));
         }
         if(!CommonUtil.isBlank(params.get("peopleType")) && "1".equals(params.get("peopleType"))){
-            filter.put("peopleType",params.get("peopleType"));
+            sql += " and people_type='" + params.get("peopleType") + "'";
+//            filter.put("peopleType",params.get("peopleType"));
         }
         if(!CommonUtil.isBlank(params.get("peopleName"))){
-            filter.put("name",params.get("peopleName"));
+            sql += " and name='" + params.get("peopleName") + "'";
+//            filter.put("name",params.get("peopleName"));
         }
         if(!CommonUtil.isBlank(params.get("generation"))){
-            filter.put("generation",params.get("generation"));
+            sql += " and generation='" + params.get("generation") + "'";
+//            filter.put("generation",params.get("generation"));
         }
 
-        List<TPeople> list = tPeopleDao.find(filter);
+        if(!CommonUtil.isBlank(params.get("orderBy"))){
+            sql += " " + params.get("orderBy");
+        }
+        if(!CommonUtil.isBlank(params.get("limit"))){
+            sql += " " + params.get("limit");
+        }
+
+//        List<TPeople> list = tPeopleDao.find(filter);
+        List<TPeople> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPeople>(TPeople.class));
         return list;
     }
 
@@ -246,11 +268,18 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public List<TPointsDic> getPointsRelation(int type) {
+    public List<TPointsDic> getPointsRelation(int type,int state) {
 
-        String sql = "select * from t_points_dic where state=1 and points_type=?";
+        String sql = "select * from t_points_dic where 1=1 ";
 
-        List<TPointsDic> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPointsDic>(TPointsDic.class),type);
+        if(state > 0){
+            sql += "and state='" + state + "'";
+        }
+        if(type > 0){
+            sql += "and points_type='" + type + "'";
+        }
+
+        List<TPointsDic> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPointsDic>(TPointsDic.class));
 
         return list;
     }
@@ -314,11 +343,111 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<Map<String, Object>> getMeritocrat(Map<String, Object> params) {
 
-        String sql = "select t1.meritocrat_name,t1.meritocrat_desc,t1.meritocrat_attr_id,t2.meritocrat_attr ";
+        String sql = "select t1.meritocrat_name,t1.meritocrat_desc,t1.meritocrat_attr_id,";
+        sql += " t1.meritocrat_area,t1.meritocrat_addr,t1.post_code,t1.phone,t1.fax,t1.photo";
+        sql += ",t2.meritocrat_attr ";
         sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t2.state=1";
 
+        if(!CommonUtil.isBlank(params)){
+
+            if(!CommonUtil.isBlank(params.get("meritocrat_attr_id"))){
+                sql += " and meritocrat_attr_id='" + params.get("meritocrat_attr_id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_name"))){
+                sql += " and meritocrat_name like'%" + params.get("meritocrat_name") + "%'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_area"))){
+                sql += " and meritocrat_area='" + params.get("meritocrat_area") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("pageSize")) && !CommonUtil.isBlank(params.get("beginRow"))){
+
+                sql += " limit " + params.get("beginRow") + "," + params.get("pageSize");
+            }
+        }
+
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> map : list) {
+            String photoUrl = map.get("photo") + "";
+            if(CommonUtil.isBlank(photoUrl)){
+                map.put("photo",BaseUtil.DEFAULT_MAN_IMG);
+            }
+            else if(!CommonUtil.isFile(photoUrl)){
+                map.put("photo",BaseUtil.DEFAULT_MAN_IMG);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public int getTotalMeritocrat(Map<String,Object> params){
+
+        int total = 0;
+
+        String sql = " select count(*) total from t_meritocrat where 1=1";
+
+        if(!CommonUtil.isBlank(params)){
+
+            if(!CommonUtil.isBlank(params.get("meritocrat_attr_id"))){
+                sql += " and meritocrat_attr_id='" + params.get("meritocrat_attr_id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_name"))){
+                sql += " and meritocrat_name='" + params.get("meritocrat_name") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_area"))){
+                sql += " and meritocrat_area='" + params.get("meritocrat_area") + "'";
+            }
+
+        }
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        if(list != null && list.size() > 0){
+            total = CommonUtil.parseInt(list.get(0).get("total"));
+        }
+
+        return total;
+    }
+
+    @Override
+    public List<Map<String, Object>> getMeritocratArea() {
+
+        String sql = "select distinct meritocrat_area from t_meritocrat";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
         return list;
     }
+
+    @Override
+    public List<Map<String, Object>> getFamilyIdForMerge(Map<String, Object> params) {
+        String sql = "select distinct family_id from t_people where family_id<>" + params.get("familyId");
+
+        if(!CommonUtil.isBlank(params.get("peopleType")) && "1".equals(params.get("peopleType"))){
+            sql += " and people_type='" + params.get("peopleType") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("peopleName"))){
+            sql += " and name='" + params.get("peopleName") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("generation"))){
+            sql += " and generation='" + params.get("generation") + "'";
+        }
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @Override
+    public int saveInclude(TFamilyMerge tFamilyMerge) {
+
+        return CommonUtil.parseInt(tFamilyMergeDao.create(tFamilyMerge));
+    }
+
+    @Override
+    public List<TFamilyMerge> getMergeList(Map<String, Object> params) {
+
+        List<TFamilyMerge> list = tFamilyMergeDao.find(params);
+
+        return list;
+    }
+
 }

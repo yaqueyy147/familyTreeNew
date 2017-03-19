@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/12/13 0013.
@@ -28,7 +29,7 @@ public class TUserBase implements Serializable {
     private String userEmail;
     private String userQq;
     private String userWechart;
-    private Timestamp createTime;
+    private Date createTime;
     private String createMan;
 
     @Id
@@ -201,11 +202,11 @@ public class TUserBase implements Serializable {
 
     @Basic
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

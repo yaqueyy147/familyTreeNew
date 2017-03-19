@@ -4,6 +4,9 @@ import com.witkey.familyTree.dao.consoles.TMeritocratAttrDao;
 import com.witkey.familyTree.dao.consoles.TRoleDao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.consoles.TUserBaseDao;
+import com.witkey.familyTree.dao.fronts.TFamilyMergeDao;
+import com.witkey.familyTree.dao.fronts.TMeritocratDao;
+import com.witkey.familyTree.dao.fronts.TPointsDicDao;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
@@ -11,6 +14,7 @@ import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,6 +54,27 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     public void settMeritocratAttrDao(TMeritocratAttrDao tMeritocratAttrDao) {
         this.tMeritocratAttrDao = tMeritocratAttrDao;
+    }
+
+    @Resource
+    private TMeritocratDao tMeritocratDao;
+
+    public void settMeritocratDao(TMeritocratDao tMeritocratDao) {
+        this.tMeritocratDao = tMeritocratDao;
+    }
+
+    @Resource
+    private TFamilyMergeDao tFamilyMergeDao;
+
+    public void settFamilyMergeDao(TFamilyMergeDao tFamilyMergeDao) {
+        this.tFamilyMergeDao = tFamilyMergeDao;
+    }
+
+    @Resource
+    private TPointsDicDao tPointsDicDao;
+
+    public void settPointsDicDao(TPointsDicDao tPointsDicDao) {
+        this.tPointsDicDao = tPointsDicDao;
     }
 
     @Autowired
@@ -203,26 +228,110 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public List<Map<String,Object>> getMeritocratList(Map<String, Object> params) {
+
+        String sql = "select t1.*,t2.meritocrat_attr";
+        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t2.state=1";
+
+//        List<TMeritocrat> list = tMeritocratDao.find(params);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @Override
+    public int saveMeritocrat(TMeritocrat tMeritocrat) {
+        int i=0;
+        if(tMeritocrat.getId() == 0){
+            i = CommonUtil.parseInt(tMeritocratDao.create(tMeritocrat));
+        }else{
+            tMeritocratDao.save(tMeritocrat);
+            i ++ ;
+        }
+        return i;
+    }
+
+    @Override
+    public int deleteMeritocrat(Map<String, Object> params) {
+
+        String ids = params.get("ids") + "";
+        String[] id = ids.split(",");
+
+        String sql = "delete from t_meritocrat where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+
+        return ii;
+    }
+
+    @Override
     public List<Map<String, Object>> getMergeList(Map<String, Object> params) {
 
-        String sql = "select tMerge.id mergeId, tPrimary primaryId, tTarget.id targetId";
-        sql += " ,tPrimary.family_name primaryName, tTarget.family_name targetName ";
-        sql += " from t_family tPrimary, t_family tTarget, t_family_merge tMerge";
-        sql += " where tPrimary.id=tMerge.primary_family_id and tTarget.id=tMerge.target_family_id";
+//        String sql = "select tMerge.id mergeId, tPrimary.id primaryId, tTarget.id targetId";
+//        sql += " ,tPrimary.family_name primaryName, tTarget.family_name targetName ";
+//        sql += " from t_family tPrimary, t_family tTarget, t_family_merge tMerge";
+//        sql += " where tPrimary.id=tMerge.primary_family_id and tTarget.id=tMerge.target_family_id";
 
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        String sql = "select distinct tPrimary.*,tMerge.id mergeId,tMerge.state,tMerge.apply_man";
+        sql += ",tMerge.state mergeState";
+        sql += " from t_family tPrimary, t_family_merge tMerge";
+        sql += " where tPrimary.id=tMerge.primary_family_id";
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString());
 
         return list;
     }
 
     @Override
     public List<TFamily> getTargetMergeList(Map<String, Object> params) {
-        String sql = "select * from t_family where id=";
-        sql += "(select target_family_id from t_family_merge where id=?)";
+        String sql = "select * from t_family where id in ";
+        sql += "(select target_family_id from t_family_merge where primary_family_id=?)";
 
-        List<TFamily> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TFamily>(TFamily.class));
+        List<TFamily> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TFamily>(TFamily.class),params.get("primaryFamilyId"));
 
         return list;
+    }
+
+    @Override
+    public int rejectInclude(int mergeId,String rejectDesc,String auditMan) {
+        String sql = "update t_family_merge set state=3,reject_desc=?,audit_man=?,audit_time=now() where id=?";
+
+        int i = jdbcTemplate.update(sql,rejectDesc,auditMan,mergeId);
+
+        return i;
+    }
+
+    @Override
+    public int savePointsRelation(TPointsDic tPointsDic) {
+        int i = 0;
+        if(tPointsDic.getId() <= 0 || CommonUtil.isBlank(tPointsDic.getId())){
+            //现将同意类型的积分关系设置为不可用
+            String sql = "update t_points_dic set state=2 where point_type=?";
+            jdbcTemplate.update(sql,tPointsDic.getPointsType());
+            //新创建一个积分对应关系
+            i = CommonUtil.parseInt(tPointsDicDao.create(tPointsDic));
+
+        }else{
+            tPointsDicDao.save(tPointsDic);
+            i ++ ;
+        }
+        return 0;
+    }
+
+    @Override
+    public int deletePointsRelation(String ids){
+        String[] id = ids.split(",");
+
+        String sql = "delete from t_points_dic where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+
+        return ii;
     }
 }
 

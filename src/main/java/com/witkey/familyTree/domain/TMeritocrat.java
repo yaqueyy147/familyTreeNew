@@ -12,7 +12,11 @@ public class TMeritocrat {
     private String meritocratName;
     private String meritocratDesc;
     private String meritocratArea;
+    private String meritocratAddr;
     private int meritocratAttrId;
+    private String postCode;
+    private String phone;
+    private String fax;
     private String createMan;
     private String createTime;
     private String remark;
@@ -98,6 +102,45 @@ public class TMeritocrat {
         this.meritocratAttrId = meritocratAttrId;
     }
 
+    @Basic
+    @Column(name = "meritocrat_addr")
+    public String getMeritocratAddr() {
+        return meritocratAddr;
+    }
+
+    public void setMeritocratAddr(String meritocratAddr) {
+        this.meritocratAddr = meritocratAddr;
+    }
+
+    @Basic
+    @Column(name = "post_code")
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    @Basic
+    @Column(name = "phone")
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Basic
+    @Column(name = "fax")
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,7 +156,12 @@ public class TMeritocrat {
             return false;
         if (meritocratArea != null ? !meritocratArea.equals(that.meritocratArea) : that.meritocratArea != null)
             return false;
+        if (meritocratAddr != null ? !meritocratAddr.equals(that.meritocratAddr) : that.meritocratAddr != null)
+            return false;
         if (meritocratAttrId != that.meritocratAttrId) return false;
+        if (postCode != null ? !postCode.equals(that.postCode) : that.postCode != null) return false;
+        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
+        if (fax != null ? !fax.equals(that.fax) : that.fax != null) return false;
         if (createMan != null ? !createMan.equals(that.createMan) : that.createMan != null) return false;
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
@@ -127,7 +175,11 @@ public class TMeritocrat {
         result = 31 * result + (meritocratName != null ? meritocratName.hashCode() : 0);
         result = 31 * result + (meritocratDesc != null ? meritocratDesc.hashCode() : 0);
         result = 31 * result + (meritocratArea != null ? meritocratArea.hashCode() : 0);
+        result = 31 * result + (meritocratAddr != null ? meritocratAddr.hashCode() : 0);
         result = 31 * result + meritocratAttrId;
+        result = 31 * result + (postCode != null ? postCode.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (fax != null ? fax.hashCode() : 0);
         result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);

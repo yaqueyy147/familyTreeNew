@@ -8,6 +8,8 @@
 		<property name="tUserBaseDao" ref="tUserBaseDao" />
 		<property name="tRoleDao" ref="tRoleDao" />
 		<property name="tMeritocratAttrDao" ref="tMeritocratAttrDao" />
+		<property name="tMeritocratDao" ref="tMeritocratDao" />
+		<property name="tFamilyMergeDao" ref="tFamilyMergeDao" />
 	</bean>
 
 </beans>

@@ -10,6 +10,7 @@
 		<property name="tUserPointsDao" ref="tUserPointsDao" />
 		<property name="tCompanyPointsDao" ref="tCompanyPointsDao" />
 		<property name="tMeritocratDao" ref="tMeritocratDao" />
+		<property name="tFamilyMergeDao" ref="tFamilyMergeDao" />
 	</bean>
 	
 </beans>

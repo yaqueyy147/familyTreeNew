@@ -1,6 +1,8 @@
 /**
  * Created by suyx on 2016/12/21 0021.
  */
+var targetFamily;
+var targetFamilyPeople;
 $(function () {
 
     $("#addPeople").click(function () {
@@ -56,6 +58,13 @@ $(function () {
 
     $("#savePeople").click(function () {
 
+        if($("#generation").val() > 1){
+            if($("#fatherId").val() == 0){
+                alert("请选择一个父亲，如果还没有父级，请先添加父级族人或者第一代族人！");
+                return;
+            }
+        }
+
         var formData = $("#peopleForm").serializeArray();
         var testData = {};
         for (var item in formData) {
@@ -95,9 +104,41 @@ $(function () {
         $("#id").val(0);
     });
 
-    $("#generation").bind("propertychange input",function(){
+    $("#generation").change(function(){
         var generation = $(this).val();
         initParent(generation-1);
+    });
+
+    // $("#toInclude").click(function () {
+    //     loadTargetFamily(familyId);
+    //
+    // });
+
+    $("#toInclude").click(function () {
+        if($(this).text() == "已申请收录"){
+            alert("已申请收录，不能再次申请！");
+            return;
+        }
+        var params = {};
+        params.primaryFamilyId = familyId;
+        $.ajax({
+            type:'post',
+            url: projectUrl + '/family/familyMerge',
+            dataType: 'json',
+            data:params,
+            async:true,
+            success:function (data) {
+                if(data.code >= 1){
+                    alert("申请成功!");
+                    $("#includeModal").modal('hide');
+                    $("#includeForm")[0].reset();
+                    $(this).text("已申请收录");
+                }
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
     });
 
 });
@@ -118,11 +159,17 @@ function addDiyDom(treeId, treeNode) {
     var mateName = treeNode.mateName;
     var editStr = "";
     if($.trim(mateName).length > 0){
-        editStr += "  配偶:" + treeNode.mateName;
+        var mates = mateName.split(",");
+        editStr += "配偶:";
+        for(var i=0;i<mates.length;i++){
+            var mate = mates[i].split("--");
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+        }
     }
 
-    editStr += "<a id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
-    editStr += "<a id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
+    // editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">异议</a>";
     aObj.after(editStr);
 }
 
@@ -167,15 +214,13 @@ function initParent(generation){
         success:function (data) {
             var fathers = data.fatherList;
             var mothers = data.motherList;
-            var fatherHtml = "";
-            var motherHtml = "";
+            var fatherHtml = "<option value='0'>无</option>";
+            var motherHtml = "<option value='0'>无</option>";
             if(fathers.length > 0){
                 for(var i=0;i<fathers.length;i++){
                     var ii = fathers[i];
                     fatherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
-            }else{
-                fatherHtml += "<option value='0'>无</option>";
             }
             $("#fatherId").html(fatherHtml);
 
@@ -184,8 +229,6 @@ function initParent(generation){
                     var ii = mothers[i];
                     motherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
-            }else{
-                motherHtml += "<option value='0'>无</option>";
             }
             $("#motherId").html(motherHtml);
 
@@ -212,9 +255,12 @@ function initPeopleData(familyId){
         async:false,
         data:{familyId : familyId},
         success:function (data) {
-
+            // var generation = 1;
             for(var i=0;i<data.length;i++) {
                 var ii = data[i];
+                // if(ii.generation > generation){
+                //     generation = ii.generation;
+                // }
                 var node = {};
                 node.id = ii.id;
                 node.pId = ii.fatherId;
@@ -223,15 +269,21 @@ function initPeopleData(familyId){
                 var mateName = "";
                 for(var j=0;j<mateList.length;j++){
                     var jj = mateList[j];
-                    mateName += "  " + jj.name;
+                    mateName += "," + jj.name + "--" + jj.id;
                 }
-                node.mateName = mateName;
+                node.mateName = mateName.substring(1);
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 if(ii.fatherId == 0){
                     node.open = true;
                 }
                 zNodes[i] = node;
+
             }
+            // var generationHtml = "";
+            // for(var i=1;i<=generation;i++){
+            //     generationHtml += "<option value='" + i + "'>" + i + "</option>";
+            // }
+            // $("#generation").html(generationHtml);
 
         }
     });
@@ -240,13 +292,99 @@ function initPeopleData(familyId){
 }
 
 function zTreeOnClick(event, treeId, treeNode) {
-    initParent(treeNode.level);
-    var params = {"peopleId":treeNode.id};
+    editPeople(treeNode.id,treeNode.level);
+    // initParent(treeNode.level);
+    // var params = {"peopleId":treeNode.id};
+    // var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    // tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    // tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    // $("#peopleForm").populateForm(tPeople);
+    // $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    // $("#addModal").modal('show');
+
+}
+
+function editPeople(peopleId,generation){
+    initParent(generation);
+    var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
     $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
     $("#addModal").modal('show');
+}
 
+function loadTargetFamily(familyId){
+
+    var peopleCC = $.fn.zTree.getZTreeObj("familyTree").getNodes();;
+
+    if(peopleCC.length <= 0){
+        alert("您的家族还没有族人，不能申请收录!");
+        return;
+    }
+
+    $.ajax({
+        type:'post',
+        url:projectUrl + '/family/familyMatch',
+        dataType:'json',
+        async:true,
+        data:{familyId : familyId},
+        success:function (data) {
+            if(data.code == 1){
+                var targetFamilyList = data.resultFamilyList;
+                if(targetFamilyList && targetFamilyList.length > 0){
+                    var html = "<label for='targetFamily'>请选择收录的目标族谱</label>";
+                    html += "<select class='form-control' id='targetFamily' name='targetFamily' onchange='selectTarget(this)'>";
+                    for(var i=0;i<targetFamilyList.length;i++) {
+                        var ii = targetFamilyList[i];
+
+                        html += "<option value='" + ii.id + "' family-desc='" + ii.familyDesc + "'>" + ii.familyName + "(" + ii.id + ")" + "</option>";
+                    }
+                    html += "</select>";
+                    $("#targetFamilyDiv").html(html);
+                    $("#forInclude").show();
+                }else{
+                    $("#targetFamilyDiv").html("没有与您族谱相匹配的其他族谱，无法申请收录！");
+                    $("#forInclude").hide();
+                }
+            }else if(data.code == -1){
+                $("#targetFamilyDiv").html("您的家族还没有族人，无法申请收录！");
+                $("#forInclude").hide();
+            }
+            else if(data.code == -2){
+                $("#targetFamilyDiv").html("您至少需要有两代人才能找到与您族谱相匹配的其他族谱，无法申请收录！");
+                $("#forInclude").hide();
+            }
+            $("#includeModal").modal("show");
+            selectTarget($("#targetFamilyDiv select"));
+        }
+    });
+}
+
+function selectTarget(obj) {
+    var familyId = $(obj).val();
+
+    var familyDesc = $(obj).find("option:selected").attr("family-desc");
+    $.ajax({
+        type:'post',
+        url:projectUrl + '/family/getPeopleList',
+        dataType:'json',
+        async:false,
+        data:{familyId : familyId,orderBy:"order by generation asc",limit:"limit 0,2"},
+        success:function (data) {
+            var html = "<p>选择的目标族谱前两代人：";
+            for(var i=0;i<data.length;i++){
+                var ii = data[i];
+                html += ii.name + ",";
+            }
+            html = html.substring(0,html.length - 1);
+            html += "</p>";
+            if($.trim(familyDesc).length > 0){
+                html += "<p>选择的家族描述：" + familyDesc + "</p>";
+            }
+
+            $(obj).parent().append(html);
+        }
+    });
 }

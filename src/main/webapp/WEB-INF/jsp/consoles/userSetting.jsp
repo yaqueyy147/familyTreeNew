@@ -27,7 +27,7 @@
 <div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
     <div style="padding:10px 40px 20px 40px">
         <form id="userInfoForm" method="post">
-            <input type="hidden" id="userId" name="id" value="0" />
+            <input class="easyui-validatebox" type="hidden" id="userId" name="id" value="0" />
             <table cellpadding="5">
                 <tr>
                     <td>账号:</td>

@@ -39,6 +39,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.fronts.TFamilyMergeDao" id="tFamilyMergeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!-- consoles -->
 	<bean class="com.witkey.familyTree.dao.consoles.TVolunteerDao" id="tVolunteerDao">
 		<property name="sessionFactory" ref="sessionFactory" />

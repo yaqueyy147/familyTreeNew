@@ -121,6 +121,12 @@ public class FamilyController {
             model.addAttribute("canOperate",1);
         }
 
+        //查询家族的收录情况
+        List<TFamilyMerge> listMerge = familyService.getMergeList(map);
+        if(listMerge != null && listMerge.size() > 0){
+            model.addAttribute("merge",listMerge.get(0));
+        }
+
         return new ModelAndView("/fronts/viewFamilyTree");
     }
 
@@ -141,18 +147,16 @@ public class FamilyController {
 
     /**
      * 根据家族ID获取家族成员
-     * @param familyId
+     * @param params
      * @return
      */
     @RequestMapping(value = "/getPeopleList")
     @ResponseBody
-    public List<Map<String,Object>> getPeopleList(int familyId){
+    public List<Map<String,Object>> getPeopleList(@RequestParam Map<String,Object> params){
 
         //查询族人
-        Map<String,Object> paramss = new HashMap<>();
-        paramss.put("familyId",familyId);
-        paramss.put("peopleType",1);
-        List<TPeople> listPeople = familyService.getPeopleList(paramss);
+        params.put("peopleType",1);
+        List<TPeople> listPeople = familyService.getPeopleList(params);
 
         List<Map<String,Object>> list = new ArrayList<>();
 
@@ -202,8 +206,8 @@ public class FamilyController {
             tPeople.setId(peopleId);
             //添加积分
             //获取积分对应关系
-            List<TPointsDic> listDic = familyService.getPointsRelation(1);
-            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue());
+            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),1);
 
             familyService.setPoints(tUserPoints,1);
 
@@ -241,31 +245,109 @@ public class FamilyController {
         paramss.put("familyId",familyId);
         paramss.put("peopleType",2);
 
-        List<TPeople> listPeople = familyService.getPeopleList(paramss);
-        Map<String,List<TPeople>> tempMap = new HashMap<String,List<TPeople>>();
-        for (TPeople tPeople : listPeople) {
-            //比对前两代人的相同度
-            if(tPeople.getGeneration() <= 2){
-                paramss.put("familyId",tPeople.getFamilyId());
-                paramss.put("peopleName",tPeople.getName());
-                paramss.put("generation",tPeople.getGeneration());
-                //查询前两代
-                List<TPeople> list1 = familyService.getPeopleList(paramss);
+        paramss.put("orderBy","order by generation asc");
 
-                tempMap.put("peopleList" + tPeople.getGeneration(),list1);
+        //查询第一代人
+        paramss.put("generation",1);
+        List<TPeople> listPeople1 = familyService.getPeopleList(paramss);
+        //查询第二代人
+        paramss.put("generation",2);
+        List<TPeople> listPeople2 = familyService.getPeopleList(paramss);
+
+        //将第一代人 姓名 作为条件查找有相同的第一代人的家族，记录familyId
+        Map<Object,Object[]> temp1 = new HashMap<Object,Object[]>();
+        if(listPeople1 != null && listPeople1.size() > 0){
+            for (TPeople tPeople : listPeople1) {
+                paramss.put("familyId",tPeople.getFamilyId());
+                paramss.put("peopleType",2);
+                paramss.put("generation",1);
+                paramss.put("name",tPeople.getName());
+                List<Map<String,Object>> familyIdTemp = familyService.getFamilyIdForMerge(paramss);
+                for(Map<String,Object> map : familyIdTemp){
+                    String fId = map.get("family_id") + "";
+                    if(fId.equals(tPeople.getFamilyId())){
+                        continue;
+                    }
+                    int num = 1;
+                    if(!CommonUtil.isBlank(temp1.get(fId))){
+                        num = CommonUtil.parseInt(temp1.get(fId)[1]);
+                        if(temp1.get(fId)[0].equals(fId)){
+                            num ++;
+                        }
+                    }
+                    temp1.put(fId,new Object[]{fId,num});
+                }
+
             }
+        }else{//如果第一代人不存在，返回
+            result.put("code","-1");
+            return result;
         }
 
-        //对比前两代匹配结果，如果都存在的，则加入结果集
-        List<TPeople> resultList = new ArrayList<TPeople>();
-        for (TPeople tPeople : tempMap.get("peopleList1")) {
-            for (TPeople tPeople1 : tempMap.get("peopleList2")) {
-                if(tPeople.getId() == tPeople1.getId()){
-                    resultList.add(tPeople);
+        //将第二代人 姓名 作为条件查找有相同的第二代人的家族，记录familyId
+        Map<Object,Object[]> temp2 = new HashMap<Object,Object[]>();
+        if(listPeople2 != null && listPeople2.size() > 0){
+            for (TPeople tPeople : listPeople2) {
+                paramss.put("familyId",tPeople.getFamilyId());
+                paramss.put("peopleType",2);
+                paramss.put("generation",2);
+                paramss.put("name",tPeople.getName());
+                List<Map<String,Object>> familyIdTemp = familyService.getFamilyIdForMerge(paramss);
+                for(Map<String,Object> map : familyIdTemp){
+                    String fId = map.get("family_id") + "";
+                    if(fId.equals(tPeople.getFamilyId())){
+                        continue;
+                    }
+                    int num = 1;
+                    if(!CommonUtil.isBlank(temp2.get(fId))){
+                        num = CommonUtil.parseInt(temp2.get(fId)[1]);
+                        if(temp2.get(fId)[0].equals(fId)){
+                            num ++;
+                        }
+                    }
+
+                    temp2.put(fId,new Object[]{fId,num});
+                }
+            }
+        }else{//如果第二代人不存在，返回
+            result.put("code","-2");
+            return result;
+        }
+
+        List<TFamily> resultFamily = new ArrayList<TFamily>();
+        for(Object key1 : temp1.keySet()){
+            //如果匹配的第一代记录的当前目标家族的数量大于原第一代人数量的一半，即是有大多数人都能匹配
+            if(CommonUtil.parseInt(temp1.get(key1)[1]) > (listPeople1.size() / 2)){
+                for(Object key2 : temp2.keySet()){
+                    //如果与第二代匹配的家族有与第一代匹配的家族相同的，并且匹配的第二代记录的当前目标家族的数量大于原第二代人数量的一半，即是有大多数人都能匹配
+                    if(key1.equals(key2) && CommonUtil.parseInt(temp2.get(key2)[1]) > (listPeople2.size() / 2)){
+                        //则认为当前匹配的家族与原选择的家族是相匹配的，可以进行收录/合并
+                        resultFamily.add(familyService.getFamilyFromId(CommonUtil.parseInt(key2)));
+                    }
                 }
             }
         }
-        result.put("resultPeopleList",resultList);
+        result.put("code",1);
+        result.put("resultFamilyList",resultFamily);
+        return result;
+    }
+
+    @RequestMapping(value = "/familyMerge")
+    @ResponseBody
+    public Map<String,Object> familyMerge(HttpServletRequest request, @RequestParam Map<String,Object> params) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        TFamilyMerge tFamilyMerge = new TFamilyMerge();
+        tFamilyMerge.setPrimaryFamilyId(CommonUtil.parseInt(params.get("primaryFamilyId")));
+        tFamilyMerge.setTargetFamilyId(CommonUtil.parseInt(params.get("targetFamilyId")));
+        tFamilyMerge.setState(2);
+        tFamilyMerge.setApplyMan(jsonUser.get("userName") + "");
+        tFamilyMerge.setApplyTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+
+        int i = familyService.saveInclude(tFamilyMerge);
+
+        result.put("code",i);
         return result;
     }
 

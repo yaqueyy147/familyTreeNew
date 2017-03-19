@@ -55,7 +55,12 @@ $(function () {
     };
 
     $("#savePeople").click(function () {
-
+        if($("#generation").val() > 1){
+            if($("#fatherId").val() == 0){
+                alert("请选择一个父亲，如果还没有父级，请先添加父级族人或者第一代族人！");
+                return;
+            }
+        }
         var formData = $("#peopleForm").serializeArray();
         var testData = {};
         for (var item in formData) {
@@ -63,7 +68,7 @@ $(function () {
         }
         $.ajax({
             type:'post',
-            url: projectUrl + '/family/savePeople',
+            url: projectUrl + '/consoles/savePeople',
             dataType: 'json',
             data:testData,
             async:false,
@@ -122,11 +127,16 @@ function addDiyDom(treeId, treeNode) {
     var mateName = treeNode.mateName;
     var editStr = "";
     if($.trim(mateName).length > 0){
-        editStr += "  配偶:" + treeNode.mateName;
+        var mates = mateName.split(",");
+        editStr += "配偶:";
+        for(var i=0;i<mates.length;i++){
+            var mate = mates[i].split("--");
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+        }
     }
 
-    editStr += "&nbsp;&nbsp;<a id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
-    editStr += "&nbsp;&nbsp;<a id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
     aObj.after(editStr);
 }
 
@@ -227,9 +237,9 @@ function initPeopleData(familyId){
                 var mateName = "";
                 for(var j=0;j<mateList.length;j++){
                     var jj = mateList[j];
-                    mateName += "  " + jj.name;
+                    mateName += "," + jj.name + "--" + jj.id;
                 }
-                node.mateName = mateName;
+                node.mateName = mateName.substring(1);
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 if(ii.fatherId == 0){
                     node.open = true;
@@ -244,13 +254,25 @@ function initPeopleData(familyId){
 }
 
 function zTreeOnClick(event, treeId, treeNode) {
-    initParent(treeNode.level);
-    var params = {"peopleId":treeNode.id};
+    editPeople(treeNode.id,treeNode.level);
+    // initParent(treeNode.level);
+    // var params = {"peopleId":treeNode.id};
+    // var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    // tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    // tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    // $("#peopleForm").populateForm(tPeople);
+    // $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    // $("#addModal").modal('show');
+
+}
+
+function editPeople(peopleId,generation){
+    initParent(generation);
+    var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
     $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
     $("#addModal").modal('show');
-
 }

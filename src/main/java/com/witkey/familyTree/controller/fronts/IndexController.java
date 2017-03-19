@@ -1,10 +1,13 @@
 package com.witkey.familyTree.controller.fronts;
 
 import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TMeritocratAttr;
 import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
+import com.witkey.familyTree.util.PageUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +32,12 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "familyTree")
 public class IndexController {
-
+    private static final int PAGE_SIZE = 10;//初始每页条数
+    private static final int PAGE_NUM = 6;//初始显示页数
     @Autowired
     private FamilyService familyService;
+    @Autowired
+    private ConsoleService consoleService;
 
     @RequestMapping(value = {"","/","index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
@@ -75,13 +81,43 @@ public class IndexController {
         return result;
     }
 
-    @RequestMapping(value = "/meritorcat")
-    public ModelAndView meritorcat(Model model){
+    @RequestMapping(value = "/meritocrat")
+    public ModelAndView meritocrat(Model model){
 
-        //获取何氏英才录
-        List<Map<String,Object>> list = familyService.getMeritocrat(null);
+        //获取英才属性
+        List<TMeritocratAttr> listAttr = consoleService.getMeritocratAttrList(null);
+        model.addAttribute("meritorcatAttr",listAttr);
 
-        return new ModelAndView("/fronts/meritorcat");
+        //获取英才属地
+        List<Map<String,Object>> listArea = familyService.getMeritocratArea();
+        model.addAttribute("meritorcatArea",listArea);
+        return new ModelAndView("/fronts/meritocrat");
+    }
+
+    @RequestMapping(value = "meritocratList")
+    @ResponseBody
+    public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        int total = familyService.getTotalMeritocrat(params);
+
+        int pageSize = CommonUtil.parseInt(params.get("pageSize"));
+        pageSize = pageSize == 0 ? PAGE_SIZE : pageSize;
+        int totalPage = (int)Math.ceil((double)total / (double) pageSize);
+        int pageNo = CommonUtil.parseInt(params.get("pageNo"));
+        pageNo = pageNo == 0 ? 1 : pageNo;
+
+        params.put("pageSize",pageSize);
+        params.put("beginRow",(pageNo - 1)*pageSize);
+
+        List<Map<String,Object>> list = familyService.getMeritocrat(params);
+        result.put("meritocratList",list);
+
+        result.put("totalPage",totalPage);
+        result.put("pageNo",pageNo);
+        result.put("pageChanger", PageUtil.getNumberPageChanger(pageNo,totalPage,PAGE_NUM,pageSize,params.get("tableId")+""));
+
+        return result;
     }
 
     /**

@@ -12,14 +12,16 @@ public class TUserPoints {
     private int id;
     private int userId;
     private int points;
+    private int userType;
     private String remark;
 
     public TUserPoints() {
     }
 
-    public TUserPoints(int userId, int points) {
+    public TUserPoints(int userId, int points, int userType) {
         this.userId = userId;
         this.points = points;
+        this.userType = userType;
     }
 
     @Id
@@ -63,6 +65,16 @@ public class TUserPoints {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "user_type")
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,6 +85,7 @@ public class TUserPoints {
         if (id != that.id) return false;
         if (userId != that.userId) return false;
         if (points != that.points) return false;
+        if (userType != that.userType) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
 
         return true;
@@ -83,6 +96,7 @@ public class TUserPoints {
         int result = id;
         result = 31 * result + userId;
         result = 31 * result + points;
+        result = 31 * result + userType;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
     }

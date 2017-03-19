@@ -109,6 +109,7 @@ $(function () {
 
     $("#toAdd").click(function () {
         $("#userInfoForm").form('clear');
+        $("#userId").val(0);
         $("#passwordTr").removeAttr("style");
         $("#userDialog").dialog('open');
     });

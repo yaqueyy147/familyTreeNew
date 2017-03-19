@@ -4,6 +4,8 @@ import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
+import com.witkey.familyTree.util.CookieUtil;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,10 +128,17 @@ public class ConsoleController {
      */
     @RequestMapping(value = "familyList")
     @ResponseBody
-    public Map<String,Object> getFamilyList(@RequestParam Map<String,Object> params){
+    public Map<String,Object> getFamilyList(HttpServletRequest request, @RequestParam Map<String, Object> params) throws UnsupportedEncodingException{
         Map<String,Object> result = new HashMap<String,Object>();
 
-        List<TFamily> list = familyService.getFamilyList(null);
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+
+        if(!"admin".equals(userName)){
+            params.put("userName",userName);
+        }
+
+        List<TFamily> list = familyService.getFamilyList(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
             int peopleCount = 0;
@@ -161,6 +172,56 @@ public class ConsoleController {
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
         return new ModelAndView("/consoles/familyTree_console");
+    }
+
+    /**
+     * 录入保存族人
+     * @param tPeople
+     * @param birth_time
+     * @param die_time
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/savePeople")
+    @ResponseBody
+    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(!CommonUtil.isBlank(birth_time)){
+            tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
+        }
+        if(!CommonUtil.isBlank(die_time)){
+            tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
+        }
+
+        String msg = "保存成功";
+        //修改成员信息
+        if(tPeople.getId() > 0){
+            familyService.updatePeople(tPeople);
+            msg = "修改成功";
+        }else{//新建成员
+            tPeople.setCreateMan(jsonUser.get("userName")+"");
+            tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+            int peopleId = familyService.savePeople(tPeople);
+            tPeople.setId(peopleId);
+            //添加积分
+            //获取积分对应关系
+            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),2);
+
+            familyService.setPoints(tUserPoints,1);
+
+            //如果是添加配偶
+            if(tPeople.getPeopleType() == 0){
+                //保存配偶信息
+                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
+                familyService.saveMateInfo(tMate);
+            }
+        }
+        map.put("msg",msg);
+        map.put("code",1);
+        return map;
     }
 
     /**
@@ -207,9 +268,12 @@ public class ConsoleController {
      */
     @RequestMapping(value = "saveUserBase")
     @ResponseBody
-    public Map<String,Object> saveUserBase(TUserBase tUserBase){
+    public Map<String,Object> saveUserBase(HttpServletRequest request, TUserBase tUserBase) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
         int i = 0;
+
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
 
         Map<String,Object> params = new HashMap<String,Object>();
 
@@ -225,16 +289,18 @@ public class ConsoleController {
             }
 
             tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
-            i = consoleService.saveUserBase(tUserBase);
+            tUserBase.setCreateMan(userName);
+            tUserBase.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+
         }else{//修改用户，不修改密码
             params = new HashMap<String,Object>();
             params.put("id",tUserBase.getId());
             List<TUserBase> list = consoleService.getUserBase(params);
             tUserBase.setCreateMan(list.get(0).getCreateMan());
             tUserBase.setCreateTime(list.get(0).getCreateTime());
-            i = consoleService.saveUserBase(tUserBase);
+//            i = consoleService.saveUserBase(tUserBase);
         }
-
+        i = consoleService.saveUserBase(tUserBase);
 
         result.put("msg","保存成功!");
         result.put("tUserBase",tUserBase);
@@ -308,7 +374,7 @@ public class ConsoleController {
         int i = consoleService.saveRole(TRole);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("msg","保存成功!");
-        result.put("tUserBase",TRole);
+        result.put("tRole",TRole);
         result.put("code",i);
         return result;
     }
@@ -403,12 +469,176 @@ public class ConsoleController {
         //获取英才属性
         List<TMeritocratAttr> listAttr = consoleService.getMeritocratAttrList(null);
         model.addAttribute("meritorcatAttr",listAttr);
-        return new ModelAndView("");
+        return new ModelAndView("/consoles/meritorcat");
+    }
+
+    @RequestMapping(value = "/meritorcatList")
+    @ResponseBody
+    public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        List<Map<String,Object>> list = consoleService.getMeritocratList(params);
+        result.put("meritorcatList",list);
+        return result;
+    }
+
+    /**
+     * 保存英才信息
+     * @param tMeritocrat
+     * @return
+     */
+    @RequestMapping(value = "saveMeritorcat")
+    @ResponseBody
+    public Map<String,Object> saveMeritorcat(HttpServletRequest request, TMeritocrat tMeritocrat) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+        tMeritocrat.setCreateMan(userName);
+        tMeritocrat.setCreateTime(CommonUtil.getDateLong());
+        int i = consoleService.saveMeritocrat(tMeritocrat);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("msg","保存成功!");
+        result.put("tMeritocrat",tMeritocrat);
+        result.put("code",i);
+        return result;
+    }
+
+    /**
+     * 删除英才
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "deleteMeritorcat")
+    @ResponseBody
+    public Map<String,Object> deleteMeritorcat(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.deleteMeritocrat(params);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "/rank")
+    public ModelAndView rank(Model model){
+        return new ModelAndView("/consoles/pointsList");
+    }
+
+    /**
+     * 积分排行榜
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/pointsRanking")
+    @ResponseBody
+    public Map<String,Object> pointsRanking(){
+        Map<String,Object> result = new HashMap<String,Object>();
+        //个人积分排名
+        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(1);
+        //公司积分排名
+        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(2);
+        result.put("listPersonalPoints",listPersonalPoints);
+        result.put("listCompanyPoints",listCompanyPoints);
+        return result;
     }
 
     @RequestMapping(value = "/merge")
     public ModelAndView merge(Model model){
-        return new ModelAndView("");
+        return new ModelAndView("/consoles/merge");
+    }
+
+    @RequestMapping(value = "/familyMerge")
+    public ModelAndView familyMerge(Model model,@RequestParam Map<String,Object> params){
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(params.get("familyId")));
+        model.addAttribute("primaryFamily",tFamily);
+        return new ModelAndView("/consoles/familyMerge");
+    }
+
+    @RequestMapping(value = "/mergePrimary")
+    @ResponseBody
+    public Map<String,Object> mergePrimary(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        List<Map<String, Object>> list = consoleService.getMergeList(params);
+
+        result.put("primaryList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "/mergeTarget")
+    @ResponseBody
+    public Map<String,Object> mergeTarget(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        List<TFamily> list = consoleService.getTargetMergeList(params);
+
+        result.put("targetList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "/rejectInclude")
+    @ResponseBody
+    public Map<String,Object> rejectInclude(HttpServletRequest request,@RequestParam Map<String,Object> params) throws UnsupportedEncodingException{
+        Map<String,Object> result = new HashMap<String,Object>();
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+
+        int i = consoleService.rejectInclude(CommonUtil.parseInt(params.get("mergeId")),params.get("rejectDesc") + "",userName);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "confirmInclude")
+    @ResponseBody
+    public Map<String,Object> confirmInclude(HttpServletRequest request,@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+
+
+        return result;
+    }
+
+    @RequestMapping(value = "pointsRelation")
+    public ModelAndView pointsRelation(){
+        return new ModelAndView("/consoles/pointsRelation");
+    }
+
+    @RequestMapping(value = "pointsRelationData")
+    @ResponseBody
+    public Map<String,Object> pointsRelationData(HttpServletRequest request,@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        List<TPointsDic> list = familyService.getPointsRelation(0,0);
+        result.put("pointsDicList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "savePointsRelation")
+    @ResponseBody
+    public Map<String,Object> savePointsRelation(HttpServletRequest request,TPointsDic tPointsDic) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+
+        tPointsDic.setCreateMan(userName);
+        tPointsDic.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+
+        int i = consoleService.savePointsRelation(tPointsDic);
+
+        result.put("code",i);
+
+        return result;
+    }
+
+    @RequestMapping(value = "deletePointsRelation")
+    @ResponseBody
+    public Map<String,Object> deletePointsRelation(HttpServletRequest request,String ids) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        int i = consoleService.deletePointsRelation(ids);
+
+        result.put("code",i);
+
+        return result;
     }
 
 }
