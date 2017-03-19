@@ -137,7 +137,6 @@ public class ConsoleController {
         if(!"admin".equals(userName)){
             params.put("userName",userName);
         }
-
         List<TFamily> list = familyService.getFamilyList(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
@@ -184,7 +183,7 @@ public class ConsoleController {
      */
     @RequestMapping(value = "/savePeople")
     @ResponseBody
-    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
+    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId,String userCC) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
 
         Map<String,Object> map = new HashMap<String,Object>();
@@ -205,12 +204,29 @@ public class ConsoleController {
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);
-            //添加积分
-            //获取积分对应关系
-            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
-            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),2);
 
-            familyService.setPoints(tUserPoints,1);
+            if(CommonUtil.isBlank(userCC) || !"1".equals(userCC)){
+                //添加积分
+                //获取积分对应关系
+                List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+                TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),2);
+
+                familyService.setPoints(tUserPoints,1);
+            }
+
+            //如果是收录族谱，将对应的配偶的家族ID也修改为收录的族谱ID
+            if("1".equals(userCC)){
+                //查询配偶信息
+                List<TPeople> listMate = familyService.getMateList(tPeople.getId());
+                if(listMate != null && listMate.size() > 0){
+                    for(TPeople tPeople1 : listMate){
+                        tPeople1.setFamilyId(tPeople.getFamilyId());
+                        tPeople1.setFatherId(tPeople.getFatherId());
+                        tPeople1.setMotherId(tPeople.getMotherId());
+                        familyService.savePeople(tPeople1);
+                    }
+                }
+            }
 
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){
@@ -410,56 +426,6 @@ public class ConsoleController {
     }
 
     /**
-     * 个人积分排名页面
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/personalPoints")
-    public ModelAndView personalPoints(Model model){
-        return new ModelAndView("/consoles/personalRank");
-    }
-
-    /**
-     * 个人积分排名数据
-     * @return
-     */
-    @RequestMapping(value = "/personalPointsList")
-    @ResponseBody
-    public Map<String,Object> personalPointsList(){
-        Map<String,Object> result = new HashMap<String,Object>();
-        //个人积分排名
-        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(1);
-        result.put("listPersonalPoints",listPersonalPoints);
-        return result;
-
-    }
-
-    /**
-     * 赞助商积分排名页面
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/companyPoints")
-    public ModelAndView companyPoints(Model model){
-        return new ModelAndView("/consoles/companyRank");
-    }
-
-    /**
-     * 公司积分排名数据
-     * @return
-     */
-    @RequestMapping(value = "/companyPointsList")
-    @ResponseBody
-    public Map<String,Object> companyPointsList(){
-        Map<String,Object> result = new HashMap<String,Object>();
-        //公司积分排名
-        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(2);
-        result.put("listCompanyPoints",listCompanyPoints);
-        return result;
-
-    }
-
-    /**
      * 英才录页面
      * @param model
      * @return
@@ -532,9 +498,13 @@ public class ConsoleController {
     public Map<String,Object> pointsRanking(){
         Map<String,Object> result = new HashMap<String,Object>();
         //个人积分排名
-        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(1);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("type",1);
+        params.put("userType",2);
+        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params);
         //公司积分排名
-        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(2);
+        params.put("type",2);
+        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params);
         result.put("listPersonalPoints",listPersonalPoints);
         result.put("listCompanyPoints",listCompanyPoints);
         return result;
@@ -592,8 +562,9 @@ public class ConsoleController {
     public Map<String,Object> confirmInclude(HttpServletRequest request,@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
 
+        int i = consoleService.confirmInclude(params);
 
-
+        result.put("code",i);
         return result;
     }
 

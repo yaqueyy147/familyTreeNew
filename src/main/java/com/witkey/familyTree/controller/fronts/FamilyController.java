@@ -54,8 +54,15 @@ public class FamilyController {
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userName",jsonUser.get("userName"));
-
+        params.put("state",1);
         List<TFamily> list = familyService.getFamilyList(params);
+
+        //查询被收录的族谱
+        params.put("userName",jsonUser.get("userName"));
+        params.put("state","");
+
+        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
+        list.addAll(list2);
 
         model.addAttribute("familyList",list);
 
@@ -117,12 +124,14 @@ public class FamilyController {
         model.addAttribute("tFamily",tFamily);
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 
-        if(!CommonUtil.isBlank(jsonUser) && tFamily.getCreateMan().equals(jsonUser.get("userName"))){
-            model.addAttribute("canOperate",1);
-        }
+//        if(!CommonUtil.isBlank(jsonUser) && tFamily.getCreateMan().equals(jsonUser.get("userName"))){
+//            model.addAttribute("canOperate",1);
+//        }
 
         //查询家族的收录情况
-        List<TFamilyMerge> listMerge = familyService.getMergeList(map);
+        Map<String,Object> map1 = new HashMap<String,Object>();
+        map1.put("primaryFamilyId",familyId);
+        List<TFamilyMerge> listMerge = familyService.getMergeList(map1);
         if(listMerge != null && listMerge.size() > 0){
             model.addAttribute("merge",listMerge.get(0));
         }

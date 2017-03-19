@@ -22,12 +22,22 @@
         }
         .userInfo{
             float: right;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+        #logoDiv{
+            font-weight: bold;
+            font-size: 22px;
+            margin-left: 20px;
+            margin-top: 10px;
+            width:30%;
+            float: left;
         }
     </style>
 </head>
 <body class="layout">
 <div class="easyui-layout" style="width:100%;height:100%;">
-    <div id="topRegion" data-options="region:'north'" style="height:70px;">
+    <div id="topRegion" data-options="region:'north'" style="height:50px;">
         <div id="logoDiv">寻根问祖</div>
         <div id="userInfoDiv" class="userInfo">
             <a href="javascript:void 0;" class="easyui-menubutton"
@@ -59,6 +69,7 @@
                     <li><span><a href="javascript:void 0;" onclick="loadTab('rankList','积分排行榜','/consoles/rank')">积分排行榜</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('meritorcat','何氏英才录','/consoles/meritorcat')">何氏英才录</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('merge','收录族谱','/consoles/merge')">收录族谱</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('pointsRelation','积分对应关系','/consoles/pointsRelation')">积分对应关系</a></span></li>
                 </ul>
             </li>
             <c:if test="${consoleUserInfo.userName == 'admin'}">

@@ -25,6 +25,9 @@ public interface FamilyService {
     //查询family
     public List<TFamily> getFamilyList(Map<String,Object> params);
 
+    //查询被收录的族谱
+    public List<TFamily> getIncludeFamilyList(Map<String,Object> params);
+
     //查询族谱的成员
     public List<TPeople> getPeopleList(Map<String,Object> params);//int familyId,int peopleType
 
@@ -47,7 +50,7 @@ public interface FamilyService {
     public int setPoints(Object object,int type);
 
     //获取积分排名
-    public List<Map<String,Object>> getPointsRanking(int type);
+    public List<Map<String,Object>> getPointsRanking(Map<String, Object> params);
 
     //获取英才录
     public List<Map<String,Object>> getMeritocrat(Map<String,Object> params);

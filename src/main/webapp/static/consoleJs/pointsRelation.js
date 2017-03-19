@@ -28,9 +28,8 @@ $(function () {
                         data:formData,
                         async:false,
                         success:function (data) {
-
-                            alert(data.msg);
                             if(data.code >= 1){
+                                alert("保存成功！");
                                 var params = {};
                                 loadDataGrid(params);
                                 $("#pointsForm").form('clear');
@@ -55,7 +54,7 @@ $(function () {
 
     $("#toAdd").click(function () {
         $("#pointsForm").form('clear');
-        $("#pointsId").val(0);
+        $("#pointsRelationId").val(0);
         $("#pointsDialog").dialog('open');
     });
 
@@ -98,7 +97,7 @@ $(function () {
                     data:{ids:selectIds},
                     async:false,
                     success:function (data) {
-                        alert(data.msg);
+                        alert("删除成功!");
                         var params = {};
                         loadDataGrid(params);
                     },
@@ -130,7 +129,7 @@ function loadDataGrid(params) {
         columns:[[
             {field:"ck",checkbox:"true"},
             {field:"id",title:"对应Id",width:"80",hidden:true},
-            {field:"userName",title:"积分类型",width:"150",
+            {field:"pointsType",title:"积分类型",width:"150",
                 formatter: function(value,row,index){
                     if(value == 1){
                         return "录入族人积分";
@@ -140,8 +139,7 @@ function loadDataGrid(params) {
                 }},
             {field:"pointsNum",title:"数量(录入族人数或者充值数)",width:"80"},
             {field:"pointsValue",title:"对应积分数",width:"80"},
-
-            {field:"stateDesc",title:"状态",width:"180",
+            {field:"state",title:"状态",width:"180",
                 formatter: function(value,row,index){
                     if(value == 1){
                         return "可用";

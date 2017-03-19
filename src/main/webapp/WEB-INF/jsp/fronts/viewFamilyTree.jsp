@@ -31,7 +31,6 @@
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
     <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <c:if test="${canOperate == 1}">
         <c:if test="${merge == null}">
             <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
         </c:if>
@@ -49,7 +48,6 @@
         <c:if test="${merge.state == 3}">
             <span>驳回意见:${merge.rejectDesc}</span>
         </c:if>
-    </c:if>
     <div id="familyTree" class="ztree"></div>
 </div>
 <!-- 添加族人 Modal -->

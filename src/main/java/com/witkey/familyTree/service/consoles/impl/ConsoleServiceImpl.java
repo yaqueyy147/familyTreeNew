@@ -308,7 +308,7 @@ public class ConsoleServiceImpl implements ConsoleService {
         int i = 0;
         if(tPointsDic.getId() <= 0 || CommonUtil.isBlank(tPointsDic.getId())){
             //现将同意类型的积分关系设置为不可用
-            String sql = "update t_points_dic set state=2 where point_type=?";
+            String sql = "update t_points_dic set state=2 where points_type=?";
             jdbcTemplate.update(sql,tPointsDic.getPointsType());
             //新创建一个积分对应关系
             i = CommonUtil.parseInt(tPointsDicDao.create(tPointsDic));
@@ -317,7 +317,7 @@ public class ConsoleServiceImpl implements ConsoleService {
             tPointsDicDao.save(tPointsDic);
             i ++ ;
         }
-        return 0;
+        return i;
     }
 
     @Override
@@ -332,6 +332,17 @@ public class ConsoleServiceImpl implements ConsoleService {
         }
 
         return ii;
+    }
+
+    @Override
+    public int confirmInclude(Map<String, Object> params) {
+
+        int i = 0;
+        String sql = "update t_family set state=2 where id=?";
+        i += jdbcTemplate.update(sql,params.get("familyId"));
+        sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
+        i += jdbcTemplate.update(sql,params.get("familyId"));
+        return i;
     }
 }
 

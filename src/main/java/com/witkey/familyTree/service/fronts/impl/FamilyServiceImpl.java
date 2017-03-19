@@ -146,6 +146,9 @@ public class FamilyServiceImpl implements FamilyService {
 //                filter.put("familyName","%" + params.get("familyName") + "%");
                 sql += " and family_name like '%" + params.get("familyName") + "%'";
             }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and state='" + params.get("state") + "'";
+            }
         }
 
 //        List<TFamily> list = tFamilyDao.find(filter);
@@ -163,6 +166,66 @@ public class FamilyServiceImpl implements FamilyService {
         }
 
         return list;
+    }
+
+    @Override
+    public List<TFamily> getIncludeFamilyList(Map<String, Object> params) {
+        String sql = "select id from t_family where state=2 ";
+
+        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
+        List<TFamily> list2 = new ArrayList<TFamily>();
+        if(list != null && list.size() > 0){
+            String primaryIds = "";
+            for(int i=0;i<list.size();i++){
+                primaryIds += "," + list.get(i).getId();
+            }
+            primaryIds = primaryIds.substring(1);
+            String sql1 = "select * from t_family where id in";
+            sql1 += " (select target_family_id from t_family_merge where primary_family_id in ";
+            sql1 += " (" + primaryIds + ") and state=1) and state=1 ";
+            if(!CommonUtil.isBlank(params)){
+                if(!CommonUtil.isBlank(params.get("userName"))){
+//                filter.put("createMan",params.get("userName"));
+                    sql1 += " and create_man='" + params.get("userName") + "'";
+                }
+                if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
+//                filter.put("familyArea",params.get("familyArea"));
+                    sql1 += " and family_area='" + params.get("familyArea") + "'";
+                }
+                if(!CommonUtil.isBlank(params.get("province"))){
+//                filter.put("province",params.get("province"));
+                    sql1 += " and province='" + params.get("province") + "'";
+                }
+                if(!CommonUtil.isBlank(params.get("city"))){
+//                filter.put("city",params.get("city"));
+                    sql1 += " and city='" + params.get("city") + "'";
+                }
+                if(!CommonUtil.isBlank(params.get("district"))){
+//                filter.put("district",params.get("district"));
+                    sql1 += " and district='" + params.get("district") + "'";
+                }
+
+                if(!CommonUtil.isBlank(params.get("familyName"))){
+//                filter.put("familyName","%" + params.get("familyName") + "%");
+                    sql1 += " and family_name like '%" + params.get("familyName") + "%'";
+                }
+            }
+            list2 = jdbcTemplate.query(sql1,new BeanPropertyRowMapper<TFamily>(TFamily.class));
+        }
+
+        if(list2 != null && list2.size() > 0){
+            for (TFamily tFamily : list2) {
+                String photoUrl = tFamily.getPhotoUrl();
+                if(CommonUtil.isBlank(photoUrl)){
+                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                }
+                else if(!CommonUtil.isFile(photoUrl)){
+                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                }
+            }
+        }
+
+        return list2;
     }
 
     /**
@@ -324,12 +387,16 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public List<Map<String, Object>> getPointsRanking(int type) {
+    public List<Map<String, Object>> getPointsRanking(Map<String,Object> params) {
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         //个人
-        if(type == 1){
+        if("1".equals(params.get("type"))){
             String sql = "select t1.points,t1.user_id,t2.user_name from t_user_points t1,t_user_front t2";
-            sql += " where t1.user_id=t2.id order by t1.points desc";
+            sql += " where t1.user_id=t2.id ";
+            if(!CommonUtil.isBlank(params.get("userType"))){
+                sql += " and user_type='" + params.get("userType") + "'";
+            }
+            sql += " order by t1.points desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
             String sql = "select t1.points,t1.company_id,t2.company_name from t_company_points t1,t_company_sponsor t2";

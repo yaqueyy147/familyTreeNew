@@ -120,7 +120,7 @@
                                 <div class="row">
                                     <div class="col-xs-10 col-md-6">
                                         <input type="file" name="imgFile" id="imgFile" />
-                                        <a id="show_img"><img style="display: none;" id="result_img" class="img-responsive" /></a>
+                                        <a id="show_img"><img style="display: none;" id="result_img" class="img-thumbnail" /></a>
                                     </div>
                                 </div>
                                 <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>

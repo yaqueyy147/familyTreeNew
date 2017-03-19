@@ -48,4 +48,6 @@ public interface ConsoleService {
 
     public int deletePointsRelation(String ids);
 
+    public int confirmInclude(Map<String,Object> params);
+
 }

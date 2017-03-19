@@ -64,8 +64,13 @@ public class IndexController {
 //        List<TFamily> listAoMen = familyService.getFamilyList(params);
 //        list.add(listAoMen);
 //        model.addAttribute("familyList",list);
-
-        List<TFamily> list = familyService.getFamilyList(null);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("state",1);
+        List<TFamily> list = familyService.getFamilyList(params);
+        //查询被收录的族谱
+        params.put("state","");
+        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
+        list.addAll(list2);
         model.addAttribute("familyList",list);
         return new ModelAndView("/fronts/index");
     }
@@ -74,7 +79,7 @@ public class IndexController {
     @ResponseBody
     public Map<String,Object> queryFamily(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-
+        params.put("state",1);
         List<TFamily> list = familyService.getFamilyList(params);
 
         result.put("familyList",list);
@@ -129,9 +134,13 @@ public class IndexController {
     public ModelAndView pointsRanking(Model model){
 
         //个人积分排名
-        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(1);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("type",1);
+        params.put("userType",1);
+        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params);
         //公司积分排名
-        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(2);
+        params.put("type",2);
+        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params);
         model.addAttribute("listPersonalPoints",listPersonalPoints);
         model.addAttribute("listCompanyPoints",listCompanyPoints);
         return new ModelAndView("/fronts/rank");
