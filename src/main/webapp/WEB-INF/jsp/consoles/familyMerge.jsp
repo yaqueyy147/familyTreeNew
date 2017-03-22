@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/uploadify/uploadify.css" />
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/fonts/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <div class="easyui-layout" style="width:100%;height:90%;">
@@ -270,7 +270,7 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.zh-CN.js"></script>

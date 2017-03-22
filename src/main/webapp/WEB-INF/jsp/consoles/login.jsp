@@ -11,9 +11,9 @@
 <head>
     <title>登录</title>
     <link href="<%=request.getContextPath()%>/static/css/consoles/login.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../../static/bootstrap/css/bootstrap-theme.min.css" />
-    <%@include file="common/commonCss.html"%>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/bootstrap/css/bootstrap-theme.min.css" />
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <div class="login-box">
@@ -46,7 +46,7 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/login.js"></script>
 

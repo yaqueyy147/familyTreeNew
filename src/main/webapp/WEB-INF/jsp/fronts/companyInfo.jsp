@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>公司信息</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/companyInfo.css" rel="stylesheet" type="text/css" />
     <style>
         html,body {
@@ -187,7 +187,7 @@
 
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyInfo.js"></script>

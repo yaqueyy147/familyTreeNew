@@ -194,6 +194,9 @@ public class ConsoleController {
             tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
         }
 
+        if("1".equals(userCC)){
+            tPeople.setId(0);
+        }
         String msg = "保存成功";
         //修改成员信息
         if(tPeople.getId() > 0){
@@ -220,6 +223,7 @@ public class ConsoleController {
                 List<TPeople> listMate = familyService.getMateList(tPeople.getId());
                 if(listMate != null && listMate.size() > 0){
                     for(TPeople tPeople1 : listMate){
+                        tPeople1.setId(0);
                         tPeople1.setFamilyId(tPeople.getFamilyId());
                         tPeople1.setFatherId(tPeople.getFatherId());
                         tPeople1.setMotherId(tPeople.getMotherId());

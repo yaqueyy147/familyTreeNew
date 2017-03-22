@@ -11,11 +11,11 @@
 <html>
 <head>
     <title>个人中心</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <c:if test="${xxx != 2}">
         <style>
             body{
-                background: url("/static/images/bag.jpg") no-repeat;
+                background: url("<%=request.getContextPath()%>/static/images/bag.jpg") no-repeat;
                 filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
                 -moz-background-size:100% 100%;
                 background-size:100% 100%;
@@ -143,7 +143,7 @@
 <%@include file="common/springUrl.jsp"%>
 <c:if test="${xxx != 2}">
 </c:if>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyDetail.js"></script>
 <script type="text/javascript">
     var companyId = "${tCompanySponsor.id}";

@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>赞助商</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 
@@ -83,7 +83,7 @@
     </table>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditCompany.js"></script>
 </body>
 </html>

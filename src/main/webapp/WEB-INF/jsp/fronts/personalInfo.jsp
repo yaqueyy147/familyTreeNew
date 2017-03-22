@@ -10,14 +10,14 @@
 <html>
 <head>
     <title>个人信息</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/personalInfo.css" rel="stylesheet" type="text/css" />
     <style>
         html,body {
             height: 100%;
         }
         body{
-            background: url("/static/images/bag.jpg") no-repeat;
+            background: url("<%=request.getContextPath()%>/static/images/bag.jpg") no-repeat;
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
             -moz-background-size:100% 100%;
             background-size:100% 100%;
@@ -51,7 +51,7 @@
                                     <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="${tUserFront.userPhoto}" />
+                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" />
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -186,7 +186,7 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalInfo.js"></script>

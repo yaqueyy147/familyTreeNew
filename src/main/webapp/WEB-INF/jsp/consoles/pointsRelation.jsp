@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>积分对应关系设置</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <table id="pointsRelationList" class="easyui-datagrid" style="width:100%;height:100%"
@@ -66,7 +66,7 @@
 </div>
 
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/pointsRelation.js"></script>
 </body>
 </html>

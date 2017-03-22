@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>用户设置</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <table id="userList" class="easyui-datagrid" style="width:100%;height:100%"
@@ -98,7 +98,7 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/userSetting.js"></script>
 </body>
 </html>

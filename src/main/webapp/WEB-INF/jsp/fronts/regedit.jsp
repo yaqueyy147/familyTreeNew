@@ -11,7 +11,7 @@
 <head>
     <title>注册</title>
     <link href="<%=request.getContextPath()%>/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <div class="login-box">
@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group col-xs-4 form-actions col-xs-offset-4" style="margin-top: 15px">
                     <button class="btn btn-primary" style="margin-bottom: 20px;" id="regedit" type="button">注 册</button>&nbsp;&nbsp;
-                    <a class="btn btn-primary bbtt" style="margin-bottom: 20px;" href="/familyTree/index" type="button">取 消</a>
+                    <a class="btn btn-primary bbtt" style="margin-bottom: 20px;" href="<%=request.getContextPath()%>/familyTree/index" type="button">取 消</a>
                 </div>
             </form>
         </div>
@@ -175,7 +175,7 @@
     <%--</div>--%>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/regedit.js"></script>
 <script type="text/javascript">

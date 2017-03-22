@@ -10,7 +10,7 @@
 <head>
     <title>族谱展示</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
-    <%@include file="../fronts/common/commonCss.html"%>
+    <%@include file="../fronts/common/commonCss.jsp"%>
     <style rel="stylesheet">
 
     </style>
@@ -39,7 +39,7 @@
                 <div class="tab-content">
 
                     <div role="tabpanel" class="tab-pane active" id="baseInfo">
-                        <form id="peopleForm" action="/family/savePeople" method="post">
+                        <form id="peopleForm" action="<%=request.getContextPath()%>/consoles/savePeople" method="post">
                             <table>
                                 <tr style="border: solid 2px #9d9d9d;">
                                     <td class="tdLg" style="text-align: left" colspan="9">
@@ -240,7 +240,7 @@
     </div>
 </div>
 <%@ include file="common/springUrl.jsp"%>
-<%@ include file="../fronts/common/commonJS.html"%>
+<%@ include file="../fronts/common/commonJS.jsp"%>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/familyTree_console.js"></script>
 <script type="text/javascript">

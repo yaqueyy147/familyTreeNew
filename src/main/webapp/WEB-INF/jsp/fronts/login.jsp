@@ -11,7 +11,7 @@
 <head>
     <title>登录</title>
     <link href="<%=request.getContextPath()%>/static/css/fronts/login.css" rel="stylesheet" type="text/css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <div class="login-box">
@@ -41,10 +41,10 @@
                 </div>
                 <div class="form-group col-xs-8 link col-xs-offset-8" >
                     <p>还没注册？
-                        <a href="/sign/regedit"><small>免费注册</small></a>
+                        <a href="<%=request.getContextPath()%>/sign/regedit"><small>免费注册</small></a>
                     </p>
                     <p style="margin-top: 0">
-                        <a href="/familyTree/index"><small>直接进入!</small></a>
+                        <a href="<%=request.getContextPath()%>/familyTree/index"><small>直接进入!</small></a>
                     </p>
                 </div>
             </form>
@@ -52,7 +52,7 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/login.js"></script>
 

@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>赞助商首页</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
@@ -45,7 +45,7 @@
 
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyIndex.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <head>
     <title>积分排行榜</title>
     <link href="/static/css/fronts/rank.css" rel="stylesheet" type="text/css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
@@ -65,7 +65,7 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script>
     var winHeight = $(document).height();
     $(function () {

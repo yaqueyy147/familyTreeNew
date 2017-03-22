@@ -11,7 +11,7 @@
 <head>
     <title>族谱展示</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">
         <%--body{--%>
             <%--width:100%;--%>
@@ -59,7 +59,7 @@
                 <h4 class="modal-title" id="addModalLabel">添加族人</h4>
             </div>
             <div class="modal-body">
-                <form id="peopleForm" action="/family/savePeople" method="post">
+                <form id="peopleForm" action="<%=request.getContextPath()%>/family/savePeople" method="post">
                     <table>
                         <tr style="border: solid 2px #9d9d9d;">
                             <td class="tdLg" style="text-align: left" colspan="9">
@@ -280,7 +280,7 @@
 </div>
 <%@ include file="common/springUrl.jsp"%>
 <%--<%@include file="common/footer.jsp" %>--%>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree.js"></script>
 <script type="text/javascript">

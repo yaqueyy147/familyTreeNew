@@ -71,8 +71,8 @@ $(function () {
                 async:false,
                 success:function (data) {
                     alert(data.msg);
-                    var zNodes = initPeopleData(familyId);
-                    initFamilyTree(zNodes,setting);
+                    // var zNodes = initPeopleData(familyId);
+                    // initFamilyTree(zNodes,setting);
                     $("#addModal").modal('hide');
                     $("#peopleForm")[0].reset();
                 },

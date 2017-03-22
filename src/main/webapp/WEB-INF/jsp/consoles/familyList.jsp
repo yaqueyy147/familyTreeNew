@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>族谱</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 				pageSize:10">
 </table>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/familyList.js"></script>
 </body>
 </html>

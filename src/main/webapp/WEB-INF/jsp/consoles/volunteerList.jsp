@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>审核志愿者</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 
@@ -31,7 +31,7 @@
     <textarea cols="45" rows="5" id="auditDesc" name="auditDesc"></textarea>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditVolunteer.js"></script>
 </body>
 </html>

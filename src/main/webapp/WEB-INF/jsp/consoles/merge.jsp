@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>族谱收录</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
     <table id="mergeList" class="easyui-datagrid" style="width:100%;height:98%"
@@ -39,7 +39,7 @@
         </div>
     </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/merge.js"></script>
 

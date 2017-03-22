@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>积分排名</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <style>
         .personalRank,.companyRank{
             float: left;
@@ -41,7 +41,7 @@
     </table>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<%@include file="common/commonJs.html"%>
+<%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/pointsList.js"></script>
 <script>
     var winHeight = $(document).height();

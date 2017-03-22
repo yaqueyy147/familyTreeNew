@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>个人中心</title>
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">
         body{
             width:100%;
@@ -32,7 +32,8 @@
 
             <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
+                        <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <h5>${family.familyFirstName}氏族谱（${family.id}）</h5>
@@ -162,7 +163,7 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%--<%@include file="common/footer.jsp" %>--%>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>

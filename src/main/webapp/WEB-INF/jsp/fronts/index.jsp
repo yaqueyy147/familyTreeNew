@@ -10,8 +10,8 @@
 <html>
 <head>
     <title>族谱</title>
-    <link href="/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
-    <%@include file="common/commonCss.html"%>
+    <link href="<%=request.getContextPath()%>/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
@@ -73,7 +73,8 @@
 
             <div class="col-sm-3 col-md-2">
                 <div class="thumbnail">
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
+                        <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
                         <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <h6>${family.familyFirstName}氏族谱（${family.id}）</h6>
@@ -118,7 +119,7 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/index.js"></script>

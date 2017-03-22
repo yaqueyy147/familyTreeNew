@@ -10,8 +10,8 @@
 <html>
 <head>
     <title>何氏英才录</title>
-    <link href="/static/css/fronts/meritocrat.css" rel="stylesheet" type="text/css" />
-    <%@include file="common/commonCss.html"%>
+    <link href="<%=request.getContextPath()%>/static/css/fronts/meritocrat.css" rel="stylesheet" type="text/css" />
+    <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
@@ -57,7 +57,7 @@
 
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/meritocrat.js"></script>

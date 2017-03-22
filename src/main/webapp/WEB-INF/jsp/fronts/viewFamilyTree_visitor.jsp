@@ -10,7 +10,7 @@
 <head>
     <title>族谱展示</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
-    <%@include file="common/commonCss.html"%>
+    <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">
         body{
             width:100%;
@@ -33,7 +33,7 @@
 
 <%@ include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
-<%@include file="common/commonJS.html"%>
+<%@include file="common/commonJS.jsp"%>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree_visitor.js"></script>
 <script type="text/javascript">
