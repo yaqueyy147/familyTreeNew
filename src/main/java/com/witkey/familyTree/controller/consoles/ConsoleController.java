@@ -3,6 +3,7 @@ package com.witkey.familyTree.controller.consoles;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -17,10 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by suyx on 2017/1/11.
@@ -155,6 +153,57 @@ public class ConsoleController {
             list1.add(map);
         }
         result.put("dataList",list1);
+        return result;
+    }
+
+    @RequestMapping(value = "saveFamily")
+    @ResponseBody
+    public Map<String,Object> saveFamily(HttpServletRequest request, TFamily tFamily) throws Exception{
+
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        int ii = 0;
+        try {
+            if(tFamily.getId() > 0){
+                ii = familyService.updateFamily(tFamily);
+            }else{
+                tFamily.setCreateMan(userName);
+                tFamily.setCreateTime(new Date());
+                String visitPassword = tFamily.getVisitPassword();
+                if(!CommonUtil.isBlank(visitPassword)){
+                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
+                }
+                //保存族谱
+                ii = familyService.createFamily(tFamily);
+                //将返回的族谱ID设置到family
+                tFamily.setId(ii);
+                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            }
+
+        } catch (Exception e){
+            LOGGER.error("创建族谱出错-->",e);
+            map.put("tFamily",tFamily);
+            map.put("code",-1);
+            map.put("msg","创建族谱出错！-->" + e.getMessage());
+            return map;
+        }
+        map.put("tFamily",tFamily);
+        map.put("code",ii);
+        map.put("msg","创建成功！");
+        return map;
+    }
+
+    @RequestMapping(value = "/deleteFamily")
+    @ResponseBody
+    public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        int i = familyService.deleteFamily(params);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+
         return result;
     }
 
@@ -439,6 +488,10 @@ public class ConsoleController {
         //获取英才属性
         List<TMeritocratAttr> listAttr = consoleService.getMeritocratAttrList(null);
         model.addAttribute("meritorcatAttr",listAttr);
+
+        //获取英才属地
+        List<Map<String,Object>> listArea = familyService.getMeritocratArea();
+        model.addAttribute("meritorcatArea",listArea);
         return new ModelAndView("/consoles/meritorcat");
     }
 

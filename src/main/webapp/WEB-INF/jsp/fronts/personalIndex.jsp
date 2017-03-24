@@ -40,7 +40,6 @@
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>
-                            <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
                         </p>
                         <p>${family.familyName}</p>
                         <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
@@ -68,7 +67,7 @@
                         <div class="form-group">
                             <label for="familyFirstName" class="col-sm-2 control-label">家族姓氏</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName">
+                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="何">
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,7 +81,6 @@
                             <div class="col-sm-8">
                                 <label><input type="radio" name="visitStatus" value="1" checked />&nbsp;开放</label>
                                 <label><input type="radio" name="visitStatus" value="0" />&nbsp;加密</label>
-                                <label><input type="radio" name="visitStatus" value="2" />&nbsp;仅家族人访问</label>
                             </div>
                         </div>
                         <div class="form-group" id="visitPasswordDiv" style="display: none">

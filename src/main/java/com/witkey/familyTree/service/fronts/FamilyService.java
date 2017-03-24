@@ -13,6 +13,12 @@ public interface FamilyService {
     //创建族谱
     public int createFamily(TFamily tFamily);
 
+    //修改族谱
+    public int updateFamily(TFamily tFamily);
+
+    //删除族谱
+    public int deleteFamily(Map<String,Object> params);
+
     //保存家族成员
     public int savePeople(TPeople tPeople);
 

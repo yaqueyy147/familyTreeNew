@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>积分排名</title>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/uploadify/uploadify.css" />
     <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
@@ -22,12 +23,36 @@
 				pageSize:10">
     </table>
     <div id="tb">
-        <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>
+        <span>英才名:</span>
+        <input id="meritocratName4Search" name="meritocratName4Search" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+        <span>英才所在地:</span>
+        <span data-toggle="distpicker">
+            <select id="province" name="province">
+                <option value="">全部属地</option>
+                <c:if test="${meritorcatArea != null}">
+                    <c:forEach var="mAddr" items="${meritorcatArea}">
+                        <option value="${mAddr.meritocrat_area}">${mAddr.meritocrat_area}</option>
+                    </c:forEach>
+                </c:if>
+            </select>
+        </span>
+        <span>英才所在地:</span>
+        <span data-toggle="distpicker">
+            <select id="meritocratAttrId4Search" name="meritocratAttrId">
+                    <option value="">全部属性</option>
+                    <c:if test="${meritorcatAttr != null}">
+                        <c:forEach var="mAttr" items="${meritorcatAttr}">
+                            <option value="${mAttr.id}">${mAttr.meritocratAttr}</option>
+                        </c:forEach>
+                    </c:if>
+                </select>
+        </span>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
     </div>
-    <div id="meritocratDialog" class="easyui-dialog" title="英才信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+    <div id="meritocratDialog" class="easyui-dialog" title="英才信息" style="padding:10px;top: 20%;left: 20%;">
         <div style="padding:10px 40px 20px 40px">
             <form id="meritocratForm" method="post">
                 <input type="hidden" id="meritocratId" name="id" value="0" />
@@ -76,7 +101,19 @@
                             <textarea class="text-area easyui-validatebox" id="meritocratDesc" name="meritocratDesc" rows="5" cols="40"></textarea>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>英才头像:</td>
+                        <td colspan="3">
+                            <div id="progress_bar" style="display: none"></div>
+                            <input id="photo" name="photo" type="hidden" class="easyui-validatebox" />
+                            <div class="row">
+                                <div style="width: 150px">
+                                    <input type="file" name="imgFile" id="imgFile" />
+                                    <a id="show_img"><img style="display: none;width: 150px;height: 150px;" id="result_img" /></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </form>
         </div>
@@ -85,6 +122,48 @@
 <%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/meritorcat.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/uploadify/jquery.uploadify.min.js"></script>>
+    <script>
+        $(function () {
+            $('#imgFile').uploadify({
+                'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
+                'uploader'      : projectUrl + '/upload/uploadImg',
+                'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
+                'auto'          : true,
+                "formData"      : {targetFile : '/static/upload/familyImg'},
+                'queueID'       : 'progress_bar',
+                'fileObjName'   : 'uploadFile',
+                "buttonCursor"  : "hand",
+                "buttonText"    : "选择图片",
+                'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+                'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+                'onUploadSuccess' : function(file, data, response) {
+                    var result = eval('(' + data + ')');
+                    var imgPath = result.filePath;
+                    $("#result_img").attr('src',imgPath);
+                    $("#result_img").show();
+                    $("#imgFile").hide();
+                    $("#photo").attr('value',imgPath);
+                    $("#show_img").mouseover(function(){
+                        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+                    });
+                    $("#show_img").mouseout(function(){
+                        $("#result_img").attr('src',imgPath);
+                    });
+                    $("#result_img").click(function(){
+                        $("#result_img").hide();
+                        $("#imgFile").show();
+                        $("#photo").removeAttr('value');
+                        $("#show_img").unbind('mouseover');
+                        $("#show_img").unbind('mouseout');
 
+                    });
+                },
+                onUploadError:function (file, errorCode, errorMsg, errorString) {
+                    alert("error-->" + errorString);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

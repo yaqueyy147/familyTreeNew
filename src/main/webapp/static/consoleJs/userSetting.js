@@ -26,7 +26,6 @@ $(function () {
                         async:false,
                         dataType:'json',
                         data:formData,
-                        async:false,
                         success:function (data) {
 
                             alert(data.msg);

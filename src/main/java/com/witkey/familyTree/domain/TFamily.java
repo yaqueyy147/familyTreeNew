@@ -27,31 +27,6 @@ public class TFamily implements Serializable {
     private String city;
     private String district;
 
-
-    public TFamily() {
-    }
-
-    public TFamily(int id, String familyFirstName, String familyName, String photoUrl,
-                   String createMan, Integer visitStatus, String visitPassword,
-                   Date createTime, Integer state, String remark, String familyDesc,
-                   int familyArea, String province, String city, String district) {
-        this.id = id;
-        this.familyFirstName = familyFirstName;
-        this.familyName = familyName;
-        this.photoUrl = photoUrl;
-        this.createMan = createMan;
-        this.visitStatus = visitStatus;
-        this.visitPassword = visitPassword;
-        this.createTime = createTime;
-        this.state = state;
-        this.remark = remark;
-        this.familyDesc = familyDesc;
-        this.familyArea = familyArea;
-        this.province = province;
-        this.city = city;
-        this.district = district;
-    }
-
     @Id
     @Column(name = "id",unique = true)
     @GeneratedValue

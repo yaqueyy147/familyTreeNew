@@ -233,6 +233,19 @@ public class ConsoleServiceImpl implements ConsoleService {
         String sql = "select t1.*,t2.meritocrat_attr";
         sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t2.state=1";
 
+        if(!CommonUtil.isBlank(params)){
+
+            if(!CommonUtil.isBlank(params.get("meritocrat_attr_id"))){
+                sql += " and meritocrat_attr_id='" + params.get("meritocrat_attr_id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_name"))){
+                sql += " and meritocrat_name like'%" + params.get("meritocrat_name") + "%'";
+            }
+            if(!CommonUtil.isBlank(params.get("meritocrat_area"))){
+                sql += " and meritocrat_area='" + params.get("meritocrat_area") + "'";
+            }
+        }
+
 //        List<TMeritocrat> list = tMeritocratDao.find(params);
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         return list;

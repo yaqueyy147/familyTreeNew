@@ -35,9 +35,12 @@
         <li role="presentation" class="active">
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
         </li>
-        <li role="presentation">
-            <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的族谱</a>
-        </li>
+        <c:if test="${tUserFront.isVolunteer == 1}">
+            <li role="presentation">
+                <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的族谱</a>
+            </li>
+        </c:if>
+
 
     </ul>
     <div class="tab-content">
@@ -65,10 +68,10 @@
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请志愿者</button>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 3}">
-                                        <span>已申请志愿者，请等待审核！</span>
+                                        <span style="color: #ff8000">已申请志愿者，请等待审核！</span>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 1}">
-                                        <span>录入族谱志愿者！</span>
+                                        <span style="color: #00ff00">录入族谱志愿者！</span>
                                     </c:if>
                                     &nbsp;
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal">修改密码</button>

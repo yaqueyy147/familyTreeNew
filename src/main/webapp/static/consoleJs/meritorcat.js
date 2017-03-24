@@ -6,8 +6,8 @@ $(function () {
     $("#meritocratArea").combobox("loadData", ChineseProvince);
 
     $("#meritocratDialog").dialog({
-        width: 600,
-        height: 400,
+        width: 650,
+        height: 600,
         closed: true,
         cache: false,
         modal: true,
@@ -54,6 +54,14 @@ $(function () {
                 }
             }
         ]
+    });
+
+    $("#doSearch").click(function () {
+        var params = {};
+        params.meritocrat_name = $("#meritocratName4Search").val();
+        params.meritocrat_area = $("#province").val();
+        params.meritocrat_attr_id = $("#meritocratAttrId4Search").val();
+        loadDataGrid(params);
     });
 
     $("#toAdd").click(function () {
@@ -137,6 +145,7 @@ function loadDataGrid(params) {
             {field:"phone",title:"联系电话",width:"80",hidden:true},
             {field:"fax",title:"传真",width:"80",hidden:true},
             {field:"post_code",title:"邮编",width:"80",hidden:true},
+            {field:"photo",title:"头像",width:"80",hidden:true},
             {field:"meritocrat_name",title:"英才姓名",width:"80"},
             {field:"meritocrat_area",title:"英才属地",width:"80"},
             {field:"meritocrat_attr",title:"英才属性",width:"80"},
@@ -170,8 +179,29 @@ function loadDataToForm(data){
     $("#meritocratDesc").val(data.meritocrat_desc);
     $("#meritocratAddr").val(data.meritocrat_addr);
     $("#phone").val(data.phone);
+
     $("#fax").val(data.fax);
     $("#postCode").val(data.post_code);
     $("#meritocratAttrId").combobox("setValue",data.meritocrat_attr_id);
 
+    var imgPath = data.photo;
+    $("#result_img").attr('src',imgPath);
+    $("#result_img").show();
+    $("#imgFile").hide();
+    $("#photo").attr('value',imgPath);
+    $("#show_img").mouseover(function(){
+        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+    });
+    $("#show_img").mouseout(function(){
+        $("#result_img").attr('src',imgPath);
+    });
+
+    $("#result_img").click(function(){
+        $("#result_img").hide();
+        $("#imgFile").show();
+        $("#photo").removeAttr('value');
+        $("#show_img").unbind('mouseover');
+        $("#show_img").unbind('mouseout');
+
+    });
 }

@@ -87,6 +87,28 @@ public class FamilyServiceImpl implements FamilyService {
         return familyId;
     }
 
+    @Override
+    public int updateFamily(TFamily tFamily) {
+        int i = 0;
+        tFamilyDao.save(tFamily);
+        i ++;
+        return i;
+    }
+
+    @Override
+    public int deleteFamily(Map<String, Object> params) {
+        String ids = params.get("ids") + "";
+        String[] id = ids.split(",");
+        String sql = "delete from t_family where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+
+        return ii;
+    }
+
     /**
      * 录入族人
      * @param tPeople

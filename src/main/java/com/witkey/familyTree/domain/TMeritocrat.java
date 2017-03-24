@@ -20,6 +20,7 @@ public class TMeritocrat {
     private String createMan;
     private String createTime;
     private String remark;
+    private String photo;
 
     @Id
     @Column(name = "id",unique = true)
@@ -142,6 +143,16 @@ public class TMeritocrat {
         this.fax = fax;
     }
 
+    @Basic
+    @Column(name = "photo")
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -165,6 +176,7 @@ public class TMeritocrat {
         if (createMan != null ? !createMan.equals(that.createMan) : that.createMan != null) return false;
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
+        if (photo != null ? !photo.equals(that.photo) : that.photo != null) return false;
 
         return true;
     }
@@ -183,6 +195,7 @@ public class TMeritocrat {
         result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (photo != null ? photo.hashCode() : 0);
         return result;
     }
 }
