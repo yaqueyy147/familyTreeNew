@@ -36,7 +36,11 @@ public interface ConsoleService {
 
     public int saveMeritocrat(TMeritocrat tMeritocrat);
 
+    public int saveMeritocratAttr(TMeritocratAttr tMeritocratAttr);
+
     public int deleteMeritocrat(Map<String,Object> params);
+
+    public int deleteMeritocratAttr(Map<String,Object> params);
 
     public List<Map<String, Object>> getMergeList(Map<String,Object> params);
 

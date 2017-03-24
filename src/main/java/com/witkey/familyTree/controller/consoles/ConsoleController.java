@@ -63,8 +63,10 @@ public class ConsoleController {
      */
     @RequestMapping(value = "/auditVolunteer")
     @ResponseBody
-    public Map<String,Object> auditVolunteer(@RequestParam Map<String,Object> params){
-        params.put("auditMan","ceshi123");
+    public Map<String,Object> auditVolunteer(HttpServletRequest request, @RequestParam Map<String,Object> params) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+        params.put("auditMan",userName);
         int i = 0;
         Map<String,Object> map = new HashMap<String,Object>();
         try {
@@ -158,23 +160,29 @@ public class ConsoleController {
 
     @RequestMapping(value = "saveFamily")
     @ResponseBody
-    public Map<String,Object> saveFamily(HttpServletRequest request, TFamily tFamily) throws Exception{
+    public Map<String,Object> saveFamily(HttpServletRequest request, TFamily tFamily,String createTime4Modify) throws Exception{
 
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("userName") + "";
 
         Map<String,Object> map = new HashMap<String,Object>();
         int ii = 0;
+        String msg = "创建成功";
         try {
             if(tFamily.getId() > 0){
+                LOGGER.debug("修改族谱-->" + tFamily);
+                tFamily.setCreateTime(CommonUtil.ObjToDate(createTime4Modify));
                 ii = familyService.updateFamily(tFamily);
+                msg = "修改成功";
             }else{
                 tFamily.setCreateMan(userName);
                 tFamily.setCreateTime(new Date());
+
                 String visitPassword = tFamily.getVisitPassword();
                 if(!CommonUtil.isBlank(visitPassword)){
                     tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
                 }
+                LOGGER.debug("创建族谱-->" + tFamily);
                 //保存族谱
                 ii = familyService.createFamily(tFamily);
                 //将返回的族谱ID设置到family
@@ -191,7 +199,7 @@ public class ConsoleController {
         }
         map.put("tFamily",tFamily);
         map.put("code",ii);
-        map.put("msg","创建成功！");
+        map.put("msg",msg);
         return map;
     }
 
@@ -199,7 +207,7 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-
+        LOGGER.info("删除族谱-->" + params);
         int i = familyService.deleteFamily(params);
         result.put("code",i);
         result.put("msg","操作成功!");
@@ -535,6 +543,48 @@ public class ConsoleController {
     public Map<String,Object> deleteMeritorcat(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
         int i = consoleService.deleteMeritocrat(params);
+        result.put("code",i);
+        result.put("msg","操作成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "meritorcatAttr")
+    public ModelAndView meritorcatAttr(){
+        return new ModelAndView("/consoles/meritorcatAttr");
+    }
+
+    @RequestMapping(value = "/meritorcatAttrList")
+    @ResponseBody
+    public Map<String,Object> meritorcatAttrList(@RequestParam Map<String,Object> params) {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        List<TMeritocratAttr> list = consoleService.getMeritocratAttrList(params);
+        result.put("meritorcatAttrList",list);
+        return result;
+    }
+
+    @RequestMapping(value = "saveMeritorcatAttr")
+    @ResponseBody
+    public Map<String,Object> saveMeritorcatAttr(HttpServletRequest request, TMeritocratAttr tMeritocratAttr) throws Exception{
+
+        int i = consoleService.saveMeritocratAttr(tMeritocratAttr);
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("msg","保存成功!");
+        result.put("tMeritocratAttr",tMeritocratAttr);
+        result.put("code",i);
+        return result;
+    }
+
+    /**
+     * 删除英才
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "deleteMeritorcatAttr")
+    @ResponseBody
+    public Map<String,Object> deleteMeritorcatAttr(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = consoleService.deleteMeritocratAttr(params);
         result.put("code",i);
         result.put("msg","操作成功!");
         return result;

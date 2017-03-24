@@ -7,7 +7,7 @@ $(function () {
 
     $("#meritocratDialog").dialog({
         width: 650,
-        height: 600,
+        height: 550,
         closed: true,
         cache: false,
         modal: true,
@@ -99,7 +99,7 @@ $(function () {
             selectNames.push(ii.meritocrat_name);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除用户(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('Confirm','确定要删除英才(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',
@@ -126,7 +126,7 @@ $(function () {
 });
 
 function closeDialog(dialogId){
-    $("#userInfoForm").form('clear');
+    $("#meritocratForm").form('clear');
     $("#" + dialogId).dialog("close");
 }
 

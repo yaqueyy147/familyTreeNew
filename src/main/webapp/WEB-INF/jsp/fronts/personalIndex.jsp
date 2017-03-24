@@ -107,7 +107,7 @@
                         <div class="form-group">
                             <label for="familyName" class="col-sm-2 control-label">家族简介</label>
                             <div class="col-sm-10">
-                                <textarea cols="30" rows="10" class="form-control" id="familyDesc" name="familyDesc"></textarea>
+                                <textarea cols="30" rows="5" class="form-control" id="familyDesc" name="familyDesc" style="resize: none"></textarea>
                             </div>
                         </div>
 

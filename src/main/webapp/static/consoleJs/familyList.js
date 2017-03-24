@@ -28,19 +28,34 @@ $(function () {
             {
                 "text":"提交",
                 handler:function(){
+                    if($.trim($("#familyName")).length <= 0){
+                        alert("请输入家族名称！");
+                        return;
+                    }
+                    if($.trim($("#province")).length <= 0){
+                        alert("请选择家族所在省！");
+                        return;
+                    }
+                    if($.trim($("#city")).length <= 0){
+                        alert("请选择家族所在市！");
+                        return;
+                    }
+                    if($.trim($("#district")).length <= 0){
+                        alert("请选择家族所在区县！");
+                        return;
+                    }
                     var formData = {};
                     var postUrl = projectUrl + "/consoles/saveFamily";
                     var testData = $("#familyForm").serializeArray();
-
                     for (var item in testData) {
                         formData["" + testData[item].name + ""] = testData[item].value;
                     }
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
                         dataType:'json',
                         data:formData,
+                        async:false,
                         success:function (data) {
 
                             alert(data.msg);
@@ -80,7 +95,16 @@ $(function () {
         $("#familyForm")[0].reset();
         $("#familyId").val(0);
         $("#createMan").val("");
-        $("#createTime").val("");
+        $("#familyArea").val(0);
+
+        $("#result_img").hide();
+        $("#imgFile").show();
+        $("#photoUrl").removeAttr('value');
+        $("#show_img").unbind('mouseover');
+        $("#show_img").unbind('mouseout');
+        $("#province").val("");
+        $("#province").change();
+
         $("#familyDialog").dialog('open');
     });
 
@@ -110,18 +134,17 @@ $(function () {
         for(var i=0;i<selectRows.length;i++){
             var ii = selectRows[i];
             selectIds += "," + ii.id;
-            selectNames.push(ii.userName);
+            selectNames.push(ii.familyName);
         }
         selectIds = selectIds.substring(1);
         $.messager.confirm('Confirm','确定要删除族谱(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deleteFamily",
+                    url: projectUrl + "/consoles/deleteFamily",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},
-                    async:false,
                     success:function (data) {
                         alert(data.msg);
                         var params = {};
@@ -194,7 +217,11 @@ function loadDataToForm(data) {
 
     $("#familyId").val(data.id);
     $("#createMan").val(data.createMan);
-    $("#createTime").val(data.createTime);
+    var createTime = data.createTime;
+    if($.trim(createTime).length <= 0){
+        createTime = new Date().Format("yyyy-MM-dd hh:mm:ss");
+    }
+    $("#createTime4Modify").val(createTime);
     $("#familyFirstName").val(data.familyFirstName);
     $("#familyName").val(data.familyName);
     $("#visitPassword").val(data.visitPassword);
@@ -206,6 +233,7 @@ function loadDataToForm(data) {
     $("#district").change();
     $("#familyDesc").val(data.familyDesc);
     $("#familyState").val(data.state);
+    $("#familyArea").val(0);
 
     var visitStatus = data.visitStatus;
     $("input:radio[name='visitStatus'][value = " + visitStatus + "]").prop("checked","checked");

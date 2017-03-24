@@ -99,7 +99,7 @@ public class ConsoleServiceImpl implements ConsoleService {
     @Override
     public int auditVolunteer(Map<String, Object> params) {
 
-        String sql = "update t_volunteer set audit_state=?,audit_desc=?,audit_time=now() and audit_man=?";
+        String sql = "update t_volunteer set audit_state=?,audit_desc=?,audit_time=now(),audit_man=?";
         sql += " where id=?";
 
         int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("auditDesc"),params.get("auditMan"),params.get("volunteerId"));
@@ -264,12 +264,39 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public int saveMeritocratAttr(TMeritocratAttr tMeritocratAttr) {
+        int i=0;
+        if(tMeritocratAttr.getId() == 0){
+            i = CommonUtil.parseInt(tMeritocratAttrDao.create(tMeritocratAttr));
+        }else{
+            tMeritocratAttrDao.save(tMeritocratAttr);
+            i ++ ;
+        }
+        return i;
+    }
+
+    @Override
     public int deleteMeritocrat(Map<String, Object> params) {
 
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
 
         String sql = "delete from t_meritocrat where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+
+        return ii;
+    }
+
+    @Override
+    public int deleteMeritocratAttr(Map<String, Object> params) {
+        String ids = params.get("ids") + "";
+        String[] id = ids.split(",");
+
+        String sql = "delete from t_meritocrat_attr where id=?";
 
         int ii = 0;
         for(int i=0;i<id.length;i++){

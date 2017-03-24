@@ -85,12 +85,15 @@ public class FamilyController {
 
         Map<String,Object> map = new HashMap<String,Object>();
         try {
-            tFamily.setCreateMan("ceshi123");
+            JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+            tFamily.setCreateMan(jsonUser.get("userName")+"");
             tFamily.setCreateTime(new Date());
+            tFamily.setState(1);
             String visitPassword = tFamily.getVisitPassword();
             if(!CommonUtil.isBlank(visitPassword)){
                 tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
             }
+            LOGGER.debug("创建族谱-->" + tFamily);
             //保存族谱
             int familyId = familyService.createFamily(tFamily);
             //将返回的族谱ID设置到family

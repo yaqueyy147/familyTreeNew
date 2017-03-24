@@ -1,4 +1,5 @@
-
+<%@ page import="java.util.Date" %>
+<%@ page import="com.witkey.familyTree.util.CommonUtil" %>
 <%--
   Created by IntelliJ IDEA.
   User: suyx
@@ -39,12 +40,12 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
 </div>
 
-<div id="familyDialog" class="easyui-dialog" title="族谱信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+<div id="familyDialog" class="easyui-dialog" title="族谱信息" style="width:400px;height:200px;padding:10px;top: 0;left: 20%;">
     <div style="padding:10px 40px 20px 40px">
         <form id="familyForm" method="post">
             <input type="hidden" id="familyId" name="id" value="0" />
             <input type="hidden" id="createMan" name="createMan" value="" />
-            <input type="hidden" id="createTime" name="createTime" value="" />
+            <input type="hidden" id="createTime4Modify" name="createTime4Modify" value="" />
             <input type="hidden" id="familyArea" name="familyArea" value="0" />
             <table cellpadding="5" style="width: 100%">
                 <tr>

@@ -68,6 +68,7 @@
                     <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('rankList','积分排行榜','/consoles/rank')">积分排行榜</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('meritorcat','何氏英才录','/consoles/meritorcat')">何氏英才录</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('meritorcatAttr','英才属性设置','/consoles/meritorcatAttr')">英才属性设置</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('merge','收录族谱','/consoles/merge')">收录族谱</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('pointsRelation','积分对应关系','/consoles/pointsRelation')">积分对应关系</a></span></li>
                 </ul>

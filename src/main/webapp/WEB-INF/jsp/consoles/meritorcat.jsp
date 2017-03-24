@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>积分排名</title>
+    <title>英才录</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/uploadify/uploadify.css" />
     <%@include file="common/commonCss.jsp"%>
 </head>
@@ -36,7 +36,7 @@
                 </c:if>
             </select>
         </span>
-        <span>英才所在地:</span>
+        <span>英才属性:</span>
         <span data-toggle="distpicker">
             <select id="meritocratAttrId4Search" name="meritocratAttrId">
                     <option value="">全部属性</option>
@@ -52,7 +52,7 @@
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
     </div>
-    <div id="meritocratDialog" class="easyui-dialog" title="英才信息" style="padding:10px;top: 20%;left: 20%;">
+    <div id="meritocratDialog" class="easyui-dialog" title="英才信息" style="padding:10px;top: 0;left: 20%;">
         <div style="padding:10px 40px 20px 40px">
             <form id="meritocratForm" method="post">
                 <input type="hidden" id="meritocratId" name="id" value="0" />

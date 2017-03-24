@@ -21,6 +21,24 @@ $(function () {
     });
 
     $("#saveFamily").click(function () {
+
+        if($.trim($("#familyName")).length <= 0){
+            alert("请输入家族名称！");
+            return;
+        }
+        if($.trim($("#province")).length <= 0){
+            alert("请选择家族所在省！");
+            return;
+        }
+        if($.trim($("#city")).length <= 0){
+            alert("请选择家族所在市！");
+            return;
+        }
+        if($.trim($("#district")).length <= 0){
+            alert("请选择家族所在区县！");
+            return;
+        }
+
         var formData = {};
         var postUrl = projectUrl + "/family/saveFamily";
         var testData = $("#familyForm").serializeArray();
@@ -33,6 +51,7 @@ $(function () {
             url:postUrl,
             dataType:'json',
             data:formData,
+            async:false,
             success:function (data) {
                 if(data.code == 1){
                     var tFamily = data.tFamily;

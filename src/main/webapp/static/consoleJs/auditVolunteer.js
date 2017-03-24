@@ -20,10 +20,8 @@ $(function () {
                         success:function (data) {
 
                             alert(data.msg);
-                            if(data.code == 1){
-                                var obj = $("#volunteer-" + volunteerId);
-                                $(obj).parent().parent().parent().find("td:eq(5)").find("div").text("是");
-                                $(obj).parent().parent().parent().find("td:eq(6)").find("div").html("已审核");
+                            if(data.code >= 1){
+                                loadVolunteerData(params);
                                 closeDialog("auditDialog");
                             }
                         },
@@ -44,7 +42,11 @@ $(function () {
 
 
     var params = {};
+    loadVolunteerData(params);
 
+});
+
+function loadVolunteerData(params) {
     var dataList = formatVolunteerData(getData("/consoles/volunteerList",params).dataList);
     $("#volunteerList").datagrid({
         data:dataList,
@@ -58,7 +60,8 @@ $(function () {
         ]],
         loadFilter:pagerFilter
     });
-});
+}
+
 function auditVolunteer(volunteerId,state,applyManId){
 
     $("#volunteerId").val(volunteerId);
@@ -85,8 +88,8 @@ function formatVolunteerData(data){
                 data[i].is_volunteer = "否";
                 data[i].operate = "已审核";
             }else{
-                data[i].operate = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + data[i].id + "',1,'')\">同意</a>";
-                data[i].operate += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + data[i].id + "',0,'')\">不同意</a>";
+                data[i].operate = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + data[i].volunteerId + "',1,'" + data[i].userId + "')\">同意</a>";
+                data[i].operate += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + data[i].volunteerId + "',0,'" + data[i].userId + "')\">不同意</a>";
             }
         }
     }
