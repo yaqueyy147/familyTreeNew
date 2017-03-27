@@ -62,13 +62,14 @@ $(function () {
                         var visitDesc = "加密";
                         if(visitState == 1){
                             visitDesc = "开放";
-                        }else if(visitState == 2){
-                            visitDesc = "仅族人查看";
                         }
+                        // else if(visitState == 2){
+                        //     visitDesc = "仅族人查看";
+                        // }
                         familyContent += "<div class='col-sm-3 col-md-2'>";
                         familyContent += "<div class='thumbnail'>";
                         familyContent += "<a href='javascript:void(0)' onclick=\"viewFamily('" + ii.id + "','" + ii.visitStatus + "','" + ii.visitPassword + "')\">";
-                        familyContent += "<img src='" + ii.photoUrl + "' class='img-thumbnail'/></a>";
+                        familyContent += "<img src='" + projectUrl + ii.photoUrl + "' class='img-thumbnail'/></a>";
                         familyContent += "<div class='caption'>";
                         familyContent += "<h6>" + ii.familyFirstName + "氏族谱（" + ii.id + "）</h6>";
                         familyContent += "<p>状态：" + visitDesc + "</p>";
