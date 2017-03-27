@@ -81,7 +81,7 @@
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>
-                            <c:if test="${family.visitStatus == 2}">仅族人查看</c:if>
+                            <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
                         </p>
                         <p>${family.familyName}</p>
                         <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
