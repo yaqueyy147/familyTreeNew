@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>何氏族谱--积分排行榜</title>
-    <link href="/static/css/fronts/rank.css" rel="stylesheet" type="text/css" />
+    <link href="<%=request.getContextPath()%>/static/css/fronts/rank.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
 </head>
 <body>

@@ -93,10 +93,14 @@ public class UserFrontServiceImpl implements UserFrontService {
     public List<TUserFront> getUserInfo(TUserFront tUserFront) {
         //将密码加密
 //        String password = CommonUtil.string2MD5(tUserFront.getPassword());
-        String sql = "select * from t_user_front where user_name=? and password=?";
+        String sql = "select * from t_user_front where user_name=?";// and password=?
+
+        if(!CommonUtil.isBlank(tUserFront.getPassword())){
+            sql += " and password='"+ tUserFront.getPassword() + "'" ;
+        }
 
         //查询
-        List<TUserFront> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFront>(TUserFront.class),tUserFront.getUserName(),tUserFront.getPassword());
+        List<TUserFront> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFront>(TUserFront.class),tUserFront.getUserName());
 
         return list;
     }

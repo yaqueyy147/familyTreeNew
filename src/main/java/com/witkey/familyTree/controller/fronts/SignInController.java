@@ -92,7 +92,7 @@ public class SignInController {
         }
         //否则跳回登录页面
         ra.addFlashAttribute("loginCode",-1);
-        return new RedirectView("/sign/");
+        return new RedirectView(contextPath + "/sign/login");
     }
 
     /**
@@ -143,7 +143,7 @@ public class SignInController {
                 return new RedirectView(contextPath + "/sign/regedit?regCode=-2");
             }
 
-            TUserFront tUserFront = new TUserFront(params.get("userName")+"",CommonUtil.string2MD5(params.get("password")+""));
+            TUserFront tUserFront = new TUserFront(params.get("userName")+"",params.get("password")+"");
             id= userFrontService.createUserFront(tUserFront);
             tUserFront.setId(id);
 
