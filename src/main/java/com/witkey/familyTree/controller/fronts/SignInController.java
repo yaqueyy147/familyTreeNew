@@ -64,8 +64,9 @@ public class SignInController {
      * @throws UnsupportedEncodingException
      */
     @RequestMapping(value = "/signIn")
-    public RedirectView signIn(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+    public RedirectView signIn(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
 
+        String contextPath = request.getContextPath();
         //根据读取的用户名和密码查询用户
 //        List<Map<String,Object>> listUser = userFrontService.signIn(tUserFront);
 
@@ -81,13 +82,13 @@ public class SignInController {
             mapUserInfo.put("userType",1);//设置用户类型为个人用户
             //将用户信息添加到cookie
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
-            return new RedirectView("/familyTree/index");
+            return new RedirectView(contextPath + "/familyTree/index");
         }else if(listCompanyUser != null && listCompanyUser.size() > 0){//否则检查是否公司用户
             mapUserInfo = listCompanyUser.get(0);
             mapUserInfo.put("userType",2);//设置用户类型为企业用户
             //将用户信息添加到cookie
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
-            return new RedirectView("/familyTree/index");
+            return new RedirectView(contextPath + "/familyTree/index");
         }
         //否则跳回登录页面
         ra.addFlashAttribute("loginCode",-1);
@@ -111,14 +112,15 @@ public class SignInController {
      * @return
      */
     @RequestMapping(value = "/regester")
-    public RedirectView regester(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+    public RedirectView regester(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+        String contextPath = request.getContextPath();
         //注册，创建用户
         int id= userFrontService.createUserFront(tUserFront);
         //设置用户ID为返回的id
         tUserFront.setId(id);
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", JSONObject.fromObject(tUserFront).toString(),response);
-        return new RedirectView("/familyTree/index");
+        return new RedirectView(contextPath + "/familyTree/index");
     }
 
     /**
@@ -127,7 +129,8 @@ public class SignInController {
      * @return
      */
     @RequestMapping(value = "/regesterNew")
-    public RedirectView regesterNew(@RequestParam Map<String,Object> params, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+    public RedirectView regesterNew(@RequestParam Map<String,Object> params, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+        String contextPath = request.getContextPath();
         int id = 0;
         JSONObject jsonObject = new JSONObject();
         //个人用户
@@ -137,7 +140,7 @@ public class SignInController {
             List<TUserFront> list = userFrontService.getUserInfo(new TUserFront(params.get("userName")+""));
 
             if(list != null && list.size() > 0){
-                return new RedirectView("/familyTree/regedit?regCode=-2");
+                return new RedirectView(contextPath + "/sign/regedit?regCode=-2");
             }
 
             TUserFront tUserFront = new TUserFront(params.get("userName")+"",CommonUtil.string2MD5(params.get("password")+""));
@@ -154,7 +157,7 @@ public class SignInController {
             List<Map<String,Object>> list = companyService.getCompanyInfo(params2);
 
             if(list != null && list.size() > 0){
-                return new RedirectView("/familyTree/regedit?regCode=-2");
+                return new RedirectView(contextPath + "/sign/regedit?regCode=-2");
             }
 
             TCompanySponsor tCompanySponsor = new TCompanySponsor(params.get("userName")+"",CommonUtil.string2MD5(params.get("password")+""),params.get("companyName")+"");
@@ -169,7 +172,7 @@ public class SignInController {
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
 
-        return new RedirectView("/familyTree/index");
+        return new RedirectView(contextPath + "/familyTree/index");
     }
 
     /**
@@ -178,7 +181,8 @@ public class SignInController {
      * @return
      */
     @RequestMapping(value = "/companyRegester")
-    public RedirectView companyRegester(TCompanySponsor tCompanySponsor, RedirectAttributes ra, HttpServletResponse response) throws UnsupportedEncodingException{
+    public RedirectView companyRegester(TCompanySponsor tCompanySponsor, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+        String contextPath = request.getContextPath();
         //注册，创建用户
         //加密密码
         tCompanySponsor.setCompanyLoginPassword(CommonUtil.string2MD5(tCompanySponsor.getCompanyLoginPassword()));
@@ -187,7 +191,7 @@ public class SignInController {
         tCompanySponsor.setId(id);
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", JSONObject.fromObject(tCompanySponsor).toString(),response);
-        return new RedirectView("/familyTree/index");
+        return new RedirectView(contextPath + "/familyTree/index");
     }
 
     /**
@@ -199,11 +203,12 @@ public class SignInController {
      */
     @RequestMapping(value = "/logout")
     public RedirectView logout(Model model, HttpServletResponse response, HttpServletRequest request){
+        String contextPath = request.getContextPath();
         //销毁登录用户信息cookie
         CookieUtil.destroyCookies(response,request);
         model.addAttribute("userInfo",null);
         //返回登录页面
-        return new RedirectView("/familyTree/index");
+        return new RedirectView(contextPath + "/familyTree/index");
     }
 
     /**

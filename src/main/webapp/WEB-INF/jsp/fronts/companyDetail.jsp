@@ -10,12 +10,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>个人中心</title>
+    <title>何氏族谱</title>
     <%@include file="common/commonCss.jsp"%>
     <c:if test="${xxx != 2}">
         <style>
             body{
-                background: url("<%=request.getContextPath()%>/static/images/bag.jpg") no-repeat;
+                background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
                 filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
                 -moz-background-size:100% 100%;
                 background-size:100% 100%;

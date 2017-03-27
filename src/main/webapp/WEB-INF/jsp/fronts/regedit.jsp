@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>注册</title>
+    <title>何氏族谱--注册</title>
     <link href="<%=request.getContextPath()%>/static/css/fronts/regedit.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
 </head>

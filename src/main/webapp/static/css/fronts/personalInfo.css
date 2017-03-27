@@ -1,6 +1,6 @@
 
 body{
-    background: url("../../images/bag.jpg") no-repeat;
+    background: url("../../images/bg-front.jpg") no-repeat;
     filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
     -moz-background-size:100% 100%;
     background-size:100% 100%;
@@ -31,7 +31,7 @@ body{
 }
 .regedit-content {
     height: auto;
-    width: 100%;
+    /*width: 100%;*/
     background-color: rgba(255, 250, 2550, .6);
     float: left;
 }
@@ -68,28 +68,35 @@ body{
     right:10px;
 }
 
+.container-fluid{
+    padding:0 !important;
+}
+
 #userDetail{
     width: 100%;
-    display:-moz-box;
-    display:-webkit-box;
-    display:box;
+    /*display:-moz-box;*/
+    /*display:-webkit-box;*/
+    /*display:box;*/
 
 }
-#userDetail .infoDetail{
-    width:100px;
-}
+/*#userDetail .infoDetail{*/
+    /*width:100px;*/
+/*}*/
 #userDetail .leftInfo{
-    -moz-box-flex:1;
-    -webkit-box-flex:1;
-    box-flex:1;
+    /*-moz-box-flex:1;*/
+    /*-webkit-box-flex:1;*/
+    /*box-flex:1;*/
+    margin-left: 20px;
+    height: 80%;
     background-color: #ffffff;
 }
 
 #userDetail .rightInfo{
-    -moz-box-flex:3;
-    -webkit-box-flex:3;
-    box-flex:3;
+    /*-moz-box-flex:3;*/
+    /*-webkit-box-flex:3;*/
+    /*box-flex:3;*/
     margin-left: 20px;
+    height: 80%;
     background-color: #ffffff;
 }
 
@@ -98,4 +105,8 @@ body{
 }
 #myFamilyTab iframe{
     border: none;
+}
+
+.col-lg-4,.col-md-4,.col-sm-4,.col-xs-4,.col-sm-10{
+    padding: 0px !important;
 }

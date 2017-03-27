@@ -64,7 +64,7 @@ html,body {
 }
 .login-title {
     padding: 20px 10px;
-    background:url("/static/images/bag4.png") no-repeat;
+    background:url("../../images/bag4.png") no-repeat;
     -moz-background-size:100% 100%;
     background-size:100% 100%;
     font-size: 18px;

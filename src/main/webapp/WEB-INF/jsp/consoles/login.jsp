@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="login-box">
-    <div class="login-title text-center">登&nbsp;&nbsp;&nbsp;&nbsp;录</div>
+    <div class="login-title text-center">后台管理登录</div>
     <div class="login-content">
         <div class="form">
             <form id="signInForm" action="" method="post">

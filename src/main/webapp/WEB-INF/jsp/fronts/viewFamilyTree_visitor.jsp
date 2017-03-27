@@ -8,17 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>族谱展示</title>
+    <title>何氏族谱</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">
         body{
             width:100%;
             height: 100%;
-            background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;
+            background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-            -moz-background-size:100% 100%;
-            background-size:100% 100%;
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            background-size:cover;
+            background-attachment:fixed;
         }
     </style>
 </head>

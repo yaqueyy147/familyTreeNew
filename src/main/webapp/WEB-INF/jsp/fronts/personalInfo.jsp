@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>个人信息</title>
+    <title>何氏族谱--个人信息</title>
     <%@include file="common/commonCss.jsp"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/personalInfo.css" rel="stylesheet" type="text/css" />
     <style>
@@ -43,18 +43,18 @@
 
 
     </ul>
-    <div class="tab-content">
-        <div id="userDetailTab" class="tab-pane active" role="tabpanel">
-            <div id="userDetail">
-                <div class="leftInfo infoDetail">
+    <div class="tab-content container-fluid">
+        <div id="userDetailTab" class="tab-pane active container-fluid" role="tabpanel">
+            <div id="userDetail" class=" container-fluid">
+                <div class="leftInfo infoDetail col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <div class="col-sm-10 col-md-10 col-md-offset-1">
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
                                 <c:if test="${tUserFront.userPhoto == null || tUserFront.userPhoto == '' || tUserFront.userPhoto == 'null'}">
-                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" />
+                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" />
+                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;" />
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="regedit-content rightInfo infoDetail">
+                <div class="regedit-content rightInfo infoDetail col-lg-7 col-md-7 col-sm-7 col-xs-7">
                     <div class="form active" id="personalRegedit">
                         <form id="personalForm" action="" method="post">
                             <input type="hidden" name="id" value="${tUserFront.id}" />
@@ -197,8 +197,9 @@
     var userInfo = "${tUserFront}";
     var winHeigth = $(document).height();
     $(function () {
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10));
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10));
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#province").val(userInfo.province);
         $("#province").change();
         $("#city").val(userInfo.city);

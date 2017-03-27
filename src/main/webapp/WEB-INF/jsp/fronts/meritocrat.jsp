@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏英才录</title>
+    <title>何氏族谱--何氏英才录</title>
     <link href="<%=request.getContextPath()%>/static/css/fronts/meritocrat.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
 </head>

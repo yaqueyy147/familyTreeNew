@@ -9,9 +9,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>族谱管理系统</title>
+    <title>何氏族谱管理系统</title>
     <%@ include file="common/commonCss.jsp" %>
     <style type="text/css">
+
+        body,html{
+            background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
+            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+            -webkit-background-size:cover;
+            -moz-background-size:cover;
+            background-size:cover;
+            background-attachment:fixed;
+        }
 
         .easyui-tabs div iframe{
             width:100%;
