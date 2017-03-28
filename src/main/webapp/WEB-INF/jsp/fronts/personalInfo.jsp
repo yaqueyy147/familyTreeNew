@@ -32,11 +32,11 @@
 <%@include file="common/header.jsp" %>
 <div class="container">
     <ul class="nav nav-tabs" role="tablist" style="margin-top: 30px">
-        <li role="presentation" class="active">
+        <li role="presentation" id="userDetailTabLi" class="active">
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
         </li>
         <c:if test="${tUserFront.isVolunteer == 1}">
-            <li role="presentation">
+            <li role="presentation" id="myFamilyTabLi">
                 <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的族谱</a>
             </li>
         </c:if>
@@ -197,6 +197,14 @@
     var userInfo = "${tUserFront}";
     var winHeigth = $(document).height();
     $(function () {
+        if(userInfo.isVolunteer == 1){
+            $("#userDetailTabLi").removeClass("active");
+            $("#myFamilyTabLi").addClass("active");
+        }else{
+            $("#userDetailTabLi").addClass("active");
+            $("#myFamilyTabLi").removeClass("active");
+        }
+
         $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
