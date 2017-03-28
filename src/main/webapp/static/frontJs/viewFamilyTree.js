@@ -3,13 +3,14 @@
  */
 var targetFamily;
 var targetFamilyPeople;
+var setting;
 $(function () {
 
     $("#addPeople").click(function () {
         addPeople(0,1,0,'',0);
     });
 
-    var setting = {
+    setting = {
         view: {
             addDiyDom: addDiyDom
         },
@@ -57,6 +58,11 @@ $(function () {
     };
 
     $("#savePeople").click(function () {
+
+        if($.trim($("#generation").val()).length <= 0){
+            alert("请选择是第几代人");
+            return;
+        }
 
         if($("#generation").val() > 1){
             if($("#fatherId").val() == 0){
@@ -167,9 +173,12 @@ function addDiyDom(treeId, treeNode) {
         }
     }
 
-    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    if(nodeLevel < 7){
+        editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    }
+
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
-    // editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">异议</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
     aObj.after(editStr);
 }
 
@@ -385,4 +394,24 @@ function selectTarget(obj) {
             $(obj).parent().append(html);
         }
     });
+}
+
+function deletePeople(peopleId,peopleName) {
+    if(confirm("确定要删除成员(" + peopleName + ")吗？")){
+        $.ajax({
+            type:'post',
+            url:projectUrl + '/family/deletePeople',
+            dataType:'json',
+            async:false,
+            data:{peopleId : peopleId},
+            success:function (data) {
+                if(data.code >= 1){
+                    alert("删除完成!");
+                    alert(familyId);
+                    var zNodes = initPeopleData(familyId);
+                    initFamilyTree(zNodes,setting);
+                }
+            }
+        });
+    }
 }

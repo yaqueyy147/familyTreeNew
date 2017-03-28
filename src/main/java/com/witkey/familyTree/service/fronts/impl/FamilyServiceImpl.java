@@ -121,6 +121,16 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
+    public int deletePeople(int peopleId) {
+
+        int i = 0;
+        tPeopleDao.removeById(peopleId);
+        i ++;
+
+        return i;
+    }
+
+    @Override
     public void updatePeople(TPeople tPeople) {
         tPeopleDao.update(tPeople);
 

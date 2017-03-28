@@ -42,7 +42,7 @@ $(function () {
                 type:'post',
                 url: projectUrl + '/sign/modifyPassword',
                 dataType: 'json',
-                data:{userId:userInfo.id,newPassword:newP,oldPassword:oldP},
+                data:{userId:userId,newPassword:newP,oldPassword:oldP},
                 async:false,
                 success:function (data) {
                     if(data.code >= 1){

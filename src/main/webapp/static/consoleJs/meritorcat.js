@@ -15,6 +15,19 @@ $(function () {
             {
                 "text":"提交",
                 handler:function(){
+                    if($.trim($("#meritocratName").val()).length <= 0){
+                        alert("请输入英才姓名");
+                        return;
+                    }
+                    if($.trim($("#meritocratArea").val()).length <= 0){
+                        alert("请选择英才属地");
+                        return;
+                    }
+                    if($.trim($("#meritocratAttrId").val()).length <= 0){
+                        alert("请选择英才类型");
+                        return;
+                    }
+
                     $('#meritocratArea').combobox('setValue',$('#meritocratArea').combobox('getText') )
                     var formData = {};
                     var postUrl = projectUrl + "/consoles/saveMeritorcat";

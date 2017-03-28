@@ -22,6 +22,10 @@
             /*-moz-background-size:100% 100%;*/
             /*background-size:100% 100%;*/
         }
+        .caption p{
+            font-size: 12px;
+            margin:0px !important;
+        }
     </style>
 </head>
 <body>
@@ -37,7 +41,7 @@
                         <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <h5>${family.familyFirstName}氏族谱（${family.id}）</h5>
+                        <h6><a href="javascript:void 0;" onclick="toEdit('${family}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>

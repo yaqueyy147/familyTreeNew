@@ -22,6 +22,9 @@ public interface FamilyService {
     //保存家族成员
     public int savePeople(TPeople tPeople);
 
+    //删除成员
+    public int deletePeople(int peopleId);
+
     //修改成员信息
     public void updatePeople(TPeople tPeople);
 

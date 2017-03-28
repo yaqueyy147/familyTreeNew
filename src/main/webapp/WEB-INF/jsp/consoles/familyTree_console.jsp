@@ -77,7 +77,7 @@
                                         姓名：
                                     </td>
                                     <td colspan="3">
-                                        <input name="name" id="name" type="text"/>
+                                        <input name="name" id="name" type="text" value="何"/>
                                     </td>
                                     <td class="tdSm">
                                         特殊说明：

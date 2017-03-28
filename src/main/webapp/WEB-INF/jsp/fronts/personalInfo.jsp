@@ -52,10 +52,10 @@
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
                                 <c:if test="${tUserFront.userPhoto == null || tUserFront.userPhoto == '' || tUserFront.userPhoto == 'null'}">
-                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;" />
+                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;max-height:300px" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;" />
+                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;max-height:300px" />
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -195,25 +195,20 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalInfo.js"></script>
 <script type="text/javascript">
-    var userInfo = "${tUserFront}";
-    var winHeigth = $(document).height();
+    var isVolunteer = "${tUserFront.isVolunteer}";
+    var userId = "${tUserFront.id}";
+    var winHeigth = $(window).height();
     $(function () {
-        if(userInfo.isVolunteer == 1){
-            $("#userDetailTabLi").removeClass("active");
-            $("#myFamilyTabLi").addClass("active");
-        }else{
-            $("#userDetailTabLi").addClass("active");
-            $("#myFamilyTabLi").removeClass("active");
-        }
+
 
         $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
-        $("#province").val(userInfo.province);
+        $("#province").val("${tUserFront.province}");
         $("#province").change();
-        $("#city").val(userInfo.city);
+        $("#city").val("${tUserFront.city}");
         $("#city").change();
-        $("#district").val(userInfo.district);
+        $("#district").val("${tUserFront.district}");
         $("#district").change();
 
         $('#imgFile').uploadify({

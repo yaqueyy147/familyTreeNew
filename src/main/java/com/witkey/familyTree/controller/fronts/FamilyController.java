@@ -235,6 +235,15 @@ public class FamilyController {
         return map;
     }
 
+    @RequestMapping(value = "/deletePeople")
+    @ResponseBody
+    public Map<String,Object> deletePeople(int peopleId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        int i = familyService.deletePeople(peopleId);
+        result.put("code",i);
+        return result;
+    }
+
     @RequestMapping(value = "/getParent")
     @ResponseBody
     public Map<String,Object> getParent(int familyId,int generation){

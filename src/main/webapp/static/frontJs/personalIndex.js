@@ -114,3 +114,7 @@ function viewFamily(familyId,visitStatus,visitPassword) {
         return;
     }
 }
+
+function toEdit(family) {
+    alert(JSON.stringify(family));
+}
