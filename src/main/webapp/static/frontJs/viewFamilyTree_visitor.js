@@ -124,9 +124,7 @@ function initPeopleData(familyId){
                 }
                 node.mateName = mateName;
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                if(ii.fatherId == 0){
-                    node.open = true;
-                }
+                node.open = true;
                 zNodes[i] = node;
             }
 

@@ -65,7 +65,7 @@
 
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
                                 <p>
-                                    <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer == 1}">
+                                    <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请志愿者</button>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 3}">

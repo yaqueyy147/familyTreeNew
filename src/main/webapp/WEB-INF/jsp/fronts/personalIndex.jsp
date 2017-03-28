@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label for="familyFirstName" class="col-sm-2 control-label">家族姓氏</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="何">
+                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="何" readonly>
                             </div>
                         </div>
                         <div class="form-group">
