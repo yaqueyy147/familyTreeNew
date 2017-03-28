@@ -17,7 +17,7 @@
             height: 100%;
         }
         body{
-            background: url("<%=request.getContextPath()%>/static/images/bag.jpg") no-repeat;
+            background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
             -moz-background-size:100% 100%;
             background-size:100% 100%;
@@ -64,7 +64,7 @@
 
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
                                 <p>
-                                    <c:if test="${tUserFront.isVolunteer != 3}">
+                                    <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer == 1}">
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请志愿者</button>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 3}">

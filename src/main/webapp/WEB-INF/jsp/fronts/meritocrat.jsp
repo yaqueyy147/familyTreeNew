@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>何氏族谱--何氏英才录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/meritocrat.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
 </head>

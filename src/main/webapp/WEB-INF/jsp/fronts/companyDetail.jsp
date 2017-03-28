@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>何氏族谱</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%@include file="common/commonCss.jsp"%>
     <c:if test="${xxx != 2}">
         <style>

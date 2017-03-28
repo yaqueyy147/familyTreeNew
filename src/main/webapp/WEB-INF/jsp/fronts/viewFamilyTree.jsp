@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>何氏族谱</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">

@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>何氏族谱--积分排行榜</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/rank.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
 </head>
