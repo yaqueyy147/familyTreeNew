@@ -272,11 +272,11 @@ public class SignInController {
         Map<String,Object> map = new HashMap<String,Object>();
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 
-        TVolunteer tVolunteer = new TVolunteer();
-        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
-        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
-        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-        int i = userFrontService.applyVolunteer(tVolunteer);
+//        TVolunteer tVolunteer = new TVolunteer();
+//        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
+//        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
+//        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
         map.put("code",i);
         map.put("msg","申请成功!");
         return map;

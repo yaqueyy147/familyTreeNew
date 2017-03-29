@@ -27,8 +27,8 @@ public interface UserFrontService {
     public int modifyPassword(Map<String,Object> params);
 
     //申请志愿者
-    public int applyVolunteer(TVolunteer tVolunteer);
-
+//    public int applyVolunteer(TVolunteer tVolunteer);
+    public int applyVolunteer(int userId);
     //修改头像
     public int modifyPhoto(String userId, String photoPath, String userType);
 

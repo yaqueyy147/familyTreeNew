@@ -47,28 +47,78 @@ $(function () {
 });
 
 function loadVolunteerData(params) {
-    var dataList = formatVolunteerData(getData("/consoles/volunteerList",params).dataList);
+    // var dataList = formatVolunteerData(getData("/consoles/volunteerList",params).dataList);
+    var dataList = getData("/consoles/userFrontList",params).dataList;
     $("#volunteerList").datagrid({
         data:dataList,
+        // columns:[[
+        //     {field:"user_name",title:"申请人",width:"80"},
+        //     {field:"phone",title:"联系电话",width:"80"},
+        //     {field:"apply_desc",title:"申请说明",width:"120"},
+        //     {field:"applyTime",title:"申请时间",width:"150"},
+        //     {field:"is_volunteer",title:"是否志愿者",width:"80"},
+        //     {field:"operate",title:"操作",width:"120"}
+        // ]],
         columns:[[
-            {field:"user_name",title:"申请人",width:"80"},
+            {field:"userName",title:"申请人账号",width:"80"},
+            {field:"nickName",title:"姓名",width:"80"},
+            {field:"idCard",title:"身份证号",width:"120"},
             {field:"phone",title:"联系电话",width:"80"},
-            {field:"apply_desc",title:"申请说明",width:"120"},
-            {field:"applyTime",title:"申请时间",width:"150"},
-            {field:"is_volunteer",title:"是否志愿者",width:"80"},
-            {field:"operate",title:"操作",width:"120"}
+            {field:"createTime",title:"注册时间",width:"150",
+                formatter: function(value,row,index){
+                    return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
+                }},
+            {field:"isVolunteer",title:"是否可修族谱",width:"80",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "是";
+                    }
+                    return '否';
+                }},
+            {field:"operate",title:"操作",width:"120",
+                formatter: function(value,row,index){
+                    if(row.isVolunteer == 3){
+                        var opHtml = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',1)\">同意</a>";
+                        opHtml += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',2)\">不同意</a>";
+                        return opHtml;
+                    }else if(row.isVolunteer == 0){
+                        return "未申请";
+                    }
+                    return '已审核';
+                }}
         ]],
         loadFilter:pagerFilter
     });
 }
 
-function auditVolunteer(volunteerId,state,applyManId){
+function auditVolunteer(userId,state){
+    var params = {};
+    $.ajax({
+        type:'post',
+        url: projectUrl + "/consoles/auditVolunteer",
+        dataType:'json',
+        data:{applyManId:userId,auditState:state},
+        success:function (data) {
 
-    $("#volunteerId").val(volunteerId);
-    $("#auditState").val(state);
-    $("#applyManId").val(applyManId);
-    $("#auditDialog").dialog("open");
+            alert(data.msg);
+            if(data.code >= 1){
+                loadVolunteerData(params);
+                // closeDialog("auditDialog");
+            }
+        },
+        error:function (data) {
+            alert(JSON.stringify(data));
+        }
+    });
 }
+
+// function auditVolunteer(volunteerId,state,applyManId){
+//
+//     $("#volunteerId").val(volunteerId);
+//     $("#auditState").val(state);
+//     $("#applyManId").val(applyManId);
+//     $("#auditDialog").dialog("open");
+// }
 function closeDialog(dialogId){
     $("#volunteerId").val("");
     $("#auditState").val("");

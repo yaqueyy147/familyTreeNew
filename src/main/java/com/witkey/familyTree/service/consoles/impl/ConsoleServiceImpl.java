@@ -7,6 +7,7 @@ import com.witkey.familyTree.dao.consoles.TUserBaseDao;
 import com.witkey.familyTree.dao.fronts.TFamilyMergeDao;
 import com.witkey.familyTree.dao.fronts.TMeritocratDao;
 import com.witkey.familyTree.dao.fronts.TPointsDicDao;
+import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
@@ -77,6 +78,13 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.tPointsDicDao = tPointsDicDao;
     }
 
+    @Resource
+    private TUserFrontDao tUserFrontDao;
+
+    public void settUserFrontDao(TUserFrontDao tUserFrontDao) {
+        this.tUserFrontDao = tUserFrontDao;
+    }
+
     @Autowired
     private CompanyService companyService;
 
@@ -97,15 +105,23 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public List<TUserFront> getUserFrontList(Map<String, Object> params) {
+
+        List<TUserFront> list = tUserFrontDao.find(params);
+
+        return list;
+    }
+
+    @Override
     public int auditVolunteer(Map<String, Object> params) {
 
-        String sql = "update t_volunteer set audit_state=?,audit_desc=?,audit_time=now(),audit_man=?";
-        sql += " where id=?";
+//        String sql = "update t_volunteer set audit_state=?,audit_desc=?,audit_time=now(),audit_man=?";
+//        sql += " where id=?";
+//
+//        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("auditDesc"),params.get("auditMan"),params.get("volunteerId"));
 
-        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("auditDesc"),params.get("auditMan"),params.get("volunteerId"));
-
-        sql = "update t_user_front set is_volunteer=? where id=?";
-        i += jdbcTemplate.update(sql,params.get("auditState"),params.get("applyManId"));
+        String sql = "update t_user_front set is_volunteer=? where id=?";
+        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("applyManId"));
 
         return i;
     }

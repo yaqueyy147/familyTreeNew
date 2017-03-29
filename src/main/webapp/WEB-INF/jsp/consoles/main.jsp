@@ -72,7 +72,7 @@
             <li>
                 <span>族谱管理</span>
                 <ul>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','志愿者审核','/consoles/volunteer')">志愿者审核</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','注册用户审核','/consoles/volunteer')">注册用户审核</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/company')">赞助商列表</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('rankList','积分排行榜','/consoles/rank')">积分排行榜</a></span></li>

@@ -37,11 +37,13 @@
 
             <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
+
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
                         <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <h6><a href="javascript:void 0;" onclick="toEdit('${family}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>
+                        <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>
+                            <h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">世界何氏族谱（${family.id}）</a></h6>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>
@@ -66,17 +68,18 @@
                 <h4 class="modal-title" id="addFamilyModalLabel">创建族谱</h4>
             </div>
             <div class="modal-body">
-                <!-- 族人信息页面 -->
+                <!-- 族谱信息页面 -->
                 <div class="tab-content">
                     <form class="form-horizontal" id="familyForm" action="" method="post">
+                        <input type="hidden" id="familyId" name="id" value="0" />
                         <div class="form-group">
                             <label for="familyFirstName" class="col-sm-2 control-label">家族姓氏</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="何" readonly>
+                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="世界何氏族谱" readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="familyName" class="col-sm-2 control-label">族谱名称</label>
+                            <label for="familyName" class="col-sm-2 control-label">家谱/族谱名称</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="familyName" name="familyName">
                             </div>

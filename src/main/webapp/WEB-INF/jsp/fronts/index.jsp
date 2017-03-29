@@ -78,7 +78,8 @@
                         <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
                         <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <h6>${family.familyFirstName}氏族谱（${family.id}）</h6>
+                        <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
+                            <h6>世界何氏族谱（${family.id}）</h6>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>

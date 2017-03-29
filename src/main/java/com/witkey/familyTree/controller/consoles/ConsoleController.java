@@ -57,6 +57,20 @@ public class ConsoleController {
     }
 
     /**
+     * 志愿者列表
+     * @param params
+     * @return
+     */
+    @RequestMapping(value= "/userFrontList")
+    @ResponseBody
+    public Map<String,Object> getUserFrontList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<TUserFront> list = consoleService.getUserFrontList(params);
+        result.put("dataList",list);
+        return result;
+    }
+
+    /**
      * 审核志愿者
      * @param params
      * @return
@@ -170,7 +184,7 @@ public class ConsoleController {
         String msg = "创建成功";
         try {
             if(tFamily.getId() > 0){
-                LOGGER.debug("修改族谱-->" + tFamily);
+                LOGGER.info("修改族谱-->" + tFamily);
                 tFamily.setCreateTime(CommonUtil.ObjToDate(createTime4Modify));
                 ii = familyService.updateFamily(tFamily);
                 msg = "修改成功";
@@ -178,16 +192,18 @@ public class ConsoleController {
                 tFamily.setCreateMan(userName);
                 tFamily.setCreateTime(new Date());
 
-                String visitPassword = tFamily.getVisitPassword();
-                if(!CommonUtil.isBlank(visitPassword)){
-                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
-                }
-                LOGGER.debug("创建族谱-->" + tFamily);
+//                String visitPassword = tFamily.getVisitPassword();
+//                if(!CommonUtil.isBlank(visitPassword)){
+//                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
+//                }
+                LOGGER.info("创建族谱-->" + tFamily);
                 //保存族谱
                 ii = familyService.createFamily(tFamily);
                 //将返回的族谱ID设置到family
                 tFamily.setId(ii);
-                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                if(CommonUtil.isBlank(tFamily.getPhotoUrl())){
+                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                }
             }
 
         } catch (Exception e){
@@ -258,6 +274,7 @@ public class ConsoleController {
         //修改成员信息
         if(tPeople.getId() > 0){
             familyService.updatePeople(tPeople);
+            LOGGER.info("修改族人-->" + tPeople);
             msg = "修改成功";
         }else{//新建成员
             tPeople.setCreateMan(jsonUser.get("userName")+"");
@@ -526,6 +543,7 @@ public class ConsoleController {
         tMeritocrat.setCreateMan(userName);
         tMeritocrat.setCreateTime(CommonUtil.getDateLong());
         int i = consoleService.saveMeritocrat(tMeritocrat);
+        LOGGER.debug("创建英才-->" + tMeritocrat);
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("msg","保存成功!");
         result.put("tMeritocrat",tMeritocrat);

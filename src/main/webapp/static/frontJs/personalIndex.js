@@ -70,7 +70,8 @@ $(function () {
                     imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\">";
                     imgHtml += "<img src=\"" + familyImg + "\" class=\"img-thumbnail\"/></a>";
                     imgHtml += "<div class=\"caption\">";
-                    imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
+                    // imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
+                    imgHtml += "<h3>世界何氏族谱（" + tFamily.id + "）</h3>";
                     imgHtml += "<p>状态：" + statusDesc + "</p>";
                     imgHtml += "<p>" + tFamily.familyName + "</p>";
                     imgHtml += "<p name=\"familyDesc\" style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";
@@ -90,7 +91,7 @@ $(function () {
         var familyId = $("#visitFamilyId").val();
         var passwordPre = $("#passwordPre").val();
         var password = $("#password").val();
-        if($.md5(password) != passwordPre){
+        if(password != passwordPre){
             alert("密码输入有误!");
             return;
         }
@@ -115,6 +116,56 @@ function viewFamily(familyId,visitStatus,visitPassword) {
     }
 }
 
-function toEdit(family) {
-    alert(JSON.stringify(family));
+function toEdit(familyId) {
+    $.ajax({
+        type:'post',
+        url: projectUrl + "/family/getFamilyFromId",
+        dataType:'json',
+        async:false,
+        data:{familyId:familyId},
+        success:function (data) {
+            var family = data.tFamily;
+            if(family){
+                $("#familyId").val(familyId);
+                $("#familyName").val(family.familyName);
+
+                var visitStatus = family.visitStatus;
+                $("input[type='radio'][value='" + visitStatus + "']").prop("checked","checked");
+                $("input[type='radio'][value='" + visitStatus + "']").click();
+
+                $("#visitPassword").val(family.visitPassword);
+                $("#province").val(family.province);
+                $("#province").change();
+                $("#city").val(family.city);
+                $("#city").change();
+                $("#district").val(family.district);
+                $("#familyDesc").val(family.familyDesc);
+                $("#familyState").val(family.state);
+                var imgPath = family.photoUrl;
+                $("#result_img").attr('src',imgPath);
+                $("#result_img").show();
+                $("#imgFile").hide();
+                $("#photoUrl").attr('value',imgPath);
+                $("#show_img").mouseover(function(){
+                    $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+                });
+                $("#show_img").mouseout(function(){
+                    $("#result_img").attr('src',imgPath);
+                });
+
+                $("#result_img").click(function(){
+                    $("#result_img").hide();
+                    $("#imgFile").show();
+                    $("#photoUrl").removeAttr('value');
+                    $("#show_img").unbind('mouseover');
+                    $("#show_img").unbind('mouseout');
+
+                });
+                $("#addFamilyModal").modal('show');
+            }
+        },
+        error:function (data) {
+            alert(JSON.stringify(data));
+        }
+    });
 }

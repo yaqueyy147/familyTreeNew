@@ -74,7 +74,7 @@ $(function () {
             success:function (data) {
                 if(data.code >= 1){
                     alert(data.msg);
-                    $("#applyVolunteer").replaceWith("<span>已申请志愿者，请等待审核！</span>");
+                    $("#applyVolunteer").replaceWith("<span>已申请修订族谱，请等待审核！</span>");
                 }
             },
             error:function (data) {

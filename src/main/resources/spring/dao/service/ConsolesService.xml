@@ -6,6 +6,7 @@
 	<bean id="consoleService" class="com.witkey.familyTree.service.consoles.impl.ConsoleServiceImpl">
 		<property name="tVolunteerDao" ref="tVolunteerDao" />
 		<property name="tUserBaseDao" ref="tUserBaseDao" />
+		<property name="tUserFrontDao" ref="tUserFrontDao" />
 		<property name="tRoleDao" ref="tRoleDao" />
 		<property name="tMeritocratAttrDao" ref="tMeritocratAttrDao" />
 		<property name="tMeritocratDao" ref="tMeritocratDao" />

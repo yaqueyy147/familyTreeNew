@@ -10,13 +10,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>审核志愿者</title>
+    <title>审核注册用户</title>
     <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
 
 <table id="volunteerList" class="easyui-datagrid" style="width:100%;height:98%;"
-       title="志愿者列表" data-options="
+       title="注册用户列表" data-options="
 				rownumbers:true,
 				singleSelect:true,
 				pagination:true,

@@ -84,21 +84,33 @@ public class FamilyController {
     public Map<String,Object> saveFamily(TFamily tFamily, HttpServletRequest request){
 
         Map<String,Object> map = new HashMap<String,Object>();
+        String msg = "创建成功";
         try {
             JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
             tFamily.setCreateMan(jsonUser.get("userName")+"");
             tFamily.setCreateTime(new Date());
             tFamily.setState(1);
-            String visitPassword = tFamily.getVisitPassword();
-            if(!CommonUtil.isBlank(visitPassword)){
-                tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
+            //修改族谱
+            if(tFamily.getId() > 0){
+                familyService.updateFamily(tFamily);
+                msg = "修改成功";
+                map.put("code",2);
+            }else{//新建族谱
+//                String visitPassword = tFamily.getVisitPassword();
+//                if(!CommonUtil.isBlank(visitPassword)){
+//                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
+//                }
+                LOGGER.debug("创建族谱-->" + tFamily);
+                //保存族谱
+                int familyId = familyService.createFamily(tFamily);
+                //将返回的族谱ID设置到family
+                tFamily.setId(familyId);
+                if(CommonUtil.isBlank(tFamily.getPhotoUrl())){
+                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                }
+                map.put("code",1);
+
             }
-            LOGGER.debug("创建族谱-->" + tFamily);
-            //保存族谱
-            int familyId = familyService.createFamily(tFamily);
-            //将返回的族谱ID设置到family
-            tFamily.setId(familyId);
-            tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
 
         } catch (Exception e){
             LOGGER.error("创建族谱出错-->",e);
@@ -108,8 +120,20 @@ public class FamilyController {
             return map;
         }
         map.put("tFamily",tFamily);
-        map.put("code",1);
-        map.put("msg","创建成功！");
+
+        map.put("msg",msg);
+        return map;
+    }
+
+    @RequestMapping(value = "getFamilyFromId")
+    @ResponseBody
+    public Map<String,Object> getFamilyFromId(int familyId){
+        Map<String,Object> map = new HashMap<String,Object>();
+
+        TFamily tFamily = familyService.getFamilyFromId(familyId);
+
+        map.put("tFamily",tFamily);
+
         return map;
     }
 

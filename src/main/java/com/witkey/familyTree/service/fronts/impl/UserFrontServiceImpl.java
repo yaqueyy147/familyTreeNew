@@ -120,12 +120,21 @@ public class UserFrontServiceImpl implements UserFrontService {
         return i;
     }
 
+//    @Override
+//    public int applyVolunteer(TVolunteer tVolunteer) {
+////        int i = CommonUtil.parseInt(tVolunteerDao.create(tVolunteer));
+//
+//        String sql = "update t_user_front set is_volunteer=3 where id=?";
+//        int i = jdbcTemplate.update(sql,tVolunteer.getUserId());
+//
+//        return i;
+//    }
+
     @Override
-    public int applyVolunteer(TVolunteer tVolunteer) {
-        int i = CommonUtil.parseInt(tVolunteerDao.create(tVolunteer));
+    public int applyVolunteer(int userId) {
 
         String sql = "update t_user_front set is_volunteer=3 where id=?";
-        jdbcTemplate.update(sql,tVolunteer.getUserId());
+        int i = jdbcTemplate.update(sql,userId);
 
         return i;
     }

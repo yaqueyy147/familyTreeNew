@@ -32,7 +32,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "familyTree")
 public class IndexController {
-    private static final int PAGE_SIZE = 10;//初始每页条数
+    private static final int PAGE_SIZE = 20;//初始每页条数
     private static final int PAGE_NUM = 6;//初始显示页数
     @Autowired
     private FamilyService familyService;
@@ -101,7 +101,7 @@ public class IndexController {
 
     @RequestMapping(value = "meritocratList")
     @ResponseBody
-    public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params){
+    public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
 
         int total = familyService.getTotalMeritocrat(params);
@@ -115,12 +115,17 @@ public class IndexController {
         params.put("pageSize",pageSize);
         params.put("beginRow",(pageNo - 1)*pageSize);
 
+
+        String pageChanger = PageUtil.getNumberPageChanger(pageNo,totalPage,PAGE_NUM,pageSize,params.get("tableId")+"");
+
+        pageChanger = new String(pageChanger.getBytes("GBK"),"UTF-8");
+
         List<Map<String,Object>> list = familyService.getMeritocrat(params);
         result.put("meritocratList",list);
 
         result.put("totalPage",totalPage);
         result.put("pageNo",pageNo);
-        result.put("pageChanger", PageUtil.getNumberPageChanger(pageNo,totalPage,PAGE_NUM,pageSize,params.get("tableId")+""));
+        result.put("pageChanger", pageChanger);
 
         return result;
     }

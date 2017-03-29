@@ -52,10 +52,10 @@
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
                                 <c:if test="${tUserFront.userPhoto == null || tUserFront.userPhoto == '' || tUserFront.userPhoto == 'null'}">
-                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;max-height:300px" />
+                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;max-height:260px" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;max-height:300px" />
+                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;max-height:260px" />
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -66,13 +66,13 @@
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
                                 <p>
                                     <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">
-                                        <button type="button" class="btn btn-primary" id="applyVolunteer">申请志愿者</button>
+                                        <button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 3}">
-                                        <span style="color: #ff8000">已申请志愿者，请等待审核！</span>
+                                        <span style="color: #ff8000">已申请，请等待审核！</span>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 1}">
-                                        <span style="color: #00ff00">录入族谱志愿者！</span>
+                                        <span style="color: #00ff00">录入族谱！</span>
                                     </c:if>
                                     &nbsp;
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal">修改密码</button>
@@ -92,7 +92,7 @@
                                 <input class="form-control" id="userName" name="userName" value="${tUserFront.userName}" placeholder="用户名" type="text" readonly />
                             </div>
                             <div class="form-group col-xs-8 form-actions" style="margin-top: 15px">
-                                <input class="form-control" id="nickName" name="nickName" value="${tUserFront.nickName}" placeholder="昵 称" type="text" />
+                                <input class="form-control" id="nickName" name="nickName" value="${tUserFront.nickName}" placeholder="真实姓名" type="text" />
                             </div>
                             <div class="form-group col-xs-8 form-actions" style="margin-top: 15px;display: none">
                                 <input class="form-control" id="password" name="password" value="${tUserFront.password}" type="password" />

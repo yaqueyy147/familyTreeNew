@@ -1,5 +1,8 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import javax.persistence.*;
 
 /**
@@ -197,5 +200,10 @@ public class TMeritocrat {
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }
