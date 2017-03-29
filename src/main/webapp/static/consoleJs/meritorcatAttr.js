@@ -91,7 +91,7 @@ $(function () {
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deleteMeritorcatAttr",
+                    url: projectUrl + "/consoles/deleteMeritorcatAttr",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},

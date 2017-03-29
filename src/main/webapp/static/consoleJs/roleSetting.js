@@ -92,7 +92,7 @@ $(function () {
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deleteRole",
+                    url: projectUrl + "/consoles/deleteRole",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},

@@ -162,7 +162,7 @@ $(function () {
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deleteUser",
+                    url: projectUrl + "/consoles/deleteUser",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},

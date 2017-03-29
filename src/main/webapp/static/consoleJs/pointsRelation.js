@@ -91,7 +91,7 @@ $(function () {
             if (r){
                 $.ajax({
                     type:'post',
-                    url: "/consoles/deletePointsRelation",
+                    url: projectUrl + "/consoles/deletePointsRelation",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},
