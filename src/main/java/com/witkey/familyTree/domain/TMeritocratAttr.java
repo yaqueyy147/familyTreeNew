@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 
 /**
@@ -77,5 +79,10 @@ public class TMeritocratAttr {
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

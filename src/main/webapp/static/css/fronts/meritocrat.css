@@ -10,16 +10,26 @@ body{
     min-width: 100px;
 }
 
-#meritocratDiv{
-    overflow: auto;
+.container-fluid{
+    padding: 0px !important;
+    margin-top: 20px;
+    width: 90%;
     position: relative;
 }
+
+#meritocratDiv{
+    overflow: auto;
+    padding-bottom: 30px;
+}
+
 #pageChanger{
     position: absolute;
-    bottom: -25px;
+    bottom: -40px;
     height: 30px;
     background-color: #ffffff;
-    width: 98%;
+    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 .active{

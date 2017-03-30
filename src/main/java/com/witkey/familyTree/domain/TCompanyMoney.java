@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -130,5 +132,10 @@ public class TCompanyMoney {
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

@@ -153,7 +153,6 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Override
     public List<TUserBase> getUserBase(Map<String, Object> params) {
-
         List<TUserBase> list = tUserBaseDao.find(params);
 
         return list;
@@ -187,8 +186,8 @@ public class ConsoleServiceImpl implements ConsoleService {
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
 
-        String sql = "delete from t_user_base where id=?";
-
+//        String sql = "delete from t_user_base where id=?";
+        String sql = "update t_user_base set state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);
@@ -220,8 +219,8 @@ public class ConsoleServiceImpl implements ConsoleService {
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
 
-        String sql = "delete from t_role where id=?";
-
+//        String sql = "delete from t_role where id=?";
+        String sql = "update t_role set state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);
@@ -297,8 +296,8 @@ public class ConsoleServiceImpl implements ConsoleService {
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
 
-        String sql = "delete from t_meritocrat where id=?";
-
+//        String sql = "delete from t_meritocrat where id=?";
+        String sql = "update t_meritocrat set state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);
@@ -312,8 +311,8 @@ public class ConsoleServiceImpl implements ConsoleService {
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
 
-        String sql = "delete from t_meritocrat_attr where id=?";
-
+//        String sql = "delete from t_meritocrat_attr where id=?";
+        String sql = "update t_meritocrat_attr set state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);
@@ -380,8 +379,8 @@ public class ConsoleServiceImpl implements ConsoleService {
     public int deletePointsRelation(String ids){
         String[] id = ids.split(",");
 
-        String sql = "delete from t_points_dic where id=?";
-
+//        String sql = "delete from t_points_dic where id=?";
+        String sql = "update t_points_dic where state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);

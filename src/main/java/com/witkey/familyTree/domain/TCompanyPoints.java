@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -77,5 +79,10 @@ public class TCompanyPoints {
         result = 31 * result + points;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -101,5 +103,10 @@ public class TMate implements Serializable {
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

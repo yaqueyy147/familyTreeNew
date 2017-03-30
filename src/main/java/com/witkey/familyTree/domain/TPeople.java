@@ -1,5 +1,6 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Generated;
 
 import javax.persistence.*;
@@ -513,5 +514,10 @@ public class TPeople implements Serializable {
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
         result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

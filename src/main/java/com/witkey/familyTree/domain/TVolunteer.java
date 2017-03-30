@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -156,5 +158,10 @@ public class TVolunteer {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

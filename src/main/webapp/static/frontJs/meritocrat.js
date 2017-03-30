@@ -36,7 +36,7 @@ function meritocratTablePageChange(pageNo) {
                 for(var i=0;i<meritocratList.length;i++){
                     var ii = meritocratList[i];
                     meritocrat += "<tr>";
-                    meritocrat += "<td style='width: 100px'><img src='" + projectUrl + ii.photo + "' class='img-thumbnail'/></td>"
+                    meritocrat += "<td style='width: 100px'><img src='" + projectUrl + ii.photo + "' class='img-thumbnail' style=\"width: 100%;\"/></td>"
                     meritocrat += "<td style='position: relative'><p></p><span style='font-weight: bold'>" + ii.meritocrat_name + "：</span>";
                     meritocrat += ii.meritocrat_desc + "</p><div style='position: absolute;bottom: 0%'>";
                     if($.trim(ii.post_code).length > 0){

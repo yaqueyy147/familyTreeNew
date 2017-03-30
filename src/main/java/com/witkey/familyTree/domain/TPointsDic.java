@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -82,6 +84,9 @@ public class TPointsDic {
         if (pointsNum != null ? !pointsNum.equals(that.pointsNum) : that.pointsNum != null) return false;
         if (pointsValue != null ? !pointsValue.equals(that.pointsValue) : that.pointsValue != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
+        if (state != that.state) return false;
+        if (createMan != null ? !createMan.equals(that.createMan) : that.createMan != null) return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
 
         return true;
     }
@@ -93,6 +98,9 @@ public class TPointsDic {
         result = 31 * result + (pointsNum != null ? pointsNum.hashCode() : 0);
         result = 31 * result + (pointsValue != null ? pointsValue.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + state;
+        result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         return result;
     }
 
@@ -126,5 +134,10 @@ public class TPointsDic {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

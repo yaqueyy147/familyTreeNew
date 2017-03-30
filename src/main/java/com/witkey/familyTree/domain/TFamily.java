@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -225,4 +227,10 @@ public class TFamily implements Serializable {
         result = 31 * result + (district != null ? district.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
+
 }

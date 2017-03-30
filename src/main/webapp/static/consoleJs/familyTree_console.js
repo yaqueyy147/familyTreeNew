@@ -301,6 +301,9 @@ function deletePeople(peopleId,peopleName) {
                     var zNodes = initPeopleData(familyId);
                     initFamilyTree(zNodes,setting);
                 }
+                if(data.code == -1){
+                    alert("该成员含有下一代，不能删除！如需删除，请先删除其后代！");
+                }
             }
         });
     }

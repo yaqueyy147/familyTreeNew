@@ -1,12 +1,14 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 
 /**
  * Created by chenxiaowei on 2017/1/11.
  */
 @Entity
-@Table(name = "t_user_resource", schema = "family_tree", catalog = "")
+@Table(name = "t_user_resource", schema = "family_tree")
 public class TUserResource {
     private int id;
     private int userId;
@@ -89,5 +91,10 @@ public class TUserResource {
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

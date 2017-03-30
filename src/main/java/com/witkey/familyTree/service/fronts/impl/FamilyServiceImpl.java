@@ -271,28 +271,34 @@ public class FamilyServiceImpl implements FamilyService {
 
         String sql = "select * from t_people where 1=1";
 
-        if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
-            sql += " and family_id=" + params.get("familyId");
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
+                sql += " and family_id=" + params.get("familyId");
 //            filter.put("familyId",params.get("familyId"));
-        }
-        if(!CommonUtil.isBlank(params.get("peopleType")) && "1".equals(params.get("peopleType"))){
-            sql += " and people_type='" + params.get("peopleType") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleType")) && "1".equals(params.get("peopleType"))){
+                sql += " and people_type='" + params.get("peopleType") + "'";
 //            filter.put("peopleType",params.get("peopleType"));
-        }
-        if(!CommonUtil.isBlank(params.get("peopleName"))){
-            sql += " and name='" + params.get("peopleName") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleName"))){
+                sql += " and name='" + params.get("peopleName") + "'";
 //            filter.put("name",params.get("peopleName"));
-        }
-        if(!CommonUtil.isBlank(params.get("generation"))){
-            sql += " and generation='" + params.get("generation") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("generation"))){
+                sql += " and generation='" + params.get("generation") + "'";
 //            filter.put("generation",params.get("generation"));
-        }
+            }
+            if(!CommonUtil.isBlank(params.get("fatherId"))){
+                sql += " and father_id='" + params.get("fatherId") + "'";
+//            filter.put("generation",params.get("generation"));
+            }
 
-        if(!CommonUtil.isBlank(params.get("orderBy"))){
-            sql += " " + params.get("orderBy");
-        }
-        if(!CommonUtil.isBlank(params.get("limit"))){
-            sql += " " + params.get("limit");
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
         }
 
 //        List<TPeople> list = tPeopleDao.find(filter);

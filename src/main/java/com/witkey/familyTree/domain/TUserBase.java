@@ -1,5 +1,6 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.persistence.*;
@@ -151,7 +152,11 @@ public class TUserBase implements Serializable {
             return false;
         if (state != null ? !state.equals(tUserBase.state) : tUserBase.state != null) return false;
         if (remark != null ? !remark.equals(tUserBase.remark) : tUserBase.remark != null) return false;
-        if (userPhone != null ? !userPhone.equals(tUserBase.userPhone) : tUserBase.userPhone != null) return false;
+        if (userEmail != null ? !userEmail.equals(tUserBase.userEmail) : tUserBase.userEmail != null) return false;
+        if (userQq != null ? !userQq.equals(tUserBase.userQq) : tUserBase.userQq != null) return false;
+        if (userWechart != null ? !userWechart.equals(tUserBase.userWechart) : tUserBase.userWechart != null) return false;
+        if (createTime != null ? !createTime.equals(tUserBase.createTime) : tUserBase.createTime != null) return false;
+        if (createMan != null ? !createMan.equals(tUserBase.userPhone) : tUserBase.createMan != null) return false;
         return true;
     }
 
@@ -166,7 +171,11 @@ public class TUserBase implements Serializable {
         result = 31 * result + (userNickName != null ? userNickName.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
-        result = 31 * result + (userPhone != null ? userPhone.hashCode() : 0);
+        result = 31 * result + (userEmail != null ? userEmail.hashCode() : 0);
+        result = 31 * result + (userQq != null ? userQq.hashCode() : 0);
+        result = 31 * result + (userWechart != null ? userWechart.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         return result;
     }
 
@@ -218,5 +227,10 @@ public class TUserBase implements Serializable {
 
     public void setCreateMan(String createMan) {
         this.createMan = createMan;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

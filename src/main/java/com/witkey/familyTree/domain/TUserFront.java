@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -291,5 +293,10 @@ public class TUserFront implements Serializable {
         result = 31 * result + isVolunteer;
         result = 31 * result + (userPhoto != null ? userPhoto.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

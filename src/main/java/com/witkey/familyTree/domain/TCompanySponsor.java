@@ -1,5 +1,7 @@
 package com.witkey.familyTree.domain;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -280,5 +282,10 @@ public class TCompanySponsor {
         result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }
