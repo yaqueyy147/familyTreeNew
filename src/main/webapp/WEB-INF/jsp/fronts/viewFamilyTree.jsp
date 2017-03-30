@@ -67,19 +67,19 @@
                                 <input name="familyId" id="familyId" type="hidden" value="${familyId}" />
 
                                 &nbsp;&nbsp;
-                                <%--第<input id="generation" name="generation" type="text" style="width:20px" value="0" />代--%>
-                                第
-                                <select id="generation" name="generation" style="width:35px">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                </select>
-                                代
+                                第<input id="generation" name="generation" type="text" style="width:20px" value="0" />代
+                                <%--第--%>
+                                <%--<select id="generation" name="generation" style="width:35px">--%>
+                                    <%--<option value="1">1</option>--%>
+                                    <%--<option value="2">2</option>--%>
+                                    <%--<option value="3">3</option>--%>
+                                    <%--<option value="4">4</option>--%>
+                                    <%--<option value="5">5</option>--%>
+                                    <%--<option value="6">6</option>--%>
+                                    <%--<option value="7">7</option>--%>
+                                    <%--<option value="8">8</option>--%>
+                                <%--</select>--%>
+                                <%--代--%>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <input name="id" id="id" type="hidden" value="0" />
                                 <input name="mateId" id="mateId" type="hidden"/>

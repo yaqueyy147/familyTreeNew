@@ -131,10 +131,19 @@ $(function () {
         }
         var selectIds = "";
         var selectNames = [];
+        var peopleCount = [];
         for(var i=0;i<selectRows.length;i++){
             var ii = selectRows[i];
             selectIds += "," + ii.id;
             selectNames.push(ii.familyName);
+            if(ii.peopleCount > 0){
+                peopleCount.push(ii.familyName + "(" + ii.id + ")");
+            }
+
+        }
+        if(peopleCount.length > 0){
+            alert("家族(" + peopleCount + ")中含有成员，不能删除！如需删除，请先删除其成员！");
+            return;
         }
         selectIds = selectIds.substring(1);
         $.messager.confirm('Confirm','确定要删除族谱(' + selectNames + ')  吗?',function(r){

@@ -11,6 +11,7 @@
 		<property name="tMeritocratAttrDao" ref="tMeritocratAttrDao" />
 		<property name="tMeritocratDao" ref="tMeritocratDao" />
 		<property name="tFamilyMergeDao" ref="tFamilyMergeDao" />
+		<property name="tLogDao" ref="tLogDao" />
 	</bean>
 
 </beans>

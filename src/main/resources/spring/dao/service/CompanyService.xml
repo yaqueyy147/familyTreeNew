@@ -7,6 +7,7 @@
 		<property name="tCompanySponsorDao" ref="tCompanySponsorDao" />
 		<property name="tCompanyPhotoDao" ref="tCompanyPhotoDao" />
 		<property name="tCompanyMoneyDao" ref="tCompanyMoneyDao" />
+		<property name="tLogDao" ref="tLogDao" />
 	</bean>
 	
 </beans>

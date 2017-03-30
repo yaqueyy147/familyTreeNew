@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.fronts.impl;
 
+import com.witkey.familyTree.dao.consoles.TLogDao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.TUserBase;
@@ -34,6 +35,13 @@ public class UserFrontServiceImpl implements UserFrontService {
 
     public void settVolunteerDao(TVolunteerDao tVolunteerDao) {
         this.tVolunteerDao = tVolunteerDao;
+    }
+
+    @Resource
+    private TLogDao tLogDao;
+
+    public void settLogDao(TLogDao tLogDao) {
+        this.tLogDao = tLogDao;
     }
 
     @Resource

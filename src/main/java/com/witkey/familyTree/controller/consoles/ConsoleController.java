@@ -2,6 +2,7 @@ package com.witkey.familyTree.controller.consoles;
 
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
+import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
@@ -33,6 +34,9 @@ public class ConsoleController {
     private ConsoleService consoleService;
     @Autowired
     private FamilyService familyService;
+
+    @Autowired
+    private LogService logService;
 
     @RequestMapping(value = "/volunteer")
     public ModelAndView auditVolunteer(Model model){
@@ -184,10 +188,15 @@ public class ConsoleController {
         String msg = "创建成功";
         try {
             if(tFamily.getId() > 0){
+                TFamily tFamilyOld = familyService.getFamilyFromId(tFamily.getId());
+
                 LOGGER.info("修改族谱-->" + tFamily);
                 tFamily.setCreateTime(CommonUtil.ObjToDate(createTime4Modify));
                 ii = familyService.updateFamily(tFamily);
                 msg = "修改成功";
+
+                //记录日志
+                logService.createLog(new TLog(2,userName,tFamily.toString(),tFamilyOld.toString()));
             }else{
                 tFamily.setCreateMan(userName);
                 tFamily.setCreateTime(new Date());
@@ -204,13 +213,15 @@ public class ConsoleController {
                 if(CommonUtil.isBlank(tFamily.getPhotoUrl())){
                     tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
                 }
+                //记录日志
+                logService.createLog(new TLog(1,userName,tFamily.toString()));
             }
 
         } catch (Exception e){
-            LOGGER.error("创建族谱出错-->",e);
+            LOGGER.error("操作族谱出错-->",e);
             map.put("tFamily",tFamily);
             map.put("code",-1);
-            map.put("msg","创建族谱出错！-->" + e.getMessage());
+            map.put("msg","操作族谱出错！-->" + e.getMessage());
             return map;
         }
         map.put("tFamily",tFamily);
@@ -221,10 +232,17 @@ public class ConsoleController {
 
     @RequestMapping(value = "/deleteFamily")
     @ResponseBody
-    public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params){
+    public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params, HttpServletRequest request) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
+
         LOGGER.info("删除族谱-->" + params);
         int i = familyService.deleteFamily(params);
+
+        //记录日志
+        logService.createLog(new TLog(3,userName,"删除族谱(" + params.get("ids") + ")"));
+
         result.put("code",i);
         result.put("msg","操作成功!");
 
@@ -258,7 +276,7 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId,String userCC) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-
+        String userName = jsonUser.get("userName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
         if(!CommonUtil.isBlank(birth_time)){
             tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
@@ -273,9 +291,15 @@ public class ConsoleController {
         String msg = "保存成功";
         //修改成员信息
         if(tPeople.getId() > 0){
+            TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
+
             familyService.updatePeople(tPeople);
             LOGGER.info("修改族人-->" + tPeople);
             msg = "修改成功";
+
+            //记录日志
+            logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
+
         }else{//新建成员
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
@@ -312,6 +336,10 @@ public class ConsoleController {
                 TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
                 familyService.saveMateInfo(tMate);
             }
+
+            //记录日志
+            logService.createLog(new TLog(1,userName,tPeople.toString()));
+
         }
         map.put("msg",msg);
         map.put("code",1);
@@ -544,6 +572,9 @@ public class ConsoleController {
         tMeritocrat.setCreateTime(CommonUtil.getDateLong());
         int i = consoleService.saveMeritocrat(tMeritocrat);
         LOGGER.debug("创建英才-->" + tMeritocrat);
+        //记录日志
+        logService.createLog(new TLog(1,userName,tMeritocrat.toString()));
+
         Map<String,Object> result = new HashMap<String,Object>();
         result.put("msg","保存成功!");
         result.put("tMeritocrat",tMeritocrat);
@@ -558,9 +589,14 @@ public class ConsoleController {
      */
     @RequestMapping(value = "deleteMeritorcat")
     @ResponseBody
-    public Map<String,Object> deleteMeritorcat(@RequestParam Map<String,Object> params){
+    public Map<String,Object> deleteMeritorcat(@RequestParam Map<String,Object> params, HttpServletRequest request) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
         int i = consoleService.deleteMeritocrat(params);
+        //记录日志
+        logService.createLog(new TLog(3,userName,"删除英才(" + params.get("ids") + ")"));
+
         result.put("code",i);
         result.put("msg","操作成功!");
         return result;

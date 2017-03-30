@@ -15,7 +15,7 @@
     <%@include file="common/commonCss.jsp"%>
     <style>
         body,html{
-            height: 98%;
+            height: 97%;
         }
     </style>
 </head>

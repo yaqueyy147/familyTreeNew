@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.fronts.impl;
 
+import com.witkey.familyTree.dao.consoles.TLogDao;
 import com.witkey.familyTree.dao.fronts.TCompanyMoneyDao;
 import com.witkey.familyTree.dao.fronts.TCompanyPhotoDao;
 import com.witkey.familyTree.dao.fronts.TCompanySponsorDao;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     public void settCompanyPhotoDao(TCompanyPhotoDao tCompanyPhotoDao) {
         this.tCompanyPhotoDao = tCompanyPhotoDao;
+    }
+
+    @Resource
+    private TLogDao tLogDao;
+
+    public void settLogDao(TLogDao tLogDao) {
+        this.tLogDao = tLogDao;
     }
 
     @Override

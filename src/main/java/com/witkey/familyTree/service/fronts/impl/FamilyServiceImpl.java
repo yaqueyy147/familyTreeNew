@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.fronts.impl;
 
+import com.witkey.familyTree.dao.consoles.TLogDao;
 import com.witkey.familyTree.dao.fronts.*;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -72,6 +73,13 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Resource
+    private TLogDao tLogDao;
+
+    public void settLogDao(TLogDao tLogDao) {
+        this.tLogDao = tLogDao;
+    }
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -99,7 +107,8 @@ public class FamilyServiceImpl implements FamilyService {
     public int deleteFamily(Map<String, Object> params) {
         String ids = params.get("ids") + "";
         String[] id = ids.split(",");
-        String sql = "delete from t_family where id=?";
+//        String sql = "delete from t_family where id=?";
+        String sql = "update t_family set state=9 where id=?";
 
         int ii = 0;
         for(int i=0;i<id.length;i++){
@@ -151,7 +160,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TFamily> getFamilyList(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where 1=1 ";
+        String sql = "select * from t_family where state<>9 ";
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("userName"))){
 //                filter.put("createMan",params.get("userName"));
@@ -269,7 +278,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getPeopleList(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select * from t_people where 1=1";
+        String sql = "select * from t_people where state<>9";
 
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
@@ -353,7 +362,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getMateList(int peopleId) {
 
         StringBuffer sql = new StringBuffer("select * from t_people where id in(");
-        sql.append(" select mate_id from t_mate where people_id=?)");
+        sql.append(" select mate_id from t_mate where people_id=?) and state<>9");
 
         List<TPeople> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TPeople>(TPeople.class),peopleId);
 
@@ -451,7 +460,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select t1.meritocrat_name,t1.meritocrat_desc,t1.meritocrat_attr_id,";
         sql += " t1.meritocrat_area,t1.meritocrat_addr,t1.post_code,t1.phone,t1.fax,t1.photo";
         sql += ",t2.meritocrat_attr ";
-        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t2.state=1";
+        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t1.state<>9";
 
         if(!CommonUtil.isBlank(params)){
 
@@ -489,7 +498,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         int total = 0;
 
-        String sql = " select count(*) total from t_meritocrat where 1=1";
+        String sql = " select count(*) total from t_meritocrat where state<>9";
 
         if(!CommonUtil.isBlank(params)){
 

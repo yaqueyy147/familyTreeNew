@@ -105,7 +105,12 @@ $(function () {
         $("#id").val(0);
     });
 
-    $("#generation").change(function(){
+    // $("#generation").change(function(){
+    //     var generation = $(this).val();
+    //     initParent(generation-1);
+    // });
+
+    $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
         initParent(generation-1);
     });

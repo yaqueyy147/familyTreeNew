@@ -77,14 +77,17 @@ function loadVolunteerData(params) {
                 }},
             {field:"operate",title:"操作",width:"120",
                 formatter: function(value,row,index){
-                    if(row.isVolunteer == 3){
-                        var opHtml = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',1)\">同意</a>";
+                    var opHtml = "";
+                    if(row.isVolunteer == 3 || row.isVolunteer == 0){
+                        opHtml = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',1)\">同意</a>";
                         opHtml += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',2)\">不同意</a>";
-                        return opHtml;
-                    }else if(row.isVolunteer == 0){
-                        return "未申请";
+                        // return opHtml;
+                    }else{
+                        opHtml = "<span>已审核</span>";
+                        opHtml += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',9)\">冻结账号</a>";
                     }
-                    return '已审核';
+
+                    return opHtml;
                 }}
         ]],
         loadFilter:pagerFilter

@@ -2,11 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-   <!--个人信息-->
-	<bean id="userFrontService" class="com.witkey.familyTree.service.fronts.impl.UserFrontServiceImpl">
-		<property name="tUserFrontDao" ref="tUserFrontDao" />
-		<property name="tVolunteerDao" ref="tVolunteerDao" />
+   <!--后台service-->
+	<bean id="logService" class="com.witkey.familyTree.service.consoles.impl.LogServiceImpl">
 		<property name="tLogDao" ref="tLogDao" />
 	</bean>
-	
+
 </beans>

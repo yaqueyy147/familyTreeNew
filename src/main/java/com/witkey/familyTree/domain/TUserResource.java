@@ -3,13 +3,15 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by chenxiaowei on 2017/1/11.
  */
 @Entity
 @Table(name = "t_user_resource", schema = "family_tree")
-public class TUserResource {
+public class TUserResource implements Serializable {
+    private static final long serialVersionUID = 4895456391658366226L;
     private int id;
     private int userId;
     private int resourceId;

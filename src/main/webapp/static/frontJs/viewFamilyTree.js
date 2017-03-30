@@ -60,7 +60,7 @@ $(function () {
     $("#savePeople").click(function () {
 
         if($.trim($("#generation").val()).length <= 0){
-            alert("请选择是第几代人");
+            alert("请输入是第几代人");
             return;
         }
 
@@ -110,7 +110,12 @@ $(function () {
         $("#id").val(0);
     });
 
-    $("#generation").change(function(){
+    // $("#generation").change(function(){
+    //     var generation = $(this).val();
+    //     initParent(generation-1);
+    // });
+
+    $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
         initParent(generation-1);
     });
@@ -173,10 +178,10 @@ function addDiyDom(treeId, treeNode) {
         }
     }
 
-    if(nodeLevel < 7){
-        editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
-    }
-
+    // if(nodeLevel < 7){
+    //     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
+    // }
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
     aObj.after(editStr);

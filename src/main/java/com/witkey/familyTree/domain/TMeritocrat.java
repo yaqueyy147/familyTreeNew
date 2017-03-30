@@ -5,13 +5,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017/3/9.
  */
 @Entity
 @Table(name = "t_meritocrat", schema = "family_tree")
-public class TMeritocrat {
+public class TMeritocrat implements Serializable {
+    private static final long serialVersionUID = 7871215571366452429L;
     private int id;
     private String meritocratName;
     private String meritocratDesc;
@@ -25,6 +27,7 @@ public class TMeritocrat {
     private String createTime;
     private String remark;
     private String photo;
+    private int state;
 
     @Id
     @Column(name = "id",unique = true)
@@ -157,6 +160,16 @@ public class TMeritocrat {
         this.photo = photo;
     }
 
+    @Basic
+    @Column(name = "state")
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -181,7 +194,7 @@ public class TMeritocrat {
         if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
         if (photo != null ? !photo.equals(that.photo) : that.photo != null) return false;
-
+        if (state != that.state) return false;
         return true;
     }
 
@@ -200,6 +213,7 @@ public class TMeritocrat {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + state;
         return result;
     }
 

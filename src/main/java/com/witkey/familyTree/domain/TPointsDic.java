@@ -3,6 +3,7 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_points_dic", schema = "family_tree")
-public class TPointsDic {
+public class TPointsDic implements Serializable {
+    private static final long serialVersionUID = -4734033836450083454L;
     private int id;
     private Integer pointsType;
     private Integer pointsNum;

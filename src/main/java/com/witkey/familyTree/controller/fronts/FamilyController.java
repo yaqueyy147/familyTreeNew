@@ -1,6 +1,7 @@
 package com.witkey.familyTree.controller.fronts;
 
 import com.witkey.familyTree.domain.*;
+import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.BaseUtil;
@@ -43,6 +44,8 @@ public class FamilyController {
     @Autowired
     private UserFrontService userFrontService;
 
+    @Autowired
+    private LogService logService;
     /**
      * 个人中心
      * @param model
@@ -87,14 +90,19 @@ public class FamilyController {
         String msg = "创建成功";
         try {
             JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+            String userName = jsonUser.get("userName") + "";
             tFamily.setCreateMan(jsonUser.get("userName")+"");
             tFamily.setCreateTime(new Date());
             tFamily.setState(1);
             //修改族谱
             if(tFamily.getId() > 0){
+                TFamily tFamilyOld = familyService.getFamilyFromId(tFamily.getId());
                 familyService.updateFamily(tFamily);
                 msg = "修改成功";
                 map.put("code",2);
+
+                //记录日志
+                logService.createLog(new TLog(2,userName,tFamily.toString(),tFamilyOld.toString()));
             }else{//新建族谱
 //                String visitPassword = tFamily.getVisitPassword();
 //                if(!CommonUtil.isBlank(visitPassword)){
@@ -109,6 +117,8 @@ public class FamilyController {
                     tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
                 }
                 map.put("code",1);
+                //记录日志
+                logService.createLog(new TLog(1,userName,tFamily.toString()));
 
             }
 
@@ -221,7 +231,7 @@ public class FamilyController {
     @ResponseBody
     public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-
+        String userName = jsonUser.get("userName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
         if(!CommonUtil.isBlank(birth_time)){
             tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
@@ -233,8 +243,12 @@ public class FamilyController {
         String msg = "保存成功";
         //修改成员信息
         if(tPeople.getId() > 0){
+            TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
             familyService.updatePeople(tPeople);
             msg = "修改成功";
+            //记录日志
+            logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
+
         }else{//新建成员
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
@@ -253,6 +267,8 @@ public class FamilyController {
                 TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
                 familyService.saveMateInfo(tMate);
             }
+            //记录日志
+            logService.createLog(new TLog(1,userName,tPeople.toString()));
         }
         map.put("msg",msg);
         map.put("code",1);
@@ -261,7 +277,9 @@ public class FamilyController {
 
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId){
+    public Map<String,Object> deletePeople(int peopleId, HttpServletRequest request) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
         //查询当前成员是否含有下一代人
@@ -274,8 +292,15 @@ public class FamilyController {
             return result;
         }
 
-        int i = familyService.deletePeople(peopleId);
+        TPeople tPeople = familyService.getPeopleInfo(peopleId);
+        tPeople.setState(9);
+//        int i = familyService.deletePeople(peopleId);
+        int i = 0;
+        familyService.updatePeople(tPeople);
+        i ++ ;
         result.put("code",i);
+        //记录日志
+        logService.createLog(new TLog(3,userName,"删除族人-->" + tPeople.toString()));
         return result;
     }
 

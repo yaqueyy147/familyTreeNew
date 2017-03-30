@@ -15,7 +15,7 @@
     <link href="<%=request.getContextPath()%>/static/css/fronts/personalInfo.css" rel="stylesheet" type="text/css" />
     <style>
         html,body {
-            height: 100%;
+            height: 98%;
         }
         body{
             background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
@@ -65,14 +65,14 @@
 
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
                                 <p>
-                                    <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">
-                                        <button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>
-                                    </c:if>
-                                    <c:if test="${tUserFront.isVolunteer == 3}">
-                                        <span style="color: #ff8000">已申请，请等待审核！</span>
-                                    </c:if>
+                                    <%--<c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">--%>
+                                        <%--<button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>--%>
+                                    <%--</c:if>--%>
+                                    <%--<c:if test="${tUserFront.isVolunteer == 3}">--%>
+                                        <%--<span style="color: #ff8000">已申请，请等待审核！</span>--%>
+                                    <%--</c:if>--%>
                                     <c:if test="${tUserFront.isVolunteer == 1}">
-                                        <span style="color: #00ff00">录入族谱！</span>
+                                        <span style="color: #00ff00">可录入族谱！</span>
                                     </c:if>
                                     &nbsp;
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal">修改密码</button>

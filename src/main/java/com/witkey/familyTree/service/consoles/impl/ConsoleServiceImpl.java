@@ -1,9 +1,6 @@
 package com.witkey.familyTree.service.consoles.impl;
 
-import com.witkey.familyTree.dao.consoles.TMeritocratAttrDao;
-import com.witkey.familyTree.dao.consoles.TRoleDao;
-import com.witkey.familyTree.dao.consoles.TVolunteerDao;
-import com.witkey.familyTree.dao.consoles.TUserBaseDao;
+import com.witkey.familyTree.dao.consoles.*;
 import com.witkey.familyTree.dao.fronts.TFamilyMergeDao;
 import com.witkey.familyTree.dao.fronts.TMeritocratDao;
 import com.witkey.familyTree.dao.fronts.TPointsDicDao;
@@ -85,6 +82,13 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.tUserFrontDao = tUserFrontDao;
     }
 
+    @Resource
+    private TLogDao tLogDao;
+
+    public void settLogDao(TLogDao tLogDao) {
+        this.tLogDao = tLogDao;
+    }
+
     @Autowired
     private CompanyService companyService;
 
@@ -153,7 +157,23 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Override
     public List<TUserBase> getUserBase(Map<String, Object> params) {
-        List<TUserBase> list = tUserBaseDao.find(params);
+
+        String sql = "select * from t_user_base where state<>9";
+
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("id"))){
+                sql += " and id='" + params.get("id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("userName"))){
+                sql += " and user_name='" + params.get("userName") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("userPassword"))){
+                sql += " and user_password='" + params.get("userPassword") + "'";
+            }
+        }
+
+//        List<TUserBase> list = tUserBaseDao.find(params);
+        List<TUserBase> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserBase>(TUserBase.class));
 
         return list;
     }
@@ -198,7 +218,20 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Override
     public List<TRole> getRole(Map<String, Object> params) {
-        List<TRole> list = tRoleDao.find(params);
+
+        String sql = "select * from t_role where state<>9";
+
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("id"))){
+                sql += " and id='" + params.get("id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("roleName"))){
+                sql += " and role_name='" + params.get("roleName") + "'";
+            }
+        }
+
+        List<TRole> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TRole>(TRole.class));
+//        List<TRole> list = tRoleDao.find(params);
         return list;
     }
 
@@ -237,8 +270,20 @@ public class ConsoleServiceImpl implements ConsoleService {
 //            filter.put("")
 //        }
 
-        List<TMeritocratAttr> list = tMeritocratAttrDao.find(params);
+        String sql = "select * from t_meritocrat_attr where state<>9";
 
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("id"))){
+                sql += " and id=" + params.get("id");
+            }
+            if(!CommonUtil.isBlank(params.get("meritocratAttr"))){
+                sql += " and meritocrat_attr=" + params.get("meritocratAttr");
+            }
+        }
+
+//        List<TMeritocratAttr> list = tMeritocratAttrDao.find(params);
+
+        List<TMeritocratAttr> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TMeritocratAttr>(TMeritocratAttr.class));
         return list;
     }
 
@@ -246,7 +291,8 @@ public class ConsoleServiceImpl implements ConsoleService {
     public List<Map<String,Object>> getMeritocratList(Map<String, Object> params) {
 
         String sql = "select t1.*,t2.meritocrat_attr";
-        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t2.state=1";
+        sql += " from t_meritocrat t1,t_meritocrat_attr t2 ";
+        sql += " where t1.meritocrat_attr_id=t2.id and t1.state<>9";// and t2.state=1
 
         if(!CommonUtil.isBlank(params)){
 

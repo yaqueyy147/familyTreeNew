@@ -3,6 +3,7 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -10,7 +11,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "t_company_photo")
-public class TCompanyPhoto {
+public class TCompanyPhoto implements Serializable {
+    private static final long serialVersionUID = 5428376389977879177L;
     private int id;
     private int companyId;
     private String publicityPhoto;

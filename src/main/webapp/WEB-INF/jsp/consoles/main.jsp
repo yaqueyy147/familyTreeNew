@@ -87,6 +87,7 @@
                 <ul>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('roleSetting','角色设置','/consoles/role')">角色设置</a></span></li>
+                    <li><span><a href="javascript:void 0;" onclick="loadTab('log','日志','/log/index')">日志</a></span></li>
                 </ul>
             </li>
             </c:if>

@@ -3,6 +3,7 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "t_user_points", schema = "family_tree")
-public class TUserPoints {
+public class TUserPoints implements Serializable {
+    private static final long serialVersionUID = -5896603769275597189L;
     private int id;
     private int userId;
     private int points;

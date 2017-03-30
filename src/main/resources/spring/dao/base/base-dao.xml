@@ -63,4 +63,8 @@
 	<bean class="com.witkey.familyTree.dao.fronts.TMeritocratDao" id="tMeritocratDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean class="com.witkey.familyTree.dao.consoles.TLogDao" id="tLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

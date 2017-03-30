@@ -3,6 +3,7 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_family_merge", schema = "family_tree")
-public class TFamilyMerge {
+public class TFamilyMerge implements Serializable {
+    private static final long serialVersionUID = -8329464336009502626L;
     private int id;
     private Integer primaryFamilyId;
     private Integer targetFamilyId;

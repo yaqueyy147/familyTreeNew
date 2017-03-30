@@ -3,6 +3,7 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -11,7 +12,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "t_company_money")
-public class TCompanyMoney {
+public class TCompanyMoney implements Serializable {
+    private static final long serialVersionUID = 5626155305892741966L;
     private int id;
     private int companyId;
     private BigDecimal payMoney;
