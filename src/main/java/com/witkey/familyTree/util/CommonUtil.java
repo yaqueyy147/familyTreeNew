@@ -1819,7 +1819,8 @@ public class CommonUtil {
 //				bb = false;
 //			}
 //		}
-
+		String ss = "http://localhost:8080/familyTree/upload";
+		System.out.println(ss.substring(ss.indexOf("/familyTree")));
 	}
 	
 }

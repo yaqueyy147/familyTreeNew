@@ -55,7 +55,7 @@
                                     <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;max-height:260px" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="<%=request.getContextPath()%>${tUserFront.userPhoto}" style="min-height: 150px;max-height:260px" />
+                                    <img src="${tUserFront.userPhoto}" style="min-height: 150px;max-height:260px" /><%--<!--<%=request.getContextPath()%>-->--%>
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -65,12 +65,12 @@
 
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
                                 <p>
-                                    <%--<c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">--%>
-                                        <%--<button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>--%>
-                                    <%--</c:if>--%>
-                                    <%--<c:if test="${tUserFront.isVolunteer == 3}">--%>
-                                        <%--<span style="color: #ff8000">已申请，请等待审核！</span>--%>
-                                    <%--</c:if>--%>
+                                    <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">
+                                        <button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>
+                                    </c:if>
+                                    <c:if test="${tUserFront.isVolunteer == 3}">
+                                        <span style="color: #ff8000">已申请，请等待审核！</span>
+                                    </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 1}">
                                         <span style="color: #00ff00">可录入族谱！</span>
                                     </c:if>
@@ -216,7 +216,7 @@
             'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
-            "formData"      : {targetFile : '/static/upload/userImg'},
+            "formData"      : {targetFile : '/upload/userImg'},
             'queueID'       : 'progress_bar',
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",

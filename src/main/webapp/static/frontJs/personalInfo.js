@@ -94,7 +94,7 @@ $(function () {
             success:function (data) {
                 if(data.code >= 1){
                     alert(data.msg);
-                    $("#userPhotoBox img").attr("src",projectUrl + photoPath);
+                    $("#userPhotoBox img").attr("src",photoPath);
                     $("#userphoto").val(photoPath);
                     $("#photoModal").modal('hide');
                 }
