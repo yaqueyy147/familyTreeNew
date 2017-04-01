@@ -201,9 +201,9 @@ public class FamilyServiceImpl implements FamilyService {
             if(CommonUtil.isBlank(photoUrl)){
                 tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
             }
-            else if(!CommonUtil.isFile(photoUrl)){
-                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-            }
+//            else if(!CommonUtil.isFile(photoUrl)){
+//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+//            }
         }
 
         return list;
@@ -260,9 +260,9 @@ public class FamilyServiceImpl implements FamilyService {
                 if(CommonUtil.isBlank(photoUrl)){
                     tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
                 }
-                else if(!CommonUtil.isFile(photoUrl)){
-                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-                }
+//                else if(!CommonUtil.isFile(photoUrl)){
+//                    tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+//                }
             }
         }
 
