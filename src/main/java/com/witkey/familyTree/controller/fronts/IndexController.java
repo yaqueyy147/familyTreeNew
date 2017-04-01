@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by suyx on 2016/12/18.
  */
 @Controller
-@RequestMapping(value = "familyTree")
+@RequestMapping(value = "/familyTree")
 public class IndexController {
     private static final int PAGE_SIZE = 20;//初始每页条数
     private static final int PAGE_NUM = 6;//初始显示页数
@@ -39,7 +39,7 @@ public class IndexController {
     @Autowired
     private ConsoleService consoleService;
 
-    @RequestMapping(value = {"","/","index"})
+    @RequestMapping(value = {"","/","/index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 
         //从cookie获取用户信息
@@ -99,7 +99,7 @@ public class IndexController {
         return new ModelAndView("/fronts/meritocrat");
     }
 
-    @RequestMapping(value = "meritocratList")
+    @RequestMapping(value = "/meritocratList")
     @ResponseBody
     public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
@@ -118,7 +118,7 @@ public class IndexController {
 
         String pageChanger = PageUtil.getNumberPageChanger(pageNo,totalPage,PAGE_NUM,pageSize,params.get("tableId")+"");
 
-        pageChanger = new String(pageChanger.getBytes("GBK"),"UTF-8");
+//        pageChanger = new String(pageChanger.getBytes("GBK"),"UTF-8");
 
         List<Map<String,Object>> list = familyService.getMeritocrat(params);
         result.put("meritocratList",list);

@@ -39,7 +39,7 @@
                 <div class="thumbnail">
 
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
-                        <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
+                        <img src="${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>
@@ -182,7 +182,7 @@
             'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
-            "formData"      : {targetFile : '/static/upload/familyImg'},
+            "formData"      : {targetFile : '/upload/familyImg'},
             'queueID'       : 'progress_bar',
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",

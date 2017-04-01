@@ -75,7 +75,7 @@ public class CompanyController {
         return new ModelAndView("/fronts/companyDetail");
     }
 
-    @RequestMapping(value = "savePublicity")
+    @RequestMapping(value = "/savePublicity")
     @ResponseBody
     public Map<String,Object> savePublicity(TCompanyPhoto tCompanyPhoto){
         Map<String,Object> result = new HashMap<String,Object>();
@@ -89,7 +89,7 @@ public class CompanyController {
         return result;
     }
 
-    @RequestMapping(value = "moneyList")
+    @RequestMapping(value = "/moneyList")
     @ResponseBody
     public Map<String,Object> moneyList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();

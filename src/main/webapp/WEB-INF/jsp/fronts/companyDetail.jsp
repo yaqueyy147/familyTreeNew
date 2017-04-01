@@ -41,7 +41,7 @@
 
             <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
-                    <a href="javascript:void(0)" ><img src="<%=request.getContextPath()%>${companyDetail.publicityPhoto}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <p name="photoDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${companyDetail.photoDesc}">
@@ -154,7 +154,7 @@
             'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
-            "formData"      : {targetFile : '/static/upload/companyImg'},
+            "formData"      : {targetFile : '/upload/companyImg'},
             'queueID'       : 'progress_bar',
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",

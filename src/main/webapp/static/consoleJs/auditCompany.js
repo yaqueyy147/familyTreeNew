@@ -83,8 +83,8 @@ function showMoneyList(companyId){
 function formatCompanyData(data) {
     if(data){
         for(var i=0;i<data.length;i++){
-            data[i].company_photo = "<img src=\"" + projectUrl + data[i].company_photo + "\" width=\"100px\" height=\"50px\" />";
-            data[i].business_license = "<img src=\"" + projectUrl + data[i].business_license + "\" width=\"100px\" height=\"50px\" />";
+            data[i].company_photo = "<img src=\"" + data[i].company_photo + "\" width=\"100px\" height=\"50px\" />";
+            data[i].business_license = "<img src=\"" + data[i].business_license + "\" width=\"100px\" height=\"50px\" />";
             data[i].totalMoney = "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + data[i].id + "')\">" + data[i].totalMoney + "</a>";
             data[i].phone = data[i].company_mobile_phone + "," + data[i].company_telephone;
             if(data[i].state != 0){

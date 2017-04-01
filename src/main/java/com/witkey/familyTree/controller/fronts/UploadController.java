@@ -20,7 +20,7 @@ import java.util.Map;
 @RequestMapping(value = "/upload")
 public class UploadController {
 
-    @RequestMapping(value = "uploadImg")
+    @RequestMapping(value = "/uploadImg")
     @ResponseBody
     public String uploadImg(MultipartFile uploadFile, String targetFile, HttpServletRequest request, HttpServletResponse response) throws IOException {
 

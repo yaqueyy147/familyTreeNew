@@ -216,7 +216,7 @@ public class SignInController {
      * @param tUserFront
      * @return
      */
-    @RequestMapping(value = "modifyPersonalInfo")
+    @RequestMapping(value = "/modifyPersonalInfo")
     @ResponseBody
     public Map<String,Object> modifyPersonalInfo(TUserFront tUserFront){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -241,7 +241,7 @@ public class SignInController {
      * @return
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping(value = "modifyPassword")
+    @RequestMapping(value = "/modifyPassword")
     @ResponseBody
     public Map<String,Object> modifyPassword(HttpServletRequest request,@RequestParam Map<String,Object> params) throws UnsupportedEncodingException{
         Map<String,Object> map = new HashMap<String,Object>();
@@ -266,7 +266,7 @@ public class SignInController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "applyVolunteer")
+    @RequestMapping(value = "/applyVolunteer")
     @ResponseBody
     public Map<String,Object> applyVolunteer(HttpServletRequest request) throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();
@@ -298,7 +298,7 @@ public class SignInController {
      * @param tCompanySponsor
      * @return
      */
-    @RequestMapping(value = "modifyCompanyInfo")
+    @RequestMapping(value = "/modifyCompanyInfo")
     @ResponseBody
     public Map<String,Object> modifyCompanyInfo(TCompanySponsor tCompanySponsor) throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();

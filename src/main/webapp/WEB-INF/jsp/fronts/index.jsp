@@ -75,7 +75,7 @@
             <div class="col-sm-3 col-md-2">
                 <div class="thumbnail">
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
-                        <img src="<%=request.getContextPath()%>${family.photoUrl}" class="img-thumbnail"/></a>
+                        <img src="${family.photoUrl}" class="img-thumbnail"/></a>
                         <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>

@@ -66,7 +66,7 @@ public class LoginController {
         return new ModelAndView("/consoles/login");
     }
 
-    @RequestMapping(value = "logout")
+    @RequestMapping(value = "/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response){
 
         CookieUtil.destroyCookies(response,request);

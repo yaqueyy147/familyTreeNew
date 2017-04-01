@@ -47,7 +47,7 @@
                                     <img src="<%=request.getContextPath()%>/static/images/defautCompany.jpg" />
                                 </c:if>
                                 <c:if test="${companyInfo.companyPhoto != null && companyInfo.companyPhoto != '' && companyInfo.companyPhoto != 'null'}">
-                                    <img src="<%=request.getContextPath()%>${companyInfo.companyPhoto}" />
+                                    <img src="${companyInfo.companyPhoto}" />
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -109,7 +109,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-md-12">
                                             <input type="file" name="imgFile1" id="imgFile1" style="display: none" />
-                                            <a id="show_img1"><img id="result_img1" height="128px" width="128px" src="<%=request.getContextPath()%>${companyInfo.businessLicense}" /></a>
+                                            <a id="show_img1"><img id="result_img1" height="128px" width="128px" src="${companyInfo.businessLicense}" /></a>
                                         </div>
                                     </div>
                                     上传公司营业执照<span class="glyphicon glyphicon-asterisk" style="color: #a94442"></span>
@@ -204,7 +204,7 @@
             'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
-            "formData"      : {targetFile : '/static/upload/companyImg'},
+            "formData"      : {targetFile : '/upload/companyImg'},
             'queueID'       : 'progress_bar',
             'fileObjName'   : 'uploadFile',
             "buttonCursor"  : "hand",

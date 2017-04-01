@@ -135,7 +135,7 @@ public class FamilyController {
         return map;
     }
 
-    @RequestMapping(value = "getFamilyFromId")
+    @RequestMapping(value = "/getFamilyFromId")
     @ResponseBody
     public Map<String,Object> getFamilyFromId(int familyId){
         Map<String,Object> map = new HashMap<String,Object>();
