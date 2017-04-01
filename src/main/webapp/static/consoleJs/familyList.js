@@ -254,7 +254,7 @@ function loadDataToForm(data) {
     $("#imgFile").hide();
     $("#photoUrl").attr('value',imgPath);
     $("#show_img").mouseover(function(){
-        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+        $("#result_img").attr('src',"/ImgFile/images/deleteImg.png");
     });
     $("#show_img").mouseout(function(){
         $("#result_img").attr('src',imgPath);

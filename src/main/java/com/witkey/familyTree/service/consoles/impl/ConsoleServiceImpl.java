@@ -143,10 +143,10 @@ public class ConsoleServiceImpl implements ConsoleService {
             String photo = map.get("company_photo") + "";
             String license = map.get("business_license") + "";
             if(CommonUtil.isBlank(photo)){
-                map.put("company_photo","/static/images/default1.jpg");
+                map.put("company_photo","/ImgFile/images/default1.jpg");
             }
             if(CommonUtil.isBlank(license)){
-                map.put("business_license","/static/images/default2.jpg");
+                map.put("business_license","/ImgFile/images/default2.jpg");
             }
 
             map.put("totalMoney",total);
