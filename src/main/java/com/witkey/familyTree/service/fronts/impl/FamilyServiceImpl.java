@@ -285,7 +285,7 @@ public class FamilyServiceImpl implements FamilyService {
                 sql += " and family_id=" + params.get("familyId");
 //            filter.put("familyId",params.get("familyId"));
             }
-            if(!CommonUtil.isBlank(params.get("peopleType")) && "1".equals(params.get("peopleType"))){
+            if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
                 sql += " and people_type='" + params.get("peopleType") + "'";
 //            filter.put("peopleType",params.get("peopleType"));
             }
