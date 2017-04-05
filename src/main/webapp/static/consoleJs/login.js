@@ -12,11 +12,11 @@ $(function () {
     checkCodePre = drawPic();
 
     $("#signIn").click(function () {
-        var userName = $("#userName").val();
+        var loginName = $("#loginName").val();
         var password = $("#userPassword").val();
         var checkCode = $("#checkCode").val();
 
-        if($.trim(userName).length <= 0){
+        if($.trim(loginName).length <= 0){
             alert("用户名不能为空！");
             return ;
         }

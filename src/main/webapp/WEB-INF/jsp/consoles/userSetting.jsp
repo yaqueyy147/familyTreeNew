@@ -30,42 +30,31 @@
             <input class="easyui-validatebox" type="hidden" id="userId" name="id" value="0" />
             <table cellpadding="5">
                 <tr>
-                    <td>账号:</td>
-                    <td><input class="easyui-validatebox" type="text" id="userName" name="userName" data-options="required:true" /></td>
-                    <td>昵称:</td>
-                    <td><input class="easyui-validatebox" type="text" id="userNickName" name="userNickName" /></td>
+                    <td>登录账号:</td>
+                    <td><input class="easyui-validatebox" type="text" id="loginName" name="loginName" data-options="required:true" /></td>
+                    <td>用户名/真实姓名:</td>
+                    <td><input class="easyui-validatebox" type="text" id="userName" name="userName" /></td>
                 </tr>
                 <tr id="passwordTr">
                     <td>密码:</td>
-                    <td><input class="easyui-validatebox" type="password" id="userPassword" name="userPassword" value="123456" data-options="required:true" /></td>
+                    <td><input class="easyui-validatebox" type="password" id="password" name="password" value="123456" data-options="required:true" /></td>
                     <td>确认密码:</td>
-                    <td><input class="easyui-validatebox" type="password" id="userPasswordAffirm" name="userPasswordAffirm" value="123456" data-options="required:true" /></td>
+                    <td><input class="easyui-validatebox" type="password" id="passwordAffirm" name="passwordAffirm" value="123456" data-options="required:true" /></td>
                 </tr>
                 <tr>
                     <td>联系电话:</td>
                     <td>
-                        <input class="easyui-validatebox" type="text" id="userPhone" name="userPhone"/>
+                        <input class="easyui-validatebox" type="text" id="phone" name="phone"/>
                     </td>
-                    <td>邮箱:</td>
-                    <td>
-                        <input class="easyui-validatebox" type="text" id="userEmail" name="userEmail" />
-                    </td>
-                </tr>
-                <tr>
                     <td>QQ:</td>
                     <td>
                         <input class="easyui-validatebox" type="text" id="userQq" name="userQq"/>
                     </td>
+                </tr>
+                <tr>
                     <td>微信:</td>
                     <td>
                         <input class="easyui-validatebox" type="text" id="userWechart" name="userWechart" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>用户说明:</td>
-                    <td>
-                        <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
-                        <textarea class="text-area easyui-validatebox" id="userDesc" name="userDesc" rows="3" cols="14"></textarea>
                     </td>
                     <td>状态:</td>
                     <td>
@@ -74,6 +63,33 @@
                             <option value="0">不可用</option>
                         </select>
                     </td>
+                </tr>
+                <tr>
+                    <td>是否可登录前台:</td>
+                    <td>
+                        <select id="isFront" name="isFront" class="easyui-combobox" style="width:100px">
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </td>
+                    <td>是否可登录后台:</td>
+                    <td>
+                        <select id="isConsole" name="isConsole" class="easyui-combobox" style="width:100px">
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>是否可修族谱:</td>
+                    <td>
+                        <select id="isVolunteer" name="isVolunteer" class="easyui-combobox" style="width:100px">
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                    </td>
+
                 </tr>
 
             </table>

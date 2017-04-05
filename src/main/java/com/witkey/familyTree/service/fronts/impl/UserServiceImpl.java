@@ -5,12 +5,10 @@ import com.witkey.familyTree.dao.consoles.TUser1Dao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.TUser1;
-import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.domain.TUserFront;
-import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.fronts.UserFrontService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,8 @@ import java.util.Map;
 /**
  * Created by suyx on 2016/12/18.
  */
-@Service("userFrontService")
-public class UserFrontServiceImpl implements UserFrontService {
+@Service("userService")
+public class UserServiceImpl implements UserService {
 
     @Resource
     private TUserFrontDao tUserFrontDao;
@@ -57,16 +55,15 @@ public class UserFrontServiceImpl implements UserFrontService {
 
     /**
      * 用户注册
-     * @param tUserFront
+     * @param tUser1
      * @return
      */
     @Override
-    public int createUserFront(TUserFront tUserFront) {
-
-        tUserFront.setPassword(CommonUtil.string2MD5(tUserFront.getPassword()));
+    public int createUser1(TUser1 tUser1) {
+        tUser1.setPassword(CommonUtil.string2MD5(tUser1.getPassword()));
         int id = 0;
         try {
-            id = CommonUtil.parseInt(tUserFrontDao.create(tUserFront));
+            id = CommonUtil.parseInt(tUser1Dao.create(tUser1));
         }catch (Exception da){
             da.printStackTrace();
         }
@@ -74,10 +71,10 @@ public class UserFrontServiceImpl implements UserFrontService {
     }
 
     @Override
-    public int saveUserFront(TUserFront tUserFront) {
+    public int saveUser1(TUser1 tUser1) {
         int i = 0;
         try {
-            tUserFrontDao.update(tUserFront);
+            tUserFrontDao.update(tUser1);
             i ++;
         }catch (Exception e){
 
@@ -88,35 +85,45 @@ public class UserFrontServiceImpl implements UserFrontService {
 
     /**
      * 用户登录
-     * @param tUserFront
+     * @param tUser1
      * @return
      */
     @Override
-    public List<Map<String, Object>> signIn(TUserFront tUserFront) {
-        String sql = "select * from t_user_front where user_name=? and password=?";
+    public List<Map<String, Object>> signIn(TUser1 tUser1) {
+        String sql = "select * from t_user_1 where login_name=? and password=?";
         //将密码加密
-        String password = CommonUtil.string2MD5(tUserFront.getPassword());
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,tUserFront.getUserName(),password);
+        String password = CommonUtil.string2MD5(tUser1.getPassword());
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,tUser1.getUserName(),password);
         return list;
     }
 
     /**
      * 根据传入的用户信息查询用户
-     * @param tUserFront
+     * @param tUser1
      * @return
      */
     @Override
-    public List<TUserFront> getUserInfo(TUserFront tUserFront) {
-        //将密码加密
-//        String password = CommonUtil.string2MD5(tUserFront.getPassword());
-        String sql = "select * from t_user_front where user_name=?";// and password=?
+    public List<TUser1> getUserInfo1(TUser1 tUser1) {
+        String sql = "select * from t_user_1 where state=1";// and password=?
 
-        if(!CommonUtil.isBlank(tUserFront.getPassword())){
-            sql += " and password='"+ tUserFront.getPassword() + "'" ;
+        if(!CommonUtil.isBlank(tUser1.getIsFront()) && tUser1.getIsFront() == 1){
+            sql += " and is_front='1'" ;
+        }
+        if(!CommonUtil.isBlank(tUser1.getIsConsole()) && tUser1.getIsConsole() == 1){
+            sql += " and is_console='1'" ;
+        }
+        if(!CommonUtil.isBlank(tUser1.getLoginName())){
+            sql += " and login_name='"+ tUser1.getLoginName() + "'" ;
+        }
+        if(!CommonUtil.isBlank(tUser1.getUserName())){
+            sql += " and user_name='"+ tUser1.getPassword() + "'" ;
+        }
+        if(!CommonUtil.isBlank(tUser1.getPassword())){
+            sql += " and password='"+ tUser1.getPassword() + "'" ;
         }
 
         //查询
-        List<TUserFront> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFront>(TUserFront.class),tUserFront.getUserName());
+        List<TUser1> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUser1>(TUser1.class));
 
         return list;
     }
@@ -125,7 +132,7 @@ public class UserFrontServiceImpl implements UserFrontService {
     public int modifyPassword(Map<String,Object> params) {
         String userId = params.get("userId") + "";
         String newPassword = CommonUtil.string2MD5(params.get("newPassword") + "");
-        String sql = "update t_user_front set password=? where id=?";
+        String sql = "update t_user_1 set password=? where id=?";
 
         if("2".equals(params.get("userType"))){
             sql = "update t_company_sponsor set company_login_password=? where id=?";
@@ -149,7 +156,7 @@ public class UserFrontServiceImpl implements UserFrontService {
     @Override
     public int applyVolunteer(int userId) {
 
-        String sql = "update t_user_front set is_volunteer=3 where id=?";
+        String sql = "update t_user_1 set is_volunteer=3 where id=?";
         int i = jdbcTemplate.update(sql,userId);
 
         return i;
@@ -158,7 +165,7 @@ public class UserFrontServiceImpl implements UserFrontService {
     @Override
     public int modifyPhoto(String userId, String photoPath, String userType) {
 
-        String sql = "update t_user_front set user_photo=? where id=?";
+        String sql = "update t_user_1 set user_photo=? where id=?";
 
         if("2".equals(userType)){
             sql = "update t_company_sponsor set company_photo=? where id=?";
@@ -169,8 +176,8 @@ public class UserFrontServiceImpl implements UserFrontService {
     }
 
     @Override
-    public TUserFront getUserInfoFromId(int userId) {
-        TUserFront tUserFront = tUserFrontDao.get(userId);
-        return tUserFront;
+    public TUser1 getUserInfoFromId(int userId) {
+        TUser1 tUser1 = tUser1Dao.get(userId);
+        return tUser1;
     }
 }

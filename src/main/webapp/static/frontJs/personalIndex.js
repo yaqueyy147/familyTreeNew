@@ -67,8 +67,8 @@ $(function () {
                         statusDesc = "仅族人查看";
                     }
                     var imgHtml = "<div class=\"col-sm-6 col-md-2\"><div class=\"thumbnail\">";
-                    imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\">";
-                    imgHtml += "<img src=\"" + familyImg + "\" class=\"img-thumbnail\"/></a>";
+                    imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\" style='float: none;width: 100%'>";
+                    imgHtml += "<img class=\"familyImgFF\" src=\"" + familyImg + "\" class=\"img-thumbnail\"/></a>";
                     imgHtml += "<div class=\"caption\">";
                     // imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
                     imgHtml += "<h3>世界何氏族谱（" + tFamily.id + "）</h3>";

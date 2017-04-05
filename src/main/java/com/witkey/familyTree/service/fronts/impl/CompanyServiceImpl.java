@@ -95,8 +95,8 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Map<String, Object>> getCompanyInfo(Map<String, Object> params) {
         String sql = "select * from t_company_sponsor where 1=1";
 
-        if(!CommonUtil.isBlank(params.get("userName"))){
-            sql += " and company_login_name='" + params.get("userName") + "'";
+        if(!CommonUtil.isBlank(params.get("loginName"))){
+            sql += " and company_login_name='" + params.get("loginName") + "'";
         }
         if(!CommonUtil.isBlank(params.get("password"))){
             sql += " and company_login_password='" + params.get("password") + "'";

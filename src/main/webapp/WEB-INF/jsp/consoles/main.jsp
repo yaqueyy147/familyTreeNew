@@ -51,11 +51,11 @@
         <div id="userInfoDiv" class="userInfo">
             <a href="javascript:void 0;" class="easyui-menubutton"
                data-options="menu:'#mm'">
-                <c:if test="${empty consoleUserInfo.userNickName}">
-                    ${consoleUserInfo.userName}
+                <c:if test="${empty consoleUserInfo.userName}">
+                    ${consoleUserInfo.loginName}
                 </c:if>
-                <c:if test="${!empty consoleUserInfo.userNickName}">
-                    ${consoleUserInfo.userNickName}
+                <c:if test="${!empty consoleUserInfo.userName}">
+                    ${consoleUserInfo.userName}
                 </c:if>
             </a>
             <div id="mm" style="width:150px;">
@@ -82,7 +82,7 @@
                     <li><span><a href="javascript:void 0;" onclick="loadTab('pointsRelation','积分对应关系','/consoles/pointsRelation')">积分对应关系</a></span></li>
                 </ul>
             </li>
-            <c:if test="${consoleUserInfo.userName == 'admin'}">
+            <c:if test="${consoleUserInfo.loginName == 'admin'}">
             <li><span>用户管理</span>
                 <ul>
                     <li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>

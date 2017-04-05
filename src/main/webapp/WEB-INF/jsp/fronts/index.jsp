@@ -74,8 +74,8 @@
 
             <div class="col-sm-3 col-md-2">
                 <div class="thumbnail">
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
-                        <img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
+                        <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
                         <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>

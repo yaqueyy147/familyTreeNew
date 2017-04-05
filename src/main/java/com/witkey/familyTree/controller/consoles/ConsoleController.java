@@ -4,6 +4,7 @@ import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
@@ -35,6 +36,8 @@ public class ConsoleController {
     @Autowired
     private FamilyService familyService;
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private LogService logService;
 
@@ -69,7 +72,8 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> getUserFrontList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        List<TUserFront> list = consoleService.getUserFrontList(params);
+        params.put("userFrom",1);
+        List<TUser1> list = consoleService.getUser1List(params);
         result.put("dataList",list);
         return result;
     }
@@ -346,6 +350,35 @@ public class ConsoleController {
         return map;
     }
 
+    @RequestMapping(value = "/deletePeople")
+    @ResponseBody
+    public Map<String,Object> deletePeople(int peopleId, HttpServletRequest request) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = jsonUser.get("userName") + "";
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        //查询当前成员是否含有下一代人
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("fatherId",peopleId);
+        //如果有下一代人，不能删除
+        List<TPeople> list = familyService.getPeopleList(params);
+        if(list != null && list.size() > 0){
+            result.put("code",-1);
+            return result;
+        }
+
+        TPeople tPeople = familyService.getPeopleInfo(peopleId);
+        tPeople.setState(9);
+//        int i = familyService.deletePeople(peopleId);
+        int i = 0;
+        familyService.updatePeople(tPeople);
+        i ++ ;
+        result.put("code",i);
+        //记录日志
+        logService.createLog(new TLog(3,userName,"删除族人-->" + tPeople.toString()));
+        return result;
+    }
+
     /**
      * 族谱组人数据
      * @param peopleId
@@ -378,7 +411,8 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> getUserList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        List<TUserBase> list = consoleService.getUserBase(params);
+//        List<TUserBase> list = consoleService.getUserBase(params);
+        List<TUser1> list = consoleService.getUser1List(params);
         result.put("dataList",list);
         return result;
     }

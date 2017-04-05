@@ -1,6 +1,7 @@
 package com.witkey.familyTree.service.fronts.impl;
 
 import com.witkey.familyTree.dao.consoles.TLogDao;
+import com.witkey.familyTree.dao.consoles.TUser1Dao;
 import com.witkey.familyTree.dao.fronts.*;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -80,6 +81,13 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Resource
+    private TUser1Dao tUser1Dao;
+
+    public void settUser1Dao(TUser1Dao tUser1Dao) {
+        this.tUser1Dao = tUser1Dao;
+    }
+
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -141,7 +149,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public void updatePeople(TPeople tPeople) {
-        tPeopleDao.update(tPeople);
+        tPeopleDao.save(tPeople);
 
     }
 
@@ -480,6 +488,7 @@ public class FamilyServiceImpl implements FamilyService {
             }
         }
 
+        System.out.println(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         for (Map<String, Object> map : list) {
             String photoUrl = map.get("photo") + "";

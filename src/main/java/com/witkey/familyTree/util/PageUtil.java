@@ -23,7 +23,12 @@ public class PageUtil {
         int nextP = totalPage;
         StringBuffer pageChanger = new StringBuffer("");
         pageChanger.append(getPageSizeStr(pageSize,tableId));
-        pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\">首页</a>");
+        if(pageNo == 1){
+            pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\" disabled>首页</a>");//首页
+        }else{
+            pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\">首页</a>");//首页
+        }
+//        pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\">首页</a>");
         pageChanger.append(getPrevPageStr(pageNo,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
         pageChanger.append(getEndPageStr(pageNo,totalPage,tableId));
@@ -41,7 +46,12 @@ public class PageUtil {
         int index = pageNo;
         StringBuffer pageChanger = new StringBuffer("");
 //        pageChanger.append(getPageSizeStr(pageSize,tableId));
-        pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\">首页</a>");
+        if(pageNo == 1){
+            pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\" disabled>首页</a>");//首页
+        }else{
+            pageChanger.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"headP\" onclick=\"" + tableId + "PageChange('1')\">首页</a>");//首页
+        }
+
         pageChanger.append(getPrevPageStr(pageNo,tableId));
         pageChanger.append(getNumberPageStr(pageNo,totalPage,pageNum,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
@@ -151,7 +161,7 @@ public class PageUtil {
             prevP = pageNo - 1;
             prevPage.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"prevP\" onclick=\"" + tableId + "PageChange('");
             prevPage.append(prevP);
-            prevPage.append("')\">上一页</a>");
+            prevPage.append("')\">上一页</a>");//上一页
         }
         return prevPage.toString();
     }
@@ -169,7 +179,7 @@ public class PageUtil {
             nextP = pageNo + 1;
             nextPage.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"nextP\" onclick=\"" + tableId + "PageChange('");
             nextPage.append(nextP);
-            nextPage.append("')\">下一页</a>");
+            nextPage.append("')\">下一页</a>");//下一页
         }
         return nextPage.toString();
     }
@@ -182,10 +192,16 @@ public class PageUtil {
      */
     private static String getEndPageStr(int pageNo,int totalPage,String tableId){
         StringBuffer endPage = new StringBuffer("");
+
         endPage.append("<a class=\"btn btn-default btn-sm\" href=\"javascript:void (0);\" id=\"endP\" onclick=\"" + tableId + "PageChange('");
         endPage.append(totalPage);
-        endPage.append("')\">末页</a>");
-        endPage.append(pageNo + "/" + totalPage);
+        if(totalPage == pageNo){
+            endPage.append("')\" disabled>末页</a>");//末页
+        }else{
+            endPage.append("')\">末页</a>");//末页
+        }
+
+        endPage.append("&nbsp;&nbsp;第&nbsp;" + pageNo + "/" + totalPage + "&nbsp;页");
         return endPage.toString();
     }
 

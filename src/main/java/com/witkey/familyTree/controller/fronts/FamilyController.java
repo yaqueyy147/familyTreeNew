@@ -4,6 +4,7 @@ import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
@@ -45,6 +46,9 @@ public class FamilyController {
     private UserFrontService userFrontService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private LogService logService;
     /**
      * 个人中心
@@ -76,9 +80,10 @@ public class FamilyController {
     public ModelAndView personalInfo(Model model,HttpServletRequest request) throws UnsupportedEncodingException{
 
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
+//        TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
+        TUser1 tUserFront = userService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         model.addAttribute("userInfo",jsonUser);
-        model.addAttribute("tUserFront",tUserFront);
+        model.addAttribute("tUserFront",JSONObject.fromObject(tUserFront));
         return new ModelAndView("/fronts/personalInfo");
     }
 

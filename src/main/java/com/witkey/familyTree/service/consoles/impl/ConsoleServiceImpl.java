@@ -89,6 +89,13 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.tLogDao = tLogDao;
     }
 
+    @Resource
+    private TUser1Dao tUser1Dao;
+
+    public void settUser1Dao(TUser1Dao tUser1Dao) {
+        this.tUser1Dao = tUser1Dao;
+    }
+
     @Autowired
     private CompanyService companyService;
 
@@ -117,6 +124,25 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public List<TUser1> getUser1List(Map<String, Object> params) {
+
+        String sql = "select * from t_user_1 where state<>9";
+
+        if(!CommonUtil.isBlank(params.get("userFrom"))){
+            sql += " and user_from='" + params.get("userFrom") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("userName"))){
+            sql += " and user_name like '%" + params.get("userName") + "%'";
+        }
+        if(!CommonUtil.isBlank(params.get("loginName"))){
+            sql += " and login_name like '%" + params.get("loginName") + "%'";
+        }
+//        List<TUser1> list = tUser1Dao.find(params);
+        List<TUser1> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUser1>(TUser1.class));
+        return list;
+    }
+
+    @Override
     public int auditVolunteer(Map<String, Object> params) {
 
 //        String sql = "update t_volunteer set audit_state=?,audit_desc=?,audit_time=now(),audit_man=?";
@@ -124,7 +150,8 @@ public class ConsoleServiceImpl implements ConsoleService {
 //
 //        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("auditDesc"),params.get("auditMan"),params.get("volunteerId"));
 
-        String sql = "update t_user_front set is_volunteer=? where id=?";
+//        String sql = "update t_user_front set is_volunteer=? where id=?";
+        String sql = "update t_user_1 set is_volunteer=? where id=?";
         int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("applyManId"));
 
         return i;

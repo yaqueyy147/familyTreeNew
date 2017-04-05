@@ -23,7 +23,7 @@
                 <div id="loginFail" class="form-group col-xs-8 form-actions col-xs-offset-2" style="color: #ff0000">
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2">
-                    <input class="form-control" id="userName" name="userName" placeholder="用户名" type="text" />
+                    <input class="form-control" id="loginName" name="loginName" placeholder="用户名" type="text" />
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
                     <input class="form-control" id="password" name="password" placeholder="密 码" type="password" />
@@ -40,11 +40,17 @@
                 <div class="form-group col-xs-4 form-actions col-xs-offset-5" style="margin-top: 15px">
                     <button class="btn btn-primary" id="signIn" type="button">登 录</button>
                 </div>
-                <div class="form-group col-xs-8 link col-xs-offset-8" >
-                    <p>还没注册？
-                        <a href="<%=request.getContextPath()%>/sign/regedit"><small>免费注册</small></a>
+                <div class="form-group col-xs-8 link col-xs-offset-4" style="text-align: right" >
+                    <p>还没注册？免费注册
+                        <small>
+                            <a href="<%=request.getContextPath()%>/sign/regeditPersonal">个人注册</a>
+                        </small>
+                        &nbsp;|&nbsp;
+                        <small>
+                            <a href="<%=request.getContextPath()%>/sign/regeditCompany">企业注册</a>
+                        </small>
                     </p>
-                    <p style="margin-top: 0">
+                    <p style="margin-top: 0;">
                         <a href="<%=request.getContextPath()%>/familyTree/index"><small>直接进入!</small></a>
                     </p>
                 </div>

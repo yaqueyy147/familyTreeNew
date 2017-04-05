@@ -201,15 +201,44 @@ function loadDataGrid(params) {
         columns:[[
             {field:"ck",checkbox:"true"},
             {field:"id",title:"用户Id",width:"80",hidden:true},
-            {field:"userName",title:"用户账号",width:"150"},
-            {field:"userNickName",title:"用户昵称",width:"80"},
-            {field:"userPassword",title:"密码",width:"80",hidden:true},
-            {field:"userDesc",title:"用户说明",width:"80"},
-            {field:"userContact",title:"联系方式",width:"200"},
-            {field:"createMan",title:"创建人",width:"80"},
+            {field:"loginName",title:"用户账号",width:"120"},
+            {field:"userName",title:"用户昵称",width:"120"},
+            {field:"password",title:"密码",width:"80",hidden:true},
+            {field:"phone",title:"电话",width:"120"},
+            {field:"qqNum",title:"QQ",width:"120"},
+            {field:"wechart",title:"微信",width:"120"},
+            {field:"createMan",title:"创建人",width:"120"},
             {field:"createTime",title:"创建时间",width:"150"},
-            {field:"stateDesc",title:"状态",width:"180"},
-            {field:"state",title:"状态",width:"180",hidden:true}
+            {field:"stateDesc",title:"状态",width:"80"},
+            {field:"state",title:"状态",width:"180",hidden:true},
+            {field:"userFrom",title:"用户来源",width:"120",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "前台注册";
+                    }
+                    return '后台管理员设置';
+                }},
+            {field:"isFront",title:"是否可登录前台",width:"100",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "是";
+                    }
+                    return '否';
+                }},
+            {field:"isConsole",title:"是否可登录后台",width:"100",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "是";
+                    }
+                    return '否';
+                }},
+            {field:"isVolunteer",title:"是否可修族谱",width:"100",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "是";
+                    }
+                    return '否';
+                }}
             // {field:"operate",title:"操作",width:"120"}
         ]],
         loadFilter:pagerFilter
@@ -222,19 +251,7 @@ function formatDataList(data){
         for(var i=0;i<data.length;i++){
             data[i].userCode = "<a href=\"javascript:void 0;\" onclick=\"editUser('"+ data[i].id +"')\">" + data[i].userCode +" </a>";
             data[i].createTime = new Date(data[i].createTime).Format("yyyy-MM-dd hh:mm:ss");
-            if($.trim(data[i].userPhone).length <= 0){
-                data[i].userPhone = "未设置电话";
-            }
-            if($.trim(data[i].userEmail).length <= 0){
-                data[i].userEmail = "未设置邮箱";
-            }
-            if($.trim(data[i].userQq).length <= 0){
-                data[i].userQq = "未设置qq";
-            }
-            if($.trim(data[i].userWechart).length <= 0){
-                data[i].userWechart = "未设置微信";
-            }
-            data[i].userContact = data[i].userPhone + "," + data[i].userEmail + "," + data[i].userQq + "," + data[i].userWechart;
+
 
             if(data[i].state == 1){
                 data[i].stateDesc = "可用";

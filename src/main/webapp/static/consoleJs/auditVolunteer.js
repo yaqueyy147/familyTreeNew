@@ -60,8 +60,8 @@ function loadVolunteerData(params) {
         //     {field:"operate",title:"操作",width:"120"}
         // ]],
         columns:[[
-            {field:"userName",title:"申请人账号",width:"80"},
-            {field:"nickName",title:"姓名",width:"80"},
+            {field:"loginName",title:"申请人账号",width:"80"},
+            {field:"userName",title:"姓名",width:"80"},
             {field:"idCard",title:"身份证号",width:"120"},
             {field:"phone",title:"联系电话",width:"80"},
             {field:"createTime",title:"注册时间",width:"150",

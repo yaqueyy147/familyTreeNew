@@ -24,7 +24,7 @@
                 <div id="loginFail" class="form-group col-xs-8 form-actions col-xs-offset-2" style="color: #ff0000">
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2">
-                    <input class="form-control" id="userName" name="userName" placeholder="用户名" type="text" />
+                    <input class="form-control" id="loginName" name="loginName" placeholder="用户名" type="text" />
                 </div>
                 <div class="form-group col-xs-8 form-actions col-xs-offset-2" style="margin-top: 15px">
                     <input class="form-control" id="userPassword" name="userPassword" placeholder="密 码" type="password" />

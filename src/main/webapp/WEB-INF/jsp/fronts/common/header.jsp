@@ -13,6 +13,9 @@
             <a href="<%=request.getContextPath()%>/familyTree/meritocrat">何氏英才录</a>&nbsp;|&nbsp;
             <a href="<%=request.getContextPath()%>/familyTree/pointsRanking">积分排行榜</a>&nbsp;|&nbsp;
             <c:if test="${not empty userInfo}">
+                <c:if test="${userInfo.isVolunteer == 1}">
+                    <a href="<%=request.getContextPath()%>/family/personalInfo">创建族谱</a>&nbsp;|&nbsp;
+                </c:if>
                 【欢迎您，
 
                 <c:if test="${userInfo.userType == 1}">

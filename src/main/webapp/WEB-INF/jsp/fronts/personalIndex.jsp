@@ -26,11 +26,16 @@
             font-size: 12px;
             margin:0px !important;
         }
+        .familyImgFF{
+            display: block;
+            width: 100%;
+            height: 155px !important;
+        }
     </style>
 </head>
 <body>
 <%--<%@include file="common/header.jsp" %>--%>
-<div class="container" style="margin-top: 50px;margin-bottom: 10px;">
+<div class="container-fluid" style="margin-top: 20px;margin-bottom: 10px;">
     <a class="btn btn-primary" href="#addFamilyModal" data-toggle="modal" data-target="#addFamilyModal">创建族谱</a>
         <div id="familyShow" class="row">
         <c:forEach var="family" items="${familyList}">
@@ -38,8 +43,8 @@
             <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
 
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')">
-                        <img src="${family.photoUrl}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
+                        <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
                         <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>

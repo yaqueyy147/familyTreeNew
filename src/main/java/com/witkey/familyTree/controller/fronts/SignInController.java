@@ -1,10 +1,12 @@
 package com.witkey.familyTree.controller.fronts;
 
 import com.witkey.familyTree.domain.TCompanySponsor;
+import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -38,6 +40,8 @@ public class SignInController {
 
     @Autowired
     private UserFrontService userFrontService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CompanyService companyService;
@@ -55,26 +59,67 @@ public class SignInController {
         return new ModelAndView("/fronts/login");
     }
 
+//    /**
+//     * 登录
+//     * @param tUserFront
+//     * @param ra
+//     * @param response
+//     * @return
+//     * @throws UnsupportedEncodingException
+//     */
+//    @RequestMapping(value = "/signIn")
+//    public RedirectView signIn(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+//
+//        String contextPath = request.getContextPath();
+//        //根据读取的用户名和密码查询用户
+////        List<Map<String,Object>> listUser = userFrontService.signIn(tUserFront);
+//
+//        tUserFront.setPassword(CommonUtil.string2MD5(tUserFront.getPassword()));
+//        //个人用户
+//        List<TUserFront> listUser = userFrontService.getUserInfo(tUserFront);
+//        //公司用户
+//        List<Map<String,Object>> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUserFront));
+//        Map<String,Object> mapUserInfo = new HashMap<String,Object>();
+//        //如果用户存在则为个人用户，则登录，跳转首页
+//        if(listUser != null && listUser.size() > 0){
+//            mapUserInfo = CommonUtil.bean2Map(listUser.get(0));
+//            mapUserInfo.put("userType",1);//设置用户类型为个人用户
+//            //将用户信息添加到cookie
+//            CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
+//            return new RedirectView(contextPath + "/familyTree/index");
+//        }else if(listCompanyUser != null && listCompanyUser.size() > 0){//否则检查是否公司用户
+//            mapUserInfo = listCompanyUser.get(0);
+//            mapUserInfo.put("userType",2);//设置用户类型为企业用户
+//            //将用户信息添加到cookie
+//            CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
+//            return new RedirectView(contextPath + "/familyTree/index");
+//        }
+//        //否则跳回登录页面
+//        ra.addFlashAttribute("loginCode",-1);
+//        return new RedirectView(contextPath + "/sign/login");
+//    }
+
     /**
      * 登录
-     * @param tUserFront
+     * @param tUser1
      * @param ra
      * @param response
      * @return
      * @throws UnsupportedEncodingException
      */
     @RequestMapping(value = "/signIn")
-    public RedirectView signIn(TUserFront tUserFront, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+    public RedirectView signIn(TUser1 tUser1, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
 
         String contextPath = request.getContextPath();
         //根据读取的用户名和密码查询用户
 //        List<Map<String,Object>> listUser = userFrontService.signIn(tUserFront);
 
-        tUserFront.setPassword(CommonUtil.string2MD5(tUserFront.getPassword()));
+        tUser1.setPassword(CommonUtil.string2MD5(tUser1.getPassword()));
         //个人用户
-        List<TUserFront> listUser = userFrontService.getUserInfo(tUserFront);
+        tUser1.setIsFront(1);
+        List<TUser1> listUser = userService.getUserInfo1(tUser1);
         //公司用户
-        List<Map<String,Object>> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUserFront));
+        List<Map<String,Object>> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUser1));
         Map<String,Object> mapUserInfo = new HashMap<String,Object>();
         //如果用户存在则为个人用户，则登录，跳转首页
         if(listUser != null && listUser.size() > 0){
@@ -107,6 +152,28 @@ public class SignInController {
     }
 
     /**
+     * 前台注册页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/regeditPersonal")
+    public ModelAndView regeditPersonal(Model model, String regCode){
+        model.addAttribute("regCode",regCode);
+        return new ModelAndView("/fronts/regedit_personal");
+    }
+
+    /**
+     * 前台注册页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/regeditCompany")
+    public ModelAndView regeditCompany(Model model, String regCode){
+        model.addAttribute("regCode",regCode);
+        return new ModelAndView("/fronts/regedit_company");
+    }
+
+    /**
      * 注册
      * @param tUserFront
      * @return
@@ -120,6 +187,41 @@ public class SignInController {
         tUserFront.setId(id);
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", JSONObject.fromObject(tUserFront).toString(),response);
+        return new RedirectView(contextPath + "/familyTree/index");
+    }
+
+    /**
+     * 个人用户注册
+     * @param tUser1
+     * @return
+     */
+    @RequestMapping(value = "/regesterPersonal")
+    public RedirectView regesterPersonal(TUser1 tUser1, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
+        String contextPath = request.getContextPath();
+        int id = 0;
+        JSONObject jsonObject = new JSONObject();
+        //个人用户
+        //检查用户名是否已经存在了
+        List<TUser1> list = userService.getUserInfo1(new TUser1(tUser1.getLoginName()));
+
+        if(list != null && list.size() > 0){
+            return new RedirectView(contextPath + "/sign/regeditPersonal?regCode=-2");
+        }
+
+        tUser1.setIsFront(1);
+        tUser1.setState(1);
+        tUser1.setIsVolunteer(3);
+        tUser1.setUserFrom(1);
+        tUser1.setCreateMan(tUser1.getLoginName());
+        tUser1.setCreateTime(CommonUtil.getDateLong());
+        id= userService.createUser1(tUser1);
+        tUser1.setId(id);
+
+        jsonObject = JSONObject.fromObject(tUser1);
+        jsonObject.put("userType",1);
+        //注册成功，自动登录，添加cookie
+        CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
+
         return new RedirectView(contextPath + "/familyTree/index");
     }
 
@@ -211,28 +313,52 @@ public class SignInController {
         return new RedirectView(contextPath + "/familyTree/index");
     }
 
+//    /**
+//     * 修改用户信息
+//     * @param tUserFront
+//     * @return
+//     */
+//    @RequestMapping(value = "/modifyPersonalInfo")
+//    @ResponseBody
+//    public Map<String,Object> modifyPersonalInfo(TUserFront tUserFront){
+//        Map<String,Object> map = new HashMap<String,Object>();
+//
+//        TUserFront tUserFront1 = userFrontService.getUserInfoFromId(tUserFront.getId());
+//
+//        tUserFront.setIsVolunteer(tUserFront1.getIsVolunteer());
+//        tUserFront.setCreateTime(tUserFront1.getCreateTime());
+//
+//        int i = userFrontService.saveUserFront(tUserFront);
+//
+//
+//        map.put("code",i);
+//        map.put("msg","修改成功!");
+//        return map;
+//    }
+
     /**
      * 修改用户信息
-     * @param tUserFront
+     * @param tUser1
      * @return
      */
     @RequestMapping(value = "/modifyPersonalInfo")
     @ResponseBody
-    public Map<String,Object> modifyPersonalInfo(TUserFront tUserFront){
+    public Map<String,Object> modifyPersonalInfo(TUser1 tUser1){
         Map<String,Object> map = new HashMap<String,Object>();
 
-        TUserFront tUserFront1 = userFrontService.getUserInfoFromId(tUserFront.getId());
+        TUser1 tUser11 = userService.getUserInfoFromId(tUser1.getId());
 
-        tUserFront.setIsVolunteer(tUserFront1.getIsVolunteer());
-        tUserFront.setCreateTime(tUserFront1.getCreateTime());
+        tUser1.setIsVolunteer(tUser11.getIsVolunteer());
+        tUser1.setCreateTime(tUser11.getCreateTime());
 
-        int i = userFrontService.saveUserFront(tUserFront);
+        int i = userService.saveUser1(tUser1);
 
 
         map.put("code",i);
         map.put("msg","修改成功!");
         return map;
     }
+
 
     /**
      * 修改密码
@@ -253,7 +379,7 @@ public class SignInController {
             return map;
         }
         params.put("userType",jsonUser.get("userType"));
-        int i = userFrontService.modifyPassword(params);
+        int i = userService.modifyPassword(params);
 
         map.put("code",i);
         map.put("msg","修改成功!");
@@ -276,7 +402,8 @@ public class SignInController {
 //        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
 //        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
 //        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+//        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+        int i = userService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
         map.put("code",i);
         map.put("msg","申请成功!");
         return map;
@@ -287,7 +414,8 @@ public class SignInController {
     public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+//        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+        int i = userService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
         map.put("code",i);
         map.put("msg","修改成功!");
         return map;

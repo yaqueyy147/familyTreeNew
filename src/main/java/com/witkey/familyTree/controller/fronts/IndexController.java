@@ -5,6 +5,7 @@ import com.witkey.familyTree.domain.TMeritocratAttr;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import com.witkey.familyTree.util.PageUtil;
@@ -38,13 +39,20 @@ public class IndexController {
     private FamilyService familyService;
     @Autowired
     private ConsoleService consoleService;
+    @Autowired
+    private UserFrontService userFrontService;
 
     @RequestMapping(value = {"","/","/index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 
         //从cookie获取用户信息
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        model.addAttribute("userInfo",jsonUser);
+//        model.addAttribute("userInfo",jsonUser);
+        if(!CommonUtil.isBlank(jsonUser)){
+            TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
+            jsonUser = JSONObject.fromObject(tUserFront);
+            model.addAttribute("userInfo",jsonUser);
+        }
 
 //        Map<String,Object> params = new HashMap<String,Object>();
 //        params.put("familyArea",1);

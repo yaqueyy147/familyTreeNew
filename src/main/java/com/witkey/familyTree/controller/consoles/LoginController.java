@@ -1,7 +1,9 @@
 package com.witkey.familyTree.controller.consoles;
 
+import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserBase;
 import com.witkey.familyTree.service.consoles.ConsoleService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -29,6 +31,8 @@ public class LoginController {
 
     @Autowired
     private ConsoleService consoleService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = {"/","/login"})
     public ModelAndView login(){
@@ -46,13 +50,39 @@ public class LoginController {
         return new ModelAndView("/consoles/main");
     }
 
+//    @RequestMapping(value = "/loginIn")
+//    public ModelAndView loginIn(Model model, @RequestParam Map<String,Object> params, HttpServletResponse response) throws UnsupportedEncodingException{
+//
+//        //md5加密密码
+//        params.put("userPassword", CommonUtil.string2MD5(params.get("userPassword")+""));
+//
+//        TUser1 tUser1 = new TUser1(params.get("")+"",CommonUtil.string2MD5(params.get("userPassword")+""));
+//        tUser1.setIsConsole(1);
+//
+//        List<TUserBase> list = consoleService.getUserBase(params);
+//
+//        if(list != null && list.size() > 0){
+//
+//            JSONObject jsonObject = JSONObject.fromObject(list.get(0));
+//            CookieUtil.addCookie("consoleUserInfo",jsonObject.toString(),response);
+//            model.addAttribute("consoleUserInfo",jsonObject);
+//            return new ModelAndView("/consoles/main");
+//        }
+//
+//        model.addAttribute("loginCode",-1);
+//        return new ModelAndView("/consoles/login");
+//    }
+
     @RequestMapping(value = "/loginIn")
     public ModelAndView loginIn(Model model, @RequestParam Map<String,Object> params, HttpServletResponse response) throws UnsupportedEncodingException{
 
         //md5加密密码
-        params.put("userPassword", CommonUtil.string2MD5(params.get("userPassword")+""));
+        String userPassword = CommonUtil.string2MD5(params.get("userPassword")+"");
 
-        List<TUserBase> list = consoleService.getUserBase(params);
+        TUser1 tUser1 = new TUser1(params.get("loginName")+"",userPassword);
+        tUser1.setIsConsole(1);
+
+        List<TUser1> list = userService.getUserInfo1(tUser1);
 
         if(list != null && list.size() > 0){
 

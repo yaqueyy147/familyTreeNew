@@ -295,14 +295,13 @@ function deletePeople(peopleId,peopleName) {
     if(confirm("确定要删除成员(" + peopleName + ")吗？")){
         $.ajax({
             type:'post',
-            url:projectUrl + '/family/deletePeople',
+            url:projectUrl + '/consoles/deletePeople',
             dataType:'json',
             async:false,
             data:{peopleId : peopleId},
             success:function (data) {
                 if(data.code >= 1){
                     alert("删除完成!");
-                    alert(familyId);
                     var zNodes = initPeopleData(familyId);
                     initFamilyTree(zNodes,setting);
                 }

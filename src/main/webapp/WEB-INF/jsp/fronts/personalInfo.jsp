@@ -31,7 +31,7 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container">
+<div class="container-fluid" style="width: 90%; margin-bottom: 50px">
     <ul class="nav nav-tabs" role="tablist" style="margin-top: 30px">
         <li role="presentation" id="userDetailTabLi" class="active">
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
@@ -47,15 +47,15 @@
     <div class="tab-content container-fluid">
         <div id="userDetailTab" class="tab-pane active container-fluid" role="tabpanel">
             <div id="userDetail" class=" container-fluid">
-                <div class="leftInfo infoDetail col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="leftInfo infoDetail col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <div class="col-sm-10 col-md-10 col-md-offset-1">
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
                                 <c:if test="${tUserFront.userPhoto == null || tUserFront.userPhoto == '' || tUserFront.userPhoto == 'null'}">
-                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="min-height: 150px;max-height:260px" />
+                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="height: 200px" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="${tUserFront.userPhoto}" style="min-height: 150px;max-height:260px" /><%--<!--<%=request.getContextPath()%>-->--%>
+                                    <img src="${tUserFront.userPhoto}" style="height: 200px" /><%--<!--<%=request.getContextPath()%>-->--%>
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
@@ -82,17 +82,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="regedit-content rightInfo infoDetail col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="regedit-content rightInfo infoDetail col-lg-8 col-md-8 col-sm-8 col-xs-8">
                     <div class="form active" id="personalRegedit">
                         <form id="personalForm" action="" method="post">
                             <input type="hidden" name="id" value="${tUserFront.id}" />
                             <input type="hidden" name="userPhoto" id="userPhoto" value="${tUserFront.userPhoto}" />
 
                             <div class="form-group col-xs-8 form-actions">
-                                <input class="form-control" id="userName" name="userName" value="${tUserFront.userName}" placeholder="用户名" type="text" readonly />
+                                <input class="form-control" id="loginName" name="loginName" value="${tUserFront.loginName}" placeholder="登录名" type="text" readonly />
                             </div>
                             <div class="form-group col-xs-8 form-actions" style="margin-top: 15px">
-                                <input class="form-control" id="nickName" name="nickName" value="${tUserFront.nickName}" placeholder="真实姓名" type="text" />
+                                <input class="form-control" id="userName" name="userName" value="${tUserFront.userName}" placeholder="真实姓名" type="text" />
                             </div>
                             <div class="form-group col-xs-8 form-actions" style="margin-top: 15px;display: none">
                                 <input class="form-control" id="password" name="password" value="${tUserFront.password}" type="password" />
@@ -199,7 +199,11 @@
     var userId = "${tUserFront.id}";
     var winHeigth = $(window).height();
     $(function () {
-
+        if(isVolunteer == 1){
+//            $("#userDetailTabLi").removeClass("active");
+//            $("#myFamilyTabLi").addClass("active");
+            $("#myFamilyTabLi a").tab("show");
+        }
 
         $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
         $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");

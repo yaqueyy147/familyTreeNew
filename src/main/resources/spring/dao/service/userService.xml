@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
    <!--个人信息-->
-	<bean id="userFrontService" class="com.witkey.familyTree.service.fronts.impl.UserFrontServiceImpl">
+	<bean id="userFrontService" class="com.witkey.familyTree.service.fronts.impl.UserServiceImpl">
 		<property name="tUserFrontDao" ref="tUserFrontDao" />
 		<property name="tVolunteerDao" ref="tVolunteerDao" />
 		<property name="tLogDao" ref="tLogDao" />

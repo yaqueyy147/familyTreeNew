@@ -13,6 +13,7 @@ public interface ConsoleService {
     public List<Map<String,Object>> getVolunteerApplyList(Map<String,Object> params);
 
     public List<TUserFront> getUserFrontList(Map<String,Object> params);
+    public List<TUser1> getUser1List(Map<String,Object> params);
 
     public int auditVolunteer(Map<String,Object> params);
 
