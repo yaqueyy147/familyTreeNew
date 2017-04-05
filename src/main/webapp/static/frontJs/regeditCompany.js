@@ -1,0 +1,59 @@
+/**
+ * Created by suyx on 2016/12/18.
+ */
+var checkCodePre;
+$(function () {
+    checkCodePre = drawPic();
+    $("#regedit").click(function () {
+
+        var companyLoginName = $("#companyLoginName").val();
+        var companyLoginPassword = $("#companyLoginPassword").val();
+        var companyLoginPasswordAffirm = $("#companyLoginPasswordAffirm").val();
+        var companyName = $("#companyName").val();
+        var companyMobilePhone = $("#companyMobilePhone").val();
+        var companyTelephone = $("#companyTelephone").val();
+
+        if($.trim(companyLoginName).length <= 0){
+            alert("用户名不能为空！");
+            return ;
+        }
+        if($.trim(companyLoginPassword).length <= 0){
+            alert("密码不能为空！");
+            return ;
+        }
+        if(companyLoginPassword != companyLoginPasswordAffirm){
+            alert("密码输入不一致！");
+            return ;
+        }
+        if($.trim(companyName).length <= 0){
+            alert("公司名不能为空！");
+            return ;
+        }
+        if($.trim(companyMobilePhone).length <= 0 || $.trim(companyTelephone).length <= 0){
+            alert("请至少输入一个手机号码或者一个固定电话！");
+            return ;
+        }
+        if($.trim(companyMobilePhone).length > 0 && $.trim(companyMobilePhone).length != 11){
+            alert("请输入正确的11位手机号码！");
+            return ;
+        }
+
+        $("#regeditForm").attr("action",projectUrl + "/sign/companyRegester");
+        $("#regeditForm").submit();
+    });
+
+    $("input[name='userType']").click(function () {
+        var sign = $(this).val();
+        if(sign == 1){
+            $("#companyDiv").hide();
+        }
+        if(sign == 2){
+            $("#companyDiv").show();
+        }
+    });
+
+    document.getElementById("canvas").onclick = function(e){
+        e.preventDefault();
+        checkCodePre = drawPic();
+    };
+});

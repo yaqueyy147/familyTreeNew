@@ -347,7 +347,10 @@ public class SignInController {
         Map<String,Object> map = new HashMap<String,Object>();
 
         TUser1 tUser11 = userService.getUserInfoFromId(tUser1.getId());
-
+        tUser1.setIsFront(tUser11.getIsFront());
+        tUser1.setIsConsole(tUser11.getIsConsole());
+        tUser1.setUserFrom(tUser11.getUserFrom());
+        tUser1.setState(tUser11.getState());
         tUser1.setIsVolunteer(tUser11.getIsVolunteer());
         tUser1.setCreateTime(tUser11.getCreateTime());
 

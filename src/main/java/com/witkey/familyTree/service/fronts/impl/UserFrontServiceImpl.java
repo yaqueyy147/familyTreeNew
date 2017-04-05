@@ -77,7 +77,7 @@ public class UserFrontServiceImpl implements UserFrontService {
     public int saveUserFront(TUserFront tUserFront) {
         int i = 0;
         try {
-            tUserFrontDao.update(tUserFront);
+            tUserFrontDao.save(tUserFront);
             i ++;
         }catch (Exception e){
 

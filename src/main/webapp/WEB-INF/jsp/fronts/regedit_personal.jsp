@@ -50,7 +50,7 @@
                             <input type="file" name="imgFile1" id="imgFile1" />
                             <a id="show_img1">
                                 <img style="display: none;" id="result_img1"  height="128px" width="128px" />
-                                <span id="result_img1_wm" style="display: none;position: absolute; top: 0; left: 0;">本图片仅用于注册族谱网</span>
+                                <span id="result_img1_wm" style="display: none;position: absolute; top: 50px; left: 0;">本图片仅用于注册何氏族谱网</span>
                             </a>
                         </div>
                     </div>

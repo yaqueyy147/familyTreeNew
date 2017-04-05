@@ -417,7 +417,7 @@ public class FamilyServiceImpl implements FamilyService {
 
                 tUserPoints.setId(list.get(0).getId());
                 tUserPoints.setPoints((tUserPoints.getPoints() + list.get(0).getPoints()));
-                tUserPointsDao.update(tUserPoints);
+                tUserPointsDao.save(tUserPoints);
                 i ++ ;
             }else{
                 i = CommonUtil.parseInt(tUserPointsDao.create(tUserPoints));
@@ -431,7 +431,7 @@ public class FamilyServiceImpl implements FamilyService {
             if(list != null && list.size() > 0){
                 tCompanyPoints.setId(list.get(0).getId());
                 tCompanyPoints.setPoints((tCompanyPoints.getPoints() + list.get(0).getPoints()));
-                tCompanyPointsDao.update(tCompanyPoints);
+                tCompanyPointsDao.save(tCompanyPoints);
                 i ++ ;
             }else{
                 i = CommonUtil.parseInt(tCompanyPointsDao.create(tCompanyPoints));

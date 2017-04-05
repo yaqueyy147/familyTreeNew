@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public int saveUser1(TUser1 tUser1) {
         int i = 0;
         try {
-            tUserFrontDao.update(tUser1);
+            tUserFrontDao.save(tUser1);
             i ++;
         }catch (Exception e){
 
