@@ -35,7 +35,7 @@
     已赞助：
     <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
     &nbsp;&nbsp;
-    <a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>
+    <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <div id="companyShow" class="row">
         <c:forEach var="companyDetail" items="${companyDetailList}">
 
