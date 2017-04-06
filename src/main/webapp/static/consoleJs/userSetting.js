@@ -4,7 +4,7 @@
 $(function () {
 
     $("#userDialog").dialog({
-        width: 600,
+        width: 800,
         height: 400,
         closed: true,
         cache: false,
@@ -111,11 +111,12 @@ $(function () {
         $("#userId").val(0);
         $("#passwordTr").removeAttr("style");
         $("#userDialog").dialog('open');
+        $("#loginName").removeAttr("readonly");
     });
 
     $("#toEdit").click(function () {
         $("#userInfoForm").form('clear');
-        $("#passwordTr").attr("style","display:none");
+        $("#passwordTr").hide();
         var selectRows = $("#userList").datagrid('getSelections');
         if(selectRows.length > 1){
             alert("只能编辑一条数据!");
@@ -208,7 +209,13 @@ function loadDataGrid(params) {
             {field:"qqNum",title:"QQ",width:"120"},
             {field:"wechart",title:"微信",width:"120"},
             {field:"createMan",title:"创建人",width:"120"},
-            {field:"createTime",title:"创建时间",width:"150"},
+            {field:"createTime",title:"创建时间",width:"150",
+                formatter: function(value,row,index){
+                    if($.trim(value).length > 0){
+                        return value;
+                    }
+                    return '';
+                }},
             {field:"stateDesc",title:"状态",width:"80"},
             {field:"state",title:"状态",width:"180",hidden:true},
             {field:"userFrom",title:"用户来源",width:"120",
@@ -250,7 +257,7 @@ function formatDataList(data){
 
         for(var i=0;i<data.length;i++){
             data[i].userCode = "<a href=\"javascript:void 0;\" onclick=\"editUser('"+ data[i].id +"')\">" + data[i].userCode +" </a>";
-            data[i].createTime = new Date(data[i].createTime).Format("yyyy-MM-dd hh:mm:ss");
+            // data[i].createTime = new Date(data[i].createTime).Format("yyyy-MM-dd hh:mm:ss");
 
 
             if(data[i].state == 1){
@@ -268,38 +275,18 @@ function formatDataList(data){
 
 function loadDataToForm(data){
 
-    var userContact = data.userContact;
-    var contacts = userContact.split(",");
-
-    var userPassword = data.userPassword;
-    // userPassword
     $("#userId").val(data.id);
     $("#userName").val(data.userName);
-    $("#userNickName").val(data.userNickName);
-    $("#userPassword").val(data.userPassword);
-    $("#userPasswordAffirm").val(data.userPassword);
-    if(contacts[0] == "未设置电话"){
-        $("#userPhone").val("");
-    }else{
-        $("#userPhone").val(contacts[0]);
-    }
-    if(contacts[1] == "未设置邮箱"){
-        $("#userEmail").val("");
-    }else{
-        $("#userEmail").val(contacts[1]);
-    }
-    if(contacts[2] == "未设置qq"){
-        $("#userQq").val("");
-    }else{
-        $("#userQq").val(contacts[2]);
-    }
-    if(contacts[3] == "未设置微信"){
-        $("#userWechart").val("");
-    }else{
-        $("#userWechart").val(contacts[3]);
-    }
+    $("#loginName").val(data.loginName);
+    $("#loginName").attr("readonly","readonly");
+    $("#password").val(data.password);
+    $("#passwordAffirm").val(data.password);
+    $("#phone").val(data.phone);
+    $("#qqNum").val(data.qqNum);
+    $("#wechart").val(data.wechart);
 
-    $("#userDesc").val(data.Desc);
     $("#state").combobox("setValue",data.state);
-
+    $("#isFront").combobox("setValue",data.isFront);
+    $("#isConsole").combobox("setValue",data.isConsole);
+    $("#isVolunteer").combobox("setValue",data.isVolunteer);
 }

@@ -24,7 +24,7 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toModifyPassword" >修改密码</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
 </div>
-<div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+<div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;">
     <div style="padding:10px 40px 20px 40px">
         <form id="userInfoForm" method="post">
             <input class="easyui-validatebox" type="hidden" id="userId" name="id" value="0" />
@@ -48,17 +48,17 @@
                     </td>
                     <td>QQ:</td>
                     <td>
-                        <input class="easyui-validatebox" type="text" id="userQq" name="userQq"/>
+                        <input class="easyui-validatebox" type="text" id="qqNum" name="qqNum"/>
                     </td>
                 </tr>
                 <tr>
                     <td>微信:</td>
                     <td>
-                        <input class="easyui-validatebox" type="text" id="userWechart" name="userWechart" />
+                        <input class="easyui-validatebox" type="text" id="wechart" name="wechart" />
                     </td>
                     <td>状态:</td>
                     <td>
-                        <select id="state" name="state" class="easyui-combobox" style="width:100px">
+                        <select id="state" name="state" class="easyui-combobox" style="width:150px">
                             <option value="1">可用</option>
                             <option value="0">不可用</option>
                         </select>
@@ -67,14 +67,14 @@
                 <tr>
                     <td>是否可登录前台:</td>
                     <td>
-                        <select id="isFront" name="isFront" class="easyui-combobox" style="width:100px">
+                        <select id="isFront" name="isFront" class="easyui-combobox" style="width:150px">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
                     </td>
                     <td>是否可登录后台:</td>
                     <td>
-                        <select id="isConsole" name="isConsole" class="easyui-combobox" style="width:100px">
+                        <select id="isConsole" name="isConsole" class="easyui-combobox" style="width:150px">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
@@ -84,7 +84,7 @@
                 <tr>
                     <td>是否可修族谱:</td>
                     <td>
-                        <select id="isVolunteer" name="isVolunteer" class="easyui-combobox" style="width:100px">
+                        <select id="isVolunteer" name="isVolunteer" class="easyui-combobox" style="width:150px">
                             <option value="1">是</option>
                             <option value="0">否</option>
                         </select>

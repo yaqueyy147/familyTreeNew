@@ -417,6 +417,53 @@ public class ConsoleController {
         return result;
     }
 
+//    /**
+//     * 保存用户
+//     * @param tUserBase
+//     * @return
+//     */
+//    @RequestMapping(value = "saveUserBase")
+//    @ResponseBody
+//    public Map<String,Object> saveUserBase(HttpServletRequest request, TUserBase tUserBase) throws Exception{
+//        Map<String,Object> result = new HashMap<String,Object>();
+//        int i = 0;
+//
+//        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+//        String userName = consolesUser.get("userName") + "";
+//
+//        Map<String,Object> params = new HashMap<String,Object>();
+//
+//        if(tUserBase.getId() == 0){//新建用户，需要设置加密密码
+//            //检查用户名是否已经存在了
+//            params.put("userName",tUserBase.getUserName());
+//            List<TUserBase> list = consoleService.getUserBase(params);
+//            if(list != null && list.size() > 0){
+//                result.put("msg","该用户已存在!");
+//                result.put("tUserBase",tUserBase);
+//                result.put("code",99);
+//                return result;
+//            }
+//
+//            tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
+//            tUserBase.setCreateMan(userName);
+//            tUserBase.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+//
+//        }else{//修改用户，不修改密码
+//            params = new HashMap<String,Object>();
+//            params.put("id",tUserBase.getId());
+//            List<TUserBase> list = consoleService.getUserBase(params);
+//            tUserBase.setCreateMan(list.get(0).getCreateMan());
+//            tUserBase.setCreateTime(list.get(0).getCreateTime());
+////            i = consoleService.saveUserBase(tUserBase);
+//        }
+//        i = consoleService.saveUserBase(tUserBase);
+//
+//        result.put("msg","保存成功!");
+//        result.put("tUserBase",tUserBase);
+//        result.put("code",i);
+//        return result;
+//    }
+
     /**
      * 保存用户
      * @param tUserBase
@@ -424,7 +471,7 @@ public class ConsoleController {
      */
     @RequestMapping(value = "saveUserBase")
     @ResponseBody
-    public Map<String,Object> saveUserBase(HttpServletRequest request, TUserBase tUserBase) throws Exception{
+    public Map<String,Object> saveUserBase(HttpServletRequest request, TUser1 tUser1) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
         int i = 0;
 
@@ -433,33 +480,33 @@ public class ConsoleController {
 
         Map<String,Object> params = new HashMap<String,Object>();
 
-        if(tUserBase.getId() == 0){//新建用户，需要设置加密密码
+        if(tUser1.getId() == 0){//新建用户，需要设置加密密码
             //检查用户名是否已经存在了
-            params.put("userName",tUserBase.getUserName());
-            List<TUserBase> list = consoleService.getUserBase(params);
+            params.put("loginName",tUser1.getLoginName());
+            List<TUser1> list = consoleService.getUser1List(params);
             if(list != null && list.size() > 0){
                 result.put("msg","该用户已存在!");
-                result.put("tUserBase",tUserBase);
+                result.put("tUserBase",tUser1);
                 result.put("code",99);
                 return result;
             }
 
-            tUserBase.setUserPassword(CommonUtil.string2MD5(tUserBase.getUserPassword()));
-            tUserBase.setCreateMan(userName);
-            tUserBase.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+            tUser1.setPassword(CommonUtil.string2MD5(tUser1.getPassword()));
+            tUser1.setCreateMan(userName);
+            tUser1.setCreateTime(CommonUtil.getDateLong());
 
         }else{//修改用户，不修改密码
             params = new HashMap<String,Object>();
-            params.put("id",tUserBase.getId());
-            List<TUserBase> list = consoleService.getUserBase(params);
-            tUserBase.setCreateMan(list.get(0).getCreateMan());
-            tUserBase.setCreateTime(list.get(0).getCreateTime());
+            params.put("id",tUser1.getId());
+            List<TUser1> list = consoleService.getUser1List(params);
+            tUser1.setCreateMan(list.get(0).getCreateMan());
+            tUser1.setCreateTime(list.get(0).getCreateTime());
 //            i = consoleService.saveUserBase(tUserBase);
         }
-        i = consoleService.saveUserBase(tUserBase);
+        i = consoleService.saveUser1(tUser1);
 
         result.put("msg","保存成功!");
-        result.put("tUserBase",tUserBase);
+        result.put("tUserBase",tUser1);
         result.put("code",i);
         return result;
     }

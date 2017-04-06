@@ -441,12 +441,32 @@ public class FamilyServiceImpl implements FamilyService {
         return i;
     }
 
+//    @Override
+//    public List<Map<String, Object>> getPointsRanking(Map<String,Object> params) {
+//        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+//        //个人
+//        if("1".equals(params.get("type"))){
+//            String sql = "select t1.points,t1.user_id,t2.user_name from t_user_points t1,t_user_front t2";
+//            sql += " where t1.user_id=t2.id ";
+//            if(!CommonUtil.isBlank(params.get("userType"))){
+//                sql += " and user_type='" + params.get("userType") + "'";
+//            }
+//            sql += " order by t1.points desc";
+//            list = jdbcTemplate.queryForList(sql);
+//        }else{//公司
+//            String sql = "select t1.points,t1.company_id,t2.company_name from t_company_points t1,t_company_sponsor t2";
+//            sql += " where t1.company_id=t2.id order by t1.points desc";
+//            list = jdbcTemplate.queryForList(sql);
+//        }
+//
+//        return list;
+//    }
     @Override
     public List<Map<String, Object>> getPointsRanking(Map<String,Object> params) {
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         //个人
         if("1".equals(params.get("type"))){
-            String sql = "select t1.points,t1.user_id,t2.user_name from t_user_points t1,t_user_front t2";
+            String sql = "select t1.points,t1.user_id,t2.user_name,t2.login_name from t_user_points t1,t_user_1 t2";
             sql += " where t1.user_id=t2.id ";
             if(!CommonUtil.isBlank(params.get("userType"))){
                 sql += " and user_type='" + params.get("userType") + "'";
@@ -454,7 +474,7 @@ public class FamilyServiceImpl implements FamilyService {
             sql += " order by t1.points desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
-            String sql = "select t1.points,t1.company_id,t2.company_name from t_company_points t1,t_company_sponsor t2";
+            String sql = "select t1.points,t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
             sql += " where t1.company_id=t2.id order by t1.points desc";
             list = jdbcTemplate.queryForList(sql);
         }

@@ -62,10 +62,13 @@ function loadVolunteerData(params) {
         columns:[[
             {field:"loginName",title:"申请人账号",width:"80"},
             {field:"userName",title:"姓名",width:"80"},
-            {field:"idCard",title:"身份证号",width:"120"},
-            {field:"phone",title:"联系电话",width:"80"},
+            {field:"idCard",title:"身份证号",width:"150"},
+            {field:"phone",title:"联系电话",width:"120"},
             {field:"createTime",title:"注册时间",width:"150",
                 formatter: function(value,row,index){
+                    if($.trim(value).length <= 0){
+                        return "";
+                    }
                     return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
                 }},
             {field:"isVolunteer",title:"是否可修族谱",width:"80",

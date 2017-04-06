@@ -128,6 +128,9 @@ public class ConsoleServiceImpl implements ConsoleService {
 
         String sql = "select * from t_user_1 where state<>9";
 
+        if(!CommonUtil.isBlank(params.get("id"))){
+            sql += " and id='" + params.get("id") + "'";
+        }
         if(!CommonUtil.isBlank(params.get("userFrom"))){
             sql += " and user_from='" + params.get("userFrom") + "'";
         }
@@ -135,7 +138,7 @@ public class ConsoleServiceImpl implements ConsoleService {
             sql += " and user_name like '%" + params.get("userName") + "%'";
         }
         if(!CommonUtil.isBlank(params.get("loginName"))){
-            sql += " and login_name like '%" + params.get("loginName") + "%'";
+            sql += " and login_name='" + params.get("loginName") + "'";
         }
 //        List<TUser1> list = tUser1Dao.find(params);
         List<TUser1> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUser1>(TUser1.class));
@@ -151,7 +154,7 @@ public class ConsoleServiceImpl implements ConsoleService {
 //        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("auditDesc"),params.get("auditMan"),params.get("volunteerId"));
 
 //        String sql = "update t_user_front set is_volunteer=? where id=?";
-        String sql = "update t_user_1 set is_volunteer=? where id=?";
+        String sql = "update t_user_1 set is_volunteer=?,state=1 where id=?";
         int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("applyManId"));
 
         return i;
@@ -218,10 +221,23 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
-    public int modifyPassword(Map<String, Object> params) {
+    public int saveUser1(TUser1 tUser1) {
+        int i = 0;
+        if(tUser1.getId() == 0){
+            i = CommonUtil.parseInt(tUser1Dao.create(tUser1));
+        }else{
+            tUser1Dao.save(tUser1);
+            i ++ ;
+        }
+        return i;
+    }
 
-        String sql = "update t_user_base set user_password=? where id=?";
+    @Override
+    public int modifyPassword(Map<String, Object> params) {
         String newPassword = CommonUtil.string2MD5(params.get("newPassword") + "");
+//        String sql = "update t_user_base set user_password=? where id=?";
+        String sql = "update t_user_1 set password=? where id=?";
+
         int i = jdbcTemplate.update(sql,newPassword,params.get("userId"));
 
         return i;
@@ -234,7 +250,8 @@ public class ConsoleServiceImpl implements ConsoleService {
         String[] id = ids.split(",");
 
 //        String sql = "delete from t_user_base where id=?";
-        String sql = "update t_user_base set state=9 where id=?";
+//        String sql = "update t_user_base set state=9 where id=?";
+        String sql = "update t_user_1 set state=9 where id=?";
         int ii = 0;
         for(int i=0;i<id.length;i++){
             ii += jdbcTemplate.update(sql,id[i]);
