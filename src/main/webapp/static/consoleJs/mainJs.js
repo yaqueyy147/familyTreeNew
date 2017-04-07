@@ -118,8 +118,29 @@ $(function () {
         $("#modifyPasswordDialog").dialog('open');
     });
 
+    var setting = {
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback:{
+        onClick:zTreeOnClick
+    }
+
+    };
+    var params = {userId:userId};
+    var dataList = getData("/consoles/menuTree",params).menuList;
+    $.fn.zTree.init($("#menuTree"), setting, dataList);
+
 });
 function loadTab(tabId,tabTitle,tabUrl) {
+    if(tabUrl == "/"){
+        return ;
+    }
     if ($('#tabTT').tabs('exists', tabTitle)){
         $('#tabTT').tabs('select', tabTitle);
     }else{
@@ -129,5 +150,9 @@ function loadTab(tabId,tabTitle,tabUrl) {
             closable:true
         });
     }
+
+}
+function zTreeOnClick(event, treeId, treeNode) {
+    loadTab(treeNode.id,treeNode.source_name,treeNode.source_url);
 
 }

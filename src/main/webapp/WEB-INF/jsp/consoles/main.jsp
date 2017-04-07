@@ -68,31 +68,32 @@
     </div>
 
     <div data-options="region:'west',split:true" title="菜单" style="width:15%;">
-        <ul id="menuTT" class="easyui-tree">
-            <li>
-                <span>族谱管理</span>
-                <ul>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','注册用户审核','/consoles/volunteer')">注册用户审核</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/company')">赞助商列表</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('rankList','积分排行榜','/consoles/rank')">积分排行榜</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('meritorcat','何氏英才录','/consoles/meritorcat')">何氏英才录</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('meritorcatAttr','英才属性设置','/consoles/meritorcatAttr')">英才属性设置</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('merge','收录族谱','/consoles/merge')">收录族谱</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('pointsRelation','积分对应关系','/consoles/pointsRelation')">积分对应关系</a></span></li>
-                </ul>
-            </li>
-            <c:if test="${consoleUserInfo.loginName == 'admin'}">
-            <li><span>用户管理</span>
-                <ul>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('roleSetting','角色设置','/consoles/role')">角色设置</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('resourceSetting','资源设置','/consoles/resource')">资源设置</a></span></li>
-                    <li><span><a href="javascript:void 0;" onclick="loadTab('log','日志','/log/index')">日志</a></span></li>
-                </ul>
-            </li>
-            </c:if>
-        </ul>
+        <div class="ztree" id="menuTree"></div>
+        <%--<ul id="menuTT" class="easyui-tree">--%>
+            <%--<li>--%>
+                <%--<span>族谱管理</span>--%>
+                <%--<ul>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('volunteerList','注册用户审核','/consoles/volunteer')">注册用户审核</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('companyList','赞助商列表','/consoles/company')">赞助商列表</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('familyList','族谱列表','/consoles/family')">族谱列表</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('rankList','积分排行榜','/consoles/rank')">积分排行榜</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('meritorcat','何氏英才录','/consoles/meritorcat')">何氏英才录</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('meritorcatAttr','英才属性设置','/consoles/meritorcatAttr')">英才属性设置</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('merge','收录族谱','/consoles/merge')">收录族谱</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('pointsRelation','积分对应关系','/consoles/pointsRelation')">积分对应关系</a></span></li>--%>
+                <%--</ul>--%>
+            <%--</li>--%>
+            <%--<c:if test="${consoleUserInfo.loginName == 'admin'}">--%>
+            <%--<li><span>用户管理</span>--%>
+                <%--<ul>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('userSetting','用户设置','/consoles/user')">用户设置</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('roleSetting','角色设置','/consoles/role')">角色设置</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('resourceSetting','资源设置','/consoles/resource')">资源设置</a></span></li>--%>
+                    <%--<li><span><a href="javascript:void 0;" onclick="loadTab('log','日志','/log/index')">日志</a></span></li>--%>
+                <%--</ul>--%>
+            <%--</li>--%>
+            <%--</c:if>--%>
+        <%--</ul>--%>
     </div>
     <div data-options="region:'center'">
         <div id="tabTT" class="easyui-tabs" data-options="border:false,fit:true">
@@ -180,6 +181,10 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@ include file="common/commonJs.jsp" %>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/mainJs.js"></script>
+<script>
+    var userId = "${consoleUserInfo.id}";
+</script>
 </body>
 </html>

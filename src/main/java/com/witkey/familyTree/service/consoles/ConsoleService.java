@@ -64,4 +64,9 @@ public interface ConsoleService {
 
     public List<TResource> getResourceList(Map<String,Object> params);
 
+    public List<TUserResource> getUserResource(Map<String,Object> params);
+
+    public int saveAuth(Map<String,Object> params);
+
+    public List<Map<String,Object>> getUserMenu(Map<String,Object> params);
 }

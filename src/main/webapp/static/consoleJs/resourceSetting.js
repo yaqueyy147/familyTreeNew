@@ -4,7 +4,7 @@
 $(function () {
 
     $("#resourceDialog").dialog({
-        width: 400,
+        width: 450,
         height: 300,
         closed: true,
         cache: false,
@@ -20,7 +20,6 @@ $(function () {
                     for (var item in testData) {
                         formData["" + testData[item].name + ""] = testData[item].value;
                     }
-                    alert(JSON.stringify(formData));
                     $.ajax({
                         type:'post',
                         url: postUrl,
@@ -61,6 +60,7 @@ $(function () {
         $("#parentSourceId").val(0);
         $("#sourceLevel").val(0);
         $("#sourceType").val(0);
+        $("#parentSourceId").combobox("loadData", getResourceList(params));
         $("#resourceDialog").dialog('open');
     });
 
@@ -76,6 +76,7 @@ $(function () {
             return;
         }
         loadDataToForm(selectRows[0]);
+        $("#parentSourceId").combobox("loadData", getResourceList(params));
         $("#resourceDialog").dialog('open');
     });
 
@@ -127,9 +128,8 @@ function closeDialog(dialogId){
 }
 
 function loadDataGrid(params) {
-    var dataList = getData("/consoles/resourceList",params).resourceList;
+    var dataList = getResourceList(params);
     // dataList = formatDataList(dataList);
-    alert(JSON.stringify(dataList));
     $("#resourceList").treegrid({
         data:dataList,
         loadMsg:"加载中...",
@@ -142,14 +142,13 @@ function loadDataGrid(params) {
             {field:"id",title:"资源Id",width:"80",hidden:true},
             {field:"sourceName",title:"资源名称",width:"200"},
             {field:"sourceUrl",title:"资源链接",width:"200"},
-            {field:"state",title:"状态",width:"80",
+            {field:"resourceState",title:"状态",width:"80",
                 formatter: function(value,row,index){
                     if(value == 1){
                         return "可用";
                     }
                     return '不可用';
                 }}
-            // {field:"operate",title:"操作",width:"120"}
         ]]
         // ,
         // loadFilter:pagerFilter4TreeGrid
@@ -178,4 +177,9 @@ function loadDataToForm(data){
     $("#sourceUrl").val(data.sourceUrl);
     $("#parentSourceId").val(data._parentId);
     $("#state").combobox("setValue",data.state);
+}
+
+function getResourceList(params){
+    var dataList = getData("/consoles/resourceList",params).resourceList;
+    return dataList;
 }

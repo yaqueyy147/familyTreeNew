@@ -548,5 +548,51 @@ public class ConsoleServiceImpl implements ConsoleService {
 //        List<TRole> list = tRoleDao.find(params);
         return list;
     }
+
+    @Override
+    public List<TUserResource> getUserResource(Map<String,Object> params){
+
+        String hql = " from TUserResource where userId=?";
+        List<TUserResource> list = tUserResourceDao.find(hql,CommonUtil.parseInt(params.get("userId")));
+
+        return list;
+    }
+
+    @Override
+    public int saveAuth(Map<String,Object> params){
+        int ii = 0;
+
+        String userId = params.get("userId") + "";
+        String sourceIds = params.get("sourceIds") + "";
+        String[] sourceIdArr = sourceIds.split(",");
+
+        //先删除当前用户的权限
+        String del = "delete from t_user_resource where user_id=?";
+
+        jdbcTemplate.update(del,userId);
+
+//        String sql = "insert into t_user_resource(user_id,resource_id,state)";
+//        sql += " values(?,?,1)";
+        for(int i=0;i<sourceIdArr.length;i++){
+            TUserResource tUserResource = new TUserResource();
+            tUserResource.setUserId(CommonUtil.parseInt(userId));
+            tUserResource.setResourceId(CommonUtil.parseInt(sourceIdArr[i]));
+            tUserResource.setState(1);
+
+            ii += CommonUtil.parseInt(tUserResourceDao.create(tUserResource));
+        }
+
+        return ii;
+    }
+
+    @Override
+    public List<Map<String,Object>> getUserMenu(Map<String,Object> params){
+
+        String sql = "select t1.*,t2.user_id from t_resource t1,t_user_resource t2";
+        sql += " where t1.id=t2.resource_id and t2.user_id=? and t2.state=1";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,params.get("userId"));
+        return list;
+    }
 }
 

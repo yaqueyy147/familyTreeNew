@@ -15,9 +15,7 @@
 <table id="resourceList" class="easyui-treegrid" style="width:100%;height:100%"
        title="资源列表" toolbar="#tb" data-options="
 				rownumbers:true,
-				singleSelect:true,
-				pagination:true,
-				pageSize:10">
+				singleSelect:true">
 
 </table>
 <div id="tb">
@@ -29,13 +27,16 @@
     <div style="padding:10px 40px 20px 40px">
         <form id="resourceForm" method="post">
             <input type="hidden" id="resourceId" name="id" value="0" />
-            <input type="hidden" id="parentSourceId" name="parentSourceId" value="0" />
             <input type="hidden" id="sourceLevel" name="sourceLevel" value="0" />
             <input type="hidden" id="sourceType" name="sourceType" value="0" />
             <table cellpadding="5">
                 <tr>
                     <td>资源名称:</td>
                     <td><input class="easyui-validatebox" type="text" id="sourceName" name="sourceName" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>上级资源:</td>
+                    <td><input class="easyui-combobox" id="parentSourceId" name="parentSourceId" data-options="required:true,valueField:'id',textField:'sourceName'" value="0" /></td>
                 </tr>
                 <tr>
                     <td>资源链接:</td>

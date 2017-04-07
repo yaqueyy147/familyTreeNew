@@ -903,8 +903,12 @@ public class ConsoleController {
             Map<String,Object> temp = new HashMap<String,Object>();
             temp = CommonUtil.bean2Map(tt);
             temp.put("pId",tt.getParentSourceId());
-            temp.put("_parentId",tt.getParentSourceId());
+            temp.put("pid",tt.getParentSourceId());
             temp.put("name",tt.getSourceName());
+            temp.put("text",tt.getSourceName());
+            temp.put("_parentId",tt.getParentSourceId());
+            temp.put("resourceState",tt.getState());
+            temp.put("state","open");
             temp.put("open",true);
             resultList.add(temp);
         }
@@ -933,6 +937,55 @@ public class ConsoleController {
         int i = consoleService.deleteResource(params);
 
         result.put("code",i);
+        result.put("msg","删除完成");
+        return result;
+    }
+
+    @RequestMapping(value = "userResourceList")
+    @ResponseBody
+    public Map<String,Object> userResourceList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+        List<TResource> list = consoleService.getResourceList(params);
+
+        Map<String,Object> params1 = new HashMap<>();
+        params1.put("userId",CommonUtil.parseInt(params.get("userId")));
+        List<TUserResource> list1 = consoleService.getUserResource(params);
+
+        List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();
+
+        for (TResource tt : list) {
+            Map<String,Object> temp = new HashMap<String,Object>();
+            temp = CommonUtil.bean2Map(tt);
+            temp.put("pId",tt.getParentSourceId());
+            temp.put("pid",tt.getParentSourceId());
+            temp.put("name",tt.getSourceName());
+            temp.put("text",tt.getSourceName());
+            temp.put("_parentId",tt.getParentSourceId());
+            temp.put("resourceState",tt.getState());
+            temp.put("state","open");
+            temp.put("open",true);
+            for(TUserResource tt1 : list1){
+                if(tt1.getResourceId() == tt.getId()){
+                    temp.put("checked",true);
+                    break;
+                }
+            }
+            resultList.add(temp);
+        }
+
+        result.put("resourceList",resultList);
+        return result;
+    }
+
+    @RequestMapping(value = "saveAuth")
+    @ResponseBody
+    public Map<String,Object> saveAuth(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+
+        int i = consoleService.saveAuth(params);
+
+        result.put("code",i);
+        result.put("msg","授权完成");
         return result;
     }
 

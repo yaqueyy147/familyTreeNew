@@ -12,12 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +104,23 @@ public class LoginController {
         CookieUtil.destroyCookies(response,request);
 
         return new ModelAndView("/consoles/login");
+    }
+
+    @RequestMapping(value = "menuTree")
+    @ResponseBody
+    public Map<String,Object> menuTree(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+
+        List<Map<String,Object>> list = consoleService.getUserMenu(params);
+
+        for(Map<String,Object> map : list){
+            map.put("pId",map.get("parent_source_id"));
+            map.put("name",map.get("source_name"));
+            map.put("open",true);
+        }
+
+        result.put("menuList",list);
+        return result;
     }
 
 }

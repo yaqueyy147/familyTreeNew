@@ -3,6 +3,9 @@
  */
 $(function () {
 
+    var params = {};
+    loadDataGrid(params);
+
     $("#userDialog").dialog({
         width: 800,
         height: 400,
@@ -51,6 +54,56 @@ $(function () {
             }
         ]
     });
+
+    $("#resourceDialog").dialog({
+        width: 400,
+        height: 400,
+        closed: true,
+        cache: false,
+        modal: true,
+        "buttons":[
+            {
+                "text":"提交",
+                handler:function(){
+                    var userId = $("#userId4Tree").val();
+                    var treeObj = $.fn.zTree.getZTreeObj("resourceTree");
+                    var nodes = treeObj.getCheckedNodes(true);
+                    var selectIds = "";
+                    for(var i=0;i<nodes.length;i++){
+                        var ii = nodes[i];
+                        selectIds += "," + ii.id;
+                    }
+                    if($.trim(selectIds).length > 1){
+                        selectIds = selectIds.substring(1);
+                    }
+                    $.ajax({
+                        type:'post',
+                        url: projectUrl + "/consoles/saveAuth",
+                        async:false,
+                        dataType:'json',
+                        data:{userId:userId,sourceIds:selectIds},
+                        success:function (data) {
+
+                            alert(data.msg);
+                            if(data.code >= 1){
+                                $("#resourceDialog").dialog("close");
+                            }
+                        },
+                        error:function (data) {
+                            alert(JSON.stringify(data));
+                        }
+                    });
+                }
+            },
+            {
+                "text":"取消",
+                handler:function () {
+                    $("#resourceDialog").dialog("close");
+                }
+            }
+        ]
+    });
+
 
     $("#modifyPasswordDialog").dialog({
         width: 400,
@@ -112,6 +165,42 @@ $(function () {
         $("#passwordTr").removeAttr("style");
         $("#userDialog").dialog('open');
         $("#loginName").removeAttr("readonly");
+    });
+    var setting = {
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: { "Y": "ps", "N": "ps" }
+        }
+    };
+    $("#toSetAuth").click(function () {
+        var selectRows = $("#userList").datagrid('getSelections');
+        if(selectRows.length > 1){
+            alert("只能编辑一条数据!");
+            return;
+        }
+        if(selectRows.length < 1){
+            alert("请选择一条数据!");
+            return;
+        }
+        if(selectRows[0].isConsole != 1){
+            alert("该用户不是后台用户，不能授权！");
+            return;
+        }
+        $("#userId4Tree").val(selectRows[0].id);
+        var params = {userId:selectRows[0].id};
+        var dataList = getData("/consoles/userResourceList",params).resourceList;
+        $.fn.zTree.init($("#resourceTree"), setting, dataList);
+
+        $("#resourceDialog").dialog('open');
     });
 
     $("#toEdit").click(function () {
@@ -181,8 +270,7 @@ $(function () {
         });
     });
 
-    var params = {};
-    loadDataGrid(params);
+
 
 });
 

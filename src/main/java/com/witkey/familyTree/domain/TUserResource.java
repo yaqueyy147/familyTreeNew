@@ -9,13 +9,13 @@ import java.io.Serializable;
  * Created by chenxiaowei on 2017/1/11.
  */
 @Entity
-@Table(name = "t_user_resource", schema = "family_tree")
+@Table(name = "t_user_resource")
 public class TUserResource implements Serializable {
     private static final long serialVersionUID = 4895456391658366226L;
     private int id;
     private int userId;
     private int resourceId;
-    private Integer state;
+    private int state;
     private String remark;
 
     @Id
@@ -51,11 +51,11 @@ public class TUserResource implements Serializable {
 
     @Basic
     @Column(name = "state")
-    public Integer getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -79,7 +79,7 @@ public class TUserResource implements Serializable {
         if (id != that.id) return false;
         if (userId != that.userId) return false;
         if (resourceId != that.resourceId) return false;
-        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+        if (state != that.state) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
 
         return true;
@@ -90,7 +90,7 @@ public class TUserResource implements Serializable {
         int result = id;
         result = 31 * result + userId;
         result = 31 * result + resourceId;
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + state;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         return result;
     }
