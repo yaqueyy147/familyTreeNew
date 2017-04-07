@@ -1,11 +1,11 @@
 package com.witkey.familyTree.controller.fronts;
 
-import com.witkey.familyTree.domain.TFamily;
-import com.witkey.familyTree.domain.TMeritocratAttr;
-import com.witkey.familyTree.domain.TUserFront;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
+import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import com.witkey.familyTree.util.PageUtil;
@@ -41,6 +41,10 @@ public class IndexController {
     private ConsoleService consoleService;
     @Autowired
     private UserFrontService userFrontService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CompanyService companyService;
 
     @RequestMapping(value = {"","/","/index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
@@ -48,11 +52,23 @@ public class IndexController {
         //从cookie获取用户信息
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 //        model.addAttribute("userInfo",jsonUser);
-        if(!CommonUtil.isBlank(jsonUser)){
-            TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
-            jsonUser = JSONObject.fromObject(tUserFront);
-            model.addAttribute("userInfo",jsonUser);
-        }
+//        Map<String,Object> temp = new HashMap<String, Object>();
+//        if(!CommonUtil.isBlank(jsonUser)){
+//            TUser1 tUser1 = new TUser1();
+//            TCompanySponsor tCompanySponsor = new TCompanySponsor();
+//            if("1".equals(jsonUser.get("userType"))){
+//                tUser1 = userService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
+//                temp = CommonUtil.bean2Map(tUser1);
+//                temp.put("userType",1);
+//
+//            }else if("2".equals(jsonUser.get("userType"))){
+//                tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
+//                temp = CommonUtil.bean2Map(tCompanySponsor);
+//                temp.put("userType",2);
+//
+//            }
+//            model.addAttribute("userInfo",temp);
+//        }
 
 //        Map<String,Object> params = new HashMap<String,Object>();
 //        params.put("familyArea",1);

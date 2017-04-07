@@ -58,4 +58,10 @@ public interface ConsoleService {
 
     public int confirmInclude(Map<String,Object> params);
 
+    public int saveResource(TResource tResource);
+
+    public int deleteResource(Map<String,Object> params);
+
+    public List<TResource> getResourceList(Map<String,Object> params);
+
 }

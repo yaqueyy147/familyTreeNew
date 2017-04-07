@@ -3,7 +3,7 @@
  */
 $(function () {
 
-    $("#roleDialog").dialog({
+    $("#resourceDialog").dialog({
         width: 400,
         height: 300,
         closed: true,
@@ -14,12 +14,13 @@ $(function () {
                 "text":"提交",
                 handler:function(){
                     var formData = {};
-                    var postUrl = projectUrl + "/consoles/saveRole";
-                    var testData = $("#roleForm").serializeArray();
+                    var postUrl = projectUrl + "/consoles/saveResource";
+                    var testData = $("#resourceForm").serializeArray();
 
                     for (var item in testData) {
                         formData["" + testData[item].name + ""] = testData[item].value;
                     }
+                    alert(JSON.stringify(formData));
                     $.ajax({
                         type:'post',
                         url: postUrl,
@@ -33,8 +34,8 @@ $(function () {
                             if(data.code >= 1){
                                 var params = {};
                                 loadDataGrid(params);
-                                $("#roleForm").form('clear');
-                                closeDialog("roleDialog");
+                                $("#resourceForm").form('clear');
+                                closeDialog("resourceDialog");
                             }
                         },
                         error:function (data) {
@@ -46,21 +47,25 @@ $(function () {
             {
                 "text":"取消",
                 handler:function () {
-                    $("#roleForm").form('clear');
-                    closeDialog("roleDialog");
+                    $("#resourceForm").form('clear');
+                    closeDialog("resourceDialog");
                 }
             }
         ]
     });
 
     $("#toAdd").click(function () {
-        $("#roleForm").form('clear');
-        $("#roleId").val(0);
-        $("#roleDialog").dialog('open');
+        $("#resourceForm").form('clear');
+        // var selectRows = $("#roleList").datagrid('getSelections');
+        $("#resourceId").val(0);
+        $("#parentSourceId").val(0);
+        $("#sourceLevel").val(0);
+        $("#sourceType").val(0);
+        $("#resourceDialog").dialog('open');
     });
 
     $("#toEdit").click(function () {
-        $("#roleForm").form('clear');
+        $("#resourceForm").form('clear');
         var selectRows = $("#roleList").datagrid('getSelections');
         if(selectRows.length > 1){
             alert("只能编辑一条数据!");
@@ -71,12 +76,12 @@ $(function () {
             return;
         }
         loadDataToForm(selectRows[0]);
-        $("#roleDialog").dialog('open');
+        $("#resourceDialog").dialog('open');
     });
 
     $("#toDel").click(function () {
 
-        var selectRows = $("#roleList").datagrid('getSelections');
+        var selectRows = $("#resourceList").datagrid('getSelections');
         if(selectRows.length < 1){
             alert("请至少选择一条数据!");
             return;
@@ -86,14 +91,14 @@ $(function () {
         for(var i=0;i<selectRows.length;i++){
             var ii = selectRows[i];
             selectIds += "," + ii.id;
-            selectNames.push(ii.roleName);
+            selectNames.push(ii.sourceName);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除角色(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('Confirm','确定要删除资源(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',
-                    url: projectUrl + "/consoles/deleteRole",
+                    url: projectUrl + "/consoles/deleteResource",
                     async:false,
                     dataType:'json',
                     data:{ids:selectIds},
@@ -117,28 +122,37 @@ $(function () {
 });
 
 function closeDialog(dialogId){
-    $("#roleForm").form('clear');
+    $("#resourceForm").form('clear');
     $("#" + dialogId).dialog("close");
 }
 
 function loadDataGrid(params) {
-    var dataList = getData("/consoles/roleList",params).dataList;
-    dataList = formatDataList(dataList);
-    $("#roleList").datagrid({
+    var dataList = getData("/consoles/resourceList",params).resourceList;
+    // dataList = formatDataList(dataList);
+    alert(JSON.stringify(dataList));
+    $("#resourceList").treegrid({
         data:dataList,
         loadMsg:"加载中...",
         selectOnCheck:true,
         singleSelect:false,
+        idField:"id",
+        treeField: 'sourceName',
         columns:[[
             {field:"ck",checkbox:"true"},
-            {field:"id",title:"角色Id",width:"80",hidden:true},
-            {field:"roleName",title:"角色名称",width:"150"},
-            {field:"roleDesc",title:"角色说明",width:"80"},
-            {field:"stateDesc",title:"状态",width:"180"},
-            {field:"state",title:"状态",width:"180",hidden:true}
+            {field:"id",title:"资源Id",width:"80",hidden:true},
+            {field:"sourceName",title:"资源名称",width:"200"},
+            {field:"sourceUrl",title:"资源链接",width:"200"},
+            {field:"state",title:"状态",width:"80",
+                formatter: function(value,row,index){
+                    if(value == 1){
+                        return "可用";
+                    }
+                    return '不可用';
+                }}
             // {field:"operate",title:"操作",width:"120"}
-        ]],
-        loadFilter:pagerFilter
+        ]]
+        // ,
+        // loadFilter:pagerFilter4TreeGrid
     });
 }
 
@@ -158,8 +172,10 @@ function formatDataList(data){
 
 function loadDataToForm(data){
 
-    $("#roleId").val(data.id);
-    $("#roleName").val(data.roleName);
-    $("#roleDesc").val(data.roleDesc);
+    $("#resourceId").val(data.id);
+    $("#sourceName").val(data.sourceName);
+    $("#sourceDesc").val(data.sourceDesc);
+    $("#sourceUrl").val(data.sourceUrl);
+    $("#parentSourceId").val(data._parentId);
     $("#state").combobox("setValue",data.state);
 }

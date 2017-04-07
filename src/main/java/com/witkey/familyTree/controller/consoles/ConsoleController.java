@@ -156,7 +156,7 @@ public class ConsoleController {
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("userName") + "";
 
-        if(!"admin".equals(userName)){
+        if(!"admin".equals(userName) && !"系统管理员".equals(userName)){
             params.put("userName",userName);
         }
         List<TFamily> list = familyService.getFamilyList(params);
@@ -466,7 +466,7 @@ public class ConsoleController {
 
     /**
      * 保存用户
-     * @param tUserBase
+     * @param tUser1
      * @return
      */
     @RequestMapping(value = "saveUserBase")
@@ -490,7 +490,7 @@ public class ConsoleController {
                 result.put("code",99);
                 return result;
             }
-
+            tUser1.setUserFrom(2);
             tUser1.setPassword(CommonUtil.string2MD5(tUser1.getPassword()));
             tUser1.setCreateMan(userName);
             tUser1.setCreateTime(CommonUtil.getDateLong());
@@ -501,6 +501,7 @@ public class ConsoleController {
             List<TUser1> list = consoleService.getUser1List(params);
             tUser1.setCreateMan(list.get(0).getCreateMan());
             tUser1.setCreateTime(list.get(0).getCreateTime());
+            tUser1.setUserFrom(list.get(0).getUserFrom());
 //            i = consoleService.saveUserBase(tUserBase);
         }
         i = consoleService.saveUser1(tUser1);
@@ -510,6 +511,37 @@ public class ConsoleController {
         result.put("code",i);
         return result;
     }
+
+//    /**
+//     * 修改密码
+//     * @param params
+//     * @return
+//     */
+//    @RequestMapping(value = "modifyPassword")
+//    @ResponseBody
+//    public Map<String,Object> modifyPassword(@RequestParam Map<String,Object> params){
+//        Map<String,Object> result = new HashMap<String,Object>();
+//        Map<String,Object> condition = new HashMap<String,Object>();
+//
+//        condition.put("id",params.get("userId"));
+//
+//        List<TUserBase> list = consoleService.getUserBase(condition);
+//
+//        String oldPassword = CommonUtil.string2MD5(params.get("oldPassword") + "");
+//
+//        if(!CommonUtil.isBlank(oldPassword)){
+//            if(oldPassword.equals(list.get(0).getUserPassword())){
+//                result.put("msg","原密码输入有误!");
+//                result.put("code",-2);
+//                return result;
+//            }
+//        }
+//
+//        int i = consoleService.modifyPassword(params);
+//        result.put("msg","修改成功!");
+//        result.put("code",i);
+//        return result;
+//    }
 
     /**
      * 修改密码
@@ -524,12 +556,12 @@ public class ConsoleController {
 
         condition.put("id",params.get("userId"));
 
-        List<TUserBase> list = consoleService.getUserBase(condition);
+        List<TUser1> list = consoleService.getUser1List(condition);
 
         String oldPassword = CommonUtil.string2MD5(params.get("oldPassword") + "");
 
         if(!CommonUtil.isBlank(oldPassword)){
-            if(oldPassword.equals(list.get(0).getUserPassword())){
+            if(oldPassword.equals(list.get(0).getPassword())){
                 result.put("msg","原密码输入有误!");
                 result.put("code",-2);
                 return result;
@@ -851,6 +883,56 @@ public class ConsoleController {
 
         result.put("code",i);
 
+        return result;
+    }
+
+    @RequestMapping(value = "resource")
+    public ModelAndView resource(Model model){
+        return new ModelAndView("/consoles/resource");
+    }
+
+    @RequestMapping(value = "resourceList")
+    @ResponseBody
+    public Map<String,Object> resourceList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+        List<TResource> list = consoleService.getResourceList(params);
+
+        List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();
+
+        for (TResource tt : list) {
+            Map<String,Object> temp = new HashMap<String,Object>();
+            temp = CommonUtil.bean2Map(tt);
+            temp.put("pId",tt.getParentSourceId());
+            temp.put("_parentId",tt.getParentSourceId());
+            temp.put("name",tt.getSourceName());
+            temp.put("open",true);
+            resultList.add(temp);
+        }
+
+        result.put("resourceList",resultList);
+        return result;
+    }
+
+    @RequestMapping(value = "saveResource")
+    @ResponseBody
+    public Map<String,Object> saveResource(TResource tResource){
+        Map<String,Object> result = new HashMap<>();
+
+        int i = consoleService.saveResource(tResource);
+
+        result.put("code",i);
+        result.put("msg","操作成功");
+        return result;
+    }
+
+    @RequestMapping(value = "deleteResource")
+    @ResponseBody
+    public Map<String,Object> deleteResource(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+
+        int i = consoleService.deleteResource(params);
+
+        result.put("code",i);
         return result;
     }
 

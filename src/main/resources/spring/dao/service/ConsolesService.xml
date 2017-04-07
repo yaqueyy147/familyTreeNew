@@ -13,6 +13,8 @@
 		<property name="tFamilyMergeDao" ref="tFamilyMergeDao" />
 		<property name="tLogDao" ref="tLogDao" />
 		<property name="tUser1Dao" ref="tUser1Dao" />
+		<property name="tResourceDao" ref="tResourceDao" />
+		<property name="tUserResourceDao" ref="tUserResourceDao" />
 	</bean>
 
 </beans>

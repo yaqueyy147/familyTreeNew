@@ -91,6 +91,38 @@ function pagerFilter(data){
     return data;
 }
 
+function pagerFilter4TreeGrid(data){
+    if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+        data = {
+            total: data.length,
+            rows: data
+        }
+    }
+    var dg = $(this);
+    var opts = dg.treegrid('options');
+    var pager = dg.treegrid('getPager');
+    pager.pagination({
+        displayMsg:"当前显示从{from}到{to},共{total}条信息",
+        onSelectPage:function(pageNum, pageSize){
+            opts.pageNumber = pageNum;
+            opts.pageSize = pageSize;
+            pager.pagination('refresh',{
+                pageNumber:pageNum,
+                pageSize:pageSize
+            });
+
+            dg.treegrid('loadData',data);
+        }
+    });
+    if (!data.originalRows){
+        data.originalRows = (data.rows);
+    }
+    var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+    var end = start + parseInt(opts.pageSize);
+    data.rows = (data.originalRows.slice(start, end));
+    return data;
+}
+
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
         "M+": this.getMonth() + 1, //月份

@@ -60,7 +60,7 @@
                     <td>
                         <select id="state" name="state" class="easyui-combobox" style="width:150px">
                             <option value="1">可用</option>
-                            <option value="0">不可用</option>
+                            <option value="9">不可用</option>
                         </select>
                     </td>
                 </tr>

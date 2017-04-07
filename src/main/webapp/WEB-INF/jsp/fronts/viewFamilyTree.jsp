@@ -93,7 +93,7 @@
                                 <div id="progress_bar" style="display: none"></div>
                                 <input id="photoUrl" name="photoUrl" type="hidden" />
                                 <input type="file" name="imgFile" id="imgFile" />
-                                <a id="show_img"><img style="display: none;" id="result_img" class="img-responsive" /></a>
+                                <a id="show_img"><img style="display: none;" id="result_img" height="128px" width="128px" /></a>
                             </td>
                             <td class="tdSm">
                                 姓名：

@@ -24,7 +24,7 @@
                 </c:if>
                 <c:if test="${userInfo.userType == 2}">
                  <a href="<%=request.getContextPath()%>/company/info">
-                    ${userInfo.company_name}
+                    ${userInfo.companyName}
                 </c:if>
                 </a>
                 &nbsp;|&nbsp;
@@ -38,3 +38,4 @@
         </div>
     </div>
 </nav>
+

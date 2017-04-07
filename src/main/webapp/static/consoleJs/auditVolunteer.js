@@ -85,9 +85,11 @@ function loadVolunteerData(params) {
                         opHtml = "<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',1)\">同意</a>";
                         opHtml += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',2)\">不同意</a>";
                         // return opHtml;
-                    }else{
+                    }else if(row.isVolunteer == 1 || row.isVolunteer == 2){
                         opHtml = "<span>已审核</span>";
                         opHtml += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"auditVolunteer('" + row.id + "',9)\">冻结账号</a>";
+                    }else if(row.isVolunteer == 9){
+                        opHtml = "<span>账号已冻结</span>";
                     }
 
                     return opHtml;

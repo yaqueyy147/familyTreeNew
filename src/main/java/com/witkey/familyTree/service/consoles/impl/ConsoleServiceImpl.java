@@ -96,6 +96,20 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.tUser1Dao = tUser1Dao;
     }
 
+    @Resource
+    private TResourceDao tResourceDao;
+
+    public void settResourceDao(TResourceDao tResourceDao) {
+        this.tResourceDao = tResourceDao;
+    }
+
+    @Resource
+    private TUserResourceDao tUserResourceDao;
+
+    public void settUserResourceDao(TUserResourceDao tUserResourceDao) {
+        this.tUserResourceDao = tUserResourceDao;
+    }
+
     @Autowired
     private CompanyService companyService;
 
@@ -488,6 +502,51 @@ public class ConsoleServiceImpl implements ConsoleService {
         sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
         i += jdbcTemplate.update(sql,params.get("familyId"));
         return i;
+    }
+
+    @Override
+    public int saveResource(TResource tResource) {
+        int i = 0;
+        //如果resource的ID大于0，则为修改
+        if(tResource.getId() > 0){
+            tResourceDao.save(tResource);
+            i ++;
+        }else{
+            i = CommonUtil.parseInt(tResourceDao.create(tResource));
+        }
+        return i;
+    }
+
+    @Override
+    public int deleteResource(Map<String, Object> params) {
+        String ids = params.get("ids") + "";
+        String[] id = ids.split(",");
+
+//        String sql = "delete from t_role where id=?";
+        String sql = "update t_resource set state=9 where id=?";
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,id[i]);
+        }
+        return ii;
+    }
+
+    @Override
+    public List<TResource> getResourceList(Map<String, Object> params) {
+        String sql = "select * from t_resource where state<>9";
+
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("id"))){
+                sql += " and id='" + params.get("id") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("sourceName"))){
+                sql += " and source_name='" + params.get("sourceName") + "'";
+            }
+        }
+
+        List<TResource> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TResource>(TResource.class));
+//        List<TRole> list = tRoleDao.find(params);
+        return list;
     }
 }
 

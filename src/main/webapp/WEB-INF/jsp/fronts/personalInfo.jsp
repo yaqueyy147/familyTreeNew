@@ -52,10 +52,10 @@
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
                                 <c:if test="${tUserFront.userPhoto == null || tUserFront.userPhoto == '' || tUserFront.userPhoto == 'null'}">
-                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" style="height: 200px" />
+                                    <img src="<%=request.getContextPath()%>/static/images/defaultMan.png" height="150px" width="150px" />
                                 </c:if>
                                 <c:if test="${tUserFront.userPhoto != null && tUserFront.userPhoto != '' && tUserFront.userPhoto != 'null'}">
-                                    <img src="${tUserFront.userPhoto}" style="height: 200px" /><%--<!--<%=request.getContextPath()%>-->--%>
+                                    <img src="${tUserFront.userPhoto}"  height="150px" width="150px" /><%--<!--<%=request.getContextPath()%>-->--%>
                                 </c:if>
                             </a>
                             <%--<img data-src="holder.js/300x300" alt="...">--%>

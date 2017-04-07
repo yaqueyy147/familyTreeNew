@@ -1,11 +1,16 @@
 package com.witkey.familyTree.interceptor;
 
+import com.witkey.familyTree.domain.TCompanySponsor;
+import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.exception.UnLoginException;
+import com.witkey.familyTree.service.fronts.CompanyService;
+import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,7 +32,10 @@ public class TestInterceptor implements HandlerInterceptor {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
     private List<String> excludeMappings;
 
-    private static JSONObject jsonUser;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CompanyService companyService;
 
     public void setExcludeMappings(List<String> excludeMappings) {
         this.excludeMappings = excludeMappings;
@@ -53,12 +61,14 @@ public class TestInterceptor implements HandlerInterceptor {
 
         //从cookie获取用户信息
 //        TUserFront tUserFront = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
-        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("userInfo",jsonUser);
+        if(!CommonUtil.isBlank(jsonUser)){
 
-        if(!CommonUtil.isBlank(modelAndView)){
-            modelAndView.addAllObjects(map);
+            map.put("userInfo",jsonUser);
+            if(!CommonUtil.isBlank(modelAndView)){
+                modelAndView.addAllObjects(map);
+            }
         }
 
 

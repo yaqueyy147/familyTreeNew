@@ -71,4 +71,11 @@
 	<bean class="com.witkey.familyTree.dao.consoles.TUser1Dao" id="tUser1Dao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean class="com.witkey.familyTree.dao.consoles.TResourceDao" id="tResourceDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean class="com.witkey.familyTree.dao.consoles.TUserResourceDao" id="tUserResourceDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
