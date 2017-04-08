@@ -32,11 +32,11 @@ $(function () {
         var familyId = $("#visitFamilyId").val();
         var passwordPre = $("#passwordPre").val();
         var password = $("#password").val();
-        if($.md5(password) != passwordPre){
+        if(password != passwordPre){
             alert("密码输入有误!");
             return;
         }
-        location.href = projectUrl + "/family/viewFamily?familyId=" + familyId;
+        location.href = projectUrl + "/family/viewFamily_visitor?familyId=" + familyId;
     });
 
     $("#searchBtn").click(function () {
