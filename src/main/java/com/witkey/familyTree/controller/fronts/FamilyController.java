@@ -77,12 +77,13 @@ public class FamilyController {
     }
 
     @RequestMapping(value = "/personalInfo")
-    public ModelAndView personalInfo(Model model,HttpServletRequest request) throws UnsupportedEncodingException{
+    public ModelAndView personalInfo(Model model,HttpServletRequest request,int xxx) throws UnsupportedEncodingException{
 
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 //        TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         TUser1 tUserFront = userService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         model.addAttribute("userInfo",jsonUser);
+        model.addAttribute("xxx",xxx);
         model.addAttribute("tUserFront",JSONObject.fromObject(tUserFront));
         return new ModelAndView("/fronts/personalInfo");
     }
@@ -207,6 +208,7 @@ public class FamilyController {
 
         //查询族人
         params.put("peopleType",1);
+        params.put("orderBy"," order by family_rank asc");
         List<TPeople> listPeople = familyService.getPeopleList(params);
 
         List<Map<String,Object>> list = new ArrayList<>();
@@ -282,7 +284,7 @@ public class FamilyController {
 
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -290,6 +292,7 @@ public class FamilyController {
         //查询当前成员是否含有下一代人
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("fatherId",peopleId);
+        params.put("familyId",familyId);
         //如果有下一代人，不能删除
         List<TPeople> list = familyService.getPeopleList(params);
         if(list != null && list.size() > 0){

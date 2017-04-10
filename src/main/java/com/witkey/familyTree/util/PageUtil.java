@@ -2,6 +2,7 @@ package com.witkey.familyTree.util;
 
 import org.apache.log4j.Logger;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class PageUtil {
      * @param totalPage
      * @return
      */
-    public static String getSimplePageChanger(int pageNo,int totalPage,int pageSize,String tableId){
+    public static String getSimplePageChanger(int pageNo,int totalPage,int pageSize,String tableId) throws UnsupportedEncodingException{
         int prevP = 1;
         int nextP = totalPage;
         StringBuffer pageChanger = new StringBuffer("");
@@ -32,7 +33,7 @@ public class PageUtil {
         pageChanger.append(getPrevPageStr(pageNo,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
         pageChanger.append(getEndPageStr(pageNo,totalPage,tableId));
-        return pageChanger.toString();
+        return new String(pageChanger.toString().getBytes(),"UTF-8");
     }
 
     /**
@@ -41,7 +42,7 @@ public class PageUtil {
      * @param totalPage
      * @return
      */
-    public static String getNumberPageChanger(int pageNo,int totalPage,int pageNum,int pageSize,String tableId){
+    public static String getNumberPageChanger(int pageNo,int totalPage,int pageNum,int pageSize,String tableId) throws UnsupportedEncodingException{
 
         int index = pageNo;
         StringBuffer pageChanger = new StringBuffer("");
@@ -56,7 +57,7 @@ public class PageUtil {
         pageChanger.append(getNumberPageStr(pageNo,totalPage,pageNum,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
         pageChanger.append(getEndPageStr(pageNo,totalPage,tableId));
-        return pageChanger.toString();
+        return new String(pageChanger.toString().getBytes(),"UTF-8");
     }
 
     /**

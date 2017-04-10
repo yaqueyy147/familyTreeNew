@@ -10,36 +10,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏族谱</title>
+    <title>何氏族谱--赞助商详情</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%@include file="common/commonCss.jsp"%>
+    <c:if test="${xxx != 2}">
         <style>
             body{
-                <%--background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;--%>
-                <%--filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";--%>
-                <%---moz-background-size:100% 100%;--%>
-                <%--background-size:100% 100%;--%>
-                width:100%;
-                height: 100%;
+                background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
+                filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+                -moz-background-size:100% 100%;
+                background-size:100% 100%;
             }
             #descDiv{
                 border:solid 1px #999999;
             }
         </style>
+
+    </c:if>
 </head>
 <body>
-<%--<c:if test="${xxx != 2}">--%>
-<%--<%@include file="common/header.jsp" %>--%>
-<%--</c:if>--%>
-<div class="container-fluid" style="margin-top: 20px;margin-bottom: 10px;">
-    <a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>
+<%@include file="common/header.jsp" %>
+<div class="container" style="margin-top: 50px;">
+    <%--<a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>--%>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     已赞助：
     <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
     &nbsp;&nbsp;
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <c:if test="${not empty tCompanySponsor.companyDesc}">
-        <div id="descDiv">公司简介：${tCompanySponsor.companyDesc}</div>
+    <div id="descDiv">${tCompanySponsor.companyDesc}</div>
     </c:if>
     <div id="companyShow" class="row">
         <c:forEach var="companyDetail" items="${companyDetailList}">
@@ -147,6 +146,8 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
+<c:if test="${xxx != 2}">
+</c:if>
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyDetail.js"></script>
 <script type="text/javascript">

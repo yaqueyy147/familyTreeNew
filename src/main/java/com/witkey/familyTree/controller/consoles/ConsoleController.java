@@ -135,6 +135,33 @@ public class ConsoleController {
     }
 
     /**
+     * 审核赞助商
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/auditCompany")
+    @ResponseBody
+    public Map<String,Object> auditCompany(HttpServletRequest request, @RequestParam Map<String,Object> params) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+        params.put("auditMan",userName);
+        int i = 0;
+        Map<String,Object> map = new HashMap<String,Object>();
+        try {
+            i = consoleService.auditCompany(params);
+            map.put("msg","审核完成");
+            map.put("code",1);
+        }catch (Exception e){
+            LOGGER.error("操作出错了-->",e);
+            map.put("msg","系统错误");
+            map.put("code",-1);
+        }
+        map.put("msg","审核完成");
+        map.put("code",1);
+        return map;
+    }
+
+    /**
      * 族谱列表页面
      * @return
      */
@@ -352,7 +379,7 @@ public class ConsoleController {
 
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -360,6 +387,7 @@ public class ConsoleController {
         //查询当前成员是否含有下一代人
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("fatherId",peopleId);
+        params.put("familyId",familyId);
         //如果有下一代人，不能删除
         List<TPeople> list = familyService.getPeopleList(params);
         if(list != null && list.size() > 0){

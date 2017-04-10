@@ -320,7 +320,7 @@ function deletePeople(peopleId,peopleName) {
             url:projectUrl + '/consoles/deletePeople',
             dataType:'json',
             async:false,
-            data:{peopleId : peopleId},
+            data:{peopleId : peopleId, familyId:familyId},
             success:function (data) {
                 if(data.code >= 1){
                     alert("删除完成!");

@@ -22,16 +22,6 @@
 				pagination:true,
 				pageSize:10">
     <thead>
-        <tr>
-            <th field="company_name" width="80">公司名称</th>
-            <th field="totalMoney" width="80">公司赞助总额</th>
-            <th field="phone" width="80">联系方式</th>
-            <th field="company_area" width="120">公司地址</th>
-            <th field="company_desc" width="150">公司简介</th>
-            <th field="company_photo" width="120">公司展示图</th>
-            <th field="business_license" width="120">公司营业执照图</th>
-            <th field="operate" width="120">操作</th>
-        </tr>
     </thead>
     <%--<tbody>--%>
     <%--<c:forEach var="company" items="${companyList}" varStatus="status">--%>
@@ -59,13 +49,7 @@
     <%--</c:forEach>--%>
     <%--</tbody>--%>
 </table>
-<div id="auditDialog" class="easyui-dialog" title="审核意见" style="width:400px;height:200px;padding:10px;top: 25%;left: 30%;">
-    <input type="hidden" id="applyManId" name="applyManId" />
-    <input type="hidden" id="volunteerId" name="volunteerId" />
-    <input type="hidden" id="auditState" name="auditState" />
-    审核意见：
-    <textarea cols="45" rows="5" id="auditDesc" name="auditDesc"></textarea>
-</div>
+
 <div id="moneyListDialog" class="easyui-dialog" title="充值详情" style="width:600px;height:400px;padding:10px;top: 15%;left: 20%;">
     <table id="moneyTable" class="easyui-datagrid" style="width:100%;height:100%"
            title="充值列表" data-options="
@@ -81,6 +65,9 @@
             <th field="payMan" width="100">充值人</th>
         </thead>
     </table>
+</div>
+<div id="licenseDialog" class="easyui-dialog" title="营业执照展示" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;text-align: center">
+
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>

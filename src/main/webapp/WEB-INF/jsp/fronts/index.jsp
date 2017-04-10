@@ -72,7 +72,7 @@
     <div class="row" id="familyContent">
         <c:forEach var="family" items="${familyList}">
 
-            <div class="col-sm-3 col-md-2">
+            <div class="col-sm-3 col-md-2 familyDiv">
                 <div class="thumbnail">
                     <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
                         <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>

@@ -18,6 +18,14 @@ public class TCompanyPoints implements Serializable {
     private int points;
     private String remark;
 
+    public TCompanyPoints() {
+    }
+
+    public TCompanyPoints(int companyId, int points) {
+        this.companyId = companyId;
+        this.points = points;
+    }
+
     @Id
     @Column(name = "id",unique = true)
     @GeneratedValue

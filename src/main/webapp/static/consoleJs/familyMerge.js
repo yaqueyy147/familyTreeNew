@@ -174,9 +174,7 @@ function initPeopleData(familyId){
                 }
                 node.mateName = mateName;
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                if(ii.fatherId == 0){
-                    node.open = true;
-                }
+                node.open = true;
                 zNodes[i] = node;
             }
 
@@ -213,14 +211,15 @@ function initTargetFamily() {
 
 function selectTarget(obj) {
     var familyId = $(obj).val();
-
     var familyDesc = $(obj).find("option:selected").attr("family-desc");
     var familyAddr = $(obj).find("option:selected").attr("family-addr");
 
     var zNodes = initPeopleData(familyId);
 
     initFamilyTree("targetFamilyTree",setting,zNodes);
-    $("#targetFamilyAddr").text("家族属地：" + familyAddr);
+    if($.trim(familyAddr).length > 0){
+        $("#targetFamilyAddr").text("家族属地：" + familyAddr);
+    }
 
     if($.trim(familyDesc).length > 0){
         $("#targetFamilyDesc").text("家族描述：" + familyDesc);
@@ -242,6 +241,10 @@ function zTreeOnClick(event, treeId, treeNode) {
 
 function editPeople(peopleId,generation){
     var targetFamilyId = $("#targetFamily").val();
+    if($.trim(targetFamilyId).length <= 0){
+        alert("请选择一个目标家族！");
+        return;
+    }
     initParent(targetFamilyId,generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;

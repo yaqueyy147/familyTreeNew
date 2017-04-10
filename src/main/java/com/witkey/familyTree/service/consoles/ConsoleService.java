@@ -19,6 +19,8 @@ public interface ConsoleService {
 
     public List<Map<String,Object>> getCompanyList(Map<String,Object> params);
 
+    public int auditCompany(Map<String,Object> params);
+
     public List<TUserBase> getUserBase(Map<String,Object> params);
 
     public int saveUserBase(TUserBase tUserBase);

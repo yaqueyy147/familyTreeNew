@@ -25,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class SignInController {
         tUser1.setIsFront(1);
         List<TUser1> listUser = userService.getUserInfo1(tUser1);
         //公司用户
-        List<Map<String,Object>> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUser1));
+        List<TCompanySponsor> listCompanyUser = companyService.getCompanyInfo(CommonUtil.bean2Map(tUser1));
         Map<String,Object> mapUserInfo = new HashMap<String,Object>();
         //如果用户存在则为个人用户，则登录，跳转首页
         if(listUser != null && listUser.size() > 0){
@@ -129,7 +130,7 @@ public class SignInController {
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
             return new RedirectView(contextPath + "/familyTree/index");
         }else if(listCompanyUser != null && listCompanyUser.size() > 0){//否则检查是否公司用户
-            mapUserInfo = listCompanyUser.get(0);
+            mapUserInfo = CommonUtil.bean2Map(listCompanyUser.get(0));
             mapUserInfo.put("userType",2);//设置用户类型为企业用户
             //将用户信息添加到cookie
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
@@ -255,8 +256,8 @@ public class SignInController {
         }else {
             //检查用户名是否已经存在了
             Map<String,Object> params2 = new HashMap<String,Object>();
-            params2.put("userName",params.get("userName"));
-            List<Map<String,Object>> list = companyService.getCompanyInfo(params2);
+            params2.put("loginName",params.get("userName"));
+            List<TCompanySponsor> list = companyService.getCompanyInfo(params2);
 
             if(list != null && list.size() > 0){
                 return new RedirectView(contextPath + "/sign/regedit?regCode=-2");
@@ -286,13 +287,28 @@ public class SignInController {
     public RedirectView companyRegester(TCompanySponsor tCompanySponsor, RedirectAttributes ra, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException{
         String contextPath = request.getContextPath();
         //注册，创建用户
+        Map<String,Object> params2 = new HashMap<String,Object>();
+        params2.put("loginName",tCompanySponsor.getCompanyLoginName());
+        List<TCompanySponsor> list = companyService.getCompanyInfo(params2);
+
+        if(list != null && list.size() > 0){
+            return new RedirectView(contextPath + "/sign/regeditCompany?regCode=-2");
+        }
+
         //加密密码
+        tCompanySponsor.setState(3);
         tCompanySponsor.setCompanyLoginPassword(CommonUtil.string2MD5(tCompanySponsor.getCompanyLoginPassword()));
+        tCompanySponsor.setCreateMan(tCompanySponsor.getCompanyLoginName());
+        tCompanySponsor.setCreateTime(new Date());
         int id= companyService.createCompanyUser(tCompanySponsor);
         //设置用户ID为返回的id
         tCompanySponsor.setId(id);
+
+        JSONObject jsonObject = JSONObject.fromObject(tCompanySponsor);
+        jsonObject.put("userType",2);
+
         //注册成功，自动登录，添加cookie
-        CookieUtil.addCookie("userInfo", JSONObject.fromObject(tCompanySponsor).toString(),response);
+        CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
         return new RedirectView(contextPath + "/familyTree/index");
     }
 

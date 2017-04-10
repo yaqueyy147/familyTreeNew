@@ -200,6 +200,18 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
+    public int auditCompany(Map<String, Object> params) {
+        String sql = "update t_company_sponsor set state=? where id=?";
+        int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("companyId"));
+
+        String sqlP = "insert into t_company_points(company_id,points) values(?,?)";
+
+        i += jdbcTemplate.update(sqlP,params.get("companyId"),0);
+
+        return i;
+    }
+
+    @Override
     public List<TUserBase> getUserBase(Map<String, Object> params) {
 
         String sql = "select * from t_user_base where state<>9";

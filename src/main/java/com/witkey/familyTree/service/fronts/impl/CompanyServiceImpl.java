@@ -10,7 +10,9 @@ import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,7 +68,7 @@ public class CompanyServiceImpl implements CompanyService {
         int i=0;
         tCompanySponsorDao.save(tCompanySponsor);
         i++;
-        return 0;
+        return i;
     }
 
     @Override
@@ -92,7 +94,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Map<String, Object>> getCompanyInfo(Map<String, Object> params) {
+    public List<TCompanySponsor> getCompanyInfo(Map<String, Object> params) {
         String sql = "select * from t_company_sponsor where 1=1";
 
         if(!CommonUtil.isBlank(params.get("loginName"))){
@@ -102,7 +104,7 @@ public class CompanyServiceImpl implements CompanyService {
             sql += " and company_login_password='" + params.get("password") + "'";
         }
 
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        List<TCompanySponsor> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TCompanySponsor>(TCompanySponsor.class));
 
         return list;
     }

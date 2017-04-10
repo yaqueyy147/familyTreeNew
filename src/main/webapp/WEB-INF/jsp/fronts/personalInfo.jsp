@@ -196,18 +196,19 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalInfo.js"></script>
 <script type="text/javascript">
     var isVolunteer = "${tUserFront.isVolunteer}";
+    var xxx = "${xxx}";
     var userId = "${tUserFront.id}";
     var winHeigth = $(window).height();
     $(function () {
-        if(isVolunteer == 1){
+        if(isVolunteer == 1 && xxx == 2){
 //            $("#userDetailTabLi").removeClass("active");
 //            $("#myFamilyTabLi").addClass("active");
             $("#myFamilyTabLi a").tab("show");
         }
 
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
         $("#province").val("${tUserFront.province}");
         $("#province").change();
         $("#city").val("${tUserFront.city}");

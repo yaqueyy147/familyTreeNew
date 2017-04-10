@@ -39,7 +39,8 @@
             <a class="btn btn-primary" href="javascript:void 0;">已收录</a>
         </c:if>
         <c:if test="${merge.state == 3}">
-            <a class="btn btn-primary" href="javascript:void 0;">已驳回</a>
+            <%--<a class="btn btn-primary" href="javascript:void 0;">已驳回</a>--%>
+            <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
         </c:if>
         <c:if test="${merge.state == 2 || merge.state == 0}">
             <a class="btn btn-primary" href="javascript:void 0;">已申请，待审核</a>

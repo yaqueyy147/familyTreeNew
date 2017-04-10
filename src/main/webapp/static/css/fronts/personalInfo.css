@@ -77,6 +77,7 @@ body{
     /*display:-moz-box;*/
     /*display:-webkit-box;*/
     /*display:box;*/
+    overflow: auto;
 
 }
 /*#userDetail .infoDetail{*/

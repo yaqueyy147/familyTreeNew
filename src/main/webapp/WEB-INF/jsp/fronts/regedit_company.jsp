@@ -20,21 +20,21 @@
     <div class="login-content">
         <div class="form">
             <form id="regeditForm" action="" method="post">
-            <div class="form-group col-xs-6 has-error has-feedback">
+            <div class="form-group col-xs-6 has-feedback">
                 <input class="form-control" id="companyLoginName" name="companyLoginName" placeholder="用户名(登录用)" type="text" />
-            <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+                <%--<span class="glyphicon glyphicon-asterisk form-control-feedback"></span>--%>
             </div>
-            <div class="form-group col-xs-6 has-error form-actions">
+            <div class="form-group col-xs-6 form-actions">
                 <input class="form-control" id="companyName" name="companyName" placeholder="公司名称" type="text" />
-                <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+                <%--<span class="glyphicon glyphicon-asterisk form-control-feedback"></span>--%>
             </div>
-            <div class="form-group col-xs-6 has-error form-actions" style="margin-top: 15px">
+            <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                 <input class="form-control" id="companyLoginPassword" name="companyLoginPassword" placeholder="密 码" type="password" />
-                <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+                <%--<span class="glyphicon glyphicon-asterisk form-control-feedback"></span>--%>
             </div>
-            <div class="form-group col-xs-6 has-error form-actions" style="margin-top: 15px">
+            <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                 <input class="form-control" id="companyLoginPasswordAffirm" name="companyLoginPasswordAffirm" placeholder="确认密码" type="password" />
-                <span class="glyphicon glyphicon-asterisk form-control-feedback"></span>
+                <%--<span class="glyphicon glyphicon-asterisk form-control-feedback"></span>--%>
             </div>
             <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                 <input class="form-control" id="companyMobilePhone" name="companyMobilePhone" placeholder="手机号码" type="text" />
@@ -84,6 +84,12 @@
                     上传公司营业执照<span class="glyphicon glyphicon-asterisk" style="color: #a94442"></span>
                     <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>
                 </div>
+            </div>
+            <div class="form-group col-xs-5 form-actions col-xs-offset-1" style="margin-top: 15px">
+                <input class="form-control" id="checkCode" name="checkCode" placeholder="验证码" type="text" />
+            </div>
+            <div class="form-group col-xs-5 form-actions" style="margin-top: 15px">
+                <canvas id="canvas"  width="150" height="34"></canvas>
             </div>
             <div class="form-group col-xs-9 form-actions col-xs-offset-4" style="margin-top: 30px">
                 <button class="btn btn-primary bbtt" style="margin-bottom: 20px;" id="companyRegeditbb" type="button">注 册</button>

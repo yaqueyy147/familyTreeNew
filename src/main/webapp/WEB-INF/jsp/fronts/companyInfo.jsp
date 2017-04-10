@@ -21,25 +21,32 @@
         .bbtt {
             margin-bottom: 30px;
         }
+        #ccDiv{
+            width: 90%;
+            margin-bottom: 50px;
+            overflow: auto
+        }
 
     </style>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container">
+<div id="ccDiv" class="container-fluid">
     <ul class="nav nav-tabs" role="tablist" style="margin-top: 30px">
         <li role="presentation" class="active">
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
         </li>
+        <c:if test="${companyInfo.state == 1}">
         <li role="presentation">
             <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的公司</a>
         </li>
+        </c:if>
 
     </ul>
-    <div class="tab-content">
+    <div class="tab-content container-fluid">
         <div id="userDetailTab" class="tab-pane active" role="tabpanel">
-            <div id="userDetail">
-                <div class="leftInfo infoDetail">
+            <div id="userDetail" class="container-fluid">
+                <div class="leftInfo infoDetail col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <div class="col-sm-10 col-md-10 col-md-offset-1">
                         <div class="thumbnail">
                             <a href="javascript:void(0)" id="userPhotoBox">
@@ -57,6 +64,15 @@
 
                                 <p>${companyInfo.companyArea}</p>
                                 <p>
+                                    <c:if test="${companyInfo.state != 3 && companyInfo.state != 1}">
+                                        <button type="button" class="btn btn-primary" id="applyVolunteer">申请宣传/赞助</button>
+                                    </c:if>
+                                    <c:if test="${companyInfo.state == 3}">
+                                        <span style="color: #ff8000">已申请，请等待审核！</span>
+                                    </c:if>
+                                    <c:if test="${companyInfo.state == 1}">
+                                        <span style="color: #00ff00">可宣传/赞助！</span>
+                                    </c:if>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyPwdModal">修改密码</button>
 
                                 </p>
@@ -64,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="regedit-content rightInfo infoDetail">
+                <div class="regedit-content rightInfo infoDetail col-lg-8 col-md-8 col-sm-8 col-xs-8">
                     <div class="form active" id="personalRegedit">
                         <form id="companyForm" action="" method="post">
                             <input type="hidden" name="id" value="${companyInfo.id}" />
@@ -100,7 +116,8 @@
                                 <input class="form-control" id="companyQq" name="companyQq" value="${companyInfo.companyQq}" placeholder="QQ" type="text" />
                             </div>
                             <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
-                                <textarea class="form-control" id="companyDesc" name="companyDesc" value="${companyInfo.companyDesc}" placeholder="公司简介" type="text"></textarea>
+                                <textarea class="form-control" id="companyDesc" name="companyDesc" value="${companyInfo.companyDesc}" placeholder="公司简介" type="text">${companyInfo.companyDesc}
+                                </textarea>
                             </div>
                             <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                                 <div class="col-xs-12 col-sm-12" style="height:140px">
@@ -195,9 +212,12 @@
 <script type="text/javascript">
     var userInfo = "${companyInfo}";
     var winHeigth = $(document).height();
+    var businessLicense = "${companyInfo.businessLicense}";
     $(function () {
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10));
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10));
+//        containerDiv
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
 
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
@@ -281,13 +301,14 @@
                 alert("error-->" + errorString);
             }
         });
+
         $("#result_img1").show();
         $("#imgFile1").hide();
         $("#show_img1").mouseover(function(){
             $("#result_img1").attr('src',projectUrl + "/static/images/deleteImg.png");
         });
         $("#show_img1").mouseout(function(){
-            $("#result_img1").attr('src',projectUrl + userInfo.businessLicense);
+            $("#result_img1").attr('src',projectUrl + businessLicense);
         });
         $("#result_img1").click(function(){
             $("#result_img1").hide();

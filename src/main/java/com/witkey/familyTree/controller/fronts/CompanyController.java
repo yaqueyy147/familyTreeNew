@@ -72,6 +72,9 @@ public class CompanyController {
         double totalMoney = companyService.getTotalCompanyMoney(companyId);
         model.addAttribute("totalMoney",totalMoney);
         model.addAttribute("xxx",xxx);
+        if(CommonUtil.isBlank(xxx) || xxx != 2){
+            return new ModelAndView("/fronts/companyDetail_visitor");
+        }
         return new ModelAndView("/fronts/companyDetail");
     }
 

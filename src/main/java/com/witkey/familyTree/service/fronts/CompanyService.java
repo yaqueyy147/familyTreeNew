@@ -28,7 +28,7 @@ public interface CompanyService {
     public TCompanySponsor getCompanyFromId(int companyId);
 
     //根据用户名和密码获取公司信息
-    public List<Map<String,Object>> getCompanyInfo(Map<String,Object> params);
+    public List<TCompanySponsor> getCompanyInfo(Map<String,Object> params);
 
     //根据companyId获取充值总数
     public double getTotalCompanyMoney(int companyId);

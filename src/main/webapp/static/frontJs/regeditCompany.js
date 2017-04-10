@@ -4,7 +4,7 @@
 var checkCodePre;
 $(function () {
     checkCodePre = drawPic();
-    $("#regedit").click(function () {
+    $("#companyRegeditbb").click(function () {
 
         var companyLoginName = $("#companyLoginName").val();
         var companyLoginPassword = $("#companyLoginPassword").val();
@@ -12,7 +12,12 @@ $(function () {
         var companyName = $("#companyName").val();
         var companyMobilePhone = $("#companyMobilePhone").val();
         var companyTelephone = $("#companyTelephone").val();
-
+        var businessLicense = $("#businessLicense").val();
+        var checkCode = $("#checkCode").val();
+        if(checkCodePre.toUpperCase() != checkCode.toUpperCase()){
+            alert("验证码错误！");
+            return;
+        }
         if($.trim(companyLoginName).length <= 0){
             alert("用户名不能为空！");
             return ;
@@ -29,12 +34,16 @@ $(function () {
             alert("公司名不能为空！");
             return ;
         }
-        if($.trim(companyMobilePhone).length <= 0 || $.trim(companyTelephone).length <= 0){
+        if($.trim(companyMobilePhone).length <= 0 && $.trim(companyTelephone).length <= 0){
             alert("请至少输入一个手机号码或者一个固定电话！");
             return ;
         }
         if($.trim(companyMobilePhone).length > 0 && $.trim(companyMobilePhone).length != 11){
             alert("请输入正确的11位手机号码！");
+            return ;
+        }
+        if($.trim(businessLicense).length <= 0){
+            alert("请上传公司营业执照！");
             return ;
         }
 
