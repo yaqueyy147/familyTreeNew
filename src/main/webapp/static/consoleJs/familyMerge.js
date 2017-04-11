@@ -84,22 +84,28 @@ $(function () {
     });
 
     $("#confirmInclude").click(function () {
-        $.ajax({
-            type:'post',
-            url: projectUrl + '/consoles/confirmInclude',
-            dataType: 'json',
-            data:{familyId:familyId},
-            async:false,
-            success:function (data) {
-                if(data.code >= 1){
-                    alert("收录完成!");
-                }
-
-            },
-            error:function (data) {
-                alert(JSON.stringify(data));
-            }
-        });
+        var primaryObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
+        var primaryFamily = primaryObj.transformToArray(primaryObj.getNodes());
+        alert(JSON.stringify(primaryFamily[0]) + "--->1");
+        $("#localBack").parent().append(primaryFamily);
+        // var targetFamily = $.fn.zTree.getZTreeObj("targetFamilyTree").getNodes();
+        // targetFamily = targetFamily.transformToArray(targetFamily.getNodes());
+        // $.ajax({
+        //     type:'post',
+        //     url: projectUrl + '/consoles/confirmInclude',
+        //     dataType: 'json',
+        //     data:{familyId:familyId},
+        //     async:false,
+        //     success:function (data) {
+        //         if(data.code >= 1){
+        //             alert("收录完成!");
+        //         }
+        //
+        //     },
+        //     error:function (data) {
+        //         alert(JSON.stringify(data));
+        //     }
+        // });
     });
 
     $('#addModal').on('hidden.bs.modal', function (e) {

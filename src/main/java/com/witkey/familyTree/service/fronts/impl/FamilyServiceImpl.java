@@ -471,11 +471,30 @@ public class FamilyServiceImpl implements FamilyService {
 //            if(!CommonUtil.isBlank(params.get("userType"))){
 //                sql += " and user_type='" + params.get("userType") + "'";
 //            }
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and t2.province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and t2.city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and t2.district='" + params.get("district") + "'";
+            }
             sql += " order by t1.points desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
             String sql = "select t1.points,t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
-            sql += " where t1.company_id=t2.id order by t1.points desc";
+            sql += " where t1.company_id=t2.id";
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and t2.province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and t2.city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and t2.district='" + params.get("district") + "'";
+            }
+            sql += " order by t1.points desc";
             list = jdbcTemplate.queryForList(sql);
         }
 

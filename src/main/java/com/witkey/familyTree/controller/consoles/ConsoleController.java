@@ -812,64 +812,6 @@ public class ConsoleController {
         return result;
     }
 
-    @RequestMapping(value = "/merge")
-    public ModelAndView merge(Model model){
-        return new ModelAndView("/consoles/merge");
-    }
-
-    @RequestMapping(value = "/familyMerge")
-    public ModelAndView familyMerge(Model model,@RequestParam Map<String,Object> params){
-        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(params.get("familyId")));
-        model.addAttribute("primaryFamily",tFamily);
-        return new ModelAndView("/consoles/familyMerge");
-    }
-
-    @RequestMapping(value = "/mergePrimary")
-    @ResponseBody
-    public Map<String,Object> mergePrimary(@RequestParam Map<String,Object> params){
-        Map<String,Object> result = new HashMap<String,Object>();
-
-        List<Map<String, Object>> list = consoleService.getMergeList(params);
-
-        result.put("primaryList",list);
-        return result;
-    }
-
-    @RequestMapping(value = "/mergeTarget")
-    @ResponseBody
-    public Map<String,Object> mergeTarget(@RequestParam Map<String,Object> params){
-        Map<String,Object> result = new HashMap<String,Object>();
-
-        List<TFamily> list = consoleService.getTargetMergeList(params);
-
-        result.put("targetList",list);
-        return result;
-    }
-
-    @RequestMapping(value = "/rejectInclude")
-    @ResponseBody
-    public Map<String,Object> rejectInclude(HttpServletRequest request,@RequestParam Map<String,Object> params) throws UnsupportedEncodingException{
-        Map<String,Object> result = new HashMap<String,Object>();
-        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        String userName = consolesUser.get("userName") + "";
-
-        int i = consoleService.rejectInclude(CommonUtil.parseInt(params.get("mergeId")),params.get("rejectDesc") + "",userName);
-        result.put("code",i);
-        result.put("msg","操作成功!");
-        return result;
-    }
-
-    @RequestMapping(value = "confirmInclude")
-    @ResponseBody
-    public Map<String,Object> confirmInclude(HttpServletRequest request,@RequestParam Map<String,Object> params){
-        Map<String,Object> result = new HashMap<String,Object>();
-
-        int i = consoleService.confirmInclude(params);
-
-        result.put("code",i);
-        return result;
-    }
-
     @RequestMapping(value = "pointsRelation")
     public ModelAndView pointsRelation(){
         return new ModelAndView("/consoles/pointsRelation");

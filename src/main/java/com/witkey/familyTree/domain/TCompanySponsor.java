@@ -32,6 +32,12 @@ public class TCompanySponsor implements Serializable {
     private Date createTime;
     private String createMan;
     private Integer state;
+    private String province;
+    private String city;
+    private String district;
+    private String county;
+    private String town;
+    private String detailAddr;
 
     public TCompanySponsor(){
 
@@ -228,6 +234,66 @@ public class TCompanySponsor implements Serializable {
         this.state = state;
     }
 
+    @Basic
+    @Column(name = "province")
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "district")
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    @Basic
+    @Column(name = "county")
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    @Basic
+    @Column(name = "town")
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    @Basic
+    @Column(name = "detail_addr")
+    public String getDetailAddr() {
+        return detailAddr;
+    }
+
+    public void setDetailAddr(String detailAddr) {
+        this.detailAddr = detailAddr;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -260,6 +326,13 @@ public class TCompanySponsor implements Serializable {
         if (createMan != null ? !createMan.equals(that.createMan) : that.createMan != null) return false;
         if (state != null ? !state.equals(that.state) : that.state != null) return false;
 
+        if (province != null ? !province.equals(that.province) : that.province != null) return false;
+        if (city != null ? !city.equals(that.city) : that.city != null) return false;
+        if (district != null ? !district.equals(that.district) : that.district != null) return false;
+        if (county != null ? !county.equals(that.county) : that.county != null) return false;
+        if (town != null ? !town.equals(that.town) : that.town != null) return false;
+        if (detailAddr != null ? !detailAddr.equals(that.detailAddr) : that.detailAddr != null) return false;
+
         return true;
     }
 
@@ -283,6 +356,13 @@ public class TCompanySponsor implements Serializable {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
+
+        result = 31 * result + (province != null ? province.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
+        result = 31 * result + (county != null ? county.hashCode() : 0);
+        result = 31 * result + (town != null ? town.hashCode() : 0);
+        result = 31 * result + (detailAddr != null ? detailAddr.hashCode() : 0);
         return result;
     }
 

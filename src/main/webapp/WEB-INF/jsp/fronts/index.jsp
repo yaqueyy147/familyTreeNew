@@ -13,87 +13,151 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
+    <style>
+        .indexContainer.container{
+            width:100% !important;
+        }
+        .rankDiv{
+            height: 50%;
+            float: left;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
-    <nav class="navbar navbar-default">
-    <form class="navbar-form navbar-left searchForm" role="search">
-        <div class="form-group">
-            <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
+<div class="container indexContainer">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv personalRank">
+        <div class="personalRank">
+            <span>个人积分排名:</span>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>用户名</td>
+                    <td>积分</td>
+                </tr>
+                </thead>
+                <tbody id="personalPoints">
+                <c:if test="${listPersonalPoints != null}">
+                    <c:forEach var="personalPoints" items="${listPersonalPoints}" varStatus="status">
+                        <tr>
+                            <td>${status.index + 1}</td>
+                            <td>${personalPoints.user_name}</td>
+                            <td>${personalPoints.points}</td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+                </tbody>
+            </table>
         </div>
-        <div class="form-group addressSelect" data-toggle="distpicker">
-            <select id="province" name="province" data-province="---- 选择省 ----"></select>
-            <select id="city" name="city" data-city="---- 选择市 ----"></select>
-            <select id="district" name="district" data-district="---- 选择区 ----"></select>
-        </div>
-        <button type="button" id="searchBtn" class="btn btn-default">查询</button>
-    </form>
-    </nav>
-<%--<c:forEach var="familyList" items="${familyList}">--%>
-    <%--<div id="mainlandFamily" class="panel panel-info">--%>
+    </div>
+    <div class="container-fluid col-xs-8 col-sm-8 col-md-8 col-lg-8" style="margin-top: 50px; margin-bottom: 50px;float: left">
+        <nav class="navbar navbar-default">
+            <form class="navbar-form navbar-left searchForm" role="search">
+                <div class="form-group">
+                    <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
+                </div>
+                <div class="form-group addressSelect" data-toggle="distpicker">
+                    <select id="province" name="province" data-province="---- 选择省 ----"></select>
+                    <select id="city" name="city" data-city="---- 选择市 ----"></select>
+                    <select id="district" name="district" data-district="---- 选择区 ----"></select>
+                </div>
+                <button type="button" id="searchBtn" class="btn btn-default">查询</button>
+            </form>
+        </nav>
+        <%--<c:forEach var="familyList" items="${familyList}">--%>
+        <%--<div id="mainlandFamily" class="panel panel-info">--%>
         <%--<div class="panel-heading" style="cursor: pointer">--%>
-            <%--<c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>--%>
-            <%--<c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>--%>
-            <%--<c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>--%>
-            <%--<c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>--%>
-            <%--<div style="float: right;">--%>
-                <%--<i class="fa fa-chevron-up"></i>--%>
-            <%--</div>--%>
+        <%--<c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>--%>
+        <%--<c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>--%>
+        <%--<c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>--%>
+        <%--<c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>--%>
+        <%--<div style="float: right;">--%>
+        <%--<i class="fa fa-chevron-up"></i>--%>
+        <%--</div>--%>
         <%--</div>--%>
         <%--<div class="panel-body">--%>
-            <%--<div class="row">--%>
-                <%--<c:forEach var="family" items="${familyList}">--%>
+        <%--<div class="row">--%>
+        <%--<c:forEach var="family" items="${familyList}">--%>
 
-                    <%--<div class="col-sm-3 col-md-2">--%>
-                        <%--<div class="thumbnail">--%>
-                            <%--<a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>--%>
-                                <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
-                            <%--<div class="caption">--%>
-                                <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
-                                <%--<p>状态：--%>
-                                    <%--<c:if test="${family.visitStatus == 0}">加密</c:if>--%>
-                                    <%--<c:if test="${family.visitStatus == 1}">开放</c:if>--%>
-                                    <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
-                                <%--</p>--%>
-                                <%--<p>${family.familyName}</p>--%>
-                                <%--<p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">--%>
-                                        <%--${family.familyDesc}--%>
-                                <%--</p>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-
-                <%--</c:forEach>--%>
-            <%--</div>--%>
+        <%--<div class="col-sm-3 col-md-2">--%>
+        <%--<div class="thumbnail">--%>
+        <%--<a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>--%>
+        <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
+        <%--<div class="caption">--%>
+        <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
+        <%--<p>状态：--%>
+        <%--<c:if test="${family.visitStatus == 0}">加密</c:if>--%>
+        <%--<c:if test="${family.visitStatus == 1}">开放</c:if>--%>
+        <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
+        <%--</p>--%>
+        <%--<p>${family.familyName}</p>--%>
+        <%--<p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">--%>
+        <%--${family.familyDesc}--%>
+        <%--</p>--%>
         <%--</div>--%>
-    <%--</div>--%>
-<%--</c:forEach>--%>
-    <div class="row" id="familyContent">
-        <c:forEach var="family" items="${familyList}">
+        <%--</div>--%>
+        <%--</div>--%>
 
-            <div class="col-sm-3 col-md-2 familyDiv">
-                <div class="thumbnail">
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
-                        <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
-                        <%--<img data-src="holder.js/300x300" alt="...">--%>
-                    <div class="caption">
-                        <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
+        <%--</c:forEach>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--</c:forEach>--%>
+        <div class="row" id="familyContent">
+            <c:forEach var="family" items="${familyList}">
+
+                <div class="col-sm-3 col-md-2 familyDiv">
+                    <div class="thumbnail">
+                        <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
+                            <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
+                            <%--<img data-src="holder.js/300x300" alt="...">--%>
+                        <div class="caption">
+                                <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
                             <h6>世界何氏族谱（${family.id}）</h6>
-                        <p>状态：
-                            <c:if test="${family.visitStatus == 0}">加密</c:if>
-                            <c:if test="${family.visitStatus == 1}">开放</c:if>
-                            <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
-                        </p>
-                        <p>${family.familyName}</p>
-                        <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
-                                ${family.familyDesc}
-                        </p>
+                            <p>状态：
+                                <c:if test="${family.visitStatus == 0}">加密</c:if>
+                                <c:if test="${family.visitStatus == 1}">开放</c:if>
+                                    <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
+                            </p>
+                            <p>${family.familyName}</p>
+                            <p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                                    ${family.familyDesc}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </c:forEach>
+            </c:forEach>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv companyRank" >
+        <div class="companyRank">
+            <span>赞助商积分排名:</span>
+            <table class="table">
+                <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>公司名</td>
+                    <td>积分</td>
+                </tr>
+                </thead>
+                <tbody id="companyPoints">
+                <c:if test="${listCompanyPoints != null}">
+                    <c:forEach var="companyPoints" items="${listCompanyPoints}" varStatus="status">
+                        <tr>
+                            <td>${status.index + 1}</td>
+                            <td style="word-break: break-all;max-width: 100px;"><a href="<%=request.getContextPath()%>/company/detail?companyId=${companyPoints.company_id}&xxx=1">${companyPoints.company_name}</a></td>
+                            <td>${companyPoints.points}</td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- 族谱密码 Modal -->

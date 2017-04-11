@@ -79,7 +79,37 @@ $(function () {
                         familyContent += "</p></div></div></div>";
                     }
                 }
+
+                var listPersonalPoints = data.listPersonalPoints;
+                var personalPointsContent = "";
+                if(listPersonalPoints.length > 0){
+                    for(var i=0;i<listPersonalPoints.length;i++){
+                        var ii = listPersonalPoints[i];
+
+                        personalPointsContent += "<tr>";
+                        personalPointsContent += "<td>" + (i + 1) + "</td>";
+                        personalPointsContent += "<td>" + ii.user_name + "</td>";
+                        personalPointsContent += "<td>" + ii.points + "</td>";
+                        personalPointsContent += "</tr>";
+                    }
+                }
+
+                var listCompanyPoints = data.listCompanyPoints;
+                var companyPointsContent = "";
+                if(listCompanyPoints.length > 0){
+                    for(var i=0;i<listCompanyPoints.length;i++){
+                        var ii = listCompanyPoints[i];
+
+                        companyPointsContent += "<tr>";
+                        companyPointsContent += "<td>" + (i + 1) + "</td>";
+                        companyPointsContent += "<td style=\"word-break: break-all;max-width: 100px;\">" + ii.company_name + "</td>";
+                        companyPointsContent += "<td>" + ii.points + "</td>";
+                        companyPointsContent += "</tr>";
+                    }
+                }
                 $("#familyContent").html(familyContent);
+                $("#personalPoints").html(personalPointsContent);
+                $("#companyPoints").html(companyPointsContent);
             },
             error:function (data) {
                 alert(JSON.stringify(data));

@@ -55,7 +55,7 @@
                 <c:forEach var="companyPoints" items="${listCompanyPoints}" varStatus="status">
                     <tr>
                         <td>${status.index + 1}</td>
-                        <td><a href="<%=request.getContextPath()%>/company/detail?companyId=${companyPoints.companyId}">${companyPoints.company_name}</a></td>
+                        <td><a href="<%=request.getContextPath()%>/company/detail?companyId=${companyPoints.company_id}&xxx=1">${companyPoints.company_name}</a></td>
                         <td>${companyPoints.points}</td>
                     </tr>
                 </c:forEach>

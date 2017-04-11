@@ -36,7 +36,7 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"/","/login"})
+    @RequestMapping(value = {"/","/login",""})
     public ModelAndView login(){
         return new ModelAndView("/consoles/login");
     }

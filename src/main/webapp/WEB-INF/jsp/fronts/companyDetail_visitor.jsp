@@ -22,7 +22,20 @@
                 background-size:100% 100%;
             }
             #descDiv{
+                margin-top: 20px;
                 border:solid 1px #999999;
+                word-break: break-all;
+                height: auto;
+                font-size: 16px;
+            }
+            #companyShow{
+                margin-top: 20px;
+            }
+            #companyMoney{
+
+            }
+            .popover {
+                word-break: break-all;
             }
         </style>
 
@@ -30,11 +43,12 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container" style="margin-top: 50px;">
+<div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
     <%--<a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>--%>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    已赞助：
-    <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
+    <span style="font-size: 18px">
+        <span style="color:#EEEE00;font-weight: bold;">${tCompanySponsor.companyName}</span>已赞助：
+        <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
+    </span>
     &nbsp;&nbsp;
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <c:if test="${not empty tCompanySponsor.companyDesc}">
@@ -45,10 +59,10 @@
 
             <div class="col-sm-6 col-md-2">
                 <div class="thumbnail">
-                    <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail"/></a>
+                    <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%;"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <p name="photoDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${companyDetail.photoDesc}">
+                        <p name="photoDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">
                             ${companyDetail.photoDesc}
                         </p>
                     </div>
@@ -146,13 +160,15 @@
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>
-<c:if test="${xxx != 2}">
-</c:if>
+<%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyDetail.js"></script>
 <script type="text/javascript">
+    var winHeight = $(document).height();
     var companyId = "${tCompanySponsor.id}";
     $(function () {
+        $("body").attr("style","height:" + (winHeight - 50) + "px");
+
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
             'uploader'      : projectUrl + '/upload/uploadImg',

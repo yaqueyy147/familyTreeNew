@@ -16,7 +16,6 @@
     <style rel="stylesheet">
         body{
             width:100%;
-            height: 100%;
             <%--background: url("<%=request.getContextPath()%>/static/images/bag2.jpg") no-repeat;--%>
             /*filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";*/
             /*-moz-background-size:100% 100%;*/
@@ -180,8 +179,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 <script type="text/javascript">
+    var winHeight = $(document).height();
     $(function () {
-
+        $("body").attr("style","height:" + (winHeight - 50) + "px");
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
             'uploader'      : projectUrl + '/upload/uploadImg',

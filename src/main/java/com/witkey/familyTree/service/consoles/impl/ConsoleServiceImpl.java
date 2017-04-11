@@ -1,10 +1,7 @@
 package com.witkey.familyTree.service.consoles.impl;
 
 import com.witkey.familyTree.dao.consoles.*;
-import com.witkey.familyTree.dao.fronts.TFamilyMergeDao;
-import com.witkey.familyTree.dao.fronts.TMeritocratDao;
-import com.witkey.familyTree.dao.fronts.TPointsDicDao;
-import com.witkey.familyTree.dao.fronts.TUserFrontDao;
+import com.witkey.familyTree.dao.fronts.*;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
@@ -110,6 +107,13 @@ public class ConsoleServiceImpl implements ConsoleService {
         this.tUserResourceDao = tUserResourceDao;
     }
 
+    @Resource
+    private TCompanyPointsDao tCompanyPointsDao;
+
+    public void settCompanyPointsDao(TCompanyPointsDao tCompanyPointsDao) {
+        this.tCompanyPointsDao = tCompanyPointsDao;
+    }
+
     @Autowired
     private CompanyService companyService;
 
@@ -204,9 +208,13 @@ public class ConsoleServiceImpl implements ConsoleService {
         String sql = "update t_company_sponsor set state=? where id=?";
         int i = jdbcTemplate.update(sql,params.get("auditState"),params.get("companyId"));
 
-        String sqlP = "insert into t_company_points(company_id,points) values(?,?)";
+        TCompanyPoints tCompanyPoints = new TCompanyPoints(CommonUtil.parseInt(params.get("companyId")),0);
 
-        i += jdbcTemplate.update(sqlP,params.get("companyId"),0);
+        i += CommonUtil.parseInt(tCompanyPointsDao.create(tCompanyPoints));
+
+//        String sqlP = "insert into t_company_points(company_id,points) values(?,?)";
+
+//        i += jdbcTemplate.update(sqlP,params.get("companyId"),0);
 
         return i;
     }

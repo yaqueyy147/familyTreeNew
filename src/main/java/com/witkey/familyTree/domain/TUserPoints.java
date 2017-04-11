@@ -22,6 +22,11 @@ public class TUserPoints implements Serializable {
     public TUserPoints() {
     }
 
+    public TUserPoints(int userId, int points) {
+        this.userId = userId;
+        this.points = points;
+    }
+
     public TUserPoints(int userId, int points, int userType) {
         this.userId = userId;
         this.points = points;

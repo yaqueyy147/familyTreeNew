@@ -21,7 +21,7 @@ body{
     max-width:500px;
     height: auto;
     position: absolute;
-    top: 30%;
+    top: 25%;
 
     margin-top: -200px;
     /*设置负值，为要定位子盒子的一半高度*/

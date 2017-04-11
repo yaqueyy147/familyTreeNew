@@ -15,6 +15,7 @@
 		<property name="tUser1Dao" ref="tUser1Dao" />
 		<property name="tResourceDao" ref="tResourceDao" />
 		<property name="tUserResourceDao" ref="tUserResourceDao" />
+		<property name="tCompanyPointsDao" ref="tCompanyPointsDao" />
 	</bean>
 
 </beans>

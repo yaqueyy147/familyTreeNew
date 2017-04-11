@@ -52,7 +52,14 @@
                 <input class="form-control" id="companyQq" name="companyQq" placeholder="QQ" type="text" />
             </div>
             <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
-                <input class="form-control" id="companyArea" name="companyArea" placeholder="公司地址" type="text" />
+                <div data-toggle="distpicker">
+                    <select name="province" data-province="---- 选择省 ----"></select>
+                    <select name="city" data-city="---- 选择市 ----"></select>
+                    <select name="district" data-district="---- 选择区 ----"></select>
+                </div>
+            </div>
+            <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
+                <input class="form-control" id="detailAddr" name="detailAddr" placeholder="公司地址" type="text" />
             </div>
             <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
                 <textarea class="form-control" id="companyDesc" name="companyDesc" placeholder="公司简介" type="text"></textarea>
@@ -105,6 +112,8 @@
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/regeditCompany.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript">
     $(function () {
         var regCode = "${regCode}";
