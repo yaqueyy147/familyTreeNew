@@ -32,12 +32,14 @@ $(function () {
         format: 'yyyy-mm-dd hh:ii:ss',
         language: 'zh-CN',
         autoclose:true,
+        bootcssVer:3
     });
 
     $("#die_time").datetimepicker({
         format: 'yyyy-mm-dd hh:ii:ss',
         language: 'zh-CN',
-        autoclose:true
+        autoclose:true,
+        bootcssVer:3
     });
 
     $.fn.serializeObject = function()
