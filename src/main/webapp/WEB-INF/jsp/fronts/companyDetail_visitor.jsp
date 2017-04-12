@@ -22,11 +22,10 @@
                 background-size:100% 100%;
             }
             #descDiv{
-                margin-top: 20px;
-                border:solid 1px #999999;
+                border-bottom:solid 1px #999999;
                 word-break: break-all;
                 height: auto;
-                font-size: 16px;
+                font-size: 14px;
             }
             #companyShow{
                 margin-top: 20px;
@@ -45,9 +44,12 @@
 <%@include file="common/header.jsp" %>
 <div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
     <%--<a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>--%>
-    <span style="font-size: 18px">
-        <span style="color:#EEEE00;font-weight: bold;">${tCompanySponsor.companyName}</span>已赞助：
+    <span style="font-size: 18px;border-bottom: solid 1px #999999;display: block">
+        <span style="color:#EEEE00;font-weight: bold;">${tCompanySponsor.companyName}</span>&nbsp;&nbsp;
+        已赞助：
         <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
+        &nbsp;&nbsp;
+        <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
     </span>
     &nbsp;&nbsp;
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
@@ -167,6 +169,9 @@
     var winHeight = $(document).height();
     var companyId = "${tCompanySponsor.id}";
     $(function () {
+        $("#goBack").click(function () {
+            window.history.back();
+        });
         $("body").attr("style","height:" + (winHeight - 50) + "px");
 
         $('#imgFile').uploadify({

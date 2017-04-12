@@ -14,10 +14,10 @@ $(function () {
         var companyTelephone = $("#companyTelephone").val();
         var businessLicense = $("#businessLicense").val();
         var checkCode = $("#checkCode").val();
-        if(checkCodePre.toUpperCase() != checkCode.toUpperCase()){
-            alert("验证码错误！");
-            return;
-        }
+        var province = $("#province").val();
+        var city = $("#city").val();
+        var district = $("#district").val();
+
         if($.trim(companyLoginName).length <= 0){
             alert("用户名不能为空！");
             return ;
@@ -42,9 +42,26 @@ $(function () {
             alert("请输入正确的11位手机号码！");
             return ;
         }
+        if($.trim(province).length <= 0){
+            alert("请选择省！");
+            return ;
+        }
+        if($.trim(city).length <= 0){
+            alert("请选择市！");
+            return ;
+        }
+        if($.trim(district).length <= 0){
+            alert("请选择区！");
+            return ;
+        }
+
         if($.trim(businessLicense).length <= 0){
             alert("请上传公司营业执照！");
             return ;
+        }
+        if(checkCodePre.toUpperCase() != checkCode.toUpperCase()){
+            alert("验证码错误！");
+            return;
         }
 
         $("#regeditForm").attr("action",projectUrl + "/sign/companyRegester");

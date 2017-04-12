@@ -4,6 +4,8 @@
 var checkCodePre;
 $(function () {
     checkCodePre = drawPic();
+    $("#province").val("");
+    $("#province").change();
     $("#regedit").click(function () {
 
         var loginName = $("#loginName").val();
@@ -13,12 +15,12 @@ $(function () {
         var idCard = $("#idCard").val();
         var idCardPhoto = $("#idCardPhoto").val();
         var phone = $("#phone").val();
+        var province = $("#province").val();
+        var city = $("#city").val();
+        var district = $("#district").val();
 
         var checkCode = $("#checkCode").val();
-        if(checkCodePre.toUpperCase() != checkCode.toUpperCase()){
-            alert("验证码错误！");
-            return;
-        }
+
         if($.trim(loginName).length <= 0){
             alert("登录名不能为空！");
             // $("#loginName").parent().addClass("has-error");
@@ -49,11 +51,27 @@ $(function () {
             alert("请上传身份证照片！");
             return ;
         }
+        if($.trim(province).length <= 0){
+            alert("请选择省！");
+            return ;
+        }
+        if($.trim(city).length <= 0){
+            alert("请选择市！");
+            return ;
+        }
+        if($.trim(district).length <= 0){
+            alert("请选择区！");
+            return ;
+        }
         if($.trim(phone).length != 11){
             alert("手机号输入有误！如果是固定电话，请加上区号！");
             return ;
         }
 
+        if(checkCodePre.toUpperCase() != checkCode.toUpperCase()){
+            alert("验证码错误！");
+            return;
+        }
 
         $("#regeditForm").attr("action",projectUrl + "/sign/regesterPersonal");
         $("#regeditForm").submit();

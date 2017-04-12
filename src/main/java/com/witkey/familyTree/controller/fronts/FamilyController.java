@@ -194,6 +194,22 @@ public class FamilyController {
         model.addAttribute("familyId",familyId);
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
+
+        //个人积分排名
+        Map<String,Object> params2 = new HashMap<String,Object>();
+        params2.put("province",tFamily.getProvince());
+        params2.put("city",tFamily.getCity());
+        params2.put("district",tFamily.getDistrict());
+
+        params2.put("type",1);
+        params2.put("userType",1);
+
+        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params2);
+        //公司积分排名
+        params2.put("type",2);
+        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params2);
+        model.addAttribute("listPersonalPoints",listPersonalPoints);
+        model.addAttribute("listCompanyPoints",listCompanyPoints);
         return new ModelAndView("/fronts/viewFamilyTree_visitor");
     }
 

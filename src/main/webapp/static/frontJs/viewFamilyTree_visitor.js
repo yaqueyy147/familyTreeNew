@@ -18,6 +18,9 @@ $(function () {
                 pIdKey: "pId",
                 rootPId: ""
             }
+        },
+        callback:{
+            onClick:zTreeOnClick
         }
     };
 
@@ -141,7 +144,9 @@ function zTreeOnClick(event, treeId, treeNode) {
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
-    $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    $("#addModalLabel").text("族人【" + tPeople.name + "】信息");
     $("#addModal").modal('show');
 
+    var imgPath = tPeople.photoUrl;
+    $("#result_img").attr('src',imgPath);
 }

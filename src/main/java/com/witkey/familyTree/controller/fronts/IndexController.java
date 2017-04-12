@@ -97,16 +97,16 @@ public class IndexController {
         list.addAll(list2);
         model.addAttribute("familyList",list);
 
-        //个人积分排名
-        Map<String,Object> params2 = new HashMap<String,Object>();
-        params2.put("type",1);
-        params2.put("userType",1);
-        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params2);
-        //公司积分排名
-        params2.put("type",2);
-        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params2);
-        model.addAttribute("listPersonalPoints",listPersonalPoints);
-        model.addAttribute("listCompanyPoints",listCompanyPoints);
+//        //个人积分排名
+//        Map<String,Object> params2 = new HashMap<String,Object>();
+//        params2.put("type",1);
+//        params2.put("userType",1);
+//        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params2);
+//        //公司积分排名
+//        params2.put("type",2);
+//        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params2);
+//        model.addAttribute("listPersonalPoints",listPersonalPoints);
+//        model.addAttribute("listCompanyPoints",listCompanyPoints);
 
         return new ModelAndView("/fronts/index");
     }
@@ -120,15 +120,15 @@ public class IndexController {
 
         result.put("familyList",list);
 
-        //个人积分排名
-        params.put("type",1);
-        params.put("userType",1);
-        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params);
-        //公司积分排名
-        params.put("type",2);
-        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params);
-        result.put("listPersonalPoints",listPersonalPoints);
-        result.put("listCompanyPoints",listCompanyPoints);
+//        //个人积分排名
+//        params.put("type",1);
+//        params.put("userType",1);
+//        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params);
+//        //公司积分排名
+//        params.put("type",2);
+//        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params);
+//        result.put("listPersonalPoints",listPersonalPoints);
+//        result.put("listCompanyPoints",listCompanyPoints);
 
         return result;
     }

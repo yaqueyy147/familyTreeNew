@@ -22,6 +22,9 @@
             <%---moz-background-size:100% 100%;--%>
             <%--background-size:100% 100%;--%>
         <%--}--%>
+        .container{
+            width:100% !important;
+        }
     </style>
 </head>
 <body>
@@ -30,26 +33,36 @@
 
 <div class="container" style="margin-top: 50px">
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
-    <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-        <c:if test="${merge == null}">
-            <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
+    <div style="text-align: center;font-size: 20px">
+        <p style="border-bottom: solid 1px #999999">
+            <span style="color: #fbf069">${tFamily.familyName}</span>
+            &nbsp;&nbsp;的族人&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
+            &nbsp;&nbsp;
+            <c:if test="${merge == null}">
+                <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
+            </c:if>
+            <c:if test="${merge.state == 1}">
+                <a class="btn btn-primary" href="javascript:void 0;">已收录</a>
+            </c:if>
+            <c:if test="${merge.state == 3}">
+                <%--<a class="btn btn-primary" href="javascript:void 0;">已驳回</a>--%>
+                <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
+            </c:if>
+            <c:if test="${merge.state == 2 || merge.state == 0}">
+                <a class="btn btn-primary" href="javascript:void 0;">已申请，待审核</a>
+            </c:if>
+            &nbsp;&nbsp;
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+            <c:if test="${merge.state == 3}">
+                <span>驳回意见:${merge.rejectDesc}</span>
+            </c:if>
+        </p>
+        <c:if test="${not empty tFamily.familyDesc}">
+            <p style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999">家族简介：${tFamily.familyDesc}</p>
         </c:if>
-        <c:if test="${merge.state == 1}">
-            <a class="btn btn-primary" href="javascript:void 0;">已收录</a>
-        </c:if>
-        <c:if test="${merge.state == 3}">
-            <%--<a class="btn btn-primary" href="javascript:void 0;">已驳回</a>--%>
-            <a class="btn btn-primary" href="javascript:void 0;" id="toInclude">申请收录</a>
-        </c:if>
-        <c:if test="${merge.state == 2 || merge.state == 0}">
-            <a class="btn btn-primary" href="javascript:void 0;">已申请，待审核</a>
-        </c:if>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
-        <c:if test="${merge.state == 3}">
-            <span>驳回意见:${merge.rejectDesc}</span>
-        </c:if>
+    </div>
+
     <div id="familyTree" class="ztree"></div>
 </div>
 <!-- 添加族人 Modal -->
