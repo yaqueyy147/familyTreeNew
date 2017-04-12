@@ -8,6 +8,7 @@
 		<property name="tVolunteerDao" ref="tVolunteerDao" />
 		<property name="tLogDao" ref="tLogDao" />
 		<property name="tUser1Dao" ref="tUser1Dao" />
+		<property name="tUserFamilyDao" ref="tUserFamilyDao" />
 	</bean>
 	
 </beans>

@@ -185,6 +185,7 @@ public class ConsoleController {
 
         if(!"admin".equals(userName) && !"系统管理员".equals(userName)){
             params.put("userName",userName);
+            params.put("userId",consolesUser.get("id"));
         }
         List<TFamily> list = familyService.getFamilyList(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();

@@ -1,6 +1,7 @@
 package com.witkey.familyTree.service.fronts;
 
 import com.witkey.familyTree.domain.TUser1;
+import com.witkey.familyTree.domain.TUserFamily;
 import com.witkey.familyTree.domain.TUserFront;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public interface UserService {
 
     //根据用户ID查询用户
     public TUser1 getUserInfoFromId(int userId);
+
+    //添加用户可操作的族谱
+    public int saveUserFamily(TUserFamily tUserFamily);
+
+    //查询用户可操作的族谱
+    public List<TUserFamily> getUserFamilyList(Map<String,Object> params);
 
 }

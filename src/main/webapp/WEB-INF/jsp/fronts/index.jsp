@@ -30,45 +30,6 @@
         <button type="button" id="searchBtn" class="btn btn-default">查询</button>
     </form>
     </nav>
-<%--<c:forEach var="familyList" items="${familyList}">--%>
-    <%--<div id="mainlandFamily" class="panel panel-info">--%>
-        <%--<div class="panel-heading" style="cursor: pointer">--%>
-        <%--<c:if test="${familyList[0].familyArea == 1}"><span>大陆族谱</span></c:if>--%>
-        <%--<c:if test="${familyList[0].familyArea == 2}"><span>香港地区族谱</span></c:if>--%>
-        <%--<c:if test="${familyList[0].familyArea == 3}"><span>台湾地区族谱</span></c:if>--%>
-        <%--<c:if test="${familyList[0].familyArea == 4}"><span>澳门地区族谱</span></c:if>--%>
-        <%--<div style="float: right;">--%>
-        <%--<i class="fa fa-chevron-up"></i>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--<div class="panel-body">--%>
-        <%--<div class="row">--%>
-        <%--<c:forEach var="family" items="${familyList}">--%>
-
-        <%--<div class="col-sm-3 col-md-2">--%>
-        <%--<div class="thumbnail">--%>
-        <%--<a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')"><img src="${family.photoUrl}" class="img-thumbnail"/></a>--%>
-        <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
-        <%--<div class="caption">--%>
-        <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
-        <%--<p>状态：--%>
-        <%--<c:if test="${family.visitStatus == 0}">加密</c:if>--%>
-        <%--<c:if test="${family.visitStatus == 1}">开放</c:if>--%>
-        <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
-        <%--</p>--%>
-        <%--<p>${family.familyName}</p>--%>
-        <%--<p name="familyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">--%>
-        <%--${family.familyDesc}--%>
-        <%--</p>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-
-        <%--</c:forEach>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</c:forEach>--%>
         <div class="row" id="familyContent">
             <c:forEach var="family" items="${familyList}">
 

@@ -61,6 +61,7 @@ public class FamilyController {
 
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userName",jsonUser.get("userName"));
+        params.put("userId",jsonUser.get("id"));
         params.put("state",1);
         List<TFamily> list = familyService.getFamilyList(params);
 

@@ -43,7 +43,7 @@
 <%@include file="common/header.jsp" %>
 <div class="container treeContainer" style="margin-top: 50px">
     <%--<a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>--%>
-    <div style="text-align: center;font-size: 20px">
+    <div style="text-align: center;font-size: 20px;">
         <p style="border-bottom: solid 1px #999999">
             <span style="color: #fbf069">${tFamily.familyName}</span>
             &nbsp;&nbsp;的族人
@@ -54,7 +54,7 @@
         <p style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999">家族简介：${tFamily.familyDesc}</p>
         </c:if>
     </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv personalRank">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv" style="border-right: solid 1px #999999;">
         <div class="personalRank">
             <span>个人积分排名:</span>
             <table class="table">
@@ -80,7 +80,7 @@
         </div>
     </div>
     <div id="familyTree" class="ztree container-fluid col-xs-8 col-sm-8 col-md-8 col-lg-8" style="margin-top: 20px;overflow: auto"></div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv companyRank" >
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv"  style="border-left: solid 1px #999999;">
         <div class="companyRank">
             <span>赞助商积分排名:</span>
             <table class="table">

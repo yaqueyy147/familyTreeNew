@@ -2,9 +2,11 @@ package com.witkey.familyTree.service.fronts.impl;
 
 import com.witkey.familyTree.dao.consoles.TLogDao;
 import com.witkey.familyTree.dao.consoles.TUser1Dao;
+import com.witkey.familyTree.dao.consoles.TUserFamilyDao;
 import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.TUser1;
+import com.witkey.familyTree.domain.TUserFamily;
 import com.witkey.familyTree.domain.TUserFront;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.service.fronts.UserService;
@@ -50,6 +52,14 @@ public class UserServiceImpl implements UserService {
     public void settUser1Dao(TUser1Dao tUser1Dao) {
         this.tUser1Dao = tUser1Dao;
     }
+
+    @Resource
+    private TUserFamilyDao tUserFamilyDao;
+
+    public void settUserFamilyDao(TUserFamilyDao tUserFamilyDao) {
+        this.tUserFamilyDao = tUserFamilyDao;
+    }
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -180,4 +190,39 @@ public class UserServiceImpl implements UserService {
         TUser1 tUser1 = tUser1Dao.get(userId);
         return tUser1;
     }
+
+    @Override
+    public int saveUserFamily(TUserFamily tUserFamily){
+
+        //查看用户是否已有可操作的族谱了
+        Map<String,Object> map = CommonUtil.bean2Map(tUserFamily);
+        List<TUserFamily> list = this.getUserFamilyList(map);
+        if(list != null && list.size() > 0){
+            return list.size();
+        }
+
+        //新增一个用户可操作的族谱
+        int i = CommonUtil.parseInt(tUserFamilyDao.create(tUserFamily));
+
+        return i;
+    }
+
+    @Override
+    public List<TUserFamily> getUserFamilyList(Map<String,Object> params){
+
+        String sql = "select * from t_user_family where 1=1";
+
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("userId"))){
+                sql += " and user_id=" + params.get("userId");
+            }
+            if(!CommonUtil.isBlank(params.get("familyId"))){
+                sql += " and family_id=" + params.get("familyId");
+            }
+        }
+
+        List<TUserFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserFamily>(TUserFamily.class));
+        return list;
+    }
+
 }

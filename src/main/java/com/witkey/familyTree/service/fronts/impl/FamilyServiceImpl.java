@@ -172,7 +172,7 @@ public class FamilyServiceImpl implements FamilyService {
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("userName"))){
 //                filter.put("createMan",params.get("userName"));
-                sql += " and create_man='" + params.get("userName") + "'";
+                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
             }
             if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
 //                filter.put("familyArea",params.get("familyArea"));
