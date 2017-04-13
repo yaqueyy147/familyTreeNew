@@ -142,3 +142,12 @@ $.fn.populateForm = function(data){
         }
     });
 };
+
+function pPopover(obj,state){
+    if(state == 1){
+        $(obj).popover("show");
+    }else{
+        $(obj).popover('hide');
+    }
+
+}

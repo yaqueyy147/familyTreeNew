@@ -245,6 +245,10 @@ public class ConsoleController {
                 if(CommonUtil.isBlank(tFamily.getPhotoUrl())){
                     tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
                 }
+
+                //将族谱添加为用户可操作
+                userService.saveUserFamily(new TUserFamily(CommonUtil.parseInt(consolesUser.get("id")),ii));
+
                 //记录日志
                 logService.createLog(new TLog(1,userName,tFamily.toString()));
             }

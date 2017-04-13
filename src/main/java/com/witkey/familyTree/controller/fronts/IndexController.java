@@ -51,6 +51,12 @@ public class IndexController {
 
         //从cookie获取用户信息
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        if(CommonUtil.isBlank(jsonUser)){
+//            model.addAttribute("loginCode",-2);
+            return new ModelAndView("/fronts/login");
+        }
+
 //        model.addAttribute("userInfo",jsonUser);
 //        Map<String,Object> temp = new HashMap<String, Object>();
 //        if(!CommonUtil.isBlank(jsonUser)){
@@ -89,12 +95,12 @@ public class IndexController {
 //        list.add(listAoMen);
 //        model.addAttribute("familyList",list);
         Map<String,Object> params = new HashMap<String,Object>();
-        params.put("state",1);
+//        params.put("state",1);
         List<TFamily> list = familyService.getFamilyList(params);
         //查询被收录的族谱
-        params.put("state","");
-        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
-        list.addAll(list2);
+//        params.put("state","");
+//        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
+//        list.addAll(list2);
         model.addAttribute("familyList",list);
 
 //        //个人积分排名

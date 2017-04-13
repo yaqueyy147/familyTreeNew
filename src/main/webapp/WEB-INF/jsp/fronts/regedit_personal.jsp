@@ -98,9 +98,11 @@
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/checkCode_2.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/regeditPersonal.js"></script>
+
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
+
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/regeditPersonal.js"></script>
 <script type="text/javascript">
     $(function () {
         var regCode = "${regCode}";

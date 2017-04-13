@@ -451,7 +451,7 @@ public class SignInController {
         Map<String,Object> map = new HashMap<String,Object>();
 
         TCompanySponsor tCompanySponsor1 = companyService.getCompanyFromId(tCompanySponsor.getId());
-
+        tCompanySponsor.setState(tCompanySponsor1.getState());
         tCompanySponsor.setCreateMan(tCompanySponsor1.getCreateMan());
         tCompanySponsor.setCreateTime(tCompanySponsor1.getCreateTime());
 

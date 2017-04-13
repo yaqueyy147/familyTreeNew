@@ -64,7 +64,7 @@
                     <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%;"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <p name="photoDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">
+                        <p name="photoDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">
                             ${companyDetail.photoDesc}
                         </p>
                     </div>

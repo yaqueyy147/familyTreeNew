@@ -29,7 +29,7 @@
                             <%--<img data-src="holder.js/300x300" alt="...">--%>
                         <div class="caption">
                             <h3>${company.companyName}</h3>
-                            <p name="companyDesc" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${company.companyDesc}">
+                            <p name="companyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${company.companyDesc}">
                                     ${company.companyDesc}
                             </p>
                             <p name="companyMoney">

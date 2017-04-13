@@ -2,13 +2,13 @@
  * Created by suyx on 2016/12/22 0022.
  */
 $(function () {
-    $("p[name='familyDesc']").mouseover(function () {
-        $(this).popover('show');
-    });
-
-    $("p[name='familyDesc']").mouseout(function () {
-        $(this).popover('hide');
-    });
+    // $("p[name='familyDesc']").mouseover(function () {
+    //     $(this).popover('show');
+    // });
+    //
+    // $("p[name='familyDesc']").mouseout(function () {
+    //     $(this).popover('hide');
+    // });
 
     $("input[name='visitStatus']").click(function () {
         var status = $(this).val();
@@ -74,7 +74,7 @@ $(function () {
                     imgHtml += "<h3>世界何氏族谱（" + tFamily.id + "）</h3>";
                     imgHtml += "<p>状态：" + statusDesc + "</p>";
                     imgHtml += "<p>" + tFamily.familyName + "</p>";
-                    imgHtml += "<p name=\"familyDesc\" style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";
+                    imgHtml += "<p name=\"familyDesc\" onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";
                     imgHtml += "</div></div></div>";
                     $("#familyShow").append(imgHtml);
                     $("#addFamilyModal").modal('hide');

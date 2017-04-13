@@ -2,13 +2,13 @@
  * Created by suyx on 2016/12/22 0022.
  */
 $(function () {
-    $("p[name='photoDesc']").mouseover(function () {
-        $(this).popover('show');
-    });
-
-    $("p[name='photoDesc']").mouseout(function () {
-        $(this).popover('hide');
-    });
+    // $("p[name='photoDesc']").mouseover(function () {
+    //     $(this).popover('show');
+    // });
+    //
+    // $("p[name='photoDesc']").mouseout(function () {
+    //     $(this).popover('hide');
+    // });
 
     $("#savePhoto").click(function () {
         var formData = {};
@@ -31,7 +31,7 @@ $(function () {
                     imgHtml += "<a href=\"javascript:void(0)\">";
                     imgHtml += "<img src=\"" + tCompanyPhoto.publicityPhoto + "\" class=\"img-thumbnail\"/></a>";
                     imgHtml += "<div class=\"caption\">";
-                    imgHtml += "<p name=\"photoDesc\" style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tCompanyPhoto.photoDesc + "\">" + tCompanyPhoto.photoDesc + "</p>";
+                    imgHtml += "<p name=\"photoDesc\" onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tCompanyPhoto.photoDesc + "\">" + tCompanyPhoto.photoDesc + "</p>";
                     imgHtml += "</div></div></div>";
                     $("#companyShow").append(imgHtml);
                     $("#addPhotoModal").modal('hide');

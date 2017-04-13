@@ -96,9 +96,11 @@ public class MergeController {
     public Map<String,Object> mergeFamily(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
 
-        List<TPeople> primaryFamily = (List<TPeople>)params.get("primaryFamily");
-
-        List<TPeople> targetFamily = (List<TPeople>)params.get("targetFamily");
+        Map<String,Object> params1 = new HashMap<String,Object>();
+        params1.put("familyId",params.get("primaryFamilyId"));
+        List<TPeople> primaryFamily = familyService.getPeopleList(params1);
+        params1.put("familyId",params.get("targetFamilyId"));
+        List<TPeople> targetFamily = familyService.getPeopleList(params1);
 
         result.put("code",1);
         return result;

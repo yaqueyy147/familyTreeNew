@@ -3,6 +3,9 @@
  */
 var checkCodePre;
 $(function () {
+    $("#province").val("");
+    $("#province").change();
+
     checkCodePre = drawPic();
     $("#companyRegeditbb").click(function () {
 

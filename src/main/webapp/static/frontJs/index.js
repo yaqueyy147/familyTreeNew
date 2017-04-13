@@ -5,14 +5,13 @@ $(function () {
 
     $("#province").val("");
     $("#province").change();
-
-   $("p[name='familyDesc']").mouseover(function () {
-       $(this).popover('show');
-   });
-
-    $("p[name='familyDesc']").mouseout(function () {
-        $(this).popover('hide');
-    });
+    // $("p[name='familyDesc']").mouseover(function () {
+    //    $(this).popover('show');
+    // });
+    //
+    // $("p[name='familyDesc']").mouseout(function () {
+    //     $(this).popover('hide');
+    // });
 
     $(".panel-heading").click(function () {
         var contentDiv = $(this).next();
@@ -66,50 +65,51 @@ $(function () {
                         // else if(visitState == 2){
                         //     visitDesc = "仅族人查看";
                         // }
-                        familyContent += "<div class='col-sm-3 col-md-2'>";
+                        familyContent += "<div class='col-sm-3 col-md-2 familyDiv'>";
                         familyContent += "<div class='thumbnail'>";
-                        familyContent += "<a href='javascript:void(0)' onclick=\"viewFamily('" + ii.id + "','" + ii.visitStatus + "','" + ii.visitPassword + "')\">";
-                        familyContent += "<img src='" + ii.photoUrl + "' class='img-thumbnail'/></a>";
+                        familyContent += "<a href='javascript:void(0)' onclick=\"viewFamily('" + ii.id + "','" + ii.visitStatus + "','" + ii.visitPassword + "')\" style=\"float: none;width: 100%;\">";
+                        familyContent += "<img class=\"familyImgFF\" src='" + ii.photoUrl + "' class='img-thumbnail'/></a>";
                         familyContent += "<div class='caption'>";
                         familyContent += "<h6>" + ii.familyFirstName + "氏族谱（" + ii.id + "）</h6>";
                         familyContent += "<p>状态：" + visitDesc + "</p>";
                         familyContent += "<p>" + ii.familyName + "</p>";
-                        familyContent += "<p name='familyDesc' style='text-overflow: ellipsis;white-space: nowrap;overflow: hidden' data-container='body' data-toggle='popover' data-placement='right' data-content='" + ii.familyDesc +"'>";
+                        familyContent += "<p name='familyDesc' onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style='text-overflow: ellipsis;white-space: nowrap;overflow: hidden' data-container='body' data-toggle='popover' data-placement='right' data-content='" + ii.familyDesc +"'>";
                         familyContent += ii.familyDesc;
                         familyContent += "</p></div></div></div>";
                     }
                 }
 
-                var listPersonalPoints = data.listPersonalPoints;
-                var personalPointsContent = "";
-                if(listPersonalPoints.length > 0){
-                    for(var i=0;i<listPersonalPoints.length;i++){
-                        var ii = listPersonalPoints[i];
-
-                        personalPointsContent += "<tr>";
-                        personalPointsContent += "<td>" + (i + 1) + "</td>";
-                        personalPointsContent += "<td>" + ii.user_name + "</td>";
-                        personalPointsContent += "<td>" + ii.points + "</td>";
-                        personalPointsContent += "</tr>";
-                    }
-                }
-
-                var listCompanyPoints = data.listCompanyPoints;
-                var companyPointsContent = "";
-                if(listCompanyPoints.length > 0){
-                    for(var i=0;i<listCompanyPoints.length;i++){
-                        var ii = listCompanyPoints[i];
-
-                        companyPointsContent += "<tr>";
-                        companyPointsContent += "<td>" + (i + 1) + "</td>";
-                        companyPointsContent += "<td style=\"word-break: break-all;max-width: 100px;\">" + ii.company_name + "</td>";
-                        companyPointsContent += "<td>" + ii.points + "</td>";
-                        companyPointsContent += "</tr>";
-                    }
-                }
+                // var listPersonalPoints = data.listPersonalPoints;
+                // var personalPointsContent = "";
+                // if(listPersonalPoints.length > 0){
+                //     for(var i=0;i<listPersonalPoints.length;i++){
+                //         var ii = listPersonalPoints[i];
+                //
+                //         personalPointsContent += "<tr>";
+                //         personalPointsContent += "<td>" + (i + 1) + "</td>";
+                //         personalPointsContent += "<td>" + ii.user_name + "</td>";
+                //         personalPointsContent += "<td>" + ii.points + "</td>";
+                //         personalPointsContent += "</tr>";
+                //     }
+                // }
+                //
+                // var listCompanyPoints = data.listCompanyPoints;
+                // var companyPointsContent = "";
+                // if(listCompanyPoints.length > 0){
+                //     for(var i=0;i<listCompanyPoints.length;i++){
+                //         var ii = listCompanyPoints[i];
+                //
+                //         companyPointsContent += "<tr>";
+                //         companyPointsContent += "<td>" + (i + 1) + "</td>";
+                //         companyPointsContent += "<td style=\"word-break: break-all;max-width: 100px;\">" + ii.company_name + "</td>";
+                //         companyPointsContent += "<td>" + ii.points + "</td>";
+                //         companyPointsContent += "</tr>";
+                //     }
+                // }
+                // $("#personalPoints").html(personalPointsContent);
+                // $("#companyPoints").html(companyPointsContent);
                 $("#familyContent").html(familyContent);
-                $("#personalPoints").html(personalPointsContent);
-                $("#companyPoints").html(companyPointsContent);
+
             },
             error:function (data) {
                 alert(JSON.stringify(data));
