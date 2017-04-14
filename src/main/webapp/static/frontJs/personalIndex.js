@@ -63,8 +63,6 @@ $(function () {
                         statusDesc = "加密";
                     } else if(visitStatus == 1){
                         statusDesc = "开放";
-                    } else if(visitStatus == 2){
-                        statusDesc = "仅族人查看";
                     }
                     var imgHtml = "<div class=\"col-sm-6 col-md-2\"><div class=\"thumbnail\">";
                     imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\" style='float: none;width: 100%'>";
@@ -72,6 +70,7 @@ $(function () {
                     imgHtml += "<div class=\"caption\">";
                     // imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
                     imgHtml += "<h3>世界何氏族谱（" + tFamily.id + "）</h3>";
+                    imgHtml += "<p>家族人数：" + ii.peopleCount + "人</p>";
                     imgHtml += "<p>状态：" + statusDesc + "</p>";
                     imgHtml += "<p>" + tFamily.familyName + "</p>";
                     imgHtml += "<p name=\"familyDesc\" onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";

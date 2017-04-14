@@ -69,7 +69,7 @@
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 3}">
-                                        <span style="color: #ff8000">已申请，请等待审核！</span>
+                                        <span style="color: #ff8000">请等待审核！</span>
                                     </c:if>
                                     <c:if test="${tUserFront.isVolunteer == 1}">
                                         <span style="color: #00ff00">可录入族谱！</span>

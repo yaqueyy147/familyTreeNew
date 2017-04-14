@@ -326,7 +326,7 @@ public class SignInController {
         CookieUtil.destroyCookies(response,request);
         model.addAttribute("userInfo",null);
         //返回登录页面
-        return new RedirectView(contextPath + "/familyTree/index");
+        return new RedirectView(contextPath + "/sign/");
     }
 
 //    /**

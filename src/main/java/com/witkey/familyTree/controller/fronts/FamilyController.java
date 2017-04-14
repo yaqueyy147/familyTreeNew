@@ -66,13 +66,29 @@ public class FamilyController {
         List<TFamily> list = familyService.getFamilyList(params);
 
         //查询被收录的族谱
-        params.put("userName",jsonUser.get("userName"));
-        params.put("state","");
+//        params.put("userName",jsonUser.get("userName"));
+//        params.put("state","");
 
-        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
-        list.addAll(list2);
+//        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
+//        list.addAll(list2);
 
-        model.addAttribute("familyList",list);
+        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+        for(TFamily tFamily : list){
+            int peopleCount = 0;
+            Map<String,Object> map = new HashMap<String,Object>();
+            Map<String,Object> paramss = new HashMap<>();
+            paramss.put("familyId",tFamily.getId());
+            paramss.put("peopleType",1);
+            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+            if(peopleList != null && peopleList.size() > 0)
+            {
+                peopleCount = peopleList.size();
+            }
+            map = CommonUtil.bean2Map(tFamily);
+            map.put("peopleCount",peopleCount);
+            list1.add(map);
+        }
+        model.addAttribute("familyList",list1);
 
         return new ModelAndView("/fronts/personalIndex");
     }

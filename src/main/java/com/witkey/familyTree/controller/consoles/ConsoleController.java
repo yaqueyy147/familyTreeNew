@@ -166,7 +166,10 @@ public class ConsoleController {
      * @return
      */
     @RequestMapping(value = "family")
-    public ModelAndView family(){
+    public ModelAndView family(HttpServletRequest request,Model model) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+
+        model.addAttribute("consolesUser",consolesUser);
         return new ModelAndView("/consoles/familyList");
     }
 
@@ -292,7 +295,11 @@ public class ConsoleController {
      * @return
      */
     @RequestMapping(value = "familyTree")
-    public ModelAndView familyTree(Model model, @RequestParam Map<String,Object> map){
+    public ModelAndView familyTree(HttpServletRequest request, Model model, @RequestParam Map<String,Object> map) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+
+        model.addAttribute("consolesUser",consolesUser);
+
         String familyId = map.get("familyId") + "";
         model.addAttribute("familyId",familyId);
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
@@ -575,6 +582,16 @@ public class ConsoleController {
 //        result.put("code",i);
 //        return result;
 //    }
+
+    @RequestMapping(value = "setUserOperate")
+    @ResponseBody
+    public Map<String,Object> setUserOperate(int userId,int state,int type){
+        Map<String,Object> result = new HashMap<String,Object>();
+        if(type == 1){//设置用户可登录前台
+
+        }
+        return result;
+    }
 
     /**
      * 修改密码

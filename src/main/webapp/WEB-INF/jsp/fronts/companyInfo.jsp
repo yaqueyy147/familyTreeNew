@@ -68,7 +68,7 @@
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请宣传/赞助</button>
                                     </c:if>
                                     <c:if test="${companyInfo.state == 3}">
-                                        <span style="color: #ff8000">已申请，请等待审核！</span>
+                                        <span style="color: #ff8000">请等待审核！</span>
                                     </c:if>
                                     <c:if test="${companyInfo.state == 1}">
                                         <span style="color: #00ff00">可宣传/赞助！</span>

@@ -50,9 +50,9 @@
                             <a href="<%=request.getContextPath()%>/sign/regeditCompany">企业注册</a>
                         </small>
                     </p>
-                    <p style="margin-top: 0;">
-                        <a href="<%=request.getContextPath()%>/familyTree/index"><small>直接进入!</small></a>
-                    </p>
+                    <%--<p style="margin-top: 0;">--%>
+                        <%--<a href="<%=request.getContextPath()%>/familyTree/index"><small>直接进入!</small></a>--%>
+                    <%--</p>--%>
                 </div>
             </form>
         </div>

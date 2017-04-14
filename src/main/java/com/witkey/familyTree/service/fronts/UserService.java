@@ -41,4 +41,12 @@ public interface UserService {
     //查询用户可操作的族谱
     public List<TUserFamily> getUserFamilyList(Map<String,Object> params);
 
+    //设置用户是否可登陆后台
+    public int setUserConsole(int userId,int state);
+
+    //设置用户是否可登陆前台
+    public int setUserFront(int userId,int state);
+
+    //设置用户是否可修族谱
+    public int setUserVolunteer(int userId,int state);
 }

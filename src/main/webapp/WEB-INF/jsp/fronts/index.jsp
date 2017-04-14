@@ -16,48 +16,59 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
-    <nav class="navbar navbar-default">
-    <form class="navbar-form navbar-left searchForm" role="search">
-        <div class="form-group">
-            <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
-        </div>
-        <div class="form-group addressSelect" data-toggle="distpicker">
-            <select id="province" name="province" data-province="---- 选择省 ----"></select>
-            <select id="city" name="city" data-city="---- 选择市 ----"></select>
-            <select id="district" name="district" data-district="---- 选择区 ----"></select>
-        </div>
-        <button type="button" id="searchBtn" class="btn btn-default">查询</button>
-    </form>
-    </nav>
-        <div class="row" id="familyContent">
-            <c:forEach var="family" items="${familyList}">
+<c:choose>
+    <c:when test="${(userInfo.userType == 1 && userInfo.isVolunteer == 1) || (userInfo.userType == 2 && userInfo.state == 1)}">
+        <div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
+            <nav class="navbar navbar-default">
+                <form class="navbar-form navbar-left searchForm" role="search">
+                    <div class="form-group">
+                        <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
+                    </div>
+                    <div class="form-group addressSelect" data-toggle="distpicker">
+                        <select id="province" name="province" data-province="---- 选择省 ----"></select>
+                        <select id="city" name="city" data-city="---- 选择市 ----"></select>
+                        <select id="district" name="district" data-district="---- 选择区 ----"></select>
+                    </div>
+                    <button type="button" id="searchBtn" class="btn btn-default">查询</button>
+                </form>
+            </nav>
+            <div class="row" id="familyContent">
+                <c:forEach var="family" items="${familyList}">
 
-                <div class="col-sm-3 col-md-2 familyDiv">
-                    <div class="thumbnail">
-                        <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
-                            <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
-                            <%--<img data-src="holder.js/300x300" alt="...">--%>
-                        <div class="caption">
-                                <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
-                            <h6>世界何氏族谱（${family.id}）</h6>
-                            <p>状态：
-                                <c:if test="${family.visitStatus == 0}">加密</c:if>
-                                <c:if test="${family.visitStatus == 1}">开放</c:if>
-                                    <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
-                            </p>
-                            <p>${family.familyName}</p>
-                            <p name="familyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
-                                    ${family.familyDesc}
-                            </p>
+                    <div class="col-sm-3 col-md-2 familyDiv">
+                        <div class="thumbnail">
+                            <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
+                                <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
+                                <%--<img data-src="holder.js/300x300" alt="...">--%>
+                            <div class="caption">
+                                    <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
+                                <h6>世界何氏族谱（${family.id}）</h6>
+                                <p>家族人数：${family.peopleCount}人</p>
+                                <p>状态：
+                                    <c:if test="${family.visitStatus == 0}">加密</c:if>
+                                    <c:if test="${family.visitStatus == 1}">开放</c:if>
+                                        <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
+
+                                </p>
+                                <p>${family.familyName}</p>
+                                <p name="familyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                                        ${family.familyDesc}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </c:forEach>
+                </c:forEach>
+            </div>
         </div>
-    </div>
-</div>
+    </c:when>
+    <c:otherwise>
+        <div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
+            <h2 style="text-align: center">您的账号正在审核中，请耐心等待...</h2>
+        </div>
+    </c:otherwise>
+</c:choose>
+
 <!-- 族谱密码 Modal -->
 <div class="modal fade" id="visitPasswordModal" tabindex="-1" role="dialog" aria-labelledby="visitPasswordModal" aria-hidden="true">
     <div class="modal-dialog">

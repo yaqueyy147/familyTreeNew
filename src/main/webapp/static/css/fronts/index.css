@@ -5,6 +5,7 @@ body{
     -moz-background-size:cover;
     background-size:cover;
     background-attachment:fixed;
+    min-width: 1170px;
 }
 
 .userInfo{
@@ -38,4 +39,8 @@ body{
 
 .familyDiv{
     height:320px;
+}
+.familyDiv p{
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
 }

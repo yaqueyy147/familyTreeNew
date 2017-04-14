@@ -225,4 +225,32 @@ public class UserServiceImpl implements UserService {
         return list;
     }
 
+    @Override
+    public int setUserConsole(int userId, int state) {
+
+        String sql = "update t_user_1 set is_console=? where id=?";
+
+        int i = jdbcTemplate.update(sql,state,userId);
+
+        return i;
+    }
+
+    @Override
+    public int setUserFront(int userId, int state) {
+        String sql = "update t_user_1 set is_front=? where id=?";
+
+        int i = jdbcTemplate.update(sql,state,userId);
+
+        return i;
+    }
+
+    @Override
+    public int setUserVolunteer(int userId, int state) {
+        String sql = "update t_user_1 set is_volunteer=? where id=?";
+
+        int i = jdbcTemplate.update(sql,state,userId);
+
+        return i;
+    }
+
 }
