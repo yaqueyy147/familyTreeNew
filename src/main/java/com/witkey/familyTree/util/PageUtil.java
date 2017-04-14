@@ -33,7 +33,8 @@ public class PageUtil {
         pageChanger.append(getPrevPageStr(pageNo,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
         pageChanger.append(getEndPageStr(pageNo,totalPage,tableId));
-        return new String(pageChanger.toString().getBytes(),"UTF-8");
+//        return new String(pageChanger.toString().getBytes(),"UTF-8");
+        return pageChanger.toString();
     }
 
     /**
@@ -57,7 +58,8 @@ public class PageUtil {
         pageChanger.append(getNumberPageStr(pageNo,totalPage,pageNum,tableId));
         pageChanger.append(getNextPageStr(pageNo,totalPage,tableId));
         pageChanger.append(getEndPageStr(pageNo,totalPage,tableId));
-        return new String(pageChanger.toString().getBytes(),"UTF-8");
+//        return new String(pageChanger.toString().getBytes(),"UTF-8");
+        return pageChanger.toString();
     }
 
     /**
