@@ -50,7 +50,7 @@
                                         <%--<c:if test="${family.visitStatus == 2}">仅族人查看</c:if>--%>
 
                                 </p>
-                                <p>${family.familyName}</p>
+                                <p style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden">${family.familyName}</p>
                                 <p name="familyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
                                         ${family.familyDesc}
                                 </p>

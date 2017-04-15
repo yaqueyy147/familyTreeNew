@@ -59,9 +59,9 @@
             </div>
             <div class="form-group col-xs-11 form-actions col-xs-offset-1" style="margin-top: 15px">
                 <div data-toggle="distpicker">
-                    <select name="province" data-province="---- 选择省 ----"></select>
-                    <select name="city" data-city="---- 选择市 ----"></select>
-                    <select name="district" data-district="---- 选择区 ----"></select>
+                    <select id="province" name="province" data-province="---- 选择省 ----"></select>
+                    <select id="city" name="city" data-city="---- 选择市 ----"></select>
+                    <select id="district" name="district" data-district="---- 选择区 ----"></select>
                 </div>
             </div>
             <div class="form-group col-xs-10 form-actions col-xs-offset-1" style="margin-top: 15px">

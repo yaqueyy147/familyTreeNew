@@ -35,7 +35,7 @@
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
     <div style="text-align: center;font-size: 20px">
         <p style="border-bottom: solid 1px #999999">
-            <span style="color: #fbf069">${tFamily.familyName}</span>
+            <span style="color: #a94442">${tFamily.familyName}</span>
             &nbsp;&nbsp;的族人&nbsp;&nbsp;&nbsp;&nbsp;
             <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
             &nbsp;&nbsp;
