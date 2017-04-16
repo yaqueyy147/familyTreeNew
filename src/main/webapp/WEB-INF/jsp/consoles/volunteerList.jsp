@@ -30,6 +30,10 @@
     审核意见：
     <textarea cols="45" rows="5" id="auditDesc" name="auditDesc"></textarea>
 </div>
+
+<div id="idCardDialog" class="easyui-dialog" title="身份证照展示" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;text-align: center">
+
+</div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditVolunteer.js"></script>

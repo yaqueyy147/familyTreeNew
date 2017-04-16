@@ -416,10 +416,12 @@ public class FamilyServiceImpl implements FamilyService {
             if(list != null && list.size() > 0){
 
                 tUserPoints.setId(list.get(0).getId());
-                tUserPoints.setPoints((tUserPoints.getPoints() + list.get(0).getPoints()));
+//                tUserPoints.setPoints((tUserPoints.getPoints() + list.get(0).getPoints()));
+                tUserPoints.setInputCount(tUserPoints.getInputCount() + 1);
                 tUserPointsDao.save(tUserPoints);
                 i ++ ;
             }else{
+                tUserPoints.setInputCount(1);
                 i = CommonUtil.parseInt(tUserPointsDao.create(tUserPoints));
             }
         }else{//公司
@@ -431,6 +433,7 @@ public class FamilyServiceImpl implements FamilyService {
             if(list != null && list.size() > 0){
                 tCompanyPoints.setId(list.get(0).getId());
                 tCompanyPoints.setPoints((tCompanyPoints.getPoints() + list.get(0).getPoints()));
+                tCompanyPoints.setTotalMoney((tCompanyPoints.getTotalMoney() + list.get(0).getTotalMoney()));
                 tCompanyPointsDao.save(tCompanyPoints);
                 i ++ ;
             }else{
@@ -466,7 +469,14 @@ public class FamilyServiceImpl implements FamilyService {
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         //个人
         if(CommonUtil.parseInt(params.get("type")) == 1){
-            String sql = "select t1.points,t1.user_id,t2.user_name,t2.login_name from t_user_points t1,t_user_1 t2";
+            //获取积分对应关系
+            List<TPointsDic> listDic = this.getPointsRelation(1,1);
+            int pointsCurrent = 0;
+            if(listDic != null && listDic.size() > 0){
+                pointsCurrent = listDic.get(0).getPointsValue() / listDic.get(0).getPointsNum();
+            }
+            String sql = "select t1.points,t1.input_count,t1.input_count*" + pointsCurrent + " totalPoints,";
+            sql += " t1.user_id,t2.user_name,t2.login_name from t_user_points t1,t_user_1 t2";
             sql += " where t1.user_id=t2.id ";
 //            if(!CommonUtil.isBlank(params.get("userType"))){
 //                sql += " and user_type='" + params.get("userType") + "'";
@@ -480,10 +490,17 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("district"))){
                 sql += " and t2.district='" + params.get("district") + "'";
             }
-            sql += " order by t1.points desc";
+            sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
-            String sql = "select t1.points,t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
+            //获取积分对应关系
+            List<TPointsDic> listDic = this.getPointsRelation(2,1);
+            int pointsCurrent = 0;
+            if(listDic != null && listDic.size() > 0){
+                pointsCurrent = listDic.get(0).getPointsValue() / listDic.get(0).getPointsNum();
+            }
+            String sql = "select t1.points,t1.total_money,t1.total_money*" + pointsCurrent + " totalPoints";
+            sql += ",t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
             sql += " where t1.company_id=t2.id";
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and t2.province='" + params.get("province") + "'";
@@ -494,7 +511,7 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("district"))){
                 sql += " and t2.district='" + params.get("district") + "'";
             }
-            sql += " order by t1.points desc";
+            sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }
 

@@ -11,7 +11,7 @@ $(function () {
         columns:[[
             {field:"user_id",title:"用户Id",width:"80",hidden:true},
             {field:"user_name",title:"用户名",width:"150"},
-            {field:"points",title:"积分",width:"150"}
+            {field:"totalPoints",title:"积分",width:"150"}
         ]]
     });
 
@@ -22,7 +22,7 @@ $(function () {
         columns:[[
             {field:"company_id",title:"赞助商Id",width:"80",hidden:true},
             {field:"company_name",title:"赞助商名",width:"150"},
-            {field:"points",title:"积分",width:"150"}
+            {field:"totalPoints",title:"积分",width:"150"}
         ]]
     });
 });

@@ -17,6 +17,7 @@ public class TCompanyPoints implements Serializable {
     private int companyId;
     private int points;
     private String remark;
+    private Double totalMoney;
 
     public TCompanyPoints() {
     }
@@ -24,6 +25,12 @@ public class TCompanyPoints implements Serializable {
     public TCompanyPoints(int companyId, int points) {
         this.companyId = companyId;
         this.points = points;
+    }
+
+    public TCompanyPoints(int companyId, int points, Double totalMoney) {
+        this.companyId = companyId;
+        this.points = points;
+        this.totalMoney = totalMoney;
     }
 
     @Id
@@ -67,6 +74,16 @@ public class TCompanyPoints implements Serializable {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "total_money")
+    public Double getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(Double totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,6 +96,7 @@ public class TCompanyPoints implements Serializable {
         if (points != that.points) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
 
+        if (totalMoney != null ? !totalMoney.equals(that.totalMoney) : that.totalMoney != null) return false;
         return true;
     }
 
@@ -88,6 +106,7 @@ public class TCompanyPoints implements Serializable {
         result = 31 * result + companyId;
         result = 31 * result + points;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (totalMoney != null ? totalMoney.hashCode() : 0);;
         return result;
     }
 

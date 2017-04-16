@@ -40,6 +40,20 @@ $(function () {
         ]
     });
 
+    $("#idCardDialog").dialog({
+        width: 500,
+        height: 500,
+        "closed":true,
+        "buttons":[
+            {
+                "text":"关闭",
+                handler:function () {
+                    $("#idCardDialog").html("");
+                    $("#idCardDialog").dialog("close");
+                }
+            }
+        ]
+    });
 
     var params = {};
     loadVolunteerData(params);
@@ -64,6 +78,12 @@ function loadVolunteerData(params) {
             {field:"userName",title:"姓名",width:"80"},
             {field:"idCard",title:"身份证号",width:"150"},
             {field:"phone",title:"联系电话",width:"120"},
+            {field:"idCardPhoto",title:"身份证图片",width:"120",
+                formatter: function(value,row,index){
+                    var imgHtml = "<img src=\"" + value + "\" width=\"100px\" height=\"50px\" onclick=\"viewIdCard('" + value + "')\" />";
+                    // imgHtml += "<span id=\"result_img1_wm\" style=\"position: absolute; top: 25px; left: 0;\">本图片仅用于注册何氏族谱网</span></div>";
+                    return imgHtml;
+                }},
             {field:"createTime",title:"注册时间",width:"150",
                 formatter: function(value,row,index){
                     if($.trim(value).length <= 0){
@@ -152,4 +172,11 @@ function formatVolunteerData(data){
         }
     }
     return data;
+}
+
+function viewIdCard(idCardUrl){
+    var idCard = "<img src=\"" + idCardUrl + "\" width=\"400px\" height=\"400px\" />";
+    idCard += "<span id=\"result_img1_wm\" style=\"position: absolute; top: 200px; left: 130px;color:#ff0000;font-size: 18px\">本图片仅用于注册何氏族谱网</span>";
+    $("#idCardDialog").html(idCard);
+    $("#idCardDialog").dialog("open");
 }

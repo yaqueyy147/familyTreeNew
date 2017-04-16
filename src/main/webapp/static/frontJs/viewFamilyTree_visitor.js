@@ -9,6 +9,7 @@ $(function () {
 
     var setting = {
         view: {
+            showLine:true,
             addDiyDom: addDiyDom
         },
         data: {

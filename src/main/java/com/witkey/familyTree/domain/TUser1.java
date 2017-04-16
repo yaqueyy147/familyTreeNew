@@ -244,7 +244,7 @@ public class TUser1 implements Serializable {
     }
 
     @Basic
-    @Column(name = "idCard_photo")
+    @Column(name = "id_card_photo")
     public String getIdCardPhoto() {
         return idCardPhoto;
     }

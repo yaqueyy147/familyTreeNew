@@ -14,14 +14,15 @@
     <%@include file="common/commonCss.jsp"%>
     <style rel="stylesheet">
         body{
-            width:100%;
-            height: 100%;
+            height: 90%;
+            width: 100%;
             background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
             -webkit-background-size:cover;
             -moz-background-size:cover;
             background-size:cover;
             background-attachment:fixed;
+            overflow: auto;
         }
         #peopleForm input{
             border: 0px;
@@ -34,7 +35,14 @@
             float: left;
             margin-top: 20px;
             margin-bottom: 50px;
-            overflow: hidden;
+            overflow: auto;
+            border-left: solid 1px #999999;
+            border-right: solid 1px #999999;
+        }
+        #familyTree{
+            margin-top: 20px;
+            overflow: auto;
+            float: left;
         }
     </style>
 </head>
@@ -51,10 +59,10 @@
             <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
         </p>
         <c:if test="${not empty tFamily.familyDesc}">
-        <p style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999">家族简介：${tFamily.familyDesc}</p>
+        <p id="familyDesc" style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999" >家族简介：${tFamily.familyDesc}</p>
         </c:if>
     </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv" style="border-right: solid 1px #999999;">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv" >
         <div class="personalRank">
             <span>个人积分排名:</span>
             <table class="table">
@@ -78,9 +86,10 @@
                 </tbody>
             </table>
         </div>
+
     </div>
-    <div id="familyTree" class="ztree container-fluid col-xs-8 col-sm-8 col-md-8 col-lg-8" style="margin-top: 20px;overflow: auto"></div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv"  style="border-left: solid 1px #999999;">
+    <div id="familyTree" class="ztree container-fluid col-xs-8 col-sm-8 col-md-8 col-lg-8" ></div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 rankDiv" >
         <div class="companyRank">
             <span>赞助商积分排名:</span>
             <table class="table">
@@ -311,9 +320,14 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/viewFamilyTree_visitor.js"></script>
 <script type="text/javascript">
+    var winHeight = $(window).height();
     var familyId = "${familyId}";
     var familyFirstName = "${tFamily.familyFirstName}";
     $(function () {
+        var treeContainerHeight = $(".treeContainer").height();
+        var descHeight = $("#familyDesc").height();
+        $("#familyTree").attr("style","height:" + (winHeight - descHeight - 150) + "px");
+        $(".rankDiv").attr("style","height:" + (winHeight - descHeight - 150) + "px")
         $("#goBack").click(function () {
             window.history.back();
         });

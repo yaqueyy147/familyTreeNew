@@ -15,7 +15,7 @@ $(function () {
         ]
     });
     $("#licenseDialog").dialog({
-        width: 400,
+        width: 660,
         height: 500,
         "closed":true,
         "buttons":[
@@ -51,16 +51,29 @@ function loadCompanyData(params) {
                     }
                     return '';
                 }},
-            {field:"totalMoney",title:"公司名",width:"150",
+            {field:"totalMoney",title:"赞助金额",width:"80",
                 formatter: function(value,row,index){
 
                     return "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + row.id + "')\">" + value + "</a>";
                 }},
-            {field:"phone",title:"联系电话",width:"120"},
-            {field:"company_area",title:"公司地址",width:"200",
+            {field:"company_mobile_phone",title:"联系电话",width:"100"},
+            {field:"company_addr",title:"公司地址",width:"200",
                 formatter: function(value,row,index){
-                    if($.trim(value).length > 0){
-                        return '<span title='+ value + '>'+value+'</span>';
+                    var companyAddr = "";
+                    if($.trim(row.province).length > 0){
+                        companyAddr += row.province;
+                    }
+                    if($.trim(row.city).length > 0){
+                        companyAddr += row.city;
+                    }
+                    if($.trim(row.district).length > 0){
+                        companyAddr += row.district;
+                    }
+                    if($.trim(row.detail_addr).length > 0){
+                        companyAddr += row.detail_addr;
+                    }
+                    if($.trim(companyAddr).length > 0){
+                        return '<span title='+ companyAddr + '>'+companyAddr+'</span>';
                     }
                     return '';
                 }},
@@ -71,11 +84,11 @@ function loadCompanyData(params) {
                     }
                     return '';
                 }},
-            {field:"business_license",title:"营业执照",width:"150",
+            {field:"business_license",title:"营业执照",width:"120",
                 formatter: function(value,row,index){
                     return "<img src=\"" + value + "\" width=\"100px\" height=\"50px\" onclick=\"viewLicense('" + value + "')\" />";
                 }},
-            {field:"state",title:"状态",width:"150",
+            {field:"state",title:"状态",width:"80",
                 formatter: function(value,row,index){
                     if(value == 1){
                         return "已通过审核";
@@ -141,7 +154,8 @@ function auditCompany(companyId,state) {
 }
 
 function viewLicense(licenseUrl){
-    var licenseImg = "<img src=\"" + licenseUrl + "\" width=\"300px\" height=\"400px\" />";
+    var licenseImg = "<img src=\"" + licenseUrl + "\" width=\"600px\" height=\"600px\" />";
+    // licenseImg += "<span id=\"result_img1_wm\" style=\"display: none;position: absolute; top: 300px; left: 0;\">本图片仅用于注册何氏族谱网</span>";
     $("#licenseDialog").html(licenseImg);
     $("#licenseDialog").dialog("open");
 }

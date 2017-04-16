@@ -18,6 +18,7 @@ public class TUserPoints implements Serializable {
     private int points;
     private int userType;
     private String remark;
+    private int inputCount;
 
     public TUserPoints() {
     }
@@ -84,6 +85,16 @@ public class TUserPoints implements Serializable {
         this.userType = userType;
     }
 
+    @Basic
+    @Column(name = "input_count")
+    public int getInputCount() {
+        return inputCount;
+    }
+
+    public void setInputCount(int inputCount) {
+        this.inputCount = inputCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,6 +108,7 @@ public class TUserPoints implements Serializable {
         if (userType != that.userType) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
 
+        if (inputCount != that.inputCount) return false;
         return true;
     }
 
@@ -107,6 +119,7 @@ public class TUserPoints implements Serializable {
         result = 31 * result + points;
         result = 31 * result + userType;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + inputCount;
         return result;
     }
 

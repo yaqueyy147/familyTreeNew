@@ -33,7 +33,7 @@
                         <tr>
                             <td>${status.index + 1}</td>
                             <td>${personalPoints.user_name}</td>
-                            <td>${personalPoints.points}</td>
+                            <td>${personalPoints.totalPoints}</td>
                         </tr>
                     </c:forEach>
                 </c:if>
@@ -56,7 +56,7 @@
                     <tr>
                         <td>${status.index + 1}</td>
                         <td><a href="<%=request.getContextPath()%>/company/detail?companyId=${companyPoints.company_id}&xxx=1">${companyPoints.company_name}</a></td>
-                        <td>${companyPoints.points}</td>
+                        <td>${companyPoints.totalPoints}</td>
                     </tr>
                 </c:forEach>
             </c:if>

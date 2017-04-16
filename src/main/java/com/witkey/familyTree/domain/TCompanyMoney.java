@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/1/6.
@@ -16,8 +17,8 @@ public class TCompanyMoney implements Serializable {
     private static final long serialVersionUID = 5626155305892741966L;
     private int id;
     private int companyId;
-    private BigDecimal payMoney;
-    private Timestamp payTime;
+    private Double payMoney;
+    private Date payTime;
     private String payMan;
     private String payDesc;
     private Integer state;
@@ -46,21 +47,21 @@ public class TCompanyMoney implements Serializable {
 
     @Basic
     @Column(name = "pay_money")
-    public BigDecimal getPayMoney() {
+    public Double getPayMoney() {
         return payMoney;
     }
 
-    public void setPayMoney(BigDecimal payMoney) {
+    public void setPayMoney(Double payMoney) {
         this.payMoney = payMoney;
     }
 
     @Basic
     @Column(name = "pay_time")
-    public Timestamp getPayTime() {
+    public Date getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Timestamp payTime) {
+    public void setPayTime(Date payTime) {
         this.payTime = payTime;
     }
 
