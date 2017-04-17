@@ -181,7 +181,25 @@ public class ConsoleServiceImpl implements ConsoleService {
     @Override
     public List<Map<String, Object>> getCompanyList(Map<String, Object> params) {
 
-        String sql = "select * from t_company_sponsor";// where state=?
+        String sql = "select * from t_company_sponsor where 1=1";// where state=?
+
+        if(!CommonUtil.isBlank(params)){
+
+            if(!CommonUtil.isBlank(params.get("companyName"))){
+                sql += " and company_name like '%" + params.get("companyName") + "%'";
+            }
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and district='" + params.get("district") + "'";
+            }
+
+        }
+
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);//,params.get("state")
 
         for (Map<String,Object> map : list) {

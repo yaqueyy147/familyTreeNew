@@ -16,7 +16,7 @@
 <body>
 
 <table id="companyList" class="easyui-datagrid" style="width:100%;height:100%"
-       title="赞助商列表"data-options="
+       title="赞助商列表" toolbar="#tb" data-options="
 				rownumbers:true,
 				singleSelect:true,
 				pagination:true,
@@ -49,10 +49,21 @@
     <%--</c:forEach>--%>
     <%--</tbody>--%>
 </table>
+<div id="tb">
+    <span>公司名:</span>
+    <input id="companyName4Search" name="companyName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>公司属地:</span>
+    <span data-toggle="distpicker">
+        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 选择省 ----"></select>
+        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 选择市 ----"></select>
+        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 选择区 ----"></select>
+    </span>
 
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
+</div>
 <div id="moneyListDialog" class="easyui-dialog" title="充值详情" style="width:600px;height:400px;padding:10px;top: 15%;left: 20%;">
     <table id="moneyTable" class="easyui-datagrid" style="width:100%;height:100%"
-           title="充值列表" data-options="
+           title="充值列表" toolbar="#tb2" data-options="
 				rownumbers:true,
 				singleSelect:true,
 				autoRowHeight:false,
@@ -66,11 +77,17 @@
         </thead>
     </table>
 </div>
+<div id="tb2">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="addMoney">添加充值</a>
+</div>
+
 <div id="licenseDialog" class="easyui-dialog" title="营业执照展示" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;text-align: center">
 
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditCompany.js"></script>
 </body>
 </html>

@@ -159,15 +159,15 @@ function loadDataGrid(params) {
             {field:"fax",title:"传真",width:"80",hidden:true},
             {field:"post_code",title:"邮编",width:"80",hidden:true},
             {field:"photo",title:"头像",width:"80",hidden:true},
-            {field:"meritocrat_name",title:"英才姓名",width:"80"},
+            {field:"meritocrat_name",title:"英才姓名",width:"120"},
             {field:"meritocrat_area",title:"英才属地",width:"80"},
-            {field:"meritocrat_attr",title:"英才属性",width:"80"},
+            {field:"meritocrat_attr",title:"英才属性",width:"120"},
             {field:"meritocrat_attr_id",title:"英才属性Id",width:"80",hidden:true},
             {field:"meritocrat_addr",title:"详细地址",width:"200",
                 formatter: function(value,row,index){
                     return '<span title='+value+'>'+value+'</span>'
                 }},
-            {field:"meritocrat_desc",title:"英才简介",width:"300",
+            {field:"meritocrat_desc",title:"英才简介",width:"400",
                 formatter: function(value,row,index){
                     return '<span title='+value+'>'+value+'</span>'
                 }}

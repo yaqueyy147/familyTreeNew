@@ -2,7 +2,8 @@
  * Created by suyx on 2017/1/12.
  */
 $(function () {
-
+    $("#province4Search").val("");
+    $("#province4Search").change();
     $("#moneyListDialog").dialog({
         "closed":true,
         "buttons":[
@@ -27,6 +28,22 @@ $(function () {
                 }
             }
         ]
+    });
+
+    $("#doSearch").click(function () {
+        var params = {};
+        params.companyName = $("#companyName4Search").val();
+        params.province = $("#province4Search").val();
+        params.city = $("#city4Search").val();
+        params.district = $("#district4Search").val();
+        loadCompanyData(params);
+    });
+
+
+    $("#addMoney").click(function () {
+        $('#moneyTable').datagrid('appendRow', {});
+        var rows = $('#moneyTable').datagrid('getRows');
+        $('#moneyTable').datagrid('beginEdit',rows.length - 1 );
     });
 
     var params = {};
