@@ -24,6 +24,15 @@ public class TCompanyMoney implements Serializable {
     private Integer state;
     private String remark;
 
+    public TCompanyMoney() {
+    }
+
+    public TCompanyMoney(int companyId, Double payMoney, Integer state) {
+        this.companyId = companyId;
+        this.payMoney = payMoney;
+        this.state = state;
+    }
+
     @Id
     @Column(name = "id",unique = true)
     @GeneratedValue

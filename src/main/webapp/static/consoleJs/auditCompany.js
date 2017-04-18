@@ -1,6 +1,7 @@
 /**
  * Created by suyx on 2017/1/12.
  */
+var editIndex = undefined;
 $(function () {
     $("#province4Search").val("");
     $("#province4Search").change();
@@ -41,9 +42,28 @@ $(function () {
 
 
     $("#addMoney").click(function () {
-        $('#moneyTable').datagrid('appendRow', {});
-        var rows = $('#moneyTable').datagrid('getRows');
-        $('#moneyTable').datagrid('beginEdit',rows.length - 1 );
+        if (endEditing()){
+            $('#moneyTable').datagrid('appendRow', {});
+            var rows = $('#moneyTable').datagrid('getRows');
+            editIndex = rows.length - 1;
+            $('#moneyTable').datagrid('selectRow', editIndex);
+            $('#moneyTable').datagrid('beginEdit',editIndex);
+        }
+    });
+
+    $("#affirmAdd").click(function () {
+        var selectRows = $("#moneyTable").datagrid('getSelections');
+        alert(JSON.stringify(selectRows));
+        // $('#moneyTable').datagrid('acceptChanges');
+
+    });
+
+    $("#cancelAdd").click(function () {
+        if (editIndex == undefined){return;}
+        $('#moneyTable').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+
     });
 
     var params = {};
@@ -175,4 +195,13 @@ function viewLicense(licenseUrl){
     // licenseImg += "<span id=\"result_img1_wm\" style=\"display: none;position: absolute; top: 300px; left: 0;\">本图片仅用于注册何氏族谱网</span>";
     $("#licenseDialog").html(licenseImg);
     $("#licenseDialog").dialog("open");
+}
+
+function endEditing(){
+    // alert(editIndex);
+    if (editIndex == undefined){
+        return true;
+    }else {
+        return false;
+    }
 }

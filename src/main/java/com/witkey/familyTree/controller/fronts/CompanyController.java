@@ -17,10 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by suyx on 2017/1/7.
@@ -101,4 +98,25 @@ public class CompanyController {
         result.put("dataList",list);
         return result;
     }
+
+    @RequestMapping(value = "/addMoney")
+    @ResponseBody
+    public Map<String,Object> addMoney(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        TCompanyMoney tCompanyMoney = new TCompanyMoney();
+        tCompanyMoney.setCompanyId(CommonUtil.parseInt(params.get("companyId")));
+        tCompanyMoney.setPayDesc(params.get("payDesc") + "");
+        tCompanyMoney.setPayMoney(CommonUtil.parseDouble(params.get("payMoney")));
+        tCompanyMoney.setPayMan(params.get("companyName") + "");
+        tCompanyMoney.setPayTime(new Date());
+        tCompanyMoney.setState(1);
+
+        int i = companyService.addMoney(tCompanyMoney);
+
+        result.put("code",i);
+
+        return result;
+    }
+
 }

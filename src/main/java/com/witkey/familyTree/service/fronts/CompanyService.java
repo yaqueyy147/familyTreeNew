@@ -33,6 +33,9 @@ public interface CompanyService {
     //根据companyId获取充值总数
     public double getTotalCompanyMoney(int companyId);
 
+    //添加公司冲值记录
+    public int addMoney(TCompanyMoney tCompanyMoney);
+
     //根据companyId获取公司宣传照片
     public List<TCompanyPhoto> getCompanyPhoto(int companyId);
 

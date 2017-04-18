@@ -122,6 +122,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public int addMoney(TCompanyMoney tCompanyMoney) {
+        int i = CommonUtil.parseInt(tCompanyMoneyDao.create(tCompanyMoney));
+
+        return i;
+    }
+
+    @Override
     public List<TCompanyPhoto> getCompanyPhoto(int companyId) {
 
         Map<String,Object> map = new HashMap<String,Object>();
