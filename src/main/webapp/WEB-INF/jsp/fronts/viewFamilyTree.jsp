@@ -25,6 +25,9 @@
         .container{
             width:100% !important;
         }
+        .swfupload {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -308,7 +311,7 @@
 
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-            'uploader'      : projectUrl + '/upload/uploadImg',
+//            'uploader'      : projectUrl + '/upload/uploadImg',
             'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
             'auto'          : true,
             "formData"      : {targetFile : '/upload/personImg'},

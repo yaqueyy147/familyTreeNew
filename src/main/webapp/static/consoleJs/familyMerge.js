@@ -119,6 +119,25 @@ $(function () {
         $("#id").val(0);
     });
 
+    //同意收录
+    $("#acceptIn").click(function () {
+        $.ajax({
+            type:'post',
+            url: projectUrl + '/consoles/confirmInclude',
+            dataType: 'json',
+            data:{familyId:familyId},
+            async:false,
+            success:function (data) {
+                if(data.code >= 1){
+                    alert("操作成功!");
+                }
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+    });
+
     var primarySetting = {
         data: {
             simpleData: {
@@ -127,20 +146,22 @@ $(function () {
                 pIdKey: "pId",
                 rootPId: ""
             }
-        },
+        }
+        // ,
         // check: {
         //     enable: true,
         //     chkStyle: "checkbox",
         //     chkboxType: { "Y": "ps", "N": "ps" }
         // },
-        callback:{
-            onClick:zTreeOnClick
-        }
+        // callback:{
+        //     onClick:zTreeOnClick
+        // }
     };
+
     var zNodes = initPeopleData(familyId);
     initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
 
-    initTargetFamily();
+    // initTargetFamily();
     $("#localBack").click(function () {
         history.back();
     });
@@ -166,6 +187,7 @@ function initPeopleData(familyId){
         data:{familyId : familyId},
         success:function (data) {
 
+            var genNum = 0;
             for(var i=0;i<data.length;i++) {
                 var ii = data[i];
                 var node = {};
@@ -182,8 +204,16 @@ function initPeopleData(familyId){
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
                 zNodes[i] = node;
+                if(genNum < ii.generation){
+                    genNum = ii.generation;
+                }
             }
 
+            // var peopleHtml = "<p style=\"margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;\">家族人数：&nbsp;" + data.length + "&nbsp;人</p>";
+            // peopleHtml += "<p style=\"margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;\">家族代数：&nbsp;" + genNum + "&nbsp;代</p>";
+            // $("#primaryDesc").append(peopleHtml);
+            $("#peopleCount").text(data.length);
+            $("#familyGenNum").text(genNum);
         }
     });
     return zNodes;

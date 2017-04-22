@@ -473,6 +473,8 @@ public class ConsoleServiceImpl implements ConsoleService {
 
         String sql = "select distinct tPrimary.*,tMerge.id mergeId,tMerge.state,tMerge.apply_man";
         sql += ",tMerge.state mergeState";
+        sql += " ,(select count(id) from t_people where family_id=tPrimary.id and is_del<>1) peopleCount";
+        sql += " ,(select max(generation) from t_people where family_id=tPrimary.id and is_del<>1) genNum";
         sql += " from t_family tPrimary, t_family_merge tMerge";
         sql += " where tPrimary.id=tMerge.primary_family_id";
 

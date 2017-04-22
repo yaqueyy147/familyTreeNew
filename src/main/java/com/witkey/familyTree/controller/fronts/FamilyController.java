@@ -338,7 +338,7 @@ public class FamilyController {
         }
 
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
-        tPeople.setState(9);
+        tPeople.setIsDel(1);
 //        int i = familyService.deletePeople(peopleId);
         int i = 0;
         familyService.updatePeople(tPeople);

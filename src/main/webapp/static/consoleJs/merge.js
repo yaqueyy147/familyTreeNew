@@ -72,6 +72,8 @@ function loadDataGrid(params) {
             {field:"id",title:"族谱Id",width:"80",hidden:true},
             {field:"mergeId",title:"申请收录Id",width:"80",hidden:true},
             {field:"family_name",title:"族谱名称",width:"150"},
+            {field:"genNum",title:"家族代数",width:"80"},
+            {field:"peopleCount",title:"家族人数",width:"80"},
             {field:"apply_man",title:"申请人",width:"100"},
             {field:"mergeState",title:"状态",width:"80",
                 formatter: function(value,row,index){

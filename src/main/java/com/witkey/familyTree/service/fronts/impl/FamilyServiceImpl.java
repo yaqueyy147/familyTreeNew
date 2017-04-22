@@ -286,7 +286,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getPeopleList(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select * from t_people where state<>9 and family_id=?";
+        String sql = "select * from t_people where is_del<>1 and family_id=?";
 
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){

@@ -21,17 +21,24 @@
     <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
-<div class="easyui-layout" style="width:100%;height:90%;">
-    <div data-options="region:'north'" style="width:100%;height:5%">
-        <button type="button" id="localBack" class="btn btn-primary">返回</button>
-    </div>
-    <div data-options="region:'west',split:true" title="申请收录的族谱" style="width:50%;position: relative">
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <%--<div data-options="region:'center'" style="width:100%;height:5%">--%>
+        <%--<button type="button" id="localBack" class="btn btn-primary">返回</button>--%>
+    <%--</div>--%>
+    <div data-options="region:'center',split:true" title="申请收录的族谱" style="width:50%;position: relative">
         <div class="easyui-layout" style="width:100%;height:100%;">
-            <div data-options="region:'north'" style="height:20%">
-                <p style="margin-bottom: 1px;padding-bottom: 1px">家族名：${primaryFamily.familyName}</p>
+            <div id="primaryDesc" data-options="region:'north'" style="height:20%">
+                <p style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;">
+                    家族名：${primaryFamily.familyName}
+                    <span style="margin-left: 20px">家族人数：&nbsp;<span id="peopleCount">0</span>&nbsp;人</span>
+                    <span style="margin-left: 20px">家族代数：&nbsp;<span id="familyGenNum">0</span>&nbsp;代</span>
+                    <button type="button" id="localBack" class="easyui-linkbutton" style="margin-left: 20px">返回</button>
+                    <button type="button" id="acceptIn" class="easyui-linkbutton" style="margin-left: 20px">同意收录</button>
+                    <button type="button" id="reject" class="easyui-linkbutton" style="margin-left: 20px">驳回</button>
+                </p>
                 <p style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;">家族属地：${primaryFamily.province}${primaryFamily.city}${primaryFamily.district}
                 </p>
-                <p style="margin-top: 1px;padding-top: 1px;">${primaryFamily.familyDesc}</p>
+                <p style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;">家族简介:${primaryFamily.familyDesc}</p>
 
             </div>
             <div data-options="region:'south',split:true" style="height:80%;">
@@ -41,26 +48,26 @@
         </div>
 
     </div>
-    <div data-options="region:'east',split:true" title="可选择收录的族谱" style="width:50%;">
+    <%--<div data-options="region:'east',split:true" title="可选择收录的族谱" style="width:50%;">--%>
 
-        <div class="easyui-layout" style="width:100%;height:100%;">
-            <div data-options="region:'north'" style="height:20%">
-                <p style="margin-bottom: 1px;padding-bottom: 1px">家族名：
-                    <select id="targetFamily"></select>
-                </p>
-                <p id="targetFamilyAddr" style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;"></p>
-                <p id="targetFamilyDesc" style="margin-top: 1px;padding-top: 1px;"></p>
+        <%--<div class="easyui-layout" style="width:100%;height:100%;">--%>
+            <%--<div data-options="region:'north'" style="height:20%">--%>
+                <%--<p style="margin-bottom: 1px;padding-bottom: 1px">家族名：--%>
+                    <%--<select id="targetFamily"></select>--%>
+                <%--</p>--%>
+                <%--<p id="targetFamilyAddr" style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;"></p>--%>
+                <%--<p id="targetFamilyDesc" style="margin-top: 1px;padding-top: 1px;"></p>--%>
 
-            </div>
-            <div data-options="region:'south',split:true" style="height:80%;">
-                <div class="ztree" id="targetFamilyTree"></div>
-            </div>
+            <%--</div>--%>
+            <%--<div data-options="region:'south',split:true" style="height:80%;">--%>
+                <%--<div class="ztree" id="targetFamilyTree"></div>--%>
+            <%--</div>--%>
 
-        </div>
-    </div>
-    <div data-options="region:'south'" style="width:100%;height:5%">
-        <button type="button" id="confirmInclude" class="btn btn-primary">收录完成</button>
-    </div>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<div data-options="region:'south'" style="width:100%;height:5%">--%>
+        <%--<button type="button" id="confirmInclude" class="btn btn-primary">收录完成</button>--%>
+    <%--</div>--%>
 </div>
 <!-- 编辑族人 Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
