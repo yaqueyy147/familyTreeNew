@@ -78,7 +78,7 @@ function loadDataGrid(params) {
             {field:"mergeState",title:"状态",width:"80",
                 formatter: function(value,row,index){
                     if(value == 1){
-                        return "已收录";
+                        return "已审核";
                     } else if(value == 3){
                         return "已驳回";
                     } else{

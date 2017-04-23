@@ -537,9 +537,9 @@ public class ConsoleServiceImpl implements ConsoleService {
     public int confirmInclude(Map<String, Object> params) {
 
         int i = 0;
-        String sql = "update t_family set state=2 where id=?";
-        i += jdbcTemplate.update(sql,params.get("familyId"));
-        sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
+//        String sql = "update t_family set state=2 where id=?";
+//        i += jdbcTemplate.update(sql,params.get("familyId"));
+        String sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
         i += jdbcTemplate.update(sql,params.get("familyId"));
         return i;
     }
