@@ -31,8 +31,12 @@ $(function () {
                             alert(data.msg);
                             if(data.code >= 1){
                                 var params = {};
-                                loadDataGrid(params);
+                                var opp = "<span class=\"easyui-linkbutton\" style=\"margin-left: 20px\">已驳回</span>";
+                                // opp += "&nbsp;&nbsp;<button type=\"button\" id=\"completeIn\" class=\"easyui-linkbutton\" style=\"margin-left: 20px\">完成收录</button>";
+                                $("#reject").replaceWith(opp);
+                                $("#primaryDesc p button").remove("#acceptIn");
                                 closeDialog("rejectDialog");
+
                             }
                         },
                         error:function (data) {
@@ -49,6 +53,10 @@ $(function () {
                 }
             }
         ]
+    });
+
+    $("#reject").click(function () {
+        $("#rejectDialog").dialog('open');
     });
 
     setting = {
@@ -179,6 +187,10 @@ $(function () {
             success:function (data) {
                 if(data.code >= 1){
                     alert("操作成功!");
+                    var opp = "<span class=\"easyui-linkbutton\" style=\"margin-left: 20px\">补录中...</span>";
+                    // opp += "&nbsp;&nbsp;<button type=\"button\" id=\"completeIn\" class=\"easyui-linkbutton\" style=\"margin-left: 20px\">完成收录</button>";
+                    $("#acceptIn").replaceWith(opp);
+                    $("#primaryDesc p button").remove("#reject");
                 }
             },
             error:function (data) {
@@ -205,10 +217,10 @@ $(function () {
             chkStyle: "checkbox",
             // chkboxType: { "Y": "ps", "N": "ps" }
         }
-        // ,
-        // callback:{
-        //     onClick:zTreeOnClick
-        // }
+        ,
+        callback:{
+            onClick:zTreeOnClick
+        }
     };
 
     var zNodes = initPeopleData(familyId);
@@ -367,21 +379,43 @@ function zTreeOnClick(event, treeId, treeNode) {
 }
 
 function editPeople(peopleId,generation){
-    var targetFamilyId = $("#targetFamily").val();
-    if($.trim(targetFamilyId).length <= 0){
-        alert("请选择一个目标家族！");
-        return;
-    }
-    initParent(targetFamilyId,generation);
+    // var targetFamilyId = $("#targetFamily").val();
+    // if($.trim(targetFamilyId).length <= 0){
+    //     alert("请选择一个目标家族！");
+    //     return;
+    // }
+    initParent(familyId,generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
-    $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
-    $("#familyId").val(targetFamilyId);
-    includeDesc = "将【" + tPeople.name + "】收录并入家族【" + $("#targetFamily").find("option:selected").text() + "】中";
-    $("#generation").parent().append("&nbsp;&nbsp;" + includeDesc);
+    // $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    // $("#familyId").val(targetFamilyId);
+    // includeDesc = "将【" + tPeople.name + "】收录并入家族【" + $("#targetFamily").find("option:selected").text() + "】中";
+    // $("#generation").parent().append("&nbsp;&nbsp;" + includeDesc);
+
+    var imgPath = tPeople.photoUrl;
+    $("#result_img").attr('src',imgPath);
+    $("#result_img").show();
+    $("#imgFile").hide();
+    $("#photoUrl").attr('value',imgPath);
+    $("#show_img").mouseover(function(){
+        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+    });
+    $("#show_img").mouseout(function(){
+        $("#result_img").attr('src',imgPath);
+    });
+
+    $("#result_img").click(function(){
+        $("#result_img").hide();
+        $("#imgFile").show();
+        $("#photoUrl").removeAttr('value');
+        $("#show_img").unbind('mouseover');
+        $("#show_img").unbind('mouseout');
+
+    });
+
     $("#addModal").modal('show');
 }
 

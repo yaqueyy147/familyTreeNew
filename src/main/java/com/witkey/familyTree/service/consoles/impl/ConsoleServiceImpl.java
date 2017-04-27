@@ -471,12 +471,31 @@ public class ConsoleServiceImpl implements ConsoleService {
 //        sql += " from t_family tPrimary, t_family tTarget, t_family_merge tMerge";
 //        sql += " where tPrimary.id=tMerge.primary_family_id and tTarget.id=tMerge.target_family_id";
 
-        String sql = "select distinct tPrimary.*,tMerge.id mergeId,tMerge.state,tMerge.apply_man";
+        String sql = "select distinct tPrimary.*,tMerge.id mergeId,tMerge.apply_man";
         sql += ",tMerge.state mergeState";
         sql += " ,(select count(id) from t_people where family_id=tPrimary.id and people_status<>9) peopleCount";
         sql += " ,(select max(generation) from t_people where family_id=tPrimary.id and people_status<>9) genNum";
         sql += " from t_family tPrimary, t_family_merge tMerge";
         sql += " where tPrimary.id=tMerge.primary_family_id";
+
+        if(!CommonUtil.isBlank(params)){
+//            if(!CommonUtil.isBlank(params.get("userName"))){
+//                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+//            }
+            if(!CommonUtil.isBlank(params.get("mergeId"))){
+                sql += " and tMerge.id='" + params.get("mergeId") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and tPrimary.province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and tPrimary.city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and tPrimary.district='" + params.get("district") + "'";
+            }
+
+        }
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString());
 
@@ -537,9 +556,10 @@ public class ConsoleServiceImpl implements ConsoleService {
     public int confirmInclude(Map<String, Object> params) {
 
         int i = 0;
-//        String sql = "update t_family set state=2 where id=?";
-//        i += jdbcTemplate.update(sql,params.get("familyId"));
-        String sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
+        String sql = "update t_family set state=5 where id=?";
+        i += jdbcTemplate.update(sql,params.get("familyId"));
+//        String sql = "update t_family_merge set state=1 where primary_family_id=? and (state=2 or state=0)";
+        sql = "update t_family_merge set state=5 where primary_family_id=? and (state=2 or state=0)";
         i += jdbcTemplate.update(sql,params.get("familyId"));
         return i;
     }

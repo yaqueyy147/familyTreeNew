@@ -63,6 +63,10 @@ public class FamilyController {
         params.put("userName",jsonUser.get("userName"));
         params.put("userId",jsonUser.get("id"));
         params.put("state",1);
+        params.put("tt",1);
+        params.put("province",jsonUser.get("province"));
+        params.put("city",jsonUser.get("city"));
+        params.put("district",jsonUser.get("district"));
         List<TFamily> list = familyService.getFamilyList(params);
 
         //查询被收录的族谱

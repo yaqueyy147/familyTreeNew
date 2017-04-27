@@ -196,7 +196,12 @@ public class FamilyServiceImpl implements FamilyService {
                 sql += " and family_name like '%" + params.get("familyName") + "%'";
             }
             if(!CommonUtil.isBlank(params.get("state"))){
-                sql += " and state='" + params.get("state") + "'";
+                if(!CommonUtil.isBlank(params.get("tt")) && CommonUtil.parseInt(params.get("tt")) == 1){
+                    sql += " and (state='" + params.get("state") + "' or state=5)";
+                }else{
+                    sql += " and state='" + params.get("state") + "'";
+                }
+
             }
         }
 

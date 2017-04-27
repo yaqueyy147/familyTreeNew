@@ -1,6 +1,7 @@
 package com.witkey.familyTree.controller.consoles;
 
 import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TFamilyMerge;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -42,14 +43,28 @@ public class MergeController {
     public ModelAndView familyMerge(Model model,@RequestParam Map<String,Object> params){
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(params.get("familyId")));
         model.addAttribute("primaryFamily",tFamily);
+        Map<String,Object> paramss = new HashMap<String,Object>();
+        paramss.put("mergeId",params.get("mergeId"));
+        List<Map<String,Object>> mm = consoleService.getMergeList(params);
         model.addAttribute("mergeId",params.get("mergeId"));
+        model.addAttribute("merge",mm.get(0));
         return new ModelAndView("/consoles/familyMerge");
     }
 
     @RequestMapping(value = "/mergePrimary")
     @ResponseBody
-    public Map<String,Object> mergePrimary(@RequestParam Map<String,Object> params){
+    public Map<String,Object> mergePrimary(HttpServletRequest request,@RequestParam Map<String,Object> params) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
+
+        if(!"admin".equals(userName) && !"系统管理员".equals(userName)){
+            params.put("userName",userName);
+            params.put("userId",consolesUser.get("id"));
+            params.put("province",consolesUser.get("province"));
+            params.put("city",consolesUser.get("city"));
+            params.put("district",consolesUser.get("district"));
+        }
 
         List<Map<String, Object>> list = consoleService.getMergeList(params);
 

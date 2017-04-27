@@ -95,7 +95,7 @@ public class IndexController {
 //        list.add(listAoMen);
 //        model.addAttribute("familyList",list);
         Map<String,Object> params = new HashMap<String,Object>();
-//        params.put("state",1);
+        params.put("state",5);
         List<TFamily> list = familyService.getFamilyList(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
@@ -137,7 +137,7 @@ public class IndexController {
     @ResponseBody
     public Map<String,Object> queryFamily(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        params.put("state",1);
+        params.put("state",5);
         List<TFamily> list = familyService.getFamilyList(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){

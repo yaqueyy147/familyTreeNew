@@ -78,9 +78,11 @@ function loadDataGrid(params) {
             {field:"mergeState",title:"状态",width:"80",
                 formatter: function(value,row,index){
                     if(value == 1){
-                        return "已审核";
+                        return "收录完成";
                     } else if(value == 3){
                         return "已驳回";
+                    }else if(value == 5){
+                        return "补录中...";
                     } else{
                         return "待审核";
                     }
@@ -88,11 +90,16 @@ function loadDataGrid(params) {
             {field:"operation",title:"操作",width:"150",align:"center",
                 formatter: function(value,row,index){
                     if(row.mergeState == 1){
-                        return "已收录";
+                        return "收录完成";
                     } else if(row.mergeState == 3){
                         return "已驳回";
+                    }else if(row.mergeState == 5){
+                        var operationHtml = "补录中...&nbsp;&nbsp;";
+                        operationHtml += "<a href='/consoles/familyMerge?familyId=" + row.id + "&mergeId=" + row.mergeId + "'>审核补录情况</a>&nbsp;&nbsp;";
+                        // operationHtml += "<a href='javascript:void 0' onclick=\"reject('" + row.mergeId + "')\">关闭补录</a>&nbsp;&nbsp;";
+                        return operationHtml;
                     }else{
-                        var operationHtml = "<a href='/consoles/familyMerge?familyId=" + row.id + "&mergeId=" + row.mergeId + "'>审核</a>&nbsp;&nbsp;";
+                        var operationHtml = "<a href='/consoles/familyMerge?familyId=" + row.id + "&mergeId=" + row.mergeId + "'>审核是否可开放补录</a>&nbsp;&nbsp;";
                         // operationHtml += "<a href='javascript:void 0' onclick=\"reject('" + row.mergeId + "')\">驳回</a>&nbsp;&nbsp;";
                         return operationHtml;
                     }
