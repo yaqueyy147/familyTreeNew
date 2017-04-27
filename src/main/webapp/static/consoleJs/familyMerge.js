@@ -5,7 +5,56 @@ var setting;
 var includeDesc;
 $(function () {
 
+    $("#rejectDialog").dialog({
+        width: 500,
+        height: 300,
+        closed: true,
+        cache: false,
+        modal: true,
+        "buttons":[
+            {
+                "text":"提交",
+                handler:function(){
+                    var formData = {};
+                    var postUrl = projectUrl + "/consoles/rejectInclude";
+                    formData.mergeId = $("#mergeId").val();
+                    formData.rejectDesc = $("#rejectDesc").val();
+                    $.ajax({
+                        type:'post',
+                        url: postUrl,
+                        async:false,
+                        dataType:'json',
+                        data:formData,
+                        async:false,
+                        success:function (data) {
+
+                            alert(data.msg);
+                            if(data.code >= 1){
+                                var params = {};
+                                loadDataGrid(params);
+                                closeDialog("rejectDialog");
+                            }
+                        },
+                        error:function (data) {
+                            alert(JSON.stringify(data));
+                        }
+                    });
+                }
+            },
+            {
+                "text":"取消",
+                handler:function () {
+                    $("#rejectForm").form('clear');
+                    closeDialog("userDialog");
+                }
+            }
+        ]
+    });
+
     setting = {
+        view: {
+            addDiyDom: addDiyDom
+        },
         data: {
             simpleData: {
                 enable:true,
@@ -139,6 +188,9 @@ $(function () {
     });
 
     var primarySetting = {
+        view: {
+            addDiyDom: addDiyDom
+        },
         data: {
             simpleData: {
                 enable:true,
@@ -147,12 +199,13 @@ $(function () {
                 rootPId: ""
             }
         }
+        ,
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            // chkboxType: { "Y": "ps", "N": "ps" }
+        }
         // ,
-        // check: {
-        //     enable: true,
-        //     chkStyle: "checkbox",
-        //     chkboxType: { "Y": "ps", "N": "ps" }
-        // },
         // callback:{
         //     onClick:zTreeOnClick
         // }
@@ -168,8 +221,42 @@ $(function () {
 
 });
 
+function closeDialog(dialogId){
+    $("#" + dialogId).dialog("close");
+}
+
 function initFamilyTree(treeId,setting,zNodes) {
     $.fn.zTree.init($("#" + treeId), setting, zNodes);
+}
+
+function addDiyDom(treeId, treeNode) {
+    var IDMark_A = "_a";
+    var aObj = $("#" + treeNode.tId + IDMark_A);
+
+    var nodeLevel = treeNode.level;
+    var parentId = 0;
+
+    var peopleStatus = treeNode.peopleStatus;
+
+    if(nodeLevel > 0){
+        parentId = treeNode.pId;
+    }
+    var mateName = treeNode.mateName;
+    var editStr = "";
+    if($.trim(mateName).length > 0){
+        var mates = mateName.split(",");
+        editStr += "配偶:";
+        for(var i=0;i<mates.length;i++){
+            var mate = mates[i].split("--");
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+        }
+    }
+
+    if(peopleStatus != 1){
+        editStr += "<a id='diyBtnInclude_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude('" + treeNode.id + "')\">同意收录</a>";
+    }
+
+    aObj.after(editStr);
 }
 
 /**
@@ -203,6 +290,10 @@ function initPeopleData(familyId){
                 node.mateName = mateName;
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
+                node.peopleStatus = ii.peopleStatus;
+                if(ii.peopleStatus == 1){
+                    node.nocheck = true;
+                }
                 zNodes[i] = node;
                 if(genNum < ii.generation){
                     genNum = ii.generation;
@@ -333,4 +424,12 @@ function initParent(familyId,generation){
 
         }
     });
+}
+
+function affirmInclude(peopleId) {
+    alert(peopleId);
+}
+
+function reject(mergeId) {
+    $("#rejectDialog").dialog('open');
 }

@@ -48,7 +48,7 @@ public class TPeople implements Serializable {
     private Date createTime;
     private Integer mateType;
     private Integer peopleType;
-    private Integer isDel;
+    private Integer peopleStatus;
 
     public TPeople() {
     }
@@ -432,13 +432,13 @@ public class TPeople implements Serializable {
     }
 
     @Basic
-    @Column(name = "is_del")
-    public Integer getIsDel() {
-        return isDel;
+    @Column(name = "people_status")
+    public Integer getPeopleStatus() {
+        return peopleStatus;
     }
 
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
+    public void setPeopleStatus(Integer peopleStatus) {
+        this.peopleStatus = peopleStatus;
     }
 
     @Override
@@ -485,7 +485,7 @@ public class TPeople implements Serializable {
         if (createTime != null ? !createTime.equals(tPeople.createTime) : tPeople.createTime != null) return false;
         if (mateType != null ? !mateType.equals(tPeople.mateType) : tPeople.mateType != null) return false;
         if (peopleType != null ? !peopleType.equals(tPeople.peopleType) : tPeople.peopleType != null) return false;
-        if (isDel != null ? !isDel.equals(tPeople.isDel) : tPeople.isDel != null) return false;
+        if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null) return false;
         return true;
     }
 
@@ -525,7 +525,7 @@ public class TPeople implements Serializable {
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
         result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
-        result = 31 * result + (isDel != null ? isDel.hashCode() : 0);
+        result = 31 * result + (peopleStatus != null ? peopleStatus.hashCode() : 0);
         return result;
     }
 

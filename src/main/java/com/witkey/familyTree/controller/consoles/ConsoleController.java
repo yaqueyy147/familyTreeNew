@@ -408,7 +408,7 @@ public class ConsoleController {
         }
 
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
-        tPeople.setIsDel(1);
+        tPeople.setPeopleStatus(9);
 //        int i = familyService.deletePeople(peopleId);
         int i = 0;
         familyService.updatePeople(tPeople);

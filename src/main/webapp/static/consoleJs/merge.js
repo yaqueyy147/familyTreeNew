@@ -71,7 +71,7 @@ function loadDataGrid(params) {
             {field:"ck",checkbox:"true"},
             {field:"id",title:"族谱Id",width:"80",hidden:true},
             {field:"mergeId",title:"申请收录Id",width:"80",hidden:true},
-            {field:"family_name",title:"族谱名称",width:"150"},
+            {field:"family_name",title:"族谱名称",width:"200"},
             {field:"genNum",title:"家族代数",width:"80"},
             {field:"peopleCount",title:"家族人数",width:"80"},
             {field:"apply_man",title:"申请人",width:"100"},
@@ -92,8 +92,8 @@ function loadDataGrid(params) {
                     } else if(row.mergeState == 3){
                         return "已驳回";
                     }else{
-                        var operationHtml = "<a href='/consoles/familyMerge?familyId=" + row.id + "'>收录</a>&nbsp;&nbsp;";
-                        operationHtml += "<a href='javascript:void 0' onclick=\"reject('" + row.mergeId + "')\">驳回</a>&nbsp;&nbsp;";
+                        var operationHtml = "<a href='/consoles/familyMerge?familyId=" + row.id + "&mergeId=" + row.mergeId + "'>审核</a>&nbsp;&nbsp;";
+                        // operationHtml += "<a href='javascript:void 0' onclick=\"reject('" + row.mergeId + "')\">驳回</a>&nbsp;&nbsp;";
                         return operationHtml;
                     }
 

@@ -42,6 +42,7 @@ public class MergeController {
     public ModelAndView familyMerge(Model model,@RequestParam Map<String,Object> params){
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(params.get("familyId")));
         model.addAttribute("primaryFamily",tFamily);
+        model.addAttribute("mergeId",params.get("mergeId"));
         return new ModelAndView("/consoles/familyMerge");
     }
 

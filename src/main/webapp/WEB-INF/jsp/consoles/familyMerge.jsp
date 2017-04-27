@@ -22,6 +22,7 @@
 </head>
 <body>
 <div class="easyui-layout" style="width:100%;height:100%;">
+
     <%--<div data-options="region:'center'" style="width:100%;height:5%">--%>
         <%--<button type="button" id="localBack" class="btn btn-primary">返回</button>--%>
     <%--</div>--%>
@@ -274,6 +275,23 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
+<div id="rejectDialog" class="easyui-dialog" title="驳回" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
+    <div style="padding:10px 40px 20px 40px">
+        <form id="rejectForm" method="post">
+            <input class="easyui-validatebox" type="hidden" id="mergeId" name="id" value="${mergeId}" />
+            <table cellpadding="5">
+                <tr>
+                    <td>驳回说明:</td>
+                    <td>
+                        <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
+                        <textarea class="text-area easyui-validatebox" id="rejectDesc" name="rejectDesc" rows="3" cols="24"></textarea>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
     </div>
 </div>
 <%@include file="common/springUrl.jsp"%>

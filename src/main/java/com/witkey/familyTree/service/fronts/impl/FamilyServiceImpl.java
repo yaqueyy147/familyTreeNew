@@ -286,7 +286,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getPeopleList(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select * from t_people where is_del<>1 and family_id=?";
+        String sql = "select * from t_people where people_status<>9 and family_id=?";
 
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
@@ -370,7 +370,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getMateList(int peopleId) {
 
         StringBuffer sql = new StringBuffer("select * from t_people where id in(");
-        sql.append(" select mate_id from t_mate where people_id=?) and state<>9");
+        sql.append(" select mate_id from t_mate where people_id=?) and people_status<>9");
 
         List<TPeople> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TPeople>(TPeople.class),peopleId);
 
