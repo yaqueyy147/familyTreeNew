@@ -53,6 +53,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>地址:</td>
+                    <td colspan="3">
+                        <div data-toggle="distpicker">
+                            <select id="province" name="province" data-province="---- 选择省 ----"></select>
+                            <select id="city" name="city" data-city="---- 选择市 ----"></select>
+                            <select id="district" name="district" data-district="---- 选择区 ----"></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td>微信:</td>
                     <td>
                         <input class="easyui-validatebox" type="text" id="wechart" name="wechart" />
@@ -60,8 +70,8 @@
                     <td>状态:</td>
                     <td>
                         <select id="state" name="state" class="easyui-combobox" style="width:150px">
-                            <option value="1">可用</option>
-                            <option value="9">不可用</option>
+                            <option value="1" selected>可用</option>
+                            <option value="0">不可用</option>
                         </select>
                     </td>
                 </tr>
@@ -123,6 +133,9 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
+
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/userSetting.js"></script>

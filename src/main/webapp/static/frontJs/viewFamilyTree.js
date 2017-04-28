@@ -61,6 +61,9 @@ $(function () {
 
     $("#savePeople").click(function () {
 
+        $(this).text("处理中，请稍后...");
+        $(this).attr('disabled',"true");
+
         if($.trim($("#generation").val()).length <= 0){
             alert("请输入是第几代人");
             return;
@@ -90,6 +93,8 @@ $(function () {
                 initFamilyTree(zNodes,setting);
                 $("#addModal").modal('hide');
                 $("#peopleForm")[0].reset();
+                $("#savePeople").text("保存");
+                $("#savePeople").removeAttr("disabled");
             },
             error:function (data) {
                 alert(JSON.stringify(data));

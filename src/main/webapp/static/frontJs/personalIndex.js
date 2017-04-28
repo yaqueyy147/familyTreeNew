@@ -21,7 +21,8 @@ $(function () {
     });
 
     $("#saveFamily").click(function () {
-
+        $(this).text("处理中，请稍后...");
+        $(this).attr('disabled',"true");
         if($.trim($("#familyName")).length <= 0){
             alert("请输入家族名称！");
             return;
@@ -77,6 +78,8 @@ $(function () {
                     imgHtml += "</div></div></div>";
                     $("#familyShow").append(imgHtml);
                     $("#addFamilyModal").modal('hide');
+                    $("#saveFamily").text("保存");
+                    $("#saveFamily").removeAttr("disabled");
                 }
                 alert(data.msg);
             },
