@@ -4,6 +4,7 @@
 $(function () {
     $("#auditDialog").dialog({
         "closed":true,
+        modal: true,
         "buttons":[
             {
                 "text":"提交",
@@ -44,6 +45,8 @@ $(function () {
         width: 500,
         height: 500,
         "closed":true,
+        resizable:true,
+        modal:true,
         "buttons":[
             {
                 "text":"关闭",
@@ -175,7 +178,7 @@ function formatVolunteerData(data){
 }
 
 function viewIdCard(idCardUrl){
-    var idCard = "<img src=\"" + idCardUrl + "\" width=\"400px\" height=\"400px\" />";
+    var idCard = "<img src=\"" + idCardUrl + "\" style=\"width:100%;height:100%\"/>";
     idCard += "<span id=\"result_img1_wm\" style=\"position: absolute; top: 200px; left: 130px;color:#ff0000;font-size: 18px\">本图片仅用于注册何氏族谱网</span>";
     $("#idCardDialog").html(idCard);
     $("#idCardDialog").dialog("open");

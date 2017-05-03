@@ -7,6 +7,7 @@ $(function () {
     $("#province4Search").change();
     $("#moneyListDialog").dialog({
         "closed":true,
+        modal:true,
         "buttons":[
             {
                 "text":"关闭",
@@ -20,6 +21,8 @@ $(function () {
         width: 660,
         height: 500,
         "closed":true,
+        modal:true,
+        resizable:true,
         "buttons":[
             {
                 "text":"关闭",
@@ -191,7 +194,7 @@ function auditCompany(companyId,state) {
 }
 
 function viewLicense(licenseUrl){
-    var licenseImg = "<img src=\"" + licenseUrl + "\" width=\"600px\" height=\"600px\" />";
+    var licenseImg = "<img src=\"" + licenseUrl + "\" style=\"width:100%;height:100%\" />";
     // licenseImg += "<span id=\"result_img1_wm\" style=\"display: none;position: absolute; top: 300px; left: 0;\">本图片仅用于注册何氏族谱网</span>";
     $("#licenseDialog").html(licenseImg);
     $("#licenseDialog").dialog("open");

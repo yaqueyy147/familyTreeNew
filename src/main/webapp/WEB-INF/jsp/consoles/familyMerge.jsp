@@ -295,7 +295,7 @@
                     <td>驳回说明:</td>
                     <td>
                         <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
-                        <textarea class="text-area easyui-validatebox" id="rejectDesc" name="rejectDesc" rows="3" cols="24"></textarea>
+                        <textarea class="text-area easyui-validatebox" id="rejectDesc" name="rejectDesc" rows="3" cols="50"></textarea>
                     </td>
                 </tr>
 
