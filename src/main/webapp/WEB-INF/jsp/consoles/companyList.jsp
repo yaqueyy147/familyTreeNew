@@ -62,6 +62,8 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
 </div>
 <div id="moneyListDialog" class="easyui-dialog" title="充值详情" style="width:600px;height:400px;padding:10px;top: 15%;left: 20%;">
+    <input type="hidden" id="companyId" value="" />
+    <input type="hidden" id="companyName" value="" />
     <table id="moneyTable" class="easyui-datagrid" style="width:100%;height:100%"
            title="充值列表" toolbar="#tb2" data-options="
 				rownumbers:true,
@@ -70,10 +72,10 @@
 				pagination:true,
 				pageSize:10">
         <thead>
-            <th field="payMoney" width="90" editor="{type:'numberbox'}">充值金额</th>
+            <!-- <th field="payMoney" width="90" editor="{type:'numberbox'}">充值金额</th>
             <th field="payDesc" width="150" editor="{type:'textbox'}">充值说明</th>
             <th field="payTime" width="150">充值时间</th>
-            <th field="payMan" width="100">充值人</th>
+            <th field="payMan" width="100">充值人</th> -->
         </thead>
     </table>
 </div>

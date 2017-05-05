@@ -78,4 +78,13 @@ public interface FamilyService {
 
     //查询收录情况
     public List<TFamilyMerge> getMergeList(Map<String,Object> params);
+    
+    //添加充值
+    public int addMoney(TUserMoney tUserMoney);
+    
+	//根据条件查询个人充值情况
+	public List<TUserMoney> getUserMoney(Map<String,Object> params);
+	
+	//获取个人充值总数
+	public double getTotalUserMoney(int userId);
 }

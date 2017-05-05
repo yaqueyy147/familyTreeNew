@@ -46,19 +46,51 @@ $(function () {
 
     $("#addMoney").click(function () {
         if (endEditing()){
-            $('#moneyTable').datagrid('appendRow', {});
+            $('#moneyTable').datagrid('insertRow', {index: 0,row:{}});
             var rows = $('#moneyTable').datagrid('getRows');
-            editIndex = rows.length - 1;
+            editIndex = 0;
             $('#moneyTable').datagrid('selectRow', editIndex);
             $('#moneyTable').datagrid('beginEdit',editIndex);
         }
     });
 
     $("#affirmAdd").click(function () {
-        var selectRows = $("#moneyTable").datagrid('getSelections');
-        alert(JSON.stringify(selectRows));
-        // $('#moneyTable').datagrid('acceptChanges');
+    	if(editIndex != undefined){
+    		$("#moneyTable").datagrid('endEdit',editIndex);
+            var moneyInfo = $("#moneyTable").datagrid('getSelected');
+            var companyId = $("#companyId").val();
+            var companyName = $("#companyName").val();
+            moneyInfo.companyId = companyId;
+            moneyInfo.companyName = companyName;
+            moneyInfo.type = 2;
+            $.ajax({
+            	type:'post',
+                url: projectUrl + "/company/addMoney",
+                dataType:'json',
+                data:moneyInfo,
+                success:function (data) {
 
+                    alert(data.msg);
+                    if(data.code >= 1){
+                    	showMoneyList(companyId,companyName);
+                    	
+                    	var params = {};
+                        params.companyName = $("#companyName4Search").val();
+                        params.province = $("#province4Search").val();
+                        params.city = $("#city4Search").val();
+                        params.district = $("#district4Search").val();
+                        loadCompanyData(params);
+                        editIndex = undefined;
+                    }
+                },
+                error:function (data) {
+                	$('#moneyTable').datagrid('selectRow', editIndex);
+                    $('#moneyTable').datagrid('beginEdit',editIndex);
+                    alert(JSON.stringify(data));
+                }
+            });
+    	}
+        
     });
 
     $("#cancelAdd").click(function () {
@@ -94,7 +126,7 @@ function loadCompanyData(params) {
             {field:"totalMoney",title:"赞助金额",width:"80",
                 formatter: function(value,row,index){
 
-                    return "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + row.id + "')\">" + value + "</a>";
+                    return "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + row.id + "','" + row.company_name + "')\">" + value + "</a>";
                 }},
             {field:"company_mobile_phone",title:"联系电话",width:"100"},
             {field:"company_addr",title:"公司地址",width:"200",
@@ -166,9 +198,38 @@ function loadCompanyData(params) {
     });
 }
 
-function showMoneyList(companyId){
-    var params = {"companyId":companyId};
-    $("#moneyTable").datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData("/company/moneyList",params).dataList);
+function showMoneyList(companyId,companyName){
+    var params = {"companyId":companyId,"type":2};
+    var moneyList = getData("/company/moneyList",params).dataList;
+    $("#moneyTable").datagrid({
+    	data:moneyList,
+    	columns:[[
+    		{field:"payMoney",title:"充值金额",width:"90",
+    			editor:{type:'numberbox'},
+    		},
+    		{field:"payDesc",title:"充值说明",width:"150",
+    			editor:{type:'textbox'},
+    			formatter: function(value,row,index){
+                    if($.trim(value).length > 0){
+                        return '<span title='+ value + '>'+value+'</span>';
+                    }
+                    return '';
+                }
+    		},
+    		{field:"payTime",title:"充值时间",width:"150",
+    			formatter: function(value,row,index){
+                    if($.trim(value).length <= 0){
+                        return "";
+                    }
+                    return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
+                }
+    		},
+    		{field:"payMan",title:"充值人",width:"100"}
+    	]],
+    	loadFilter:pagerFilter
+    });
+    $("#companyId").val(companyId);
+    $("#companyName").val(companyName);
     $("#moneyListDialog").dialog('open');
 }
 

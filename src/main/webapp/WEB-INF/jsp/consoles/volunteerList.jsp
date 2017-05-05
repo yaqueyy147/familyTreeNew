@@ -34,6 +34,30 @@
 <div id="idCardDialog" class="easyui-dialog" title="身份证照展示" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;text-align: center">
 
 </div>
+
+<div id="moneyListDialog" class="easyui-dialog" title="充值详情" style="width:600px;height:400px;padding:10px;top: 15%;left: 20%;">
+    <input type="hidden" id="userId" value="" />
+    <input type="hidden" id="userName" value="" />
+    <table id="moneyTable" class="easyui-datagrid" style="width:100%;height:100%"
+           title="充值列表" toolbar="#tb2" data-options="
+				rownumbers:true,
+				singleSelect:true,
+				autoRowHeight:false,
+				pagination:true,
+				pageSize:10">
+        <thead>
+            <!-- <th field="payMoney" width="90" editor="{type:'numberbox'}">充值金额</th>
+            <th field="payDesc" width="150" editor="{type:'textbox'}">充值说明</th>
+            <th field="payTime" width="150">充值时间</th>
+            <th field="payMan" width="100">充值人</th> -->
+        </thead>
+    </table>
+</div>
+<div id="tb2">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="addMoney">添加充值</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" id="affirmAdd">确认添加</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" id="cancelAdd">取消添加</a>
+</div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditVolunteer.js"></script>

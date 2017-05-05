@@ -5,6 +5,7 @@ import com.witkey.familyTree.dao.fronts.*;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
+import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,6 +14,8 @@ import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +119,9 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Autowired
     private CompanyService companyService;
+    
+    @Autowired
+    private FamilyService familyService;
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -160,6 +166,17 @@ public class ConsoleServiceImpl implements ConsoleService {
         }
 //        List<TUser1> list = tUser1Dao.find(params);
         List<TUser1> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUser1>(TUser1.class));
+        
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        
+        for (TUser1 tUser1 : list) {
+			int userId = tUser1.getId();
+			double total = familyService.getTotalUserMoney(userId);
+			Map<String,Object> temp = CommonUtil.bean2Map(tUser1);
+			temp.put("totalMoney", total);
+			result.add(temp);
+			tUser1.setTotalMoney(total);
+		}
         return list;
     }
 

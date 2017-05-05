@@ -39,6 +39,8 @@ public class TUser1 implements Serializable {
     private Integer isFront;
     private Integer userFrom;
 
+    private Double totalMoney;
+    
     public TUser1() {
     }
 
@@ -293,6 +295,14 @@ public class TUser1 implements Serializable {
         this.userFrom = userFrom;
     }
 
+    public Double getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(Double totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -325,6 +335,7 @@ public class TUser1 implements Serializable {
         if (isFront != null ? !isFront.equals(tUser1.isFront) : tUser1.isFront != null) return false;
         if (userFrom != null ? !userFrom.equals(tUser1.userFrom) : tUser1.userFrom != null) return false;
 
+        if (totalMoney != null ? !totalMoney.equals(tUser1.totalMoney) : tUser1.totalMoney != null) return false;
         return true;
     }
 
@@ -355,6 +366,8 @@ public class TUser1 implements Serializable {
         result = 31 * result + (isFront != null ? isFront.hashCode() : 0);
 
         result = 31 * result + (userFrom != null ? userFrom.hashCode() : 0);
+        
+        result = 31 * result + (totalMoney != null ? totalMoney.hashCode() : 0);
         return result;
     }
 

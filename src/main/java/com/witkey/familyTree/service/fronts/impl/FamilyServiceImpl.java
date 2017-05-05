@@ -88,6 +88,13 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Resource
+    private TUserMoneyDao tUserMoneyDao;
+    
+    public void settUserMoneyDao(TUserMoneyDao tUserMoneyDao) {
+		this.tUserMoneyDao = tUserMoneyDao;
+	}
+
+	@Resource
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -634,4 +641,47 @@ public class FamilyServiceImpl implements FamilyService {
         return list;
     }
 
+	@Override
+	public int addMoney(TUserMoney tUserMoney) {
+
+		int i = CommonUtil.parseInt(tUserMoneyDao.create(tUserMoney));
+		
+		//修改积分
+        TUserPoints tUserPoints = new TUserPoints();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", tUserMoney.getUserId());
+        List<TUserPoints> tUserPointsList = tUserPointsDao.find(params);
+        if(tUserPointsList != null && tUserPointsList.size() > 0){
+        	tUserPoints = tUserPointsList.get(0);
+        	tUserPoints.setTotalMoney(tUserMoney.getPayMoney() + tUserPoints.getTotalMoney());
+        	tUserPointsDao.save(tUserPoints);
+        }else{
+        	tUserPoints = new TUserPoints();
+        	tUserPoints.setUserId(tUserMoney.getUserId());
+        	tUserPoints.setTotalMoney(tUserMoney.getPayMoney());
+        	tUserPointsDao.create(tUserPoints);
+        }
+		 return i;
+	}
+	
+	@Override
+    public List<TUserMoney> getUserMoney(Map<String, Object> params) {
+        Map<String, Object> paramss = new HashMap<String, Object>();
+        paramss.put("userId",CommonUtil.parseInt(params.get("userId")));
+        List<TUserMoney> list = tUserMoneyDao.find(paramss);
+        return list;
+    }
+
+	@Override
+    public double getTotalUserMoney(int userId) {
+        String sql = "select user_id, sum(pay_money) totalMoney from t_user_money where user_id=? group by user_id";
+        List<Map<String,Object>> listMoney = jdbcTemplate.queryForList(sql,userId);
+        double total = 0.0;
+        if(listMoney != null && listMoney.size() > 0){
+            total = CommonUtil.parseDouble(listMoney.get(0).get("totalMoney"));
+        }
+
+        return total;
+    }
+	
 }

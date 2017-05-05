@@ -1,6 +1,7 @@
 /**
  * Created by suyx on 2017/1/12.
  */
+var editIndex = undefined;
 $(function () {
     $("#auditDialog").dialog({
         "closed":true,
@@ -58,6 +59,72 @@ $(function () {
         ]
     });
 
+    $("#moneyListDialog").dialog({
+        "closed":true,
+        modal:true,
+        "buttons":[
+            {
+                "text":"关闭",
+                handler:function () {
+                    closeDialog("moneyListDialog");
+                }
+            }
+        ]
+    });
+    
+    $("#addMoney").click(function () {
+        if (endEditing()){
+            $('#moneyTable').datagrid('insertRow', {index: 0,row:{}});
+            var rows = $('#moneyTable').datagrid('getRows');
+            editIndex = 0;
+            $('#moneyTable').datagrid('selectRow', editIndex);
+            $('#moneyTable').datagrid('beginEdit',editIndex);
+        }
+    });
+
+    $("#affirmAdd").click(function () {
+    	if(editIndex != undefined){
+    		$("#moneyTable").datagrid('endEdit',editIndex);
+            var moneyInfo = $("#moneyTable").datagrid('getSelected');
+            var userId = $("#userId").val();
+            var userName = $("#userName").val();
+            moneyInfo.userId = userId;
+            moneyInfo.userName = userName;
+            moneyInfo.type = 1;
+            $.ajax({
+            	type:'post',
+                url: projectUrl + "/company/addMoney",
+                dataType:'json',
+                data:moneyInfo,
+                success:function (data) {
+
+                    alert(data.msg);
+                    if(data.code >= 1){
+                    	showMoneyList(userId,userId);
+                    	
+                    	var params = {};
+                        loadVolunteerData(params);
+                        editIndex = undefined;
+                    }
+                },
+                error:function (data) {
+                	$('#moneyTable').datagrid('selectRow', editIndex);
+                    $('#moneyTable').datagrid('beginEdit',editIndex);
+                    alert(JSON.stringify(data));
+                }
+            });
+    	}
+        
+    });
+
+    $("#cancelAdd").click(function () {
+        if (editIndex == undefined){return;}
+        $('#moneyTable').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+
+    });
+    
     var params = {};
     loadVolunteerData(params);
 
@@ -79,6 +146,11 @@ function loadVolunteerData(params) {
         columns:[[
             {field:"loginName",title:"申请人账号",width:"80"},
             {field:"userName",title:"姓名",width:"80"},
+            {field:"totalMoney",title:"充值金额",width:"80",
+                formatter: function(value,row,index){
+
+                    return "<a href=\"javascript:void 0\" onclick=\"showMoneyList('" + row.id + "','" + row.userName + "')\">" + value + "</a>";
+                }},
             {field:"idCard",title:"身份证号",width:"150"},
             {field:"phone",title:"联系电话",width:"120"},
             {field:"idCardPhoto",title:"身份证图片",width:"120",
@@ -182,4 +254,49 @@ function viewIdCard(idCardUrl){
     idCard += "<span id=\"result_img1_wm\" style=\"position: absolute; top: 200px; left: 130px;color:#ff0000;font-size: 18px\">本图片仅用于注册何氏族谱网</span>";
     $("#idCardDialog").html(idCard);
     $("#idCardDialog").dialog("open");
+}
+
+
+function showMoneyList(userId,userName){
+    var params = {"userId":userId,"type":1};
+    var moneyList = getData("/company/moneyList",params).dataList;
+    $("#moneyTable").datagrid({
+    	data:moneyList,
+    	columns:[[
+    		{field:"payMoney",title:"充值金额",width:"90",
+    			editor:{type:'numberbox'},
+    		},
+    		{field:"payDesc",title:"充值说明",width:"150",
+    			editor:{type:'textbox'},
+    			formatter: function(value,row,index){
+                    if($.trim(value).length > 0){
+                        return '<span title='+ value + '>'+value+'</span>';
+                    }
+                    return '';
+                }
+    		},
+    		{field:"payTime",title:"充值时间",width:"150",
+    			formatter: function(value,row,index){
+                    if($.trim(value).length <= 0){
+                        return "";
+                    }
+                    return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
+                }
+    		},
+    		{field:"payMan",title:"充值人",width:"100"}
+    	]],
+    	loadFilter:pagerFilter
+    });
+    $("#userId").val(userId);
+    $("#userName").val(userName);
+    $("#moneyListDialog").dialog('open');
+}
+
+function endEditing(){
+    // alert(editIndex);
+    if (editIndex == undefined){
+        return true;
+    }else {
+        return false;
+    }
 }

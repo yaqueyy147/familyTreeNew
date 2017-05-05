@@ -3,9 +3,11 @@ package com.witkey.familyTree.service.fronts.impl;
 import com.witkey.familyTree.dao.consoles.TLogDao;
 import com.witkey.familyTree.dao.fronts.TCompanyMoneyDao;
 import com.witkey.familyTree.dao.fronts.TCompanyPhotoDao;
+import com.witkey.familyTree.dao.fronts.TCompanyPointsDao;
 import com.witkey.familyTree.dao.fronts.TCompanySponsorDao;
 import com.witkey.familyTree.domain.TCompanyMoney;
 import com.witkey.familyTree.domain.TCompanyPhoto;
+import com.witkey.familyTree.domain.TCompanyPoints;
 import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
@@ -49,6 +51,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Resource
+    private TCompanyPointsDao tCompanyPointsDao;
+    
+    public void settCompanyPointsDao(TCompanyPointsDao tCompanyPointsDao) {
+		this.tCompanyPointsDao = tCompanyPointsDao;
+	}
+
+	@Resource
     private TLogDao tLogDao;
 
     public void settLogDao(TLogDao tLogDao) {
@@ -80,7 +89,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<TCompanyMoney> getCompanyMoney(Map<String, Object> params) {
-        params.put("companyId",CommonUtil.parseInt(params.get("companyId")));
+        Map<String, Object> paramss = new HashMap<String, Object>();
+        paramss.put("companyId",CommonUtil.parseInt(params.get("companyId")));
         List<TCompanyMoney> list = tCompanyMoneyDao.find(params);
         return list;
     }
@@ -123,8 +133,25 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public int addMoney(TCompanyMoney tCompanyMoney) {
+    	//添加充值
         int i = CommonUtil.parseInt(tCompanyMoneyDao.create(tCompanyMoney));
 
+        //修改积分
+        TCompanyPoints tCompanyPoints = new TCompanyPoints();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("companyId", tCompanyMoney.getCompanyId());
+        List<TCompanyPoints> tCompanyPointsList = tCompanyPointsDao.find(params);
+        if(tCompanyPointsList != null && tCompanyPointsList.size() > 0){
+        	tCompanyPoints = tCompanyPointsList.get(0);
+        	tCompanyPoints.setTotalMoney(tCompanyMoney.getPayMoney() + tCompanyPoints.getTotalMoney());
+        	tCompanyPointsDao.save(tCompanyPoints);
+        }else{
+        	tCompanyPoints = new TCompanyPoints();
+        	tCompanyPoints.setCompanyId(tCompanyMoney.getCompanyId());
+        	tCompanyPoints.setTotalMoney(tCompanyMoney.getPayMoney());
+        	tCompanyPointsDao.create(tCompanyPoints);
+        }
+        
         return i;
     }
 

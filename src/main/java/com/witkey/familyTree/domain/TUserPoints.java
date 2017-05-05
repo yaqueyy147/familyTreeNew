@@ -19,6 +19,7 @@ public class TUserPoints implements Serializable {
     private int userType;
     private String remark;
     private int inputCount;
+    private Double totalMoney;
 
     public TUserPoints() {
     }
@@ -95,7 +96,17 @@ public class TUserPoints implements Serializable {
         this.inputCount = inputCount;
     }
 
-    @Override
+    @Basic
+    @Column(name = "total_money")
+    public Double getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(Double totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -109,6 +120,8 @@ public class TUserPoints implements Serializable {
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
 
         if (inputCount != that.inputCount) return false;
+        
+        if (totalMoney != null ? !totalMoney.equals(that.totalMoney) : that.totalMoney != null) return false;
         return true;
     }
 
@@ -120,6 +133,8 @@ public class TUserPoints implements Serializable {
         result = 31 * result + userType;
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + inputCount;
+        
+        result = 31 * result + (totalMoney != null ? totalMoney.hashCode() : 0);;
         return result;
     }
 

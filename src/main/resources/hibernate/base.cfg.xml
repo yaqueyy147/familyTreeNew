@@ -28,5 +28,6 @@
         <mapping class="com.witkey.familyTree.domain.TFamilyMerge"/>
             <mapping class="com.witkey.familyTree.domain.TLog"/>
             <mapping class="com.witkey.familyTree.domain.TUser1"/>
+            <mapping class="com.witkey.familyTree.domain.TUserMoney"/>
     </session-factory>
 </hibernate-configuration>
