@@ -229,6 +229,113 @@ public class FamilyServiceImpl implements FamilyService {
         return list;
     }
 
+    /**
+     * 根据登录人查询创建的族谱list
+     * @return
+     */
+    @Override
+    public List<TFamily> getFamilyList1(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+        String sql = "select * from t_family where state<>9 ";
+        sql += " and (((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) and state=1) or state=5)";
+        if(!CommonUtil.isBlank(params)){
+//            if(!CommonUtil.isBlank(params.get("userName"))){
+////                filter.put("createMan",params.get("userName"));
+//                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+//            }
+            if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
+//                filter.put("familyArea",params.get("familyArea"));
+                sql += " and family_area='" + params.get("familyArea") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("province"))){
+//                filter.put("province",params.get("province"));
+                sql += " and province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+//                filter.put("city",params.get("city"));
+                sql += " and city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+//                filter.put("district",params.get("district"));
+                sql += " and district='" + params.get("district") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("familyName"))){
+//                filter.put("familyName","%" + params.get("familyName") + "%");
+                sql += " and family_name like '%" + params.get("familyName") + "%'";
+            }
+//            if(!CommonUtil.isBlank(params.get("state"))){
+//                if(!CommonUtil.isBlank(params.get("tt")) && CommonUtil.parseInt(params.get("tt")) == 1){
+//                    sql += " and (state='" + params.get("state") + "' or state=5)";
+//                }else{
+//                    sql += " and state='" + params.get("state") + "'";
+//                }
+//
+//            }
+        }
+
+//        List<TFamily> list = tFamilyDao.find(filter);
+
+        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
+
+        for (TFamily tFamily : list) {
+            String photoUrl = tFamily.getPhotoUrl();
+            if(CommonUtil.isBlank(photoUrl)){
+                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            }
+//            else if(!CommonUtil.isFile(photoUrl)){
+//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+//            }
+        }
+
+        return list;
+    }
+    
+    /**
+     * 前台首页查询族谱
+     * @return
+     */
+    @Override
+    public List<TFamily> getFamilyList2(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+        String sql = "select * from t_family where state<>9 ";
+        sql += " and (state=1 or state=5)";
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
+                sql += " and family_area='" + params.get("familyArea") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and district='" + params.get("district") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("familyName"))){
+                sql += " and family_name like '%" + params.get("familyName") + "%'";
+            }
+        }
+
+//        List<TFamily> list = tFamilyDao.find(filter);
+
+        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
+
+        for (TFamily tFamily : list) {
+            String photoUrl = tFamily.getPhotoUrl();
+            if(CommonUtil.isBlank(photoUrl)){
+                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            }
+//            else if(!CommonUtil.isFile(photoUrl)){
+//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+//            }
+        }
+
+        return list;
+    }
+    
     @Override
     public List<TFamily> getIncludeFamilyList(Map<String, Object> params) {
         String sql = "select id from t_family where state=2 ";

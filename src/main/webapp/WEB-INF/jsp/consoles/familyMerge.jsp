@@ -35,7 +35,7 @@
                     <span style="margin-left: 20px">家族代数：&nbsp;<span id="familyGenNum">0</span>&nbsp;代</span>
                     <button type="button" id="localBack" class="easyui-linkbutton" style="margin-left: 20px">返回</button>
                     <c:choose>
-                        <c:when test="${merge.mergeState == 2}">
+                        <c:when test="${merge.mergeState == 2 || merge.mergeState == 0}">
                             <button type="button" id="acceptIn" class="easyui-linkbutton" style="margin-left: 20px">同意开放补录</button>
                             <button type="button" id="reject" class="easyui-linkbutton" style="margin-left: 20px">驳回</button>
                         </c:when>

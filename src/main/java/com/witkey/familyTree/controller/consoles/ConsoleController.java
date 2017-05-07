@@ -73,7 +73,7 @@ public class ConsoleController {
     public Map<String,Object> getUserFrontList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
         params.put("userFrom",1);
-        List<TUser1> list = consoleService.getUser1List(params);
+        List<Map<String,Object>> list = consoleService.getUser1List(params);
         result.put("dataList",list);
         return result;
     }
@@ -452,7 +452,7 @@ public class ConsoleController {
     public Map<String,Object> getUserList(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
 //        List<TUserBase> list = consoleService.getUserBase(params);
-        List<TUser1> list = consoleService.getUser1List(params);
+        List<Map<String,Object>> list = consoleService.getUser1List(params);
         result.put("dataList",list);
         return result;
     }
@@ -523,7 +523,7 @@ public class ConsoleController {
         if(tUser1.getId() == 0){//新建用户，需要设置加密密码
             //检查用户名是否已经存在了
             params.put("loginName",tUser1.getLoginName());
-            List<TUser1> list = consoleService.getUser1List(params);
+            List<Map<String,Object>> list = consoleService.getUser1List(params);
             if(list != null && list.size() > 0){
                 result.put("msg","该用户已存在!");
                 result.put("tUserBase",tUser1);
@@ -538,10 +538,10 @@ public class ConsoleController {
         }else{//修改用户，不修改密码
             params = new HashMap<String,Object>();
             params.put("id",tUser1.getId());
-            List<TUser1> list = consoleService.getUser1List(params);
-            tUser1.setCreateMan(list.get(0).getCreateMan());
-            tUser1.setCreateTime(list.get(0).getCreateTime());
-            tUser1.setUserFrom(list.get(0).getUserFrom());
+            List<Map<String,Object>> list = consoleService.getUser1List(params);
+            tUser1.setCreateMan(list.get(0).get("createMan") + "");
+            tUser1.setCreateTime(list.get(0).get("createTime") + "");
+            tUser1.setUserFrom(CommonUtil.parseInt(list.get(0).get("userFrom")));
 //            i = consoleService.saveUserBase(tUserBase);
         }
         i = consoleService.saveUser1(tUser1);
@@ -606,12 +606,12 @@ public class ConsoleController {
 
         condition.put("id",params.get("userId"));
 
-        List<TUser1> list = consoleService.getUser1List(condition);
+        List<Map<String,Object>> list = consoleService.getUser1List(condition);
 
         String oldPassword = CommonUtil.string2MD5(params.get("oldPassword") + "");
 
         if(!CommonUtil.isBlank(oldPassword)){
-            if(oldPassword.equals(list.get(0).getPassword())){
+            if(oldPassword.equals(list.get(0).get("password"))){
                 result.put("msg","原密码输入有误!");
                 result.put("code",-2);
                 return result;

@@ -148,7 +148,7 @@ public class ConsoleServiceImpl implements ConsoleService {
     }
 
     @Override
-    public List<TUser1> getUser1List(Map<String, Object> params) {
+    public List<Map<String, Object>> getUser1List(Map<String, Object> params) {
 
         String sql = "select * from t_user_1 where state<>9";
 
@@ -175,9 +175,8 @@ public class ConsoleServiceImpl implements ConsoleService {
 			Map<String,Object> temp = CommonUtil.bean2Map(tUser1);
 			temp.put("totalMoney", total);
 			result.add(temp);
-			tUser1.setTotalMoney(total);
 		}
-        return list;
+        return result;
     }
 
     @Override

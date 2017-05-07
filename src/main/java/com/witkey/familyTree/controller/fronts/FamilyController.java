@@ -62,12 +62,12 @@ public class FamilyController {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userName",jsonUser.get("userName"));
         params.put("userId",jsonUser.get("id"));
-        params.put("state",1);
-        params.put("tt",1);
+//        params.put("state",1);
+//        params.put("tt",1);
         params.put("province",jsonUser.get("province"));
         params.put("city",jsonUser.get("city"));
         params.put("district",jsonUser.get("district"));
-        List<TFamily> list = familyService.getFamilyList(params);
+        List<TFamily> list = familyService.getFamilyList1(params);
 
         //查询被收录的族谱
 //        params.put("userName",jsonUser.get("userName"));

@@ -33,6 +33,10 @@ public interface FamilyService {
 
     //查询family
     public List<TFamily> getFamilyList(Map<String,Object> params);
+    //查询family
+    public List<TFamily> getFamilyList1(Map<String,Object> params);
+    //查询family
+    public List<TFamily> getFamilyList2(Map<String,Object> params);
 
     //查询被收录的族谱
     public List<TFamily> getIncludeFamilyList(Map<String,Object> params);

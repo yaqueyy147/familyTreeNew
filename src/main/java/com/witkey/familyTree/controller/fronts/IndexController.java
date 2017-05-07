@@ -96,7 +96,7 @@ public class IndexController {
 //        model.addAttribute("familyList",list);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("state",5);
-        List<TFamily> list = familyService.getFamilyList(params);
+        List<TFamily> list = familyService.getFamilyList2(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
             int peopleCount = 0;
