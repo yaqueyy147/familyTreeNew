@@ -236,8 +236,8 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TFamily> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where state<>9 ";
-        sql += " and (((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) and state=1) or state=5)";
+        String sql = "select * from t_family where state<>9 and state=1";
+        sql += " and ((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))) or state=5)";
         if(!CommonUtil.isBlank(params)){
 //            if(!CommonUtil.isBlank(params.get("userName"))){
 ////                filter.put("createMan",params.get("userName"));
@@ -737,7 +737,18 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public int saveInclude(TFamilyMerge tFamilyMerge) {
 
-        return CommonUtil.parseInt(tFamilyMergeDao.create(tFamilyMerge));
+        //先删除原有的申请
+        String sql = " delete from t_family where primary_family_id=?";
+        jdbcTemplate.update(sql,tFamilyMerge.getPrimaryFamilyId());
+
+        //添加收录申请
+        int i = CommonUtil.parseInt(tFamilyMergeDao.create(tFamilyMerge));
+
+        //修改t_family收录状态为申请状态
+        sql = "update t_family set supplement_flag=2 where id=?";
+        i += jdbcTemplate.update(sql,tFamilyMerge.getPrimaryFamilyId());
+
+        return i;
     }
 
     @Override

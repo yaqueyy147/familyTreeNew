@@ -28,6 +28,7 @@ public class TFamily implements Serializable {
     private String province;
     private String city;
     private String district;
+    private int supplementFlag;
 
     @Id
     @Column(name = "id",unique = true)
@@ -180,6 +181,16 @@ public class TFamily implements Serializable {
         this.district = district;
     }
 
+    @Basic
+    @Column(name = "supplement_flag")
+    public int getSupplementFlag() {
+        return supplementFlag;
+    }
+
+    public void setSupplementFlag(int supplementFlag) {
+        this.supplementFlag = supplementFlag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -204,7 +215,7 @@ public class TFamily implements Serializable {
         if (province != null ? !province.equals(tFamily.province) : tFamily.province != null) return false;
         if (city != null ? !city.equals(tFamily.city) : tFamily.city != null) return false;
         if (district != null ? !district.equals(tFamily.district) : tFamily.district != null) return false;
-
+        if (supplementFlag != tFamily.supplementFlag) return false;
         return true;
     }
 
@@ -225,6 +236,7 @@ public class TFamily implements Serializable {
         result = 31 * result + (province != null ? province.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (district != null ? district.hashCode() : 0);
+        result = 31 * result + supplementFlag;
         return result;
     }
 
