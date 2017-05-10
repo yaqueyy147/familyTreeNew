@@ -237,7 +237,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TFamily> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 and state=1";
-        sql += " and ((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))) or state=5)";
+        sql += " and ((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) or supplement_flag in (1,5))";
         if(!CommonUtil.isBlank(params)){
 //            if(!CommonUtil.isBlank(params.get("userName"))){
 ////                filter.put("createMan",params.get("userName"));
@@ -298,8 +298,8 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TFamily> getFamilyList2(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where state<>9 ";
-        sql += " and (state=1 or state=5)";
+        String sql = "select * from t_family where state<>9 and state=1";
+        sql += " and supplement_flag in (1,5) ";
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
                 sql += " and family_area='" + params.get("familyArea") + "'";

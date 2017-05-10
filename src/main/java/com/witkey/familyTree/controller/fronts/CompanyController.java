@@ -60,6 +60,8 @@ public class CompanyController {
 
         TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
 
+        double totalMoney = companyService.getTotalCompanyMoney(CommonUtil.parseInt(jsonUser.get("id")));
+        model.addAttribute("totalMoney",totalMoney);
         model.addAttribute("userInfo",jsonUser);
         model.addAttribute("companyInfo",tCompanySponsor);
         return new ModelAndView("/fronts/companyInfo");

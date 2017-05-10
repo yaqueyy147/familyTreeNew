@@ -105,4 +105,36 @@ $(function () {
         });
     });
 
+    $("#userMoney").click(function () {
+        $.ajax({
+            type:'post',
+            url: projectUrl + "/company/moneyList",
+            dataType:'json',
+            data:{"userId" : userId, "type" : 1},
+            success:function (data) {
+            	var moneyHtml = "<tr><th>序号</th><th>充值金额</th><th>充值说明</th><th>充值时间</th><th>充值人</th></tr><tr>";
+                if(data){
+                    var moneyList = data.dataList;
+                    
+                    for(var i=0;i<moneyList.length;i++){
+                        var ii = moneyList[i];
+                        moneyHtml  += "<td>" + (i+1) + "</td>";
+                        moneyHtml  += "<td>" + ii.payMoney + "</td>";
+                        moneyHtml  += "<td>" + ii.payDesc + "</td>";
+                        moneyHtml  += "<td>" + ii.payTime + "</td>";
+                        moneyHtml  += "<td>" + ii.payMan + "</td>";
+                    }
+                    moneyHtml += "</tr>";
+                    
+                }
+                $("#moneyTable").html(moneyHtml);
+                $("#moneyModal").modal('show');
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+
+    });
+    
 });

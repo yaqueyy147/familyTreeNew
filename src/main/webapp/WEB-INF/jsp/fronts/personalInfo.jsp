@@ -64,6 +64,16 @@
                                 <h3>${tUserFront.userName}</h3>
 
                                 <p>${tUserFront.province}${tUserFront.city}${tUserFront.district}</p>
+                                
+                                <p>
+	                                <span style="font-size: 16px">
+								        已赞助：
+								        <a id="userMoney" href="javascript:void 0;">${totalMoney}</a>元
+								    </span>
+								    &nbsp;&nbsp;
+								    <a class="btn btn-primary btn-sm" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>
+    							</p>
+                                
                                 <p>
                                     <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请修订族谱</button>
@@ -134,6 +144,53 @@
         </div>
     </div>
 </div>
+
+<!-- 充值列表 Modal -->
+<div class="modal fade" id="moneyModal" tabindex="-1" role="dialog" aria-labelledby="moneyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="moneyModalLabel">公司充值列表</h4>
+            </div>
+            <div class="modal-body" style="max-height:300px; overflow: auto">
+                <table id="moneyTable" class="table table-striped">
+                    <tr>
+                        <td>序号</td>
+                        <td>充值金额</td>
+                        <td>充值说明</td>
+                        <td>充值时间</td>
+                        <td>充值人</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" id="closeMoneyModal" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 充值 Modal -->
+<div class="modal fade bs-example-modal-sm" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="chargeModalLabel">充值</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">取消</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-default" id="toCharge">确认充值</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--修改密码-->
 <div class="modal fade bs-example-modal-sm" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">

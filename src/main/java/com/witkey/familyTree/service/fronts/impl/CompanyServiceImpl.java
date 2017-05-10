@@ -91,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
     public List<TCompanyMoney> getCompanyMoney(Map<String, Object> params) {
         Map<String, Object> paramss = new HashMap<String, Object>();
         paramss.put("companyId",CommonUtil.parseInt(params.get("companyId")));
-        List<TCompanyMoney> list = tCompanyMoneyDao.find(params);
+        List<TCompanyMoney> list = tCompanyMoneyDao.find(paramss);
         return list;
     }
 

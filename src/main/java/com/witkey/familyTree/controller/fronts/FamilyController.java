@@ -103,6 +103,9 @@ public class FamilyController {
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
 //        TUserFront tUserFront = userFrontService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         TUser1 tUserFront = userService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
+        
+        double totalMoney = familyService.getTotalUserMoney(CommonUtil.parseInt(jsonUser.get("id")));
+        model.addAttribute("totalMoney",totalMoney);
         model.addAttribute("userInfo",jsonUser);
         model.addAttribute("xxx",xxx);
         model.addAttribute("tUserFront",JSONObject.fromObject(tUserFront));

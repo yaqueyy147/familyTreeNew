@@ -43,11 +43,7 @@
 <div class="container-fluid" style="width:90%;margin-top: 20px;margin-bottom: 10px;">
     <a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <span style="font-size: 16px">
-        已赞助：
-        <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
-    </span>
-    &nbsp;&nbsp;
+    
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <c:if test="${not empty tCompanySponsor.companyDesc}">
         <div id="descDiv">公司简介：${tCompanySponsor.companyDesc}</div>
@@ -100,7 +96,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="chargeModalLabel">公司充值列表</h4>
+                <h4 class="modal-title" id="chargeModalLabel">充值</h4>
             </div>
             <div class="modal-body">
                 <input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />
