@@ -44,6 +44,30 @@ $(function () {
         });
     });
 
+    $("#saveIntro").click(function () {
+        var companyDesc = CKEDITOR.instances.companyDesc.getData();
+        var id = $("#introduceId").val();
+        if($.trim(id).length <= 0){
+            id = 0;
+        }
+        $.ajax({
+            type:'post',
+            url:projectUrl + "/company/saveIntro",
+            dataType:'json',
+            data:{companyId:companyId, companyIntroduce: companyDesc, id:id},
+            success:function (data) {
+                if(data.code == 1){
+                    $("#companyDesc").val("");
+                    $("#addIntroModal").modal('hide');
+                }
+                alert(data.msg);
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+    });
+
     $("#companyMoney").click(function () {
         $.ajax({
             type:'post',

@@ -1,5 +1,6 @@
 package com.witkey.familyTree.service.fronts;
 
+import com.witkey.familyTree.domain.TCompanyIntroduce;
 import com.witkey.familyTree.domain.TCompanyMoney;
 import com.witkey.familyTree.domain.TCompanyPhoto;
 import com.witkey.familyTree.domain.TCompanySponsor;
@@ -41,4 +42,10 @@ public interface CompanyService {
 
     //新增公司宣传图片
     public int saveCompanyPhoto(TCompanyPhoto tCompanyPhoto);
+
+    //保存公司介绍
+    public int saveIntro(TCompanyIntroduce tCompanyIntroduce);
+
+    //获取公司介绍
+    public List<TCompanyIntroduce> getIntro(int companyId);
 }

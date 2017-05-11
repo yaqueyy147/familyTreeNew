@@ -41,7 +41,7 @@
 <%--<%@include file="common/header.jsp" %>--%>
 <%--</c:if>--%>
 <div class="container-fluid" style="width:90%;margin-top: 20px;margin-bottom: 10px;">
-    <a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>
+    <a class="btn btn-primary" href="#addIntroModal" data-toggle="modal" data-target="#addIntroModal">添加公司介绍</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
@@ -153,14 +153,39 @@
         </div>
     </div>
 </div>
+
+<!-- 添加公司简介 Modal -->
+<div class="modal fade" id="addIntroModal" tabindex="-1" role="dialog" aria-labelledby="addIntroModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="addIntroModalLabel">添加公司简介</h4>
+            </div>
+            <div class="modal-body" style="height: 500px">
+                <input type="hidden" id="companyId4Intro" name="companyId" value="${tCompanySponsor.id}" >
+                <input type="hidden" id="introduceId" name="id" value="${introduce.id}" >
+                <div>
+                    <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="saveIntro">提 交</button>
+                <button class="btn btn-default" data-dismiss="modal">取 消</button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyDetail.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     var winHeight = $(document).height();
     var companyId = "${tCompanySponsor.id}";
     $(function () {
         $("body").attr("style","height:" + (winHeight - 50) + "px");
+        CKEDITOR.replace('companyDesc',{toolbar:'Full', skin : 'kama'});
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
             'uploader'      : projectUrl + '/upload/uploadImg',

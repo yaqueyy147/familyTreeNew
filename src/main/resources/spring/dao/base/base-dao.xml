@@ -87,4 +87,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<bean class="com.witkey.familyTree.dao.fronts.TCompanyIntroduceDao" id="tCompanyIntroduceDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 </beans>

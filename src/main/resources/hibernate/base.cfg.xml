@@ -7,7 +7,7 @@
 	<session-factory>
         <property name="connection.url"><![CDATA[jdbc:mysql://127.0.0.1:3307/family_tree?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull]]></property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-            <mapping class="com.witkey.familyTree.domain.TUserBase"/>
+        <mapping class="com.witkey.familyTree.domain.TUserBase"/>
         <mapping class="com.witkey.familyTree.domain.TUserFront"/>
         <mapping class="com.witkey.familyTree.domain.TFamily"/>
         <mapping class="com.witkey.familyTree.domain.TMate"/>
@@ -29,5 +29,6 @@
             <mapping class="com.witkey.familyTree.domain.TLog"/>
             <mapping class="com.witkey.familyTree.domain.TUser1"/>
             <mapping class="com.witkey.familyTree.domain.TUserMoney"/>
+        <mapping class="com.witkey.familyTree.domain.TCompanyIntroduce"/>
     </session-factory>
 </hibernate-configuration>

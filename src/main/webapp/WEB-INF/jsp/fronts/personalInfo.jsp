@@ -14,9 +14,9 @@
     <%@include file="common/commonCss.jsp"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/personalInfo.css" rel="stylesheet" type="text/css" />
     <style>
-        html,body {
-            height: 98%;
-        }
+        /*html,body {*/
+            /*height: 98%;*/
+        /*}*/
         body{
             background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
@@ -171,20 +171,28 @@
     </div>
 </div>
 <!-- 充值 Modal -->
-<div class="modal fade bs-example-modal-sm" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+<div class="modal fade" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="chargeModalLabel">充值</h4>
             </div>
-            <div class="modal-body">
-                <input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />
+            <div class="modal-body" style="text-align: center">
+                <p style="text-align: left;font-size: 18px">
+                    充值功能开发中，目前您可以通过微信和支付宝转账的方式进行充值，扫描下方二维码即可进行充值。
+                </p>
+                <p style="text-align: left;color: #ff0000;font-size: 18px">
+                    转账是请务必将您的登录账号和用户名进行备注，以便工作人员进行备案登记，充值才能生效，否则充值将不能生效。
+                </p>
+                <%--<input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />--%>
+                <img src="<%=request.getContextPath()%>/static/images/wxPayQRCode.png" width="200px" height="250px" />
+                <img src="<%=request.getContextPath()%>/static/images/zfbPayQRCode.jpg" width="200px" height="250px" style="margin-left: 10px" />
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">取消</button>
-                &nbsp;&nbsp;
-                <button class="btn btn-default" id="toCharge">确认充值</button>
+                <%--<button class="btn btn-default" data-dismiss="modal">取消</button>--%>
+                <%--&nbsp;&nbsp;--%>
+                <button class="btn btn-default" id="toCharge" data-dismiss="modal">确认充值</button>
             </div>
         </div>
     </div>

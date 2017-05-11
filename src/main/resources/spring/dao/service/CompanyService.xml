@@ -8,6 +8,7 @@
 		<property name="tCompanyPhotoDao" ref="tCompanyPhotoDao" />
 		<property name="tCompanyMoneyDao" ref="tCompanyMoneyDao" />
 		<property name="tLogDao" ref="tLogDao" />
+		<property name="tCompanyIntroduceDao" ref="tCompanyIntroduceDao" />
 	</bean>
 	
 </beans>

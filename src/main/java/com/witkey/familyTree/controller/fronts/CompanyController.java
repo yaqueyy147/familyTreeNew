@@ -1,9 +1,6 @@
 package com.witkey.familyTree.controller.fronts;
 
-import com.witkey.familyTree.domain.TCompanyMoney;
-import com.witkey.familyTree.domain.TCompanyPhoto;
-import com.witkey.familyTree.domain.TCompanySponsor;
-import com.witkey.familyTree.domain.TUserMoney;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
@@ -75,6 +72,12 @@ public class CompanyController {
         model.addAttribute("companyDetailList",list);
         double totalMoney = companyService.getTotalCompanyMoney(companyId);
         model.addAttribute("totalMoney",totalMoney);
+
+        List<TCompanyIntroduce> list1 = companyService.getIntro(companyId);
+        if(list1 != null && list1.size() > 0){
+            model.addAttribute("introduce",list1.get(0));
+        }
+
         model.addAttribute("xxx",xxx);
         if(CommonUtil.isBlank(xxx) || xxx != 2){
             return new ModelAndView("/fronts/companyDetail_visitor");
@@ -92,6 +95,27 @@ public class CompanyController {
 
         result.put("tCompanyPhoto",tCompanyPhoto);
         result.put("code",1);
+        result.put("msg","添加成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "/saveIntro")
+    @ResponseBody
+    public Map<String,Object> saveIntro(HttpServletRequest request,TCompanyIntroduce tCompanyIntroduce) throws UnsupportedEncodingException{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        if(tCompanyIntroduce.getId() > 0){
+            tCompanyIntroduce.setUpdateMan(jsonUser.get("companyLoginName") + "");
+            tCompanyIntroduce.setUpdateTime(CommonUtil.getDateLong());
+        }else{
+            tCompanyIntroduce.setCreateMan(jsonUser.get("companyLoginName") + "");
+            tCompanyIntroduce.setCreateTime(CommonUtil.getDateLong());
+        }
+        int i = companyService.saveIntro(tCompanyIntroduce);
+
+        result.put("code",i);
         result.put("msg","添加成功!");
         return result;
     }

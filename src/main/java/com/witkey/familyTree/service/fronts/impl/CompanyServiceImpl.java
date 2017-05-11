@@ -1,14 +1,8 @@
 package com.witkey.familyTree.service.fronts.impl;
 
 import com.witkey.familyTree.dao.consoles.TLogDao;
-import com.witkey.familyTree.dao.fronts.TCompanyMoneyDao;
-import com.witkey.familyTree.dao.fronts.TCompanyPhotoDao;
-import com.witkey.familyTree.dao.fronts.TCompanyPointsDao;
-import com.witkey.familyTree.dao.fronts.TCompanySponsorDao;
-import com.witkey.familyTree.domain.TCompanyMoney;
-import com.witkey.familyTree.domain.TCompanyPhoto;
-import com.witkey.familyTree.domain.TCompanyPoints;
-import com.witkey.familyTree.domain.TCompanySponsor;
+import com.witkey.familyTree.dao.fronts.*;
+import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +56,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     public void settLogDao(TLogDao tLogDao) {
         this.tLogDao = tLogDao;
+    }
+
+    @Resource
+    private TCompanyIntroduceDao tCompanyIntroduceDao;
+
+    public void settCompanyIntroduceDao(TCompanyIntroduceDao tCompanyIntroduceDao) {
+        this.tCompanyIntroduceDao = tCompanyIntroduceDao;
     }
 
     @Override
@@ -171,5 +172,27 @@ public class CompanyServiceImpl implements CompanyService {
         int photoId = CommonUtil.parseInt(tCompanyPhotoDao.create(tCompanyPhoto));
 
         return photoId;
+    }
+
+    @Override
+    public int saveIntro(TCompanyIntroduce tCompanyIntroduce) {
+
+        int i = 0;
+        if(tCompanyIntroduce.getId() > 0){
+            tCompanyIntroduceDao.save(tCompanyIntroduce);
+            i ++;
+        }else{
+            i += CommonUtil.parseInt(tCompanyIntroduceDao.create(tCompanyIntroduce));
+        }
+
+        return i;
+    }
+
+    @Override
+    public List<TCompanyIntroduce> getIntro(int companyId) {
+
+        List<TCompanyIntroduce> list = tCompanyIntroduceDao.find("from TCompanyIntroduce where companyId=?",companyId);
+
+        return list;
     }
 }
