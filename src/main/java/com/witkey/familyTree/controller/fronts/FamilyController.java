@@ -301,16 +301,25 @@ public class FamilyController {
             logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
+
+            //根据登录人和族谱创建人判断是否是补录
+            TFamily tFamily = familyService.getFamilyFromId(tPeople.getFamilyId());
+            //如果登录人不是族谱创建人，则为补录
+            if(!tFamily.getCreateMan().equals(userName)){
+                tPeople.setIsSupplement(1);//设置该成员为补录成员
+                tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
+            }
+
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);
-            //添加积分
-            //获取积分对应关系
-            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
-            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),1);
-
-            familyService.setPoints(tUserPoints,1);
+//            //添加积分
+//            //获取积分对应关系
+//            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+//            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),1);
+//
+//            familyService.setPoints(tUserPoints,1);
 
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){

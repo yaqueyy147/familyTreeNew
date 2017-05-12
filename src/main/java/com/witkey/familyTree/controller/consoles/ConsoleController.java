@@ -190,7 +190,7 @@ public class ConsoleController {
             params.put("userName",userName);
             params.put("userId",consolesUser.get("id"));
         }
-        List<TFamily> list = familyService.getFamilyList(params);
+        List<TFamily> list = familyService.getFamilyList1(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
             int peopleCount = 0;
@@ -344,34 +344,43 @@ public class ConsoleController {
             logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
+
+            //根据登录人和族谱创建人判断是否是补录
+            TFamily tFamily = familyService.getFamilyFromId(tPeople.getFamilyId());
+            //如果登录人不是族谱创建人，则为补录
+            if(!tFamily.getCreateMan().equals(userName)){
+                tPeople.setIsSupplement(1);//设置该成员为补录成员
+                tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
+            }
+
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);
 
-            if(CommonUtil.isBlank(userCC) || !"1".equals(userCC)){
-                //添加积分
-                //获取积分对应关系
-                List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
-                TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),2);
-
-                familyService.setPoints(tUserPoints,1);
-            }
-
-            //如果是收录族谱，将对应的配偶的家族ID也修改为收录的族谱ID
-            if("1".equals(userCC)){
-                //查询配偶信息
-                List<TPeople> listMate = familyService.getMateList(tPeople.getId());
-                if(listMate != null && listMate.size() > 0){
-                    for(TPeople tPeople1 : listMate){
-                        tPeople1.setId(0);
-                        tPeople1.setFamilyId(tPeople.getFamilyId());
-                        tPeople1.setFatherId(tPeople.getFatherId());
-                        tPeople1.setMotherId(tPeople.getMotherId());
-                        familyService.savePeople(tPeople1);
-                    }
-                }
-            }
+//            if(CommonUtil.isBlank(userCC) || !"1".equals(userCC)){
+//                //添加积分
+//                //获取积分对应关系
+//                List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+//                TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),2);
+//
+//                familyService.setPoints(tUserPoints,1);
+//            }
+//
+//            //如果是收录族谱，将对应的配偶的家族ID也修改为收录的族谱ID
+//            if("1".equals(userCC)){
+//                //查询配偶信息
+//                List<TPeople> listMate = familyService.getMateList(tPeople.getId());
+//                if(listMate != null && listMate.size() > 0){
+//                    for(TPeople tPeople1 : listMate){
+//                        tPeople1.setId(0);
+//                        tPeople1.setFamilyId(tPeople.getFamilyId());
+//                        tPeople1.setFatherId(tPeople.getFatherId());
+//                        tPeople1.setMotherId(tPeople.getMotherId());
+//                        familyService.savePeople(tPeople1);
+//                    }
+//                }
+//            }
 
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){

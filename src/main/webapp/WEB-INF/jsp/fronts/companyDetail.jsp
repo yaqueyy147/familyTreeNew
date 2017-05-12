@@ -41,28 +41,40 @@
 <%--<%@include file="common/header.jsp" %>--%>
 <%--</c:if>--%>
 <div class="container-fluid" style="width:90%;margin-top: 20px;margin-bottom: 10px;">
-    <a class="btn btn-primary" href="#addIntroModal" data-toggle="modal" data-target="#addIntroModal">添加公司介绍</a>
+
+    <a class="btn btn-primary" href="#addIntroModal" data-toggle="modal" data-target="#addIntroModal" id="introBtn">
+        <c:choose>
+            <c:when test="${introduce == null}">
+                添加公司介绍
+            </c:when>
+            <c:otherwise>
+                修改公司介绍
+            </c:otherwise>
+        </c:choose>
+
+    </a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <c:if test="${not empty tCompanySponsor.companyDesc}">
         <div id="descDiv">公司简介：${tCompanySponsor.companyDesc}</div>
     </c:if>
-    <div id="companyShow" class="row">
-        <c:forEach var="companyDetail" items="${companyDetailList}">
+    <div id="companyShow">
+        ${introduce.companyIntroduce}
+        <%--<c:forEach var="companyDetail" items="${companyDetailList}">--%>
 
-            <div class="col-sm-6 col-md-2">
-                <div class="thumbnail">
-                    <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%"/></a>
-                    <%--<img data-src="holder.js/300x300" alt="...">--%>
-                    <div class="caption">
-                        <p name="photoDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">
-                            ${companyDetail.photoDesc}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
+            <%--<div class="col-sm-6 col-md-2">--%>
+                <%--<div class="thumbnail">--%>
+                    <%--<a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%"/></a>--%>
+                    <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
+                    <%--<div class="caption">--%>
+                        <%--<p name="photoDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">--%>
+                            <%--${companyDetail.photoDesc}--%>
+                        <%--</p>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</c:forEach>--%>
     </div>
 </div>
 <!-- 充值列表 Modal -->
@@ -165,13 +177,16 @@
             <div class="modal-body" style="height: 500px">
                 <input type="hidden" id="companyId4Intro" name="companyId" value="${tCompanySponsor.id}" >
                 <input type="hidden" id="introduceId" name="id" value="${introduce.id}" >
+                <input type="hidden" id="introduceA" name="introduceA" value="${introduce.companyIntroduce}" >
                 <div>
-                    <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc"></textarea>
+                    <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc" rows="200">
+                        ${introduce.companyIntroduce}
+                    </textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="saveIntro">提 交</button>
-                <button class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button class="btn btn-default" data-dismiss="modal" id="cancelIntro">取 消</button>
             </div>
         </div>
     </div>

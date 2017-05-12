@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by Administrator on 2017/5/11 0011.
  */
 @Entity
-@Table(name = "t_company_introduce", schema = "family_tree", catalog = "")
+@Table(name = "t_company_introduce")
 public class TCompanyIntroduce implements Serializable {
     private static final long serialVersionUID = -2428194418693058665L;
     private int id;

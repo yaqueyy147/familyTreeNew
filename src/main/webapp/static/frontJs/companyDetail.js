@@ -57,7 +57,10 @@ $(function () {
             data:{companyId:companyId, companyIntroduce: companyDesc, id:id},
             success:function (data) {
                 if(data.code == 1){
-                    $("#companyDesc").val("");
+                    $("#introduceId").val(data.tCompanyIntroduce.id);
+                    $("#introBtn").text("修改公司介绍");
+                    $("#companyDesc").val(data.tCompanyIntroduce.companyIntroduce);
+                    $("#companyShow").html(data.tCompanyIntroduce.companyIntroduce);
                     $("#addIntroModal").modal('hide');
                 }
                 alert(data.msg);
@@ -66,6 +69,30 @@ $(function () {
                 alert(JSON.stringify(data));
             }
         });
+    });
+
+    $("#cancelIntro").on({
+        click:function () {
+            var primaryIntro = $("#introduceA").val();
+            $.ajax({
+                type:'post',
+                url:projectUrl + "/company/getIntro",
+                dataType:'json',
+                data:{companyId:companyId},
+                async:false,
+                success:function (data) {
+                    if(data){
+                        CKEDITOR.instances.companyDesc.setData(data.companyIntroduce);
+                        // $("#companyDesc").val(data.companyIntroduce);
+                        $("#addIntroModal").modal('hide');
+                    }
+                },
+                error:function (data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+
+        }
     });
 
     $("#companyMoney").click(function () {

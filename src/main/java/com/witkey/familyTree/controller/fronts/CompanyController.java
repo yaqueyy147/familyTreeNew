@@ -116,7 +116,19 @@ public class CompanyController {
         int i = companyService.saveIntro(tCompanyIntroduce);
 
         result.put("code",i);
+        result.put("tCompanyIntroduce",tCompanyIntroduce);
         result.put("msg","添加成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "/getIntro")
+    @ResponseBody
+    public Map<String,Object> getIntro(HttpServletRequest request,int companyId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        List<TCompanyIntroduce> list1 = companyService.getIntro(companyId);
+        if(list1 != null && list1.size() > 0){
+            result.put("introduceA",list1.get(0));
+        }
         return result;
     }
 

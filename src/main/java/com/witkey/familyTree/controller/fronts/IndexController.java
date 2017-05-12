@@ -138,7 +138,7 @@ public class IndexController {
     public Map<String,Object> queryFamily(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
         params.put("state",5);
-        List<TFamily> list = familyService.getFamilyList(params);
+        List<TFamily> list = familyService.getFamilyList2(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
             int peopleCount = 0;

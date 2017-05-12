@@ -50,10 +50,12 @@ public class TPeople implements Serializable {
     private Integer peopleType;
     private Integer peopleStatus;
 
+    private Integer isSupplement;
+
     public TPeople() {
     }
 
-    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType) {
+    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType, Integer isSupplement) {
         this.id = id;
         this.familyId = familyId;
         this.generation = generation;
@@ -88,6 +90,7 @@ public class TPeople implements Serializable {
         this.createTime = createTime;
         this.mateType = mateType;
         this.peopleType = peopleType;
+        this.isSupplement = isSupplement;
     }
 
     @Id
@@ -441,6 +444,16 @@ public class TPeople implements Serializable {
         this.peopleStatus = peopleStatus;
     }
 
+    @Basic
+    @Column(name = "is_supplement")
+    public Integer getIsSupplement() {
+        return isSupplement;
+    }
+
+    public void setIsSupplement(Integer isSupplement) {
+        this.isSupplement = isSupplement;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -486,6 +499,7 @@ public class TPeople implements Serializable {
         if (mateType != null ? !mateType.equals(tPeople.mateType) : tPeople.mateType != null) return false;
         if (peopleType != null ? !peopleType.equals(tPeople.peopleType) : tPeople.peopleType != null) return false;
         if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null) return false;
+        if (isSupplement != null ? !isSupplement.equals(tPeople.isSupplement) : tPeople.isSupplement != null) return false;
         return true;
     }
 
@@ -526,6 +540,7 @@ public class TPeople implements Serializable {
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
         result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
         result = 31 * result + (peopleStatus != null ? peopleStatus.hashCode() : 0);
+        result = 31 * result + (isSupplement != null ? isSupplement.hashCode() : 0);
         return result;
     }
 
