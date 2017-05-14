@@ -170,7 +170,7 @@
                                     </td>
                                     <td class="tdSm">父亲：</td>
                                     <td style="text-align: left">
-                                        <select name="fatherId" id="fatherId">
+                                        <select name="fatherId" id="fatherId" style="max-width:23px">
 
                                         </select>
                                         <%--<input name="fatherId" id="fatherId" type="text" value="0" />--%>
@@ -183,7 +183,7 @@
                                     </td>
                                     <td class="tdSm">母亲：</td>
                                     <td style="text-align: left">
-                                        <select name="motherId" id="motherId">
+                                        <select name="motherId" id="motherId" style="max-width:23px">
 
                                         </select>
                                         <%--<input name="motherId" id="motherId" type="text" value="0" />--%>

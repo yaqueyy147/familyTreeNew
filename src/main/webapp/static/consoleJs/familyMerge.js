@@ -3,6 +3,7 @@
  */
 var setting;
 var includeDesc;
+var primarySetting;
 $(function () {
 
     $("#rejectDialog").dialog({
@@ -176,7 +177,7 @@ $(function () {
         $("#id").val(0);
     });
 
-    //同意收录
+    //同意收录，同意开启
     $("#acceptIn").click(function () {
         $.ajax({
             type:'post',
@@ -199,7 +200,29 @@ $(function () {
         });
     });
 
-    var primarySetting = {
+    $("#completeIn").click(function() {
+    	$.ajax({
+            type:'post',
+            url: projectUrl + '/consoles/completeIn',
+            dataType: 'json',
+            data:{familyId:familyId},
+            async:false,
+            success:function (data) {
+                if(data.code >= 1){
+                    alert("操作成功!");
+                    $("#supplementDesc").text("收录完成");
+                    $("#batchAcceptIn").remove();
+                    $("#batchRefuseIn").remove();
+                    $("#completeIn").remove();
+                }
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+	});
+    
+    primarySetting = {
         view: {
             addDiyDom: addDiyDom
         },
@@ -264,8 +287,14 @@ function addDiyDom(treeId, treeNode) {
         }
     }
 
-    if(peopleStatus != 1){
-        editStr += "<a id='diyBtnInclude_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude('" + treeNode.id + "')\">同意收录</a>";
+    if(peopleStatus == 5){
+    	editStr += "<div style='display: inline-block;'>";
+        editStr += "<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"','" + treeNode.createId + "')\">同意收录</a>";
+        editStr += "&nbsp;&nbsp;<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"','" + treeNode.createId + "')\">不同意收录</a>";
+        editStr += "</div>";
+    }
+    if(peopleStatus == 7){
+    	editStr += "&nbsp;&nbsp;<span style='color:#FF7F00'>补录审核未通过</span>";
     }
 
     aObj.after(editStr);
@@ -293,6 +322,7 @@ function initPeopleData(familyId){
                 node.id = ii.id;
                 node.pId = ii.fatherId;
                 node.name = ii.name;
+                node.createId = ii.createId;
                 var mateList = ii.mateList;
                 var mateName = "";
                 for(var j=0;j<mateList.length;j++){
@@ -303,7 +333,7 @@ function initPeopleData(familyId){
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
                 node.peopleStatus = ii.peopleStatus;
-                if(ii.peopleStatus == 1){
+                if(ii.peopleStatus != 5){
                     node.nocheck = true;
                 }
                 zNodes[i] = node;
@@ -460,8 +490,67 @@ function initParent(familyId,generation){
     });
 }
 
-function affirmInclude(peopleId) {
-    alert(peopleId);
+function affirmInclude(obj, peopleId, auditStatus, tId, createId) {
+	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
+	var node = treeObj.getNodeByTId(tId);
+	var createId = node.createId;
+	if(doAudit(peopleId + ":" + createId, auditStatus)){
+		$(obj).parent().remove();
+		node.nocheck = true;
+		treeObj.updateNode(node);
+	}
+}
+
+function batckAudit(obj, auditStatus){
+	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
+	var chkNodes = treeObj.getCheckedNodes(true);
+	if(chkNodes.length <= 0){
+		alert("请至少选择一个人!");
+		return;
+	}
+	var ids = "";
+	var names = "";
+	var createIds = "";
+	for(var i=0;i<chkNodes.length;i++){
+		var ii = chkNodes[i];
+		ids += "," + ii.id + ":" + ii.createId;
+		names += "," + ii.name;
+		createIds += "" + ii.createId;
+	}
+	ids = ids.substring(1);
+	names = names.substring(1);
+	createIds = createIds.substring(1);
+	$.messager.confirm('Confirm','确定要批量审核这些(' + names + ')人吗？',function(r){
+	    if (r){
+	    	if(doAudit(ids, auditStatus)){
+	    		var zNodes = initPeopleData(familyId);
+	    	    initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
+	    	}
+	    }
+	});
+
+}
+
+function doAudit(peopleId, auditStatus){
+	var auditB = false;
+	$.ajax({
+        type:'post',
+        url:projectUrl + '/consoles/auditIncludePeople',
+        dataType:'json',
+        async:false,
+        data:{peopleIds : peopleId,auditStatus:auditStatus},
+        success:function (data) {
+            if(data.code >= 1){
+            	auditB = true;
+            	alert("审核完成");
+            }
+        },
+        error:function (data) {
+            alert(JSON.stringify(data));
+
+        }
+    });
+	return auditB;
 }
 
 function reject(mergeId) {

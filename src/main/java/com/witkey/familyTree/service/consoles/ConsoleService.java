@@ -59,6 +59,8 @@ public interface ConsoleService {
     public int deletePointsRelation(String ids);
 
     public int confirmInclude(Map<String,Object> params);
+    
+    public int auditIncludePeople(Map<String,Object> params);
 
     public int saveResource(TResource tResource);
 
@@ -71,4 +73,6 @@ public interface ConsoleService {
     public int saveAuth(Map<String,Object> params);
 
     public List<Map<String,Object>> getUserMenu(Map<String,Object> params);
+    
+    public int completeIn(Map<String,Object> params) throws Exception;
 }

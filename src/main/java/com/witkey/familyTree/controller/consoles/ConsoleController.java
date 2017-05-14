@@ -335,7 +335,10 @@ public class ConsoleController {
         //修改成员信息
         if(tPeople.getId() > 0){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
-
+            tPeople.setCreateMan(tPeopleOld.getCreateMan());
+            tPeople.setCreateId(tPeopleOld.getCreateId());
+            tPeople.setCreateTime(tPeopleOld.getCreateTime());
+            tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
             familyService.updatePeople(tPeople);
             LOGGER.info("修改族人-->" + tPeople);
             msg = "修改成功";

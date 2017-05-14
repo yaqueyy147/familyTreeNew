@@ -8,6 +8,7 @@ import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
@@ -670,5 +671,48 @@ public class ConsoleServiceImpl implements ConsoleService {
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,params.get("userId"));
         return list;
     }
+
+	@Override
+	public int auditIncludePeople(Map<String, Object> params) {
+		
+		String peopleIds = params.get("peopleIds") + "";
+		String[] peopleId = peopleIds.split(",");
+		
+		//修改族人状态为1
+		String sql = "update t_people set people_status=? where id=?";
+		
+		int ii = 0;
+		for(int i=0;i<peopleId.length;i++){
+			String id = peopleId[i];
+			String[] ids = id.split(":");
+			ii += jdbcTemplate.update(sql,params.get("auditStatus"),ids[0]);
+			
+			//如果是同意收录，增加创建者的积分
+			if(ids.length > 1){//如果当前存在创建人ID
+				if(CommonUtil.parseInt(params.get("auditStatus")) == 1){
+					
+					TUserPoints tUserPoints = new TUserPoints();
+					tUserPoints.setUserId(CommonUtil.parseInt(ids[1]));
+					tUserPoints.setInputCount(1);
+					
+					familyService.setPoints(tUserPoints, 1);
+				}
+			}
+			
+		}
+		
+		return ii;
+	}
+
+	@Override
+	public int completeIn(Map<String, Object> params) throws Exception {
+		//修改family的补录状态为完成收录
+		String sql = "update t_family set supplement_flag=1 where id=?";
+		int i = jdbcTemplate.update(sql,params.get("familyId"));
+		//修改t_family_merge的状态为收录完成
+		sql = "update t_family_merge set state=1,audit_man=?,audit_time=? where primary_family_id=?";
+		i += jdbcTemplate.update(sql,params.get("auditMan"),params.get("auditTime"),params.get("familyId"));
+		return i;
+	}
 }
 

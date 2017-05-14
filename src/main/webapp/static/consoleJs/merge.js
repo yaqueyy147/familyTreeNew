@@ -90,7 +90,10 @@ function loadDataGrid(params) {
             {field:"operation",title:"操作",width:"150",align:"center",
                 formatter: function(value,row,index){
                     if(row.mergeState == 1){
-                        return "收录完成";
+                    	var operationHtml = "收录完成&nbsp;&nbsp;";
+                        operationHtml += "<a href='/consoles/familyMerge?familyId=" + row.id + "&mergeId=" + row.mergeId + "'>查看</a>&nbsp;&nbsp;";
+                        // operationHtml += "<a href='javascript:void 0' onclick=\"reject('" + row.mergeId + "')\">关闭补录</a>&nbsp;&nbsp;";
+                        return operationHtml;
                     } else if(row.mergeState == 3){
                         return "已驳回";
                     }else if(row.mergeState == 5){

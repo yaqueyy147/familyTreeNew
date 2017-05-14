@@ -516,7 +516,7 @@ public class FamilyServiceImpl implements FamilyService {
         if(type > 0){
             sql += "and points_type='" + type + "'";
         }
-
+        sql += " order by points_type asc";
         List<TPointsDic> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPointsDic>(TPointsDic.class));
 
         return list;
@@ -587,15 +587,22 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<Map<String, Object>> getPointsRanking(Map<String,Object> params) {
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+      //获取录入族人积分对应关系
+        List<TPointsDic> listDic1 = this.getPointsRelation(1,1);
+        int pointsCurrent4In = 0;//录入人积分
+        if(listDic1 != null && listDic1.size() > 0){
+        	pointsCurrent4In = listDic1.get(0).getPointsValue() / listDic1.get(0).getPointsNum();
+        }
+        //获取录入族人积分对应关系
+        List<TPointsDic> listDic2 = this.getPointsRelation(2,1);
+        int pointsCurrent4Pay = 0;//充值积分
+        if(listDic2 != null && listDic2.size() > 0){
+        	pointsCurrent4Pay = listDic2.get(0).getPointsValue() / listDic2.get(0).getPointsNum();
+        }
         //个人
         if(CommonUtil.parseInt(params.get("type")) == 1){
-            //获取积分对应关系
-            List<TPointsDic> listDic = this.getPointsRelation(1,1);
-            int pointsCurrent = 0;
-            if(listDic != null && listDic.size() > 0){
-                pointsCurrent = listDic.get(0).getPointsValue() / listDic.get(0).getPointsNum();
-            }
-            String sql = "select t1.points,t1.input_count,t1.input_count*" + pointsCurrent + " totalPoints,";
+            
+            String sql = "select t1.points,t1.input_count,t1.input_count*" + pointsCurrent4In + "+t1.total_money*" + pointsCurrent4Pay + " totalPoints,";
             sql += " t1.user_id,t2.user_name,t2.login_name from t_user_points t1,t_user_1 t2";
             sql += " where t1.user_id=t2.id ";
 //            if(!CommonUtil.isBlank(params.get("userType"))){
@@ -613,13 +620,7 @@ public class FamilyServiceImpl implements FamilyService {
             sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
-            //获取积分对应关系
-            List<TPointsDic> listDic = this.getPointsRelation(2,1);
-            int pointsCurrent = 0;
-            if(listDic != null && listDic.size() > 0){
-                pointsCurrent = listDic.get(0).getPointsValue() / listDic.get(0).getPointsNum();
-            }
-            String sql = "select t1.points,t1.total_money,t1.total_money*" + pointsCurrent + " totalPoints";
+            String sql = "select t1.points,t1.total_money,t1.total_money*" + pointsCurrent4Pay + " totalPoints";
             sql += ",t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
             sql += " where t1.company_id=t2.id";
             if(!CommonUtil.isBlank(params.get("province"))){

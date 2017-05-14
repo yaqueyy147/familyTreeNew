@@ -49,6 +49,8 @@ public class TPeople implements Serializable {
     private Integer mateType;
     private Integer peopleType;
     private Integer peopleStatus;
+    
+    private Integer createId;
 
     private Integer isSupplement;
 
@@ -454,7 +456,17 @@ public class TPeople implements Serializable {
         this.isSupplement = isSupplement;
     }
 
-    @Override
+    @Basic
+    @Column(name = "create_id")
+    public Integer getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(Integer createId) {
+		this.createId = createId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -500,6 +512,7 @@ public class TPeople implements Serializable {
         if (peopleType != null ? !peopleType.equals(tPeople.peopleType) : tPeople.peopleType != null) return false;
         if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null) return false;
         if (isSupplement != null ? !isSupplement.equals(tPeople.isSupplement) : tPeople.isSupplement != null) return false;
+        if (createId != null ? !createId.equals(tPeople.createId) : tPeople.createId != null) return false;
         return true;
     }
 
@@ -541,6 +554,7 @@ public class TPeople implements Serializable {
         result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
         result = 31 * result + (peopleStatus != null ? peopleStatus.hashCode() : 0);
         result = 31 * result + (isSupplement != null ? isSupplement.hashCode() : 0);
+        result = 31 * result + (createId != null ? createId.hashCode() : 0);
         return result;
     }
 

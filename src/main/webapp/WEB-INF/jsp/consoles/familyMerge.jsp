@@ -40,8 +40,12 @@
                             <button type="button" id="reject" class="easyui-linkbutton" style="margin-left: 20px">驳回</button>
                         </c:when>
                         <c:when test="${merge.mergeState == 5}">
-                            <span class="easyui-linkbutton" style="margin-left: 20px">补录中...</span>
-                            <button type="button" id="completeIn" class="easyui-linkbutton" style="margin-left: 20px">完成收录</button>
+                            <span id="supplementDesc" class="easyui-linkbutton" style="margin-left: 20px">补录中...</span>
+                            
+                            <button type="button" id="batchAcceptIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batckAudit(this,1)">批量通过审核</button>
+                            <button type="button" id="batchRefuseIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batckAudit(this,7)">批量不通过审核</button>
+                            
+                            <button type="button" id="completeIn" class="easyui-linkbutton" style="margin-left: 20px">完成收录,关闭补录</button>
                         </c:when>
                         <c:when test="${merge.mergeState == 1}">
                             <span class="easyui-linkbutton" style="margin-left: 20px">收录完成</span>
@@ -219,7 +223,7 @@
                             </td>
                             <td class="tdSm">父亲：</td>
                             <td style="text-align: left">
-                                <select name="fatherId" id="fatherId" disabled>
+                                <select name="fatherId" id="fatherId" disabled style="max-width:23px">
 
                                 </select>
                                 <%--<input name="fatherId" id="fatherId" type="text" value="0" />--%>
@@ -232,7 +236,7 @@
                             </td>
                             <td class="tdSm">母亲：</td>
                             <td style="text-align: left">
-                                <select name="motherId" id="motherId" disabled>
+                                <select name="motherId" id="motherId" disabled style="max-width:23px">
 
                                 </select>
                                 <%--<input name="motherId" id="motherId" type="text" value="0" />--%>

@@ -34,11 +34,22 @@ public class MergeController {
     @Autowired
     private FamilyService familyService;
 
+    /**
+     * 后台族谱收录申请列表页面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/merge")
     public ModelAndView merge(Model model){
         return new ModelAndView("/consoles/merge");
     }
 
+    /**
+     * 后台族谱收录审核页面
+     * @param model
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/familyMerge")
     public ModelAndView familyMerge(Model model,@RequestParam Map<String,Object> params){
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(params.get("familyId")));
@@ -51,6 +62,13 @@ public class MergeController {
         return new ModelAndView("/consoles/familyMerge");
     }
 
+    /**
+     * 申请收录族谱族人信息
+     * @param request
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/mergePrimary")
     @ResponseBody
     public Map<String,Object> mergePrimary(HttpServletRequest request,@RequestParam Map<String,Object> params) throws Exception{
@@ -83,6 +101,13 @@ public class MergeController {
         return result;
     }
 
+    /**
+     * 驳回收录
+     * @param request
+     * @param params
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping(value = "/rejectInclude")
     @ResponseBody
     public Map<String,Object> rejectInclude(HttpServletRequest request, @RequestParam Map<String,Object> params) throws UnsupportedEncodingException {
@@ -96,6 +121,12 @@ public class MergeController {
         return result;
     }
 
+    /**
+     * 同意收录，同意开放补录
+     * @param request
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "confirmInclude")
     @ResponseBody
     public Map<String,Object> confirmInclude(HttpServletRequest request,@RequestParam Map<String,Object> params){
@@ -107,6 +138,43 @@ public class MergeController {
         return result;
     }
 
+    /**
+     * 审核补录的族人
+     * @param request
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "auditIncludePeople")
+    @ResponseBody
+    public Map<String,Object> auditIncludePeople(HttpServletRequest request,@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+        
+        int i = consoleService.auditIncludePeople(params);
+
+        result.put("code",i);
+        return result;
+    }
+    
+    /**
+     * 完成收录，关闭补录
+     * @param request
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "completeIn")
+    @ResponseBody
+    public Map<String,Object> completeIn(HttpServletRequest request,@RequestParam Map<String,Object> params) throws Exception{
+        Map<String,Object> result = new HashMap<String,Object>();
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        String userName = consolesUser.get("userName") + "";
+        params.put("auditMan", userName);//设置审核人
+        params.put("auditTime", CommonUtil.getDateLong());
+        int i = consoleService.completeIn(params);
+
+        result.put("code",i);
+        return result;
+    }
+    
     @RequestMapping(value = "mergeFamily")
     @ResponseBody
     public Map<String,Object> mergeFamily(@RequestParam Map<String,Object> params){

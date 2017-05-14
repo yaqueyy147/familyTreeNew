@@ -295,6 +295,10 @@ public class FamilyController {
         //修改成员信息
         if(tPeople.getId() > 0){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
+            tPeople.setCreateMan(tPeopleOld.getCreateMan());
+            tPeople.setCreateId(tPeopleOld.getCreateId());
+            tPeople.setCreateTime(tPeopleOld.getCreateTime());
+            tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
             familyService.updatePeople(tPeople);
             msg = "修改成功";
             //记录日志
@@ -311,6 +315,7 @@ public class FamilyController {
             }
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
+            tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("createId")));
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);
