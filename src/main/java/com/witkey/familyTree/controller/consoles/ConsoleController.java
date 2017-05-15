@@ -118,7 +118,7 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> getFamilyList(HttpServletRequest request, @RequestParam Map<String, Object> params) throws UnsupportedEncodingException{
         Map<String,Object> result = new HashMap<String,Object>();
-
+        
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("userName") + "";
 

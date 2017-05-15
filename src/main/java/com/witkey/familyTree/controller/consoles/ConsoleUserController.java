@@ -191,7 +191,7 @@ public class ConsoleUserController {
         String userName = consolesUser.get("userName") + "";
 
         Map<String,Object> params = new HashMap<String,Object>();
-
+        
         if(tUser1.getId() == 0){//新建用户，需要设置加密密码
             //检查用户名是否已经存在了
             params.put("loginName",tUser1.getLoginName());
