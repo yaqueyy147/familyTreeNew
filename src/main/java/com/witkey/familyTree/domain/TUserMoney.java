@@ -23,6 +23,7 @@ public class TUserMoney implements Serializable {
     private String payDesc;
     private Integer state;
     private String remark;
+    private Double currentPoints;
 
     public TUserMoney() {
     }
@@ -114,6 +115,16 @@ public class TUserMoney implements Serializable {
         this.remark = remark;
     }
 
+    @Basic
+    @Column(name = "current_points")
+    public Double getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(Double currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -129,7 +140,7 @@ public class TUserMoney implements Serializable {
         if (payDesc != null ? !payDesc.equals(that.payDesc) : that.payDesc != null) return false;
         if (state != null ? !state.equals(that.state) : that.state != null) return false;
         if (remark != null ? !remark.equals(that.remark) : that.remark != null) return false;
-
+        if (currentPoints != null ? !currentPoints.equals(that.currentPoints) : that.currentPoints != null) return false;
         return true;
     }
 
@@ -143,6 +154,7 @@ public class TUserMoney implements Serializable {
         result = 31 * result + (payDesc != null ? payDesc.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
+        result = 31 * result + (currentPoints != null ? currentPoints.hashCode() : 0);
         return result;
     }
 

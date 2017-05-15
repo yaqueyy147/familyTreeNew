@@ -177,10 +177,10 @@ public class FamilyServiceImpl implements FamilyService {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 ";
         if(!CommonUtil.isBlank(params)){
-            if(!CommonUtil.isBlank(params.get("userName"))){
-//                filter.put("createMan",params.get("userName"));
-                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
-            }
+//            if(!CommonUtil.isBlank(params.get("userName"))){
+////                filter.put("createMan",params.get("userName"));
+//                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+//            }
             if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
 //                filter.put("familyArea",params.get("familyArea"));
                 sql += " and family_area='" + params.get("familyArea") + "'";
@@ -803,5 +803,16 @@ public class FamilyServiceImpl implements FamilyService {
 
         return total;
     }
-	
+
+    @Override
+    public int getTotalIncludeNum(int userId) {
+        String sql = "select * from t_user_points where user_id=?";
+        List<TUserPoints> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserPoints>(TUserPoints.class),userId);
+        if(list != null && list.size() > 0){
+            return list.get(0).getInputCount();
+        }
+
+        return 0;
+    }
+
 }

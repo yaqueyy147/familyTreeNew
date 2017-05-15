@@ -58,7 +58,15 @@ public class CompanyController {
         TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
 
         double totalMoney = companyService.getTotalCompanyMoney(CommonUtil.parseInt(jsonUser.get("id")));
+
+        double totalPoints = 0.0;
+        List<TPointsDic> listP = familyService.getPointsRelation(2,1);
+        if(listP != null && listP.size() > 0){
+            totalPoints = totalMoney * (Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum()));
+        }
+
         model.addAttribute("totalMoney",totalMoney);
+        model.addAttribute("totalPoints",totalPoints);
         model.addAttribute("userInfo",jsonUser);
         model.addAttribute("companyInfo",tCompanySponsor);
         return new ModelAndView("/fronts/companyInfo");
@@ -72,6 +80,13 @@ public class CompanyController {
         model.addAttribute("companyDetailList",list);
         double totalMoney = companyService.getTotalCompanyMoney(companyId);
         model.addAttribute("totalMoney",totalMoney);
+
+        double totalPoints = 0.0;
+        List<TPointsDic> listP = familyService.getPointsRelation(2,1);
+        if(listP != null && listP.size() > 0){
+            totalPoints = totalMoney * (Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum()));
+        }
+        model.addAttribute("totalPoints",totalPoints);
 
         List<TCompanyIntroduce> list1 = companyService.getIntro(companyId);
         if(list1 != null && list1.size() > 0){
@@ -153,6 +168,12 @@ public class CompanyController {
     public Map<String,Object> addMoney(@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
 
+        List<TPointsDic> listP = familyService.getPointsRelation(2,1);
+        double points = 0.0;
+        if(listP != null && listP.size() > 0){
+            points = Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum());
+        }
+
         int i = 0;
         if(CommonUtil.parseInt(params.get("type")) == 1){
         	TUserMoney tUserMoney = new TUserMoney();
@@ -162,6 +183,7 @@ public class CompanyController {
         	tUserMoney.setPayMan(params.get("userName") + "");
         	tUserMoney.setPayTime(new Date());
         	tUserMoney.setState(1);
+        	tUserMoney.setCurrentPoints(points);
 
             i += familyService.addMoney(tUserMoney);
         }else if(CommonUtil.parseInt(params.get("type")) == 2){
@@ -172,6 +194,7 @@ public class CompanyController {
             tCompanyMoney.setPayMan(params.get("companyName") + "");
             tCompanyMoney.setPayTime(new Date());
             tCompanyMoney.setState(1);
+            tCompanyMoney.setCurrentPoints(points);
 
             i += companyService.addMoney(tCompanyMoney);
         }

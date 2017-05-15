@@ -67,13 +67,16 @@
                                 <p>${companyInfo.companyArea}</p>
                                 <p>
 	                                <span style="font-size: 16px">
-								        已赞助：
-								        <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
+								        已充值：<a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
 								    </span>
 								    &nbsp;&nbsp;
 								    <a class="btn btn-primary btn-sm" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>
     							</p>
-                                
+                                <p>
+	                                <span style="font-size: 16px">
+                                        总积分：<a id="companyPoints" href="javascript:void 0;">${totalPoints}</a>
+								    </span>
+                                </p>
                                 <p>
                                     <c:if test="${companyInfo.state != 3 && companyInfo.state != 1}">
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请宣传/赞助</button>
