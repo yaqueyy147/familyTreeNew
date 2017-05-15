@@ -67,12 +67,17 @@
                                 
                                 <p>
 	                                <span style="font-size: 16px">
-								        已赞助：
-								        <a id="userMoney" href="javascript:void 0;">${totalMoney}</a>元
+								        已充值：<a id="userMoney" href="javascript:void 0;">${totalMoney}</a>元
 								    </span>
 								    &nbsp;&nbsp;
 								    <a class="btn btn-primary btn-sm" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>
     							</p>
+
+                                <p>
+	                                <span style="font-size: 16px">
+                                        总积分：<a id="userPoints" href="javascript:void 0;">${totalPoints}</a>
+								    </span>
+                                </p>
                                 
                                 <p>
                                     <c:if test="${tUserFront.isVolunteer != 3 && tUserFront.isVolunteer != 1}">

@@ -105,6 +105,22 @@ public class FamilyController {
         TUser1 tUserFront = userService.getUserInfoFromId(CommonUtil.parseInt(jsonUser.get("id")));
         
         double totalMoney = familyService.getTotalUserMoney(CommonUtil.parseInt(jsonUser.get("id")));
+
+        int totalIncludeNum = familyService.getTotalIncludeNum(CommonUtil.parseInt(jsonUser.get("id")));
+
+        double totalPoints = 0.0;
+        //充值积分
+        List<TPointsDic> listP = familyService.getPointsRelation(2,1);
+        if(listP != null && listP.size() > 0){
+            totalPoints += totalMoney * (Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum()));
+        }
+        //录入人数积分
+        listP = familyService.getPointsRelation(1,1);
+        if(listP != null && listP.size() > 0){
+            totalPoints += totalIncludeNum * (Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum()));
+        }
+        model.addAttribute("totalPoints",totalPoints);
+
         model.addAttribute("totalMoney",totalMoney);
         model.addAttribute("userInfo",jsonUser);
         model.addAttribute("xxx",xxx);

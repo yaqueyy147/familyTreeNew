@@ -803,5 +803,16 @@ public class FamilyServiceImpl implements FamilyService {
 
         return total;
     }
-	
+
+    @Override
+    public int getTotalIncludeNum(int userId) {
+        String sql = "select * from t_user_points where user_id=?";
+        List<TUserPoints> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUserPoints>(TUserPoints.class),userId);
+        if(list != null && list.size() > 0){
+            return list.get(0).getInputCount();
+        }
+
+        return 0;
+    }
+
 }

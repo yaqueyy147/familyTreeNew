@@ -46,8 +46,10 @@
     <%--<a class="btn btn-primary" href="#addPhotoModal" data-toggle="modal" data-target="#addPhotoModal">添加照片</a>--%>
     <span style="font-size: 18px;border-bottom: solid 1px #999999;display: block">
         <span style="color:#EEEE00;font-weight: bold;">${tCompanySponsor.companyName}</span>&nbsp;&nbsp;
-        已赞助：
-        <a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元
+        <%--已赞助：--%>
+        <%--<a id="companyMoney" href="javascript:void 0;">${totalMoney}</a>元--%>
+        总积分：
+        <a id="companyPoints" href="javascript:void 0;">${totalPoints}</a>
         &nbsp;&nbsp;
         <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
     </span>

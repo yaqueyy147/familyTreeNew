@@ -91,4 +91,7 @@ public interface FamilyService {
 	
 	//获取个人充值总数
 	public double getTotalUserMoney(int userId);
+
+	//获取个人录入人数
+    public int getTotalIncludeNum(int userId);
 }
