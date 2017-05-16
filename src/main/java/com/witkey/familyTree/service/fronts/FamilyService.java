@@ -44,6 +44,9 @@ public interface FamilyService {
     //查询族谱的成员
     public List<TPeople> getPeopleList(Map<String,Object> params);//int familyId,int peopleType
 
+    //查询族谱的成员
+    public List<TPeople> getPeopleList4Print(Map<String,Object> params);
+
     //根据族人是第几代获取其父亲母亲
     public Map<String,Object> getParentFromGen(int familyId,int generation);
 
@@ -94,4 +97,10 @@ public interface FamilyService {
 
 	//获取个人录入人数
     public int getTotalIncludeNum(int userId);
+
+    //获取家族总代数
+    public int getFamilyMaxGeneration(int familyId);
+
+    //获取家族总人数
+    public int getFamilyTotalPeopleNum(int familyId);
 }

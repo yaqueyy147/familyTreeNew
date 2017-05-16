@@ -445,6 +445,22 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     /**
+     * 根据族谱ID获取家族成员
+     * @param params
+     * @return
+     */
+    @Override
+    public List<TPeople> getPeopleList4Print(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+
+        String sql = "select * from t_people where people_status<>9 and family_id=? and people_type=1";
+        sql += " and generation>=? and generation<=? order by family_rank asc";
+
+        List<TPeople> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPeople>(TPeople.class),params.get("familyId"),params.get("beginGen"),params.get("endGen"));
+        return list;
+    }
+
+    /**
      * 根据族谱ID和辈数查询父母
      * @param familyId
      * @param generation
@@ -813,6 +829,30 @@ public class FamilyServiceImpl implements FamilyService {
             return list.get(0).getInputCount();
         }
 
+        return 0;
+    }
+
+    @Override
+    public int getFamilyMaxGeneration(int familyId) {
+
+        String sql = "select max(generation) maxGeneration from t_people where family_id=? and people_status=1";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,familyId);
+        if(list != null && list.size() > 0){
+            return CommonUtil.parseInt(list.get(0).get("maxGeneration"));
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int getFamilyTotalPeopleNum(int familyId) {
+        String sql = "select count(id) peopleCount from t_people where family_id=? and people_status=1";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,familyId);
+        if(list != null && list.size() > 0){
+            return CommonUtil.parseInt(list.get(0).get("peopleCount"));
+        }
         return 0;
     }
 

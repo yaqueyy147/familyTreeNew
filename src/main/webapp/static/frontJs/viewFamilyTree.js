@@ -159,6 +159,38 @@ $(function () {
         });
     });
 
+    $("#toPrint").click(function () {
+        var beginGen = $("#beginGen").val();
+
+        var endGen = $("#endGen").val();
+        var maxGen = $("#maxGen").val();
+
+        if(beginGen*1 < 1){
+            $("#beginGen").val(1);
+            alert("最小是能从第一代开始!");
+            return;
+        }
+
+        if(beginGen*1 > endGen*1){
+            alert("开始代不能大于结束代!");
+            return;
+        }
+
+        if(endGen*1 > maxGen*1){
+            $("#endGen").val(maxGen);
+            alert("当前族谱最大只能到" + maxGen + "结束!");
+            return;
+        }
+        $("#printGenForm").attr("action",projectUrl + "/family/print");
+        $("#printGenForm").submit();
+    });
+
+    $('#printModal').on('shown.bs.modal', function (e) {
+        $("#beginGen").val(1);
+        $("#endGen").val(maxGeneration);
+        $("#isAddIntroOk").prop("checked",true);
+    });
+
 });
 
 function initFamilyTree(zNodes,setting) {

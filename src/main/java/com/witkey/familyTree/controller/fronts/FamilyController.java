@@ -215,6 +215,10 @@ public class FamilyController {
 //            model.addAttribute("canOperate",1);
 //        }
 
+        int maxGeneration = familyService.getFamilyMaxGeneration(CommonUtil.parseInt(familyId));
+
+        model.addAttribute("maxGeneration",maxGeneration);
+
         //查询家族的收录情况
         Map<String,Object> map1 = new HashMap<String,Object>();
         map1.put("primaryFamilyId",familyId);
@@ -512,6 +516,42 @@ public class FamilyController {
 
         result.put("code",i);
         return result;
+    }
+
+    @RequestMapping(value = "/print")
+    public ModelAndView print(HttpServletRequest request, Model model, @RequestParam Map<String,Object> params){
+        int familyId = CommonUtil.parseInt(params.get("printFamilyId"));
+
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
+        model.addAttribute("tFamily",tFamily);
+
+        model.addAttribute("familyId",params.get("printFamilyId"));
+        model.addAttribute("beginGen",params.get("beginGen"));
+        model.addAttribute("endGen",params.get("endGen"));
+        model.addAttribute("isAddIntro",params.get("isAddIntro"));
+        return new ModelAndView("/fronts/print");
+    }
+
+    @RequestMapping(value = "peopleInfo4Print")
+    @ResponseBody
+    public List<Map<String,Object>> peopleInfo4Print(@RequestParam Map<String,Object> params){
+
+        //查询族人
+        List<TPeople> listPeople = familyService.getPeopleList4Print(params);
+
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        //根据族人Id查询配偶
+        for (TPeople tPeople : listPeople) {
+            Map<String,Object> map = new HashMap<>();
+            map = CommonUtil.bean2Map(tPeople);
+            int peopleId = tPeople.getId();
+            List<TPeople> listMate = familyService.getMateList(peopleId);
+            map.put("mateList",listMate);
+            list.add(map);
+        }
+
+        return list;
     }
 
 }
