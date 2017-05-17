@@ -6,20 +6,55 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>族谱展示</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="../fronts/common/commonCss.jsp"%>
     <style rel="stylesheet">
-
+        .container{
+            width:100% !important;
+        }
     </style>
 </head>
 <body>
-<div class="container" style="margin-top: 50px">
+<div class="container" style="margin-top: 20px;">
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
-    <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="localBack">返回</a>
-    <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+    <div style="text-align: center;font-size: 20px">
+        <p style="border-bottom: solid 1px #999999">
+            <span style="color: #a94442">${tFamily.familyName}</span>
+            &nbsp;&nbsp;的族人&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="localBack">返回</a>
+            &nbsp;&nbsp;
+            <c:if test="${merge == null}">
+                <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="toInclude">申请收录</a>
+            </c:if>
+            <c:if test="${merge.state == 1}">
+                <a class="btn btn-primary btn-sm" href="javascript:void 0;">已收录</a>
+            </c:if>
+            <c:if test="${merge.state == 3}">
+                <%--<a class="btn btn-primary" href="javascript:void 0;">已驳回</a>--%>
+                <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="toInclude">申请收录</a>
+            </c:if>
+            <c:if test="${merge.state == 2 || merge.state == 0}">
+                <a class="btn btn-primary btn-sm" href="javascript:void 0;">已申请，待审核</a>
+            </c:if>
+            <c:if test="${merge.state == 5}">
+                <a class="btn btn-primary btn-sm" href="javascript:void 0;">补录中...</a>
+            </c:if>
+            &nbsp;&nbsp;
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="print" data-toggle="modal" data-target="#printModal">打印</a>
+            <c:if test="${merge.state == 3}">
+                <span>驳回意见:${merge.rejectDesc}</span>
+            </c:if>
+
+        </p>
+        <c:if test="${not empty tFamily.familyDesc}">
+            <p style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999">家族简介：${tFamily.familyDesc}</p>
+        </c:if>
+    </div>
     <div id="familyTree" class="ztree"></div>
 </div>
 <!-- 添加族人 Modal -->
@@ -31,14 +66,14 @@
                 <h4 class="modal-title" id="addModalLabel">添加族人</h4>
             </div>
             <div class="modal-body">
-                <!--族人信息标签-->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#baseInfo" role="tab" data-toggle="tab">基本信息</a></li>
-                </ul>
+                <%--<!--族人信息标签-->--%>
+                <%--<ul class="nav nav-tabs" role="tablist">--%>
+                    <%--<li role="presentation" class="active"><a href="#baseInfo" role="tab" data-toggle="tab">基本信息</a></li>--%>
+                <%--</ul>--%>
                 <!-- 族人信息页面 -->
-                <div class="tab-content">
+                <%--<div class="tab-content">--%>
 
-                    <div role="tabpanel" class="tab-pane active" id="baseInfo">
+                    <%--<div role="tabpanel" class="tab-pane active" id="baseInfo">--%>
                         <form id="peopleForm" action="<%=request.getContextPath()%>/consoles/savePeople" method="post">
                             <table>
                                 <tr style="border: solid 2px #9d9d9d;">
@@ -233,9 +268,44 @@
                                 </tr>
                             </table>
                         </form>
-                    </div>
+                    <%--</div>--%>
 
-                </div>
+                <%--</div>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择打印代数 Modal -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="printModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="printModalLabel">打印族谱,选择打印代数</h4>
+            </div>
+            <div class="modal-body">
+                <form id="printGenForm" method="post" target="_blank" action="">
+                    <input id="printFamilyId" name="printFamilyId" value="${familyId}" type="hidden"/>
+                    <input id="maxGen" name="maxGen" value="${maxGeneration}" type="hidden"/>
+                    <div class="form-group">
+                        打印从第
+                        <input class="form-control input-sm" id="beginGen" name="beginGen" value="1" style="width: 50px;display: inline;" />
+                        代到第
+                        <input class="form-control input-sm" id="endGen" name="endGen" value="${maxGeneration}" style="width: 50px;display: inline;" />
+                        代的族人
+                    </div>
+                    <div class="form-group">
+                        是否添加家族说明/介绍：
+                        <label><input type="radio" id="isAddIntroOk" name="isAddIntro" value="1" checked />&nbsp;是</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label><input type="radio" id="isAddIntroNO" name="isAddIntro" value="0" />&nbsp;否</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="toPrint">提 交</button>
+                <button class="btn btn-default" id="closePrintModal" data-dismiss="modal">取 消</button>
             </div>
         </div>
     </div>

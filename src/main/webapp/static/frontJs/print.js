@@ -115,8 +115,9 @@ function initPeopleData(familyId){
             //     generationHtml += "<option value='" + i + "'>" + i + "</option>";
             // }
             // $("#generation").html(generationHtml);
-
+            $(".loading").hide();
         }
+
     });
     return zNodes;
 

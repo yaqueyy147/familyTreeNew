@@ -244,6 +244,18 @@ public class ConsoleController {
         model.addAttribute("familyId",familyId);
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
+
+        int maxGeneration = familyService.getFamilyMaxGeneration(CommonUtil.parseInt(familyId));
+
+        model.addAttribute("maxGeneration",maxGeneration);
+
+        //查询家族的收录情况
+        Map<String,Object> map1 = new HashMap<String,Object>();
+        map1.put("primaryFamilyId",familyId);
+        List<TFamilyMerge> listMerge = familyService.getMergeList(map1);
+        if(listMerge != null && listMerge.size() > 0){
+            model.addAttribute("merge",listMerge.get(0));
+        }
         return new ModelAndView("/consoles/familyTree_console");
     }
 

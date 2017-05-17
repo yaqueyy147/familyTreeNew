@@ -120,6 +120,11 @@
         .ztree li span.button.switch {
             display:none;
         }
+        .ztree li a.curSelectedNode{
+            padding-top: 5px !important;
+            background-color: inherit;
+            border:none;
+        }
         /*Time for some hover effects*/
         /*We will apply the hover effect the the lineage of the element also*/
         /*.tree li a:hover, .tree li a:hover+ul li a {*/
@@ -131,11 +136,31 @@
         /*.tree li a:hover+ul li::after, .tree li a:hover+ul li::before, .tree li a:hover+ul::before, .tree li a:hover+ul ul::before {*/
             /*border-color: #94a0b4;*/
         /*}*/
-
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
-
+<div class="loading">
+    <div>加载中,请稍后...</div>
+</div>
 <%--<%@include file="common/header.jsp" %>--%>
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
     <input type="hidden" value="${beginGen}" id="beginGen" name="beginGen" />
@@ -150,7 +175,7 @@
         </c:if>
     </div>
 
-    <div style="width: 60000px;">
+    <div id="familyTreeDiv" style="width: 120000px">
         <ul id="familyTree" class="ztree"></ul>
     </div>
 
@@ -166,7 +191,35 @@
     var familyFirstName = "${tFamily.familyFirstName}";
     $(document).ready(function () {
 
-//        window.print();
+//        var liCss = {
+//            "content": "",
+//            "position": "absolute",
+//            "top": "0",
+//            "right": "50%",
+//            "border-top": "1px solid #ccc",
+////            "width": "50%",
+//            "height": "20px"
+//        };
+        var treeLi = $(".ztree li");
+
+        var totalWidth = 0;
+        $.each(treeLi,function () {
+
+            var liWidth = $(this).width();
+
+            if(parseInt(totalWidth)*1 < parseInt(liWidth)*1){
+                totalWidth = liWidth;
+            }
+
+//            liCss.width = liWidth + "px";
+//            $(this).append("<style>.ztree li::before{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
+//            $(this).append("<style>.ztree li::after{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
+//            $(".ztree li::after").css(liCss);
+        });
+        totalWidth = totalWidth + (totalWidth  / 10);
+        $("#familyTreeDiv").attr("style","width:" + (totalWidth) + "px");
+
+        window.print();
     });
 
 </script>
