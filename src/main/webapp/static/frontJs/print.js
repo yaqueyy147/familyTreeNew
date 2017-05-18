@@ -80,6 +80,7 @@ function addDiyDom(treeId, treeNode) {
  */
 function initPeopleData(familyId){
     var zNodes = [];
+    $(".loading").show();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/peopleInfo4Print',

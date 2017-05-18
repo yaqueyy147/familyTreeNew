@@ -22,11 +22,31 @@
             <%---moz-background-size:100% 100%;--%>
             <%--background-size:100% 100%;--%>
         <%--}--%>
+
         .container{
             width:100% !important;
         }
         .swfupload {
             opacity: 0;
+        }
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -35,6 +55,9 @@
 <%--<%@include file="common/header.jsp" %>--%>
 
 <div class="container" style="margin-top: 50px">
+    <div class="loading">
+        <div>加载中,请稍后...</div>
+    </div>
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
     <div style="text-align: center;font-size: 20px">
         <p style="border-bottom: solid 1px #999999">
