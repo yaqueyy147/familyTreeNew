@@ -30,5 +30,6 @@
             <mapping class="com.witkey.familyTree.domain.TUser1"/>
             <mapping class="com.witkey.familyTree.domain.TUserMoney"/>
         <mapping class="com.witkey.familyTree.domain.TCompanyIntroduce"/>
+            <mapping class="com.witkey.familyTree.domain.TUserFamily"/>
     </session-factory>
 </hibernate-configuration>

@@ -54,7 +54,7 @@ $(function () {
             data:formData,
             async:false,
             success:function (data) {
-                if(data.code == 1){
+                if(data.code >= 1){
                     var tFamily = data.tFamily;
                     var familyImg = tFamily.photoUrl;
 
@@ -71,7 +71,7 @@ $(function () {
                     imgHtml += "<div class=\"caption\">";
                     // imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
                     imgHtml += "<h3>世界何氏族谱（" + tFamily.id + "）</h3>";
-                    imgHtml += "<p>家族人数：" + ii.peopleCount + "人</p>";
+                    imgHtml += "<p>家族人数：0人</p>";
                     imgHtml += "<p>状态：" + statusDesc + "</p>";
                     imgHtml += "<p>" + tFamily.familyName + "</p>";
                     imgHtml += "<p name=\"familyDesc\" onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style=\"text-overflow: ellipsis;white-space: nowrap;overflow: hidden\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"right\" data-content=\"" + tFamily.familyDesc + "\">" + tFamily.familyDesc + "</p>";
