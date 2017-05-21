@@ -301,6 +301,7 @@ function initParent(generation){
  */
 function initPeopleData(familyId){
     var zNodes = [];
+    $(".loading").show();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/getPeopleList',
@@ -335,7 +336,7 @@ function initPeopleData(familyId){
             //     generationHtml += "<option value='" + i + "'>" + i + "</option>";
             // }
             // $("#generation").html(generationHtml);
-
+            $(".loading").hide();
         }
     });
     return zNodes;

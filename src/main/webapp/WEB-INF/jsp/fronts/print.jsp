@@ -157,7 +157,7 @@
         }
     </style>
 </head>
-<body>
+<body style="padding-bottom: 100px">
 <div class="loading">
     <div>加载中,请稍后...</div>
 </div>
@@ -178,7 +178,12 @@
     <div id="familyTreeDiv" style="width: 120000px">
         <ul id="familyTree" class="ztree"></ul>
     </div>
-
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container" style="text-align: center">
+        <button class="btn btn-sm btn-primary" id="okPrint">打印</button>
+        <button class="btn btn-sm btn-primary" id="cancel">取消打印/关闭</button>
+    </div>
+</nav>
 <%@ include file="common/springUrl.jsp"%>
 <%--<%@include file="common/footer.jsp" %>--%>
 <%@include file="common/commonJS.jsp"%>
@@ -191,35 +196,34 @@
     var familyFirstName = "${tFamily.familyFirstName}";
     $(document).ready(function () {
 
-//        var liCss = {
-//            "content": "",
-//            "position": "absolute",
-//            "top": "0",
-//            "right": "50%",
-//            "border-top": "1px solid #ccc",
-////            "width": "50%",
-//            "height": "20px"
-//        };
         var treeLi = $(".ztree li");
-
         var totalWidth = 0;
-        $.each(treeLi,function () {
 
-            var liWidth = $(this).width();
+        var topTree = $("#familyTree > li");
+        $.each(topTree,function () {
 
-            if(parseInt(totalWidth)*1 < parseInt(liWidth)*1){
-                totalWidth = liWidth;
+            var liWidth = $(this).outerWidth();
+            if(liWidth*1 < 1000){
+                liWidth = liWidth*1 + 100;
             }
+            totalWidth = totalWidth*1 + liWidth*1;
 
 //            liCss.width = liWidth + "px";
 //            $(this).append("<style>.ztree li::before{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
 //            $(this).append("<style>.ztree li::after{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
 //            $(".ztree li::after").css(liCss);
         });
-        totalWidth = totalWidth + (totalWidth  / 10);
         $("#familyTreeDiv").attr("style","width:" + (totalWidth) + "px");
 
-        window.print();
+//        window.print();
+
+        $("#okPrint").click(function () {
+            window.print();
+        });
+        $("#cancel").click(function () {
+            window.close();
+        });
+
     });
 
 </script>
