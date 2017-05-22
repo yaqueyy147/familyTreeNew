@@ -156,26 +156,28 @@ public class ConsoleController {
     public Map<String,Object> saveFamily(HttpServletRequest request, TFamily tFamily,String createTime4Modify) throws Exception{
 
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        String userName = consolesUser.get("userName") + "";
-
+        String userName = consolesUser.get("loginName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
         int ii = 0;
         String msg = "创建成功";
         try {
+            tFamily.setState(1);
             if(tFamily.getId() > 0){
                 TFamily tFamilyOld = familyService.getFamilyFromId(tFamily.getId());
 
                 LOGGER.info("修改族谱-->" + tFamily);
-                tFamily.setCreateTime(CommonUtil.ObjToDate(createTime4Modify));
+                tFamily.setCreateTime(tFamilyOld.getCreateTime());
+                tFamily.setCreateId(tFamilyOld.getCreateId());
+                tFamily.setCreateMan(tFamilyOld.getCreateMan());
                 ii = familyService.updateFamily(tFamily);
                 msg = "修改成功";
 
                 //记录日志
                 logService.createLog(new TLog(2,userName,tFamily.toString(),tFamilyOld.toString()));
             }else{
-                tFamily.setCreateMan(userName);
+                tFamily.setCreateId(consolesUser.get("id") + "");
                 tFamily.setCreateTime(new Date());
-
+                tFamily.setCreateMan(userName);
 //                String visitPassword = tFamily.getVisitPassword();
 //                if(!CommonUtil.isBlank(visitPassword)){
 //                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));

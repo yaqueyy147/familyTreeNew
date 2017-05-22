@@ -34,7 +34,7 @@
                     <td>登录账号:</td>
                     <td><input class="easyui-validatebox" type="text" id="loginName" name="loginName" data-options="required:true" /></td>
                     <td>用户名/真实姓名:</td>
-                    <td><input class="easyui-validatebox" type="text" id="userName" name="userName" /></td>
+                    <td><input class="easyui-validatebox" type="text" id="userName" name="userName" data-options="required:true" /></td>
                 </tr>
                 <tr id="passwordTr">
                     <td>密码:</td>

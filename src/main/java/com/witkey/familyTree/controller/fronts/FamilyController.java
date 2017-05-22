@@ -136,13 +136,14 @@ public class FamilyController {
         String msg = "创建成功";
         try {
             JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-            String userName = jsonUser.get("userName") + "";
-            tFamily.setCreateMan(jsonUser.get("userName")+"");
-            tFamily.setCreateTime(new Date());
+            String userName = jsonUser.get("loginName") + "";
             tFamily.setState(1);
             //修改族谱
             if(tFamily.getId() > 0){
                 TFamily tFamilyOld = familyService.getFamilyFromId(tFamily.getId());
+                tFamily.setCreateTime(tFamilyOld.getCreateTime());
+                tFamily.setCreateId(tFamilyOld.getCreateId());
+                tFamily.setCreateMan(tFamilyOld.getCreateMan());
                 familyService.updateFamily(tFamily);
                 msg = "修改成功";
                 map.put("code",2);
@@ -154,6 +155,9 @@ public class FamilyController {
 //                if(!CommonUtil.isBlank(visitPassword)){
 //                    tFamily.setVisitPassword(CommonUtil.string2MD5(visitPassword));
 //                }
+                tFamily.setCreateMan(jsonUser.get("loginName")+"");
+                tFamily.setCreateId(jsonUser.get("id") + "");
+                tFamily.setCreateTime(new Date());
                 LOGGER.debug("创建族谱-->" + tFamily);
                 //保存族谱
                 int familyId = familyService.createFamily(tFamily);

@@ -56,23 +56,24 @@
     &nbsp;&nbsp;
     <%--<a class="btn btn-primary" href="#chargeModal" data-toggle="modal" data-target="#chargeModal">充 值</a>--%>
     <c:if test="${not empty tCompanySponsor.companyDesc}">
-    <div id="descDiv">${tCompanySponsor.companyDesc}</div>
+        <div id="descDiv">${tCompanySponsor.companyDesc}</div>
     </c:if>
     <div id="companyShow" class="row">
-        <c:forEach var="companyDetail" items="${companyDetailList}">
+        ${introduce.companyIntroduce}
+        <%--<c:forEach var="companyDetail" items="${companyDetailList}">--%>
 
-            <div class="col-sm-6 col-md-2">
-                <div class="thumbnail">
-                    <a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%;"/></a>
-                    <%--<img data-src="holder.js/300x300" alt="...">--%>
-                    <div class="caption">
-                        <p name="photoDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">
-                            ${companyDetail.photoDesc}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
+            <%--<div class="col-sm-6 col-md-2">--%>
+                <%--<div class="thumbnail">--%>
+                    <%--<a href="javascript:void(0)" ><img src="${companyDetail.publicityPhoto}" class="img-thumbnail" style="width: 100%;"/></a>--%>
+                    <%--&lt;%&ndash;<img data-src="holder.js/300x300" alt="...">&ndash;%&gt;--%>
+                    <%--<div class="caption">--%>
+                        <%--<p name="photoDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="bottom" data-content="${companyDetail.photoDesc}">--%>
+                            <%--${companyDetail.photoDesc}--%>
+                        <%--</p>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</c:forEach>--%>
     </div>
 </div>
 <!-- 充值列表 Modal -->

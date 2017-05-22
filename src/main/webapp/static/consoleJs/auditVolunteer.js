@@ -153,6 +153,20 @@ function loadVolunteerData(params) {
                 }},
             {field:"idCard",title:"身份证号",width:"150"},
             {field:"phone",title:"联系电话",width:"120"},
+            {field:"address",title:"所在地",width:"150",
+                formatter: function(value,row,index){
+                    var address = "";
+                    if($.trim(row.province).length > 0){
+                        address += row.province;
+                    }
+                    if($.trim(row.city).length > 0){
+                        address += row.city;
+                    }
+                    if($.trim(row.district).length > 0){
+                        address += row.district;
+                    }
+                    return '<span title='+ address + '>'+address+'</span>';
+                }},
             {field:"idCardPhoto",title:"身份证图片",width:"120",
                 formatter: function(value,row,index){
                     var imgHtml = "<img src=\"" + value + "\" width=\"100px\" height=\"50px\" onclick=\"viewIdCard('" + value + "')\" />";

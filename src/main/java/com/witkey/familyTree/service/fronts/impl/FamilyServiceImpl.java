@@ -238,7 +238,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TFamily> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 and state=1";
-        sql += " and ((create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) or supplement_flag in (1,5))";
+        sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) or supplement_flag in (1,5))";
         
         if(!CommonUtil.isBlank(params)){
 //            if(!CommonUtil.isBlank(params.get("userName"))){

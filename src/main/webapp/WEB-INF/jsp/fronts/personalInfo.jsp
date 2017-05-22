@@ -17,12 +17,12 @@
         /*html,body {*/
             /*height: 98%;*/
         /*}*/
-        body{
-            background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;
-            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
-            -moz-background-size:100% 100%;
-            background-size:100% 100%;
-        }
+        <%--body{--%>
+            <%--background: url("<%=request.getContextPath()%>/static/images/bg-front.jpg") no-repeat;--%>
+            <%--filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";--%>
+            <%---moz-background-size:100% 100%;--%>
+            <%--background-size:100% 100%;--%>
+        <%--}--%>
         .bbtt {
             margin-bottom: 30px;
         }
@@ -31,7 +31,7 @@
 </head>
 <body>
 <%@include file="common/header.jsp" %>
-<div class="container-fluid" style="width: 90%; margin-bottom: 50px">
+<div class="container-fluid" style="width: 90%; "><!--margin-bottom: 50px-->
     <ul class="nav nav-tabs" role="tablist" style="margin-top: 30px">
         <li role="presentation" id="userDetailTabLi" class="active">
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
@@ -269,16 +269,16 @@
     var xxx = "${xxx}";
     var userId = "${tUserFront.id}";
     var winHeigth = $(window).height();
-    $(function () {
+    $(document).ready(function () {
         if(isVolunteer == 1 && xxx == 2){
 //            $("#userDetailTabLi").removeClass("active");
 //            $("#myFamilyTabLi").addClass("active");
             $("#myFamilyTabLi a").tab("show");
         }
 
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
         $("#province").val("${tUserFront.province}");
         $("#province").change();
         $("#city").val("${tUserFront.city}");

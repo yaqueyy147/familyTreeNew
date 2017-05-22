@@ -180,7 +180,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 <script type="text/javascript">
-    var winHeight = $(document).height();
+    var winHeight = $(window).height();
     $(function () {
         $("body").attr("style","height:" + (winHeight - 50) + "px");
         $('#imgFile').uploadify({

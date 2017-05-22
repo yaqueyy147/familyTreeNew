@@ -25,7 +25,7 @@
         }
         #ccDiv{
             width: 90%;
-            margin-bottom: 50px;
+            /*margin-bottom: 50px;*/
             overflow: auto
         }
 
@@ -284,11 +284,11 @@
     var companyId = "${companyInfo.id}";
     var winHeigth = $(window).height();
     var businessLicense = "${companyInfo.businessLicense}";
-    $(function () {
+    $(document).ready(function () {
 //        containerDiv
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
 
         $('#imgFile').uploadify({
             'swf'           : projectUrl + '/static/uploadify/uploadify.swf',

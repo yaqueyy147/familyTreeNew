@@ -219,7 +219,12 @@ $(function () {
     });
 
     $("#toAdd").click(function () {
+
         $("#userInfoForm").form('clear');
+        $("#state").combobox("setValue",1);
+        $("#isFront").combobox("setValue",1);
+        $("#isConsole").combobox("setValue",1);
+        $("#isVolunteer").combobox("setValue",1);
         $("#userId").val(0);
         $("#passwordTr").removeAttr("style");
         $("#userDialog").dialog('open');
@@ -353,8 +358,22 @@ function loadDataGrid(params) {
             {field:"userName",title:"用户昵称",width:"120"},
             {field:"password",title:"密码",width:"80",hidden:true},
             {field:"phone",title:"电话",width:"120"},
-            {field:"qqNum",title:"QQ",width:"120"},
-            {field:"wechart",title:"微信",width:"120"},
+            {field:"qqNum",title:"QQ",width:"100"},
+            {field:"wechart",title:"微信",width:"100"},
+            {field:"address",title:"所在地",width:"150",
+                formatter: function(value,row,index){
+                    var address = "";
+                    if($.trim(row.province).length > 0){
+                        address += row.province;
+                    }
+                    if($.trim(row.city).length > 0){
+                        address += row.city;
+                    }
+                    if($.trim(row.district).length > 0){
+                        address += row.district;
+                    }
+                    return '<span title='+ address + '>'+address+'</span>';
+                }},
             {field:"createMan",title:"创建人",width:"120"},
             {field:"createTime",title:"创建时间",width:"150",
                 formatter: function(value,row,index){
@@ -431,6 +450,11 @@ function loadDataToForm(data){
     $("#phone").val(data.phone);
     $("#qqNum").val(data.qqNum);
     $("#wechart").val(data.wechart);
+    $("#province").val(data.province);
+    $("#province").change();
+    $("#city").val(data.city);
+    $("#city").change();
+    $("#district").val(data.district);
 
     $("#state").combobox("setValue",data.state);
     $("#isFront").combobox("setValue",data.isFront);
