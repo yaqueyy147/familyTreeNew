@@ -757,7 +757,7 @@ public class FamilyServiceImpl implements FamilyService {
     public int saveInclude(TFamilyMerge tFamilyMerge) {
 
         //先删除原有的申请
-        String sql = " delete from t_family where primary_family_id=?";
+        String sql = " delete from t_family_merge where primary_family_id=?";
         jdbcTemplate.update(sql,tFamilyMerge.getPrimaryFamilyId());
 
         //添加收录申请
