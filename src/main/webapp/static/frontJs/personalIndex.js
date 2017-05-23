@@ -78,7 +78,7 @@ $(function () {
                     imgHtml += "</div></div></div>";
                     $("#familyShow").append(imgHtml);
                     $("#addFamilyModal").modal('hide');
-                    $("#saveFamily").text("保存");
+                    $("#saveFamily").text("提 交");
                     $("#saveFamily").removeAttr("disabled");
                 }
                 alert(data.msg);

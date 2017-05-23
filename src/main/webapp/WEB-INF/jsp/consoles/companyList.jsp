@@ -54,9 +54,9 @@
     <input id="companyName4Search" name="companyName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
     <span>公司属地:</span>
     <span data-toggle="distpicker">
-        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 选择省 ----"></select>
-        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 选择市 ----"></select>
-        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 选择区 ----"></select>
+        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 全部 ----"></select>
+        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 全部 ----"></select>
+        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 全部 ----"></select>
     </span>
 
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>

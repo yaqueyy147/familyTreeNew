@@ -31,6 +31,7 @@ public class TestInterceptor implements HandlerInterceptor {
     private PathMatcher pathMatcher = new AntPathMatcher();
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
     private List<String> excludeMappings;
+    private static JSONObject jsonUser;
 
     @Autowired
     private UserService userService;
@@ -47,12 +48,12 @@ public class TestInterceptor implements HandlerInterceptor {
 //        if(!StringUtils.isEmpty(lookupGroup(url))){
 //            return Boolean.TRUE;
 //        }
-//        //从cookie中读取用户信息
+        //从cookie中读取用户信息
 //        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
 //        if(!CommonUtil.isBlank(jsonUser)){
 //            return true;
 //        }
-//        httpServletResponse.sendRedirect("/sign?loginCode=-2");
+//        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/sign?loginCode=-2");
 //        return false;
         return true;
     }

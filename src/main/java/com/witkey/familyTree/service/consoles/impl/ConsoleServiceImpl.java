@@ -163,7 +163,16 @@ public class ConsoleServiceImpl implements ConsoleService {
             sql += " and user_name like '%" + params.get("userName") + "%'";
         }
         if(!CommonUtil.isBlank(params.get("loginName"))){
-            sql += " and login_name='" + params.get("loginName") + "'";
+            sql += " and login_name like '%" + params.get("loginName") + "%'";
+        }
+        if(!CommonUtil.isBlank(params.get("province"))){
+            sql += " and province='" + params.get("province") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("city"))){
+            sql += " and city='" + params.get("city") + "'";
+        }
+        if(!CommonUtil.isBlank(params.get("district"))){
+            sql += " and district='" + params.get("district") + "'";
         }
 //        List<TUser1> list = tUser1Dao.find(params);
         List<TUser1> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TUser1>(TUser1.class));

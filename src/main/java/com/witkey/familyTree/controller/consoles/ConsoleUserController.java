@@ -369,4 +369,16 @@ public class ConsoleUserController {
         return result;
     }
 
+    @RequestMapping(value = "saveUserFamily")
+    @ResponseBody
+    public Map<String,Object> saveUserFamily(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+
+        int i = consoleService.saveAuth(params);
+
+        result.put("code",i);
+        result.put("msg","授权完成");
+        return result;
+    }
+
 }

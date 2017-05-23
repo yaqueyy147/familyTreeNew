@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏族谱</title>
+    <title>世界何氏族谱</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%@include file="common/commonCss.jsp"%>
         <style>

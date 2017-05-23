@@ -93,7 +93,7 @@ $(function () {
                 initFamilyTree(zNodes,setting);
                 $("#addModal").modal('hide');
                 $("#peopleForm")[0].reset();
-                $("#savePeople").text("保存");
+                $("#savePeople").text("保 存");
                 $("#savePeople").removeAttr("disabled");
             },
             error:function (data) {

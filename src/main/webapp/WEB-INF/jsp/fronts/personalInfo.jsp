@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏族谱--个人信息</title>
+    <title>世界何氏族谱--个人信息</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%@include file="common/commonCss.jsp"%>
     <link href="<%=request.getContextPath()%>/static/css/fronts/personalInfo.css" rel="stylesheet" type="text/css" />
@@ -188,7 +188,8 @@
                     充值功能开发中，目前您可以通过微信和支付宝转账的方式进行充值，扫描下方二维码即可进行充值。
                 </p>
                 <p style="text-align: left;color: #ff0000;font-size: 18px">
-                    转账是请务必将您的登录账号和用户名进行备注，以便工作人员进行备案登记，充值才能生效，否则充值将不能生效。
+                    转账是请务必将您的“登录账号或者用户名以及联系方式”进行备注，以便工作人员进行备案登记，充值才能生效，否则充值将不能生效。
+                    如：“登录账号：xxx,用户名：xxx,联系方式:15*********,说明：***”
                 </p>
                 <%--<input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />--%>
                 <img src="<%=request.getContextPath()%>/static/images/wxPayQRCode.png" width="200px" height="250px" />

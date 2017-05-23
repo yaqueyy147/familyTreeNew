@@ -3,6 +3,8 @@
  */
 var editIndex = undefined;
 $(function () {
+    $("#province4Search").val("");
+    $("#province4Search").change();
     $("#auditDialog").dialog({
         "closed":true,
         modal: true,
@@ -124,7 +126,17 @@ $(function () {
         editIndex = undefined;
 
     });
-    
+
+    $("#doSearch").click(function () {
+        var params = {};
+        params.loginName = $("#loginName4Search").val();
+        params.userName = $("#userName4Search").val();
+        params.province = $("#province4Search").val();
+        params.city = $("#city4Search").val();
+        params.district = $("#district4Search").val();
+        loadVolunteerData(params);
+    });
+
     var params = {};
     loadVolunteerData(params);
 

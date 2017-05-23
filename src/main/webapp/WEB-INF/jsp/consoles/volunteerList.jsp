@@ -16,13 +16,26 @@
 <body>
 
 <table id="volunteerList" class="easyui-datagrid" style="width:100%;height:98%;"
-       title="注册用户列表" data-options="
+       title="注册用户列表" toolbar="#tb" data-options="
 				rownumbers:true,
 				singleSelect:true,
 				pagination:true,
 				pageSize:10,
                 scrollbarSize:18">
 </table>
+<div id="tb">
+    <span>登录账号:</span>
+    <input id="loginName4Search" name="loginName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>用户名:</span>
+    <input id="userName4Search" name="userName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>用户属地:</span>
+    <span data-toggle="distpicker">
+        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 全部 ----"></select>
+        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 全部 ----"></select>
+        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 全部 ----"></select>
+    </span>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
+</div>
 <div id="auditDialog" class="easyui-dialog" title="审核意见" style="width:400px;height:200px;padding:10px;top: 25%;left: 30%;">
     <input type="hidden" id="applyManId" name="applyManId" />
     <input type="hidden" id="volunteerId" name="volunteerId" />
@@ -60,6 +73,8 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/auditVolunteer.js"></script>
 </body>
 </html>

@@ -34,13 +34,17 @@ html,body {
         margin-left: -250px;
     }
 }
-
+.tips{
+    text-align: center;
+    color: #ff0000;
+    margin-bottom: 10px;
+}
 .form {
     width: 100%;
     max-width:500px;
     height: 275px;
-    margin: 25px auto 0px auto;
-    padding-top: 25px;
+    margin: 20px auto 0px auto;
+    /*padding-top: 25px;*/
 }
 .login-content {
     height: auto;

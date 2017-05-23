@@ -662,7 +662,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select t1.meritocrat_name,t1.meritocrat_desc,t1.meritocrat_attr_id,";
         sql += " t1.meritocrat_area,t1.meritocrat_addr,t1.post_code,t1.phone,t1.fax,t1.photo";
         sql += ",t2.meritocrat_attr ";
-        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t1.state<>9";
+        sql += " from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t1.state<>9 and t2.state=1";
 
         if(!CommonUtil.isBlank(params)){
 
@@ -701,7 +701,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         int total = 0;
 
-        String sql = " select count(*) total from t_meritocrat where state<>9";
+        String sql = " select count(*) total from t_meritocrat t1,t_meritocrat_attr t2 where t1.meritocrat_attr_id=t2.id and t1.state<>9 and t2.state=1";
 
         if(!CommonUtil.isBlank(params)){
 

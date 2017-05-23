@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏族谱</title>
+    <title>世界何氏族谱</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
@@ -60,6 +60,11 @@
 
                 </c:forEach>
             </div>
+        </div>
+    </c:when>
+    <c:when test="${(userInfo.userType == 1 && userInfo.isVolunteer == 9)}">
+        <div class="container-fluid" style="margin-top: 50px;width: 90%; margin-bottom: 50px">
+            <h2 style="text-align: center">您的账号已被冻结，不能进行族谱的相关操作，如需继续修订族谱，请进入个人页面重新申请修订族谱！</h2>
         </div>
     </c:when>
     <c:otherwise>

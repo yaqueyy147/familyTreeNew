@@ -19,11 +19,23 @@
 				pagination:true,
 				pageSize:10"></table>
 <div id="tb">
+    <span>登录账号:</span>
+    <input id="loginName4Search" name="loginName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>用户名:</span>
+    <input id="userName4Search" name="userName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>用户属地:</span>
+    <span data-toggle="distpicker">
+        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 全部 ----"></select>
+        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 全部 ----"></select>
+        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 全部 ----"></select>
+    </span>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toModifyPassword" >修改密码</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toSetAuth" >权限设置</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toSetFamilyAuth" >族谱权限设置</a>
 </div>
 <div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;">
     <div style="padding:10px 40px 20px 40px">
@@ -56,9 +68,9 @@
                     <td>地址:</td>
                     <td colspan="3">
                         <div data-toggle="distpicker">
-                            <select id="province" name="province" data-province="---- 选择省 ----"></select>
-                            <select id="city" name="city" data-city="---- 选择市 ----"></select>
-                            <select id="district" name="district" data-district="---- 选择区 ----"></select>
+                            <select id="province" name="province" data-province="---- 全部 ----"></select>
+                            <select id="city" name="city" data-city="---- 全部 ----"></select>
+                            <select id="district" name="district" data-district="---- 全部 ----"></select>
                         </div>
                     </td>
                 </tr>
@@ -130,6 +142,28 @@
     <div id="resourceTree" class="ztree" style="padding:10px 40px 20px 40px" >
 
     </div>
+</div>
+
+<div id="userFamilyDialog" class="easyui-dialog" title="用户族谱权限设置" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;">
+    <input type="hidden" id="userId4Family" />
+    <table id="userFamilyList" class="easyui-datagrid" style="width:100%;height:100%"
+           title="族谱列表" toolbar="#tb3" data-options="
+				rownumbers:true,
+				singleSelect:true,
+				pagination:true,
+				pageSize:10"></table>
+</div>
+<div id="tb3">
+    <span>族谱名:</span>
+    <input id="familyName4Search2" name="familyName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>族谱属地:</span>
+    <span data-toggle="distpicker">
+        <select id="province4Search2" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 全部 ----"></select>
+        <select id="city4Search2" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 全部 ----"></select>
+        <select id="district4Search2" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 全部 ----"></select>
+    </span>
+
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch2">查询</a>
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>

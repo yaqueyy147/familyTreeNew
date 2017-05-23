@@ -9,7 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>何氏族谱--登录</title>
+    <title>世界何氏族谱--登录</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/login.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
@@ -19,6 +19,7 @@
     <div class="login-title text-center">登&nbsp;&nbsp;&nbsp;&nbsp;录</div>
     <div class="login-content">
         <div class="form">
+            <div class="tips">温馨提示：本网站仅限何氏宗亲用户注册登录，如有不便请见谅！</div>
             <form id="signInForm" action="" method="post">
                 <div id="loginFail" class="form-group col-xs-8 form-actions col-xs-offset-2" style="color: #ff0000">
                 </div>
