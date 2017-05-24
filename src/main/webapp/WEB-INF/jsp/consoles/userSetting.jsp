@@ -35,7 +35,7 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toModifyPassword" >修改密码</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toSetAuth" >权限设置</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toSetFamilyAuth" >族谱权限设置</a>
+    <%--<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toSetFamilyAuth" >族谱权限设置</a>--%>
 </div>
 <div id="userDialog" class="easyui-dialog" title="用户信息" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;">
     <div style="padding:10px 40px 20px 40px">

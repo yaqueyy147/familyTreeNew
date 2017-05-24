@@ -191,6 +191,9 @@
                     转账是请务必将您的“登录账号或者用户名以及联系方式”进行备注，以便工作人员进行备案登记，充值才能生效，否则充值将不能生效。
                     如：“登录账号：xxx,用户名：xxx,联系方式:15*********,说明：***”
                 </p>
+                <p style="text-align: left;font-size: 18px">
+                    如有疑问，请联系微信:574611479--(何志业)
+                </p>
                 <%--<input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />--%>
                 <img src="<%=request.getContextPath()%>/static/images/wxPayQRCode.png" width="200px" height="250px" />
                 <img src="<%=request.getContextPath()%>/static/images/zfbPayQRCode.jpg" width="200px" height="250px" style="margin-left: 10px" />

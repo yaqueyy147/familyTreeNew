@@ -83,7 +83,7 @@
             </c:if>
             &nbsp;&nbsp;
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
-            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="print" data-toggle="modal" data-target="#printModal">打印</a>
+            <%--<a class="btn btn-primary btn-sm" href="javascript:void 0;" id="print" data-toggle="modal" data-target="#printModal">打印</a>--%>
             <c:if test="${merge.state == 3}">
                 <span>驳回意见:${merge.rejectDesc}</span>
             </c:if>

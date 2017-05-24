@@ -133,7 +133,7 @@ $(function () {
     // });
 
     $("#toInclude").click(function () {
-        if($(this).text() == "已申请收录"){
+        if($(this).text().indexOf("已申请") >= 0){
             alert("已申请收录，不能再次申请！");
             return;
         }
@@ -150,7 +150,7 @@ $(function () {
                     alert("申请成功!");
                     $("#includeModal").modal('hide');
                     $("#includeForm")[0].reset();
-                    $(this).text("已申请收录");
+                    $("#toInclude").text("已申请，待审核");
                 }
             },
             error:function (data) {
