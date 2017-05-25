@@ -44,19 +44,42 @@
             overflow: auto;
             float: left;
         }
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
 <%@include file="common/header.jsp" %>
+<div class="loading">
+    <div>加载中,请稍后...</div>
+</div>
 <div class="container treeContainer" style="margin-top: 50px">
+
     <%--<a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>--%>
     <div style="text-align: center;font-size: 20px;">
         <p style="border-bottom: solid 1px #999999">
             <span style="color: #fbf069">${tFamily.familyName}</span>
             &nbsp;&nbsp;的族人
             &nbsp;&nbsp;
-            <a class="btn btn-primary" href="javascript:void 0;" id="goBack">返回</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="goBack">返回</a>
         </p>
         <c:if test="${not empty tFamily.familyDesc}">
         <p id="familyDesc" style="font-size: 14px;text-align: left;border-bottom: solid 1px #999999" >家族简介：${tFamily.familyDesc}</p>
@@ -326,6 +349,9 @@
     $(function () {
         var treeContainerHeight = $(".treeContainer").height();
         var descHeight = $("#familyDesc").height();
+        if(!descHeight){
+            descHeight = 0;
+        }
         $("#familyTree").attr("style","height:" + (winHeight - descHeight - 150) + "px");
         $(".rankDiv").attr("style","height:" + (winHeight - descHeight - 150) + "px")
         $("#goBack").click(function () {

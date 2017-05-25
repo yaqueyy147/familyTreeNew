@@ -34,7 +34,12 @@ $(function () {
                                 var params = {};
                                 loadDataGrid(params);
                                 $("#resourceForm").form('clear');
+
+                                // var params = {userId:parent.userId};
+                                // parent.loadMenuTree(params);
+
                                 closeDialog("resourceDialog");
+
                             }
                         },
                         error:function (data) {

@@ -101,69 +101,7 @@
         </div>
     </div>
 </div>
-<!-- 充值列表 Modal -->
-<div class="modal fade bs-example-modal-sm" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="chargeModalLabel">公司充值列表</h4>
-            </div>
-            <div class="modal-body">
-                <input type="text" placeholder="输入充值金额" id="chargeMoney" name="chargeMoney" />
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">取消</button>
-                &nbsp;&nbsp;
-                <button class="btn btn-default" id="toCharge">确认充值</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 添加宣传图片 Modal -->
-<div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-labelledby="addPhotoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="addPhotoModalLabel">添加公司宣传照片</h4>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content">
-                    <form class="form-horizontal" id="photoForm" method="post">
-                        <input type="hidden" id="companyId" name="companyId" value="${tCompanySponsor.id}" >
-                        <div class="form-group">
-                            <label for="photoDesc" class="col-sm-2 control-label">图片介绍</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="photoDesc" name="photoDesc" placeholder="图片简介" type="text"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">添加图片</label>
-                            <div class="col-sm-10">
 
-                                <div id="progress_bar" style="display: none"></div>
-                                <input id="publicityPhoto" name="publicityPhoto" type="hidden" />
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-12" style="width: 150px;">
-                                        <input type="file" name="imgFile" id="imgFile" />
-                                        <a id="show_img"><img style="display: none;" id="result_img" class="img-responsive" /></a>
-                                    </div>
-                                </div>
-                                <%--<input id="imgFile" name="imgFile" type="file" multiple class="file" data-overwrite-initial="true">--%>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="savePhoto">提 交</button>
-                <button class="btn btn-default" id="closeModal" data-dismiss="modal">取 消</button>
-            </div>
-        </div>
-    </div>
-</div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/footer.jsp" %>
 <%@include file="common/commonJS.jsp"%>
@@ -177,47 +115,6 @@
         });
         $("body").attr("style","height:" + (winHeight - 50) + "px");
 
-        $('#imgFile').uploadify({
-            'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-            'uploader'      : projectUrl + '/upload/uploadImg',
-            'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
-            'auto'          : true,
-            "formData"      : {targetFile : '/upload/companyImg'},
-            'queueID'       : 'progress_bar',
-            'fileObjName'   : 'uploadFile',
-            "buttonCursor"  : "hand",
-            "buttonText"    : "选择图片",
-            "buttonImage"   : projectUrl + "/static/images/defaultUpload.gif",
-            "buttonClass"   : "img-thumbnail",
-            "height"         : "140",
-            'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
-            'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
-            'onUploadSuccess' : function(file, data, response) {
-                var result = eval('(' + data + ')');
-                var imgPath = result.filePath;
-                $("#result_img").attr('src',imgPath);
-                $("#result_img").show();
-                $("#imgFile").hide();
-                $("#publicityPhoto").attr('value',imgPath);
-                $("#show_img").mouseover(function(){
-                    $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
-                });
-                $("#show_img").mouseout(function(){
-                    $("#result_img").attr('src',imgPath);
-                });
-                $("#result_img").click(function(){
-                    $("#result_img").hide();
-                    $("#imgFile").show();
-                    $("#publicityPhoto").removeAttr('value');
-                    $("#show_img").unbind('mouseover');
-                    $("#show_img").unbind('mouseout');
-
-                });
-            },
-            onUploadError:function (file, errorCode, errorMsg, errorString) {
-                alert("error-->" + errorString);
-            }
-        });
     });
 </script>
 </body>

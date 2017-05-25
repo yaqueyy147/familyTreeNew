@@ -50,4 +50,7 @@ public interface UserService {
     //设置用户是否可修族谱
     public int setUserVolunteer(int userId,int state);
 
+    //删除充值记录
+    public int deleteMoney(Map<String,Object> params);
+
 }

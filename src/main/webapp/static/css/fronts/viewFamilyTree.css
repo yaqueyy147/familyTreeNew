@@ -27,6 +27,7 @@ table tr td{
     padding: 2px;
 }
 .photoBox{
+    max-width: 150px;
     width:150px;
     border: solid 2px #9d9d9d;
 }

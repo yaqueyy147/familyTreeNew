@@ -3,6 +3,7 @@ package com.witkey.familyTree.controller.consoles;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.consoles.LogService;
+import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.BaseUtil;
@@ -35,6 +36,8 @@ public class ConsoleController {
     private ConsoleService consoleService;
     @Autowired
     private FamilyService familyService;
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private UserService userService;
@@ -719,6 +722,43 @@ public class ConsoleController {
 
         result.put("code",i);
         result.put("msg","删除完成");
+        return result;
+    }
+
+    @RequestMapping(value = "printFamily")
+    public ModelAndView printFamily(Model model,HttpServletRequest request) throws Exception{
+        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+
+        model.addAttribute("consolesUser",consolesUser);
+        return new ModelAndView("/consoles/printFamily");
+    }
+
+    @RequestMapping(value = "getMaxGen")
+    @ResponseBody
+    public Map<String,Object> getMaxGen(int familyId){
+        Map<String,Object> result = new HashMap<>();
+
+        int maxGen = familyService.getFamilyMaxGeneration(familyId);
+
+        result.put("maxGen",maxGen);
+        return result;
+    }
+
+    @RequestMapping(value = "deleteMoney")
+    @ResponseBody
+    public Map<String,Object> deleteMoney(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<>();
+
+        int ii = 0;
+
+        if(CommonUtil.parseInt(params.get("type")) == 1){
+            ii += userService.deleteMoney(params);
+        }else{
+            ii += companyService.deleteMoney(params);
+        }
+
+        result.put("code",ii);
+        result.put("msg","删除完成！");
         return result;
     }
 

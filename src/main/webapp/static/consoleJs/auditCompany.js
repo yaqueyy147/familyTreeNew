@@ -101,6 +101,51 @@ $(function () {
 
     });
 
+    $("#deleteMoney").click(function () {
+        var companyId = $("#companyId").val();
+        var companyName = $("#companyName").val();
+        var selectRows = $("#moneyTable").datagrid('getSelections');
+        if(selectRows.length < 1){
+            alert("请至少选择一条数据!");
+            return;
+        }
+        var selectIds = "";
+        var totalMoney = 0;
+        for(var i=0;i<selectRows.length;i++){
+            var ii = selectRows[i];
+            selectIds += "," + ii.id;
+            totalMoney = parseInt(totalMoney)*1 + parseInt(ii.payMoney)*1;
+        }
+        selectIds = selectIds.substring(1);
+        $.messager.confirm('Confirm','确定要删除这些充值记录(' + selectIds + ')  吗?',function(r){
+            if (r){
+                $.ajax({
+                    type:'post',
+                    url: projectUrl + "/consoles/deleteMoney",
+                    async:false,
+                    dataType:'json',
+                    data:{moneyIds:selectIds,type:2,companyId:companyId,totalMoney:totalMoney},
+                    async:false,
+                    success:function (data) {
+                        alert(data.msg);
+                        var params = {};
+                        showMoneyList(companyId,companyName);
+
+                        var params = {};
+                        params.companyName = $("#companyName4Search").val();
+                        params.province = $("#province4Search").val();
+                        params.city = $("#city4Search").val();
+                        params.district = $("#district4Search").val();
+                        loadCompanyData(params);
+                    },
+                    error:function (data) {
+                        alert(JSON.stringify(data));
+                    }
+                });
+            }
+        });
+    });
+
     var params = {};
     loadCompanyData(params)
 
@@ -204,6 +249,7 @@ function showMoneyList(companyId,companyName){
     $("#moneyTable").datagrid({
     	data:moneyList,
     	columns:[[
+            {field:"ck",checkbox:"true"},
     		{field:"payMoney",title:"充值金额",width:"90",
     			editor:{type:'numberbox'},
     		},

@@ -1,6 +1,7 @@
 /**
  * Created by suyx on 2017/1/16.
  */
+var setting;
 $(function () {
 
     $("#userDialog").dialog({
@@ -118,7 +119,7 @@ $(function () {
         $("#modifyPasswordDialog").dialog('open');
     });
 
-    var setting = {
+    setting = {
         data: {
             simpleData: {
                 enable:true,
@@ -133,10 +134,15 @@ $(function () {
 
     };
     var params = {userId:userId};
-    var dataList = getData("/consoles/menuTree",params).menuList;
-    $.fn.zTree.init($("#menuTree"), setting, dataList);
+    loadMenuTree(params);
 
 });
+
+function loadMenuTree(params){
+    var dataList = getData("/consoles/menuTree",params).menuList;
+    $.fn.zTree.init($("#menuTree"), setting, dataList);
+}
+
 function loadTab(tabId,tabTitle,tabUrl) {
     if(tabUrl == "/"){
         return ;

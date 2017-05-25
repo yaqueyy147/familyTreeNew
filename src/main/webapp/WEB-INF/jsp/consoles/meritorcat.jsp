@@ -125,44 +125,46 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/uploadify/jquery.uploadify.min.js"></script>>
     <script>
         $(function () {
-            $('#imgFile').uploadify({
-                'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-                'uploader'      : projectUrl + '/upload/uploadImg',
-                'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
-                'auto'          : true,
-                "formData"      : {targetFile : '/upload/familyImg'},
-                'queueID'       : 'progress_bar',
-                'fileObjName'   : 'uploadFile',
-                "buttonCursor"  : "hand",
-                "buttonText"    : "选择图片",
-                'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
-                'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
-                'onUploadSuccess' : function(file, data, response) {
-                    var result = eval('(' + data + ')');
-                    var imgPath = result.filePath;
-                    $("#result_img").attr('src',imgPath);
-                    $("#result_img").show();
-                    $("#imgFile").hide();
-                    $("#photo").attr('value',imgPath);
-                    $("#show_img").mouseover(function(){
-                        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
-                    });
-                    $("#show_img").mouseout(function(){
-                        $("#result_img").attr('src',imgPath);
-                    });
-                    $("#result_img").click(function(){
-                        $("#result_img").hide();
-                        $("#imgFile").show();
-                        $("#photo").removeAttr('value');
-                        $("#show_img").unbind('mouseover');
-                        $("#show_img").unbind('mouseout');
+            setTimeout(function() {
+                $('#imgFile').uploadify({
+                    'swf': projectUrl + '/static/uploadify/uploadify.swf',
+                    'uploader': projectUrl + '/upload/uploadImg',
+                    'cancelImg': projectUrl + '/static/uploadify/cancel.png',
+                    'auto': true,
+                    "formData": {targetFile: '/upload/familyImg'},
+                    'queueID': 'progress_bar',
+                    'fileObjName': 'uploadFile',
+                    "buttonCursor": "hand",
+                    "buttonText": "选择图片",
+                    'fileDesc': '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+                    'fileExt': '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+                    'onUploadSuccess': function (file, data, response) {
+                        var result = eval('(' + data + ')');
+                        var imgPath = result.filePath;
+                        $("#result_img").attr('src', imgPath);
+                        $("#result_img").show();
+                        $("#imgFile").hide();
+                        $("#photo").attr('value', imgPath);
+                        $("#show_img").mouseover(function () {
+                            $("#result_img").attr('src', projectUrl + "/static/images/deleteImg.png");
+                        });
+                        $("#show_img").mouseout(function () {
+                            $("#result_img").attr('src', imgPath);
+                        });
+                        $("#result_img").click(function () {
+                            $("#result_img").hide();
+                            $("#imgFile").show();
+                            $("#photo").removeAttr('value');
+                            $("#show_img").unbind('mouseover');
+                            $("#show_img").unbind('mouseout');
 
-                    });
-                },
-                onUploadError:function (file, errorCode, errorMsg, errorString) {
-                    alert("error-->" + errorString);
-                }
-            });
+                        });
+                    },
+                    onUploadError: function (file, errorCode, errorMsg, errorString) {
+                        alert("error-->" + errorString);
+                    }
+                });
+            },10);
         });
     </script>
 </body>

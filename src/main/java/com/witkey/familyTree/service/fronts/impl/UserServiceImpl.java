@@ -253,4 +253,24 @@ public class UserServiceImpl implements UserService {
         return i;
     }
 
+    @Override
+    public int deleteMoney(Map<String, Object> params) {
+        String ids = params.get("moneyIds") + "";
+        String[] id = ids.split(",");
+
+        //删除充值记录
+        String sql = "update t_user_money set state=? where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,9,id[i]);
+        }
+
+        //修改积分表的充值总金额
+        sql = "update t_user_points set total_money=total_money-? where user_id=?";
+        ii += jdbcTemplate.update(sql,params.get("totalMoney"),params.get("userId"));
+
+        return ii;
+    }
+
 }

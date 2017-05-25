@@ -238,44 +238,22 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TFamily> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 and state=1";
-        sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "')) or supplement_flag in (1,5))";
-        
+        sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+        sql += " or (supplement_flag in (1,5)";
+
         if(!CommonUtil.isBlank(params)){
-//            if(!CommonUtil.isBlank(params.get("userName"))){
-////                filter.put("createMan",params.get("userName"));
-//                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
-//            }
-            if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
-//                filter.put("familyArea",params.get("familyArea"));
-                sql += " and family_area='" + params.get("familyArea") + "'";
-            }
             if(!CommonUtil.isBlank(params.get("province"))){
-//                filter.put("province",params.get("province"));
                 sql += " and province='" + params.get("province") + "'";
             }
             if(!CommonUtil.isBlank(params.get("city"))){
-//                filter.put("city",params.get("city"));
                 sql += " and city='" + params.get("city") + "'";
             }
             if(!CommonUtil.isBlank(params.get("district"))){
-//                filter.put("district",params.get("district"));
                 sql += " and district='" + params.get("district") + "'";
             }
 
-            if(!CommonUtil.isBlank(params.get("familyName"))){
-//                filter.put("familyName","%" + params.get("familyName") + "%");
-                sql += " and family_name like '%" + params.get("familyName") + "%'";
-            }
-//            if(!CommonUtil.isBlank(params.get("state"))){
-//                if(!CommonUtil.isBlank(params.get("tt")) && CommonUtil.parseInt(params.get("tt")) == 1){
-//                    sql += " and (state='" + params.get("state") + "' or state=5)";
-//                }else{
-//                    sql += " and state='" + params.get("state") + "'";
-//                }
-//
-//            }
         }
-
+        sql += "))";
 //        List<TFamily> list = tFamilyDao.find(filter);
 
         List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
@@ -805,13 +783,14 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TUserMoney> getUserMoney(Map<String, Object> params) {
         Map<String, Object> paramss = new HashMap<String, Object>();
         paramss.put("userId",CommonUtil.parseInt(params.get("userId")));
+        paramss.put("state",1);
         List<TUserMoney> list = tUserMoneyDao.find(paramss);
         return list;
     }
 
 	@Override
     public double getTotalUserMoney(int userId) {
-        String sql = "select user_id, sum(pay_money) totalMoney from t_user_money where user_id=? group by user_id";
+        String sql = "select user_id, sum(pay_money) totalMoney from t_user_money where user_id=? and state=1 group by user_id";
         List<Map<String,Object>> listMoney = jdbcTemplate.queryForList(sql,userId);
         double total = 0.0;
         if(listMoney != null && listMoney.size() > 0){

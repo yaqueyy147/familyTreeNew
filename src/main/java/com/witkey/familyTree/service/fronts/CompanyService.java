@@ -48,4 +48,7 @@ public interface CompanyService {
 
     //获取公司介绍
     public List<TCompanyIntroduce> getIntro(int companyId);
+
+    //删除公司充值记录
+    public int deleteMoney(Map<String,Object> params);
 }

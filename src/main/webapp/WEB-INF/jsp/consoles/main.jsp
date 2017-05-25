@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>世界何氏族谱管理系统</title>
     <%@ include file="common/commonCss.jsp" %>
     <style type="text/css">

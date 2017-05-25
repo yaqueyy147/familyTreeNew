@@ -109,51 +109,53 @@
         if(regCode == -2){
             alert("该账号已被注册!");
         }
-        $('#imgFile1').uploadify({
-            'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
-            'uploader'      : projectUrl + '/upload/uploadImg',
-            'cancelImg'     : projectUrl + '/static/uploadify/cancel.png',
-            'auto'          : true,
-            "formData"      : {targetFile : '/upload/userImg'},
-            'queueID'       : 'progress_bar',
-            'fileObjName'   : 'uploadFile',
-            "buttonCursor"  : "hand",
-            "buttonText"    : "上传身份证照片",
+        setTimeout(function() {
+            $('#imgFile1').uploadify({
+                'swf': projectUrl + '/static/uploadify/uploadify.swf',
+                'uploader': projectUrl + '/upload/uploadImg',
+                'cancelImg': projectUrl + '/static/uploadify/cancel.png',
+                'auto': true,
+                "formData": {targetFile: '/upload/userImg'},
+                'queueID': 'progress_bar',
+                'fileObjName': 'uploadFile',
+                "buttonCursor": "hand",
+                "buttonText": "上传身份证照片",
 //            "buttonImage"   : projectUrl + "/static/images/defaultUpload.gif",
-            "buttonClass"   : "img-thumbnail",
+                "buttonClass": "img-thumbnail",
 //            "height"         : "140",
-            'fileDesc'      : '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
-            'fileExt'       : '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
-            'onUploadSuccess' : function(file, data, response) {
-                var result = eval('(' + data + ')');
-                var imgPath = result.filePath;
-                $("#result_img1").attr('src',imgPath);
-                $("#result_img1").show();
-                $("#result_img1_wm").show();
-                $("#imgFile1").hide();
-                $("#idCardPhoto").attr('value',imgPath);
-                $("#show_img1").mouseover(function(){
-                    $("#result_img1_wm").hide();
-                    $("#result_img1").attr('src',projectUrl + "/static/images/deleteImg.png");
-                });
-                $("#show_img1").mouseout(function(){
-                    $("#result_img1").attr('src',imgPath);
+                'fileDesc': '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+                'fileExt': '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+                'onUploadSuccess': function (file, data, response) {
+                    var result = eval('(' + data + ')');
+                    var imgPath = result.filePath;
+                    $("#result_img1").attr('src', imgPath);
+                    $("#result_img1").show();
                     $("#result_img1_wm").show();
-                });
-                $("#result_img1").click(function(){
-                    $("#result_img1").hide();
-                    $("#result_img1_wm").hide();
-                    $("#imgFile1").show();
-                    $("#idCardPhoto").removeAttr('value');
-                    $("#show_img1").unbind('mouseover');
-                    $("#show_img1").unbind('mouseout');
+                    $("#imgFile1").hide();
+                    $("#idCardPhoto").attr('value', imgPath);
+                    $("#show_img1").mouseover(function () {
+                        $("#result_img1_wm").hide();
+                        $("#result_img1").attr('src', projectUrl + "/static/images/deleteImg.png");
+                    });
+                    $("#show_img1").mouseout(function () {
+                        $("#result_img1").attr('src', imgPath);
+                        $("#result_img1_wm").show();
+                    });
+                    $("#result_img1").click(function () {
+                        $("#result_img1").hide();
+                        $("#result_img1_wm").hide();
+                        $("#imgFile1").show();
+                        $("#idCardPhoto").removeAttr('value');
+                        $("#show_img1").unbind('mouseover');
+                        $("#show_img1").unbind('mouseout');
 
-                });
-            },
-            onUploadError:function (file, errorCode, errorMsg, errorString) {
-                alert("error-->" + errorString);
-            }
-        });
+                    });
+                },
+                onUploadError: function (file, errorCode, errorMsg, errorString) {
+                    alert("error-->" + errorString);
+                }
+            });
+        },10);
 //        $('#imgFile1').uploadify({
 //            'swf'           : projectUrl + '/static/uploadify/uploadify.swf',
 //            'uploader'      : projectUrl + '/upload/uploadImg',

@@ -70,6 +70,7 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="addMoney">添加充值</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true" id="affirmAdd">确认添加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" id="cancelAdd">取消添加</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" id="deleteMoney">删除</a>
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>

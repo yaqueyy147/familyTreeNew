@@ -92,6 +92,7 @@ public class CompanyServiceImpl implements CompanyService {
     public List<TCompanyMoney> getCompanyMoney(Map<String, Object> params) {
         Map<String, Object> paramss = new HashMap<String, Object>();
         paramss.put("companyId",CommonUtil.parseInt(params.get("companyId")));
+        paramss.put("state",1);
         List<TCompanyMoney> list = tCompanyMoneyDao.find(paramss);
         return list;
     }
@@ -122,7 +123,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public double getTotalCompanyMoney(int companyId) {
-        String sql = "select company_id, sum(pay_money) totalMoney from t_company_money where company_id=? group by company_id";
+        String sql = "select company_id, sum(pay_money) totalMoney from t_company_money where company_id=? and state=1 group by company_id";
         List<Map<String,Object>> listMoney = jdbcTemplate.queryForList(sql,companyId);
         double total = 0.0;
         if(listMoney != null && listMoney.size() > 0){
@@ -194,5 +195,25 @@ public class CompanyServiceImpl implements CompanyService {
         List<TCompanyIntroduce> list = tCompanyIntroduceDao.find("from TCompanyIntroduce where companyId=?",companyId);
 
         return list;
+    }
+
+    @Override
+    public int deleteMoney(Map<String, Object> params) {
+        String ids = params.get("moneyIds") + "";
+        String[] id = ids.split(",");
+
+        //删除充值记录
+        String sql = "update t_company_money set state=? where id=?";
+
+        int ii = 0;
+        for(int i=0;i<id.length;i++){
+            ii += jdbcTemplate.update(sql,9,id[i]);
+        }
+
+        //修改积分表的充值总金额
+        sql = "update t_company_points set total_money=total_money-? where company_id=?";
+        ii += jdbcTemplate.update(sql,params.get("totalMoney"),params.get("companyId"));
+
+        return ii;
     }
 }
