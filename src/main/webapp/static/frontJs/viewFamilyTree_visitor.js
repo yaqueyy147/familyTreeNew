@@ -119,7 +119,7 @@ function initPeopleData(familyId){
                 var ii = data[i];
                 var node = {};
                 node.id = ii.id;
-                node.pId = ii.fatherId;
+                node.pId = ii.superiorId;
                 node.name = ii.name;
                 var mateList = ii.mateList;
                 var mateName = "";

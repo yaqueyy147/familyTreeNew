@@ -252,6 +252,8 @@ function addPeople(type,generation,parentId,name,peopleId){
     $("#peopleType").val(peopleType);
     $("#peopleInfo").text(peopleInfo);
     $("#fatherId").val(parentId);
+    $("#motherId").val(parentId);
+    $("#superiorId").val(parentId);
     $("#addModalLabel").text(modalTitle);
     $("#addModal").modal('show');
 
@@ -317,7 +319,7 @@ function initPeopleData(familyId){
                 // }
                 var node = {};
                 node.id = ii.id;
-                node.pId = ii.fatherId;
+                node.pId = ii.superiorId;
                 node.name = ii.name;
                 var mateList = ii.mateList;
                 var mateName = "";

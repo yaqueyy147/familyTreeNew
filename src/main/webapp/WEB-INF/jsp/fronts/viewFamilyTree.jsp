@@ -105,6 +105,7 @@
                 <h4 class="modal-title" id="addModalLabel">添加族人</h4>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="motherOrFather" value="1" />
                 <form id="peopleForm" action="<%=request.getContextPath()%>/family/savePeople" method="post">
                     <table>
                         <tr style="border: solid 2px #9d9d9d;">
@@ -130,6 +131,7 @@
                                 <input name="mateId" id="mateId" type="hidden"/>
                                 <input name="peopleType" id="peopleType" type="hidden" value="1" />
                                 <input name="peopleStatus" id="peopleStatus" type="hidden" value="1" />
+                                <input name="superiorId" id="superiorId" type="hidden" value="0" />
                                 <span id="peopleInfo"></span>
                             </td>
                         </tr>
@@ -237,7 +239,7 @@
                             </td>
                             <td class="tdSm">父亲：</td>
                             <td style="text-align: left">
-                                <select name="fatherId" id="fatherId" style="max-width:135px">
+                                <select name="fatherId" id="fatherId" style="max-width:135px" >
 
                                 </select>
                                 <%--<input name="fatherId" id="fatherId" type="text" value="0" />--%>

@@ -54,10 +54,12 @@ public class TPeople implements Serializable {
 
     private Integer isSupplement;
 
+    private Integer superiorId;
+
     public TPeople() {
     }
 
-    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType, Integer isSupplement) {
+    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType, Integer isSupplement, Integer superiorId) {
         this.id = id;
         this.familyId = familyId;
         this.generation = generation;
@@ -93,6 +95,7 @@ public class TPeople implements Serializable {
         this.mateType = mateType;
         this.peopleType = peopleType;
         this.isSupplement = isSupplement;
+        this.superiorId = superiorId;
     }
 
     @Id
@@ -466,7 +469,17 @@ public class TPeople implements Serializable {
 		this.createId = createId;
 	}
 
-	@Override
+	@Basic
+    @Column(name = "superior_id")
+    public Integer getSuperiorId() {
+        return superiorId;
+    }
+
+    public void setSuperiorId(Integer superiorId) {
+        this.superiorId = superiorId;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -513,6 +526,7 @@ public class TPeople implements Serializable {
         if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null) return false;
         if (isSupplement != null ? !isSupplement.equals(tPeople.isSupplement) : tPeople.isSupplement != null) return false;
         if (createId != null ? !createId.equals(tPeople.createId) : tPeople.createId != null) return false;
+        if (superiorId != null ? !superiorId.equals(tPeople.superiorId) : tPeople.superiorId != null) return false;
         return true;
     }
 
@@ -555,6 +569,7 @@ public class TPeople implements Serializable {
         result = 31 * result + (peopleStatus != null ? peopleStatus.hashCode() : 0);
         result = 31 * result + (isSupplement != null ? isSupplement.hashCode() : 0);
         result = 31 * result + (createId != null ? createId.hashCode() : 0);
+        result = 31 * result + (superiorId != null ? superiorId.hashCode() : 0);
         return result;
     }
 
