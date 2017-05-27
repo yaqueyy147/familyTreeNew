@@ -277,6 +277,7 @@ public class FamilyController {
         //查询族人
         params.put("peopleType",1);
         params.put("orderBy"," order by family_rank asc");
+        params.put("isIndex",1);
         List<TPeople> listPeople = familyService.getPeopleList(params);
 
         List<Map<String,Object>> list = new ArrayList<>();

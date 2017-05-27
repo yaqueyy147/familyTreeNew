@@ -320,7 +320,7 @@ function initPeopleData(familyId){
                 var ii = data[i];
                 var node = {};
                 node.id = ii.id;
-                node.pId = ii.fatherId;
+                node.pId = ii.superiorId;
                 node.name = ii.name;
                 node.createId = ii.createId;
                 var mateList = ii.mateList;

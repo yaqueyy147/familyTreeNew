@@ -112,6 +112,7 @@ $(function () {
         $("#fatherId").html(ss);
         $("#motherId").html(ss);
         $("#peopleType").val(1);
+        $("#superiorId").val(0);
         $("#peopleInfo").text("");
         $("#mateId").val("");
         $("#id").val(0);
@@ -124,6 +125,7 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
+        $("#superiorId").val(0);
         initParent(generation-1);
     });
 
@@ -191,6 +193,32 @@ $(function () {
         $("#isAddIntroOk").prop("checked",true);
     });
 
+    //修改父亲的时候同时修改上级id
+    $("#fatherId").on({
+        change:function () {
+            var fatherType = $('#fatherId option:selected').attr("people-type");
+            //如果选择的父亲是本族人，则修改上级id为选择的父亲Id
+            if(fatherType == 1){
+                $("#superiorId").val($(this).val());
+            }else{
+                $("#superiorId").val(0);
+            }
+        }
+    });
+    //修改母亲的时候同时修改上级id
+    $("#motherId").on({
+        change:function () {
+            var motherType = $('#motherId option:selected').attr("people-type");
+            var fatherType = $('#fatherId option:selected').attr("people-type");
+            //如果选择的母亲是本族人，并且选中的父亲不是本族人，则修改上级id为选择的母亲Id
+            if(motherType == 1 && fatherType != 1){
+                $("#superiorId").val($(this).val());
+            }else{//否则  以父亲ID作为上级ID
+                $("#superiorId").val($("#fatherId").val());
+            }
+        }
+    });
+
 });
 
 function initFamilyTree(zNodes,setting) {
@@ -222,7 +250,12 @@ function addDiyDom(treeId, treeNode) {
     // }
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
-    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
+
+    if(treeNode.peopleStatus == 5 || treeNode.peopleStatus == 1){
+        editStr += "<a style='display: inline-block;margin-left: 10px;color:#CC2222' id='diyBtn2_" +treeNode.id+ "'>补录待审核</a>";
+    }
+
     aObj.after(editStr);
 }
 
@@ -252,7 +285,9 @@ function addPeople(type,generation,parentId,name,peopleId){
     $("#peopleType").val(peopleType);
     $("#peopleInfo").text(peopleInfo);
     $("#fatherId").val(parentId);
+    $("#fatherId").change();
     $("#motherId").val(parentId);
+    $("#motherId").change();
     $("#superiorId").val(parentId);
     $("#addModalLabel").text(modalTitle);
     $("#addModal").modal('show');
@@ -274,7 +309,7 @@ function initParent(generation){
             if(fathers.length > 0){
                 for(var i=0;i<fathers.length;i++){
                     var ii = fathers[i];
-                    fatherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
+                    fatherHtml += "<option value='" + ii.id + "' people-type='" + ii.peopleType + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
             }
             $("#fatherId").html(fatherHtml);
@@ -282,7 +317,7 @@ function initParent(generation){
             if(mothers.length > 0){
                 for(var i=0;i<mothers.length;i++){
                     var ii = mothers[i];
-                    motherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
+                    motherHtml += "<option value='" + ii.id + "'people-type='" + ii.peopleType + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
             }
             $("#motherId").html(motherHtml);
@@ -330,6 +365,7 @@ function initPeopleData(familyId){
                 node.mateName = mateName.substring(1);
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
+                node.peopleStatus = ii.peopleStatus;
                 zNodes[i] = node;
 
             }

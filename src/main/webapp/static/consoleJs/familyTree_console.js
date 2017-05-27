@@ -107,6 +107,7 @@ $(function () {
         $("#motherId").html(ss);
         $("#peopleType").val(1);
         $("#peopleInfo").text("");
+        $("#superiorId").val(0);
         $("#mateId").val("");
         $("#id").val(0);
     });
@@ -118,6 +119,7 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
+        $("#superiorId").val(0);
         initParent(generation-1);
     });
 
@@ -184,6 +186,32 @@ $(function () {
         history.back();
     });
 
+    //修改父亲的时候同时修改上级id
+    $("#fatherId").on({
+        change:function () {
+            var fatherType = $('#fatherId option:selected').attr("people-type");
+            //如果选择的父亲是本族人，则修改上级id为选择的父亲Id
+            if(fatherType == 1){
+                $("#superiorId").val($(this).val());
+            }else{
+                $("#superiorId").val(0);
+            }
+        }
+    });
+    //修改母亲的时候同时修改上级id
+    $("#motherId").on({
+        change:function () {
+            var motherType = $('#motherId option:selected').attr("people-type");
+            var fatherType = $('#fatherId option:selected').attr("people-type");
+            //如果选择的母亲是本族人，并且选中的父亲不是本族人，则修改上级id为选择的母亲Id
+            if(motherType == 1 && fatherType != 1){
+                $("#superiorId").val($(this).val());
+            }else{//否则  以父亲ID作为上级ID
+                $("#superiorId").val($("#fatherId").val());
+            }
+        }
+    });
+
 });
 
 function initFamilyTree(zNodes,setting) {
@@ -246,6 +274,10 @@ function addPeople(type,generation,parentId,name,peopleId){
     $("#peopleType").val(peopleType);
     $("#peopleInfo").text(peopleInfo);
     $("#fatherId").val(parentId);
+    $("#fatherId").change();
+    $("#motherId").val(parentId);
+    $("#motherId").change();
+    $("#superiorId").val(parentId);
     $("#addModalLabel").text(modalTitle);
     $("#addModal").modal('show');
 
@@ -266,7 +298,7 @@ function initParent(generation){
             if(fathers.length > 0){
                 for(var i=0;i<fathers.length;i++){
                     var ii = fathers[i];
-                    fatherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
+                    fatherHtml += "<option value='" + ii.id + "' people-type='" + ii.peopleType + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
             }else{
                 fatherHtml += "<option value='0'>无</option>";
@@ -276,7 +308,7 @@ function initParent(generation){
             if(mothers.length > 0){
                 for(var i=0;i<mothers.length;i++){
                     var ii = mothers[i];
-                    motherHtml += "<option value='" + ii.id + "'>" + ii.name + "(" + ii.id + ")</option>";
+                    motherHtml += "<option value='" + ii.id + "' people-type='" + ii.peopleType + "'>" + ii.name + "(" + ii.id + ")</option>";
                 }
             }else{
                 motherHtml += "<option value='0'>无</option>";
@@ -312,7 +344,7 @@ function initPeopleData(familyId){
                 var ii = data[i];
                 var node = {};
                 node.id = ii.id;
-                node.pId = ii.fatherId;
+                node.pId = ii.superiorId;
                 node.name = ii.name;
                 var mateList = ii.mateList;
                 var mateName = "";

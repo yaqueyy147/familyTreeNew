@@ -240,7 +240,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select * from t_family where state<>9 and state=1";
         sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
         sql += " or (supplement_flag in (1,5)";
-
+        sql += "))";
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and province='" + params.get("province") + "'";
@@ -253,7 +253,6 @@ public class FamilyServiceImpl implements FamilyService {
             }
 
         }
-        sql += "))";
 //        List<TFamily> list = tFamilyDao.find(filter);
 
         List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
@@ -388,6 +387,10 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select * from t_people where people_status<>9 and family_id=?";
 
         if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("isIndex"))){
+                sql += " and people_status=1";
+//            filter.put("peopleType",params.get("peopleType"));
+            }
             if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
                 sql += " and family_id=" + params.get("familyId");
 //            filter.put("familyId",params.get("familyId"));
@@ -431,7 +434,7 @@ public class FamilyServiceImpl implements FamilyService {
     public List<TPeople> getPeopleList4Print(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select * from t_people where people_status<>9 and family_id=? and people_type=1";
+        String sql = "select * from t_people where people_status=1 and family_id=? and people_type=1";
         sql += " and generation>=? and generation<=? order by family_rank asc";
 
         List<TPeople> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPeople>(TPeople.class),params.get("familyId"),params.get("beginGen"),params.get("endGen"));

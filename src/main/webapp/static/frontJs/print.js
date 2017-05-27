@@ -96,7 +96,7 @@ function initPeopleData(familyId){
                 // }
                 var node = {};
                 node.id = ii.id;
-                node.pId = ii.fatherId;
+                node.pId = ii.superiorId;
                 node.name = ii.name;
                 node.dieAddr = ii.dieAddr;
                 var mateList = ii.mateList;

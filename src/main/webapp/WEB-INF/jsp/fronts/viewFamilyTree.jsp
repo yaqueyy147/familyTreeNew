@@ -105,7 +105,6 @@
                 <h4 class="modal-title" id="addModalLabel">添加族人</h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="motherOrFather" value="1" />
                 <form id="peopleForm" action="<%=request.getContextPath()%>/family/savePeople" method="post">
                     <table>
                         <tr style="border: solid 2px #9d9d9d;">

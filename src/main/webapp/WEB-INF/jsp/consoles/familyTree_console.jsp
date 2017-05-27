@@ -101,6 +101,7 @@
                                         <input name="id" id="id" type="hidden" value="0" />
                                         <input name="mateId" id="mateId" type="hidden"/>
                                         <input name="peopleType" id="peopleType" type="hidden" value="1" />
+                                        <input name="superiorId" id="superiorId" type="hidden" value="0" />
                                         <span id="peopleInfo"></span>
                                     </td>
                                 </tr>

@@ -115,6 +115,22 @@
                             <div class="form-group col-xs-8 form-actions" style="margin-top: 15px">
                                 <input class="form-control" id="idCard" name="idCard" value="${tUserFront.idCard}" placeholder="身份证号" type="text" />
                             </div>
+                            <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
+                                <div class="col-xs-12 col-sm-12" style="max-height:140px">
+                                    <div id="progress_bar" style="display: none"></div>
+                                    <input id="idCardPhoto" name="idCardPhoto" type="hidden" />
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12" style="position: relative">
+                                            <input type="file" name="imgFile1" id="imgFile1" />
+                                            <a id="show_img1">
+                                                <img style="display: none;" id="result_img1"  height="128px" width="128px" />
+                                                <span id="result_img1_wm" style="display: none;position: absolute; top: 50px; left: 0;">本图片仅用于注册何氏族谱网</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <%--上传身份证照片--%>
+                                </div>
+                            </div>
                             <div class="form-group col-xs-12 form-actions" style="margin-top: 15px">
                                 <div data-toggle="distpicker">
                                     <select id="province" name="province" data-province="---- 选择省 ----"></select>
@@ -325,6 +341,54 @@
                         $("#photoUrl").removeAttr('value');
                         $("#show_img").unbind('mouseover');
                         $("#show_img").unbind('mouseout');
+
+                    });
+                },
+                onUploadError: function (file, errorCode, errorMsg, errorString) {
+                    alert("error-->" + errorString);
+                }
+            });
+        },10);
+
+        setTimeout(function() {
+            $('#imgFile1').uploadify({
+                'swf': projectUrl + '/static/uploadify/uploadify.swf',
+                'uploader': projectUrl + '/upload/uploadImg',
+                'cancelImg': projectUrl + '/static/uploadify/cancel.png',
+                'auto': true,
+                "formData": {targetFile: '/upload/userImg'},
+                'queueID': 'progress_bar',
+                'fileObjName': 'uploadFile',
+                "buttonCursor": "hand",
+                "buttonText": "上传身份证照片",
+//            "buttonImage"   : projectUrl + "/static/images/defaultUpload.gif",
+                "buttonClass": "img-thumbnail",
+//            "height"         : "140",
+                'fileDesc': '支持格式:jpg,jpeg,gif,png,bmp', //如果配置了以下的'fileExt'属性，那么这个属性是必须的
+                'fileExt': '*.jpg;*.jpeg;*.gif;*.png;*.bmp',//允许的格式
+                'onUploadSuccess': function (file, data, response) {
+                    var result = eval('(' + data + ')');
+                    var imgPath = result.filePath;
+                    $("#result_img1").attr('src', imgPath);
+                    $("#result_img1").show();
+                    $("#result_img1_wm").show();
+                    $("#imgFile1").hide();
+                    $("#idCardPhoto").attr('value', imgPath);
+                    $("#show_img1").mouseover(function () {
+                        $("#result_img1_wm").hide();
+                        $("#result_img1").attr('src', projectUrl + "/static/images/deleteImg.png");
+                    });
+                    $("#show_img1").mouseout(function () {
+                        $("#result_img1").attr('src', imgPath);
+                        $("#result_img1_wm").show();
+                    });
+                    $("#result_img1").click(function () {
+                        $("#result_img1").hide();
+                        $("#result_img1_wm").hide();
+                        $("#imgFile1").show();
+                        $("#idCardPhoto").removeAttr('value');
+                        $("#show_img1").unbind('mouseover');
+                        $("#show_img1").unbind('mouseout');
 
                     });
                 },
