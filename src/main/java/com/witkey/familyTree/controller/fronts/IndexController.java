@@ -104,6 +104,7 @@ public class IndexController {
             Map<String,Object> paramss = new HashMap<>();
             paramss.put("familyId",tFamily.getId());
             paramss.put("peopleType",1);
+            paramss.put("isIndex",1);
             List<TPeople> peopleList = familyService.getPeopleList(paramss);
             if(peopleList != null && peopleList.size() > 0)
             {
