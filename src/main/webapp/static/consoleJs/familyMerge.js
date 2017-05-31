@@ -312,7 +312,7 @@ function initPeopleData(familyId){
         url:projectUrl + '/family/getPeopleList',
         dataType:'json',
         async:false,
-        data:{familyId : familyId},
+        data:{familyId : familyId,isIndex:0},
         success:function (data) {
 
             var genNum = 0;

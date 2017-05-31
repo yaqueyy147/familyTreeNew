@@ -277,7 +277,7 @@ public class FamilyController {
         //查询族人
         params.put("peopleType",1);
         params.put("orderBy"," order by family_rank asc");
-        params.put("isIndex",1);
+//        params.put("isIndex",1);
         List<TPeople> listPeople = familyService.getPeopleList(params);
 
         List<Map<String,Object>> list = new ArrayList<>();
@@ -333,14 +333,14 @@ public class FamilyController {
 
             //根据登录人和族谱创建人判断是否是补录
             TFamily tFamily = familyService.getFamilyFromId(tPeople.getFamilyId());
-            //如果登录人不是族谱创建人，则为补录
-            if(!tFamily.getCreateMan().equals(userName)){
+            //如果登录人不是族谱创建人，并且不是系统管理员，则为补录
+            if(!tFamily.getCreateMan().equals(userName) && !"系统管理员".equals(userName) && !"admin".equals(userName)){
                 tPeople.setIsSupplement(1);//设置该成员为补录成员
                 tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
             }
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
-            tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("createId")));
+            tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
             int peopleId = familyService.savePeople(tPeople);
             tPeople.setId(peopleId);

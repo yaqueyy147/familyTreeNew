@@ -387,7 +387,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select * from t_people where people_status<>9 and family_id=?";
 
         if(!CommonUtil.isBlank(params)){
-            if(!CommonUtil.isBlank(params.get("isIndex"))){
+            if(!CommonUtil.isBlank(params.get("isIndex")) && CommonUtil.parseInt(params.get("isIndex")) == 1){
                 sql += " and people_status=1";
 //            filter.put("peopleType",params.get("peopleType"));
             }
