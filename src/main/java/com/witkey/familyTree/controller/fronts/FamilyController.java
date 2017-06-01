@@ -50,6 +50,7 @@ public class FamilyController {
 
     @Autowired
     private LogService logService;
+
     /**
      * 个人中心
      * @param model
@@ -95,6 +96,46 @@ public class FamilyController {
         model.addAttribute("familyList",list1);
 
         return new ModelAndView("/fronts/personalIndex");
+    }
+
+    /**
+     * 个人中心
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/includeFamily")
+    public ModelAndView includeFamily(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("userName",jsonUser.get("userName"));
+        params.put("userId",jsonUser.get("id"));
+//        params.put("state",1);
+//        params.put("tt",1);
+        params.put("province",jsonUser.get("province"));
+        params.put("city",jsonUser.get("city"));
+        params.put("district",jsonUser.get("district"));
+        List<TFamily> list = familyService.getFamilyList2(params);
+
+        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+        for(TFamily tFamily : list){
+            int peopleCount = 0;
+            Map<String,Object> map = new HashMap<String,Object>();
+            Map<String,Object> paramss = new HashMap<>();
+            paramss.put("familyId",tFamily.getId());
+            paramss.put("peopleType",1);
+            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+            if(peopleList != null && peopleList.size() > 0)
+            {
+                peopleCount = peopleList.size();
+            }
+            map = CommonUtil.bean2Map(tFamily);
+            map.put("peopleCount",peopleCount);
+            list1.add(map);
+        }
+        model.addAttribute("familyList",list1);
+
+        return new ModelAndView("/fronts/includeFamily");
     }
 
     @RequestMapping(value = "/personalInfo")
@@ -385,6 +426,10 @@ public class FamilyController {
 
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         tPeople.setPeopleStatus(9);
+        if(tPeople.getCreateId() != CommonUtil.parseInt(jsonUser.get("id"))){
+            tPeople.setIsSupplement(1);
+            tPeople.setPeopleStatus(99);
+        }
 //        int i = familyService.deletePeople(peopleId);
         int i = 0;
         familyService.updatePeople(tPeople);

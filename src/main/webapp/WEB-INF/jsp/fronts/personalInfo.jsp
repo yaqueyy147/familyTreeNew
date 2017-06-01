@@ -40,6 +40,9 @@
             <li role="presentation" id="myFamilyTabLi">
                 <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的族谱</a>
             </li>
+            <li role="presentation" id="includeFamilyTabLi">
+                <a href="#includeFamilyTab" aria-controls="includeFamilyTab" role="tab" data-toggle="tab">族谱补录</a>
+            </li>
         </c:if>
 
 
@@ -117,7 +120,7 @@
                             </div>
                             <div class="form-group col-xs-6 form-actions" style="margin-top: 15px">
                                 <div class="col-xs-12 col-sm-12" style="max-height:140px">
-                                    <div id="progress_bar" style="display: none"></div>
+                                    <div id="progress_bar1" style="display: none"></div>
                                     <input id="idCardPhoto" name="idCardPhoto" type="hidden" />
                                     <div class="row">
                                         <div class="col-xs-12 col-md-12" style="position: relative">
@@ -162,6 +165,9 @@
         </div>
         <div class="tab-pane" role="tabpanel" id="myFamilyTab">
             <iframe src="<%=request.getContextPath()%>/family/personalIndex"></iframe>
+        </div>
+        <div class="tab-pane" role="tabpanel" id="includeFamilyTab">
+            <iframe src="<%=request.getContextPath()%>/family/includeFamily"></iframe>
         </div>
     </div>
 </div>
@@ -298,6 +304,8 @@
 
         $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
         $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#includeFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#includeFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
         $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
         $("#province").val("${tUserFront.province}");
         $("#province").change();
@@ -357,7 +365,7 @@
                 'cancelImg': projectUrl + '/static/uploadify/cancel.png',
                 'auto': true,
                 "formData": {targetFile: '/upload/userImg'},
-                'queueID': 'progress_bar',
+                'queueID': 'progress_bar1',
                 'fileObjName': 'uploadFile',
                 "buttonCursor": "hand",
                 "buttonText": "上传身份证照片",

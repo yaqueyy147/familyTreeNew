@@ -239,8 +239,8 @@ public class FamilyServiceImpl implements FamilyService {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 and state=1";
         sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
-        sql += " or (supplement_flag in (1,5)";
-        sql += "))";
+//        sql += " or (supplement_flag in (1,5))";
+        sql += ")";
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and province='" + params.get("province") + "'";
@@ -280,9 +280,6 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select * from t_family where state<>9 and state=1";
         sql += " and supplement_flag in (1,5) ";
         if(!CommonUtil.isBlank(params)){
-            if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
-                sql += " and family_area='" + params.get("familyArea") + "'";
-            }
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and province='" + params.get("province") + "'";
             }
@@ -314,7 +311,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         return list;
     }
-    
+
     @Override
     public List<TFamily> getIncludeFamilyList(Map<String, Object> params) {
         String sql = "select id from t_family where state=2 ";

@@ -107,7 +107,12 @@ body{
 #myFamilyTab iframe{
     border: none;
 }
-
+#includeFamilyTab,#includeFamilyTab iframe{
+    width:100%;
+}
+#includeFamilyTab iframe{
+    border: none;
+}
 .col-lg-4,.col-md-4,.col-sm-4,.col-xs-4,.col-sm-10{
     padding: 0px !important;
 }

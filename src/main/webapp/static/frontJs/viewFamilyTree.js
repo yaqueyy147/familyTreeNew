@@ -252,8 +252,11 @@ function addDiyDom(treeId, treeNode) {
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
 
-    if(treeNode.peopleStatus == 5 || treeNode.peopleStatus == 1){
+    if(treeNode.peopleStatus == 5 && treeNode.isSupplement == 1){
         editStr += "<a style='display: inline-block;margin-left: 10px;color:#CC2222' id='diyBtn2_" +treeNode.id+ "'>补录待审核</a>";
+    }
+    if(treeNode.peopleStatus == 99 && treeNode.isSupplement == 1){
+        editStr += "<a style='display: inline-block;margin-left: 10px;color:#CC2222' id='diyBtn2_" +treeNode.id+ "'>删除待审核</a>";
     }
 
     aObj.after(editStr);
@@ -366,6 +369,7 @@ function initPeopleData(familyId){
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
                 node.peopleStatus = ii.peopleStatus;
+                node.isSupplement = ii.isSupplement;
                 zNodes[i] = node;
 
             }
