@@ -240,10 +240,10 @@ $(function () {
             chkStyle: "checkbox",
             // chkboxType: { "Y": "ps", "N": "ps" }
         }
-        ,
-        callback:{
-            onClick:zTreeOnClick
-        }
+        // ,
+        // callback:{
+        //     onClick:zTreeOnClick
+        // }
     };
 
     var zNodes = initPeopleData(familyId);
@@ -278,21 +278,56 @@ function addDiyDom(treeId, treeNode) {
     }
     var mateName = treeNode.mateName;
     var editStr = "";
+
+    if(peopleStatus == 5){
+        editStr += "<div style='display: inline-block'>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
+        editStr += "</div>";
+    }
+    if(peopleStatus == 51){
+        editStr += "<div style='display: inline-block'>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
+        editStr += "</div>";
+    }
+    if(peopleStatus == 52){
+        editStr += "<div style='display: inline-block'>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
+        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
+        editStr += "</div>";
+    }
+
     if($.trim(mateName).length > 0){
         var mates = mateName.split(",");
-        editStr += "配偶:";
+        editStr += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配偶:";
         for(var i=0;i<mates.length;i++){
             var mate = mates[i].split("--");
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+            var mateStatus = mate[2];
+            var mateSupplement = mate[3];
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;'>" + mate[0] + "</a>";// onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\"
+            if(mateStatus == 5 && mateSupplement == 1){
+                editStr += "<div style='display: inline-block'>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
+                editStr += "</div>";
+            }
+            if(mateStatus == 51 && mateSupplement == 1){
+                editStr += "<div style='display: inline-block'>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
+                editStr += "</div>";
+            }
+            if(mateStatus == 52 && mateSupplement == 1){
+                editStr += "<div style='display: inline-block'>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
+                editStr += "</div>";
+            }
         }
     }
 
-    if(peopleStatus == 5){
-    	editStr += "<div style='display: inline-block;'>";
-        editStr += "<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"','" + treeNode.createId + "')\">同意收录</a>";
-        editStr += "&nbsp;&nbsp;<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;margin-left: 10px; color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"','" + treeNode.createId + "')\">不同意收录</a>";
-        editStr += "</div>";
-    }
+
     if(peopleStatus == 7){
     	editStr += "&nbsp;&nbsp;<span style='color:#FF7F00'>补录审核未通过</span>";
     }
@@ -327,15 +362,16 @@ function initPeopleData(familyId){
                 var mateName = "";
                 for(var j=0;j<mateList.length;j++){
                     var jj = mateList[j];
-                    mateName += "  " + jj.name;
+                    mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
                 }
                 node.mateName = mateName;
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
                 node.open = true;
                 node.peopleStatus = ii.peopleStatus;
-                if(ii.peopleStatus != 5){
+                if(ii.peopleStatus != 5 && ii.peopleStatus != 51 && ii.peopleStatus != 52){
                     node.nocheck = true;
                 }
+                node.isSupplement = ii.isSupplement;
                 zNodes[i] = node;
                 if(genNum < ii.generation){
                     genNum = ii.generation;
@@ -490,18 +526,18 @@ function initParent(familyId,generation){
     });
 }
 
-function affirmInclude(obj, peopleId, auditStatus, tId, createId) {
+function affirmInclude(obj, peopleId, auditStatus, tId, includeType) {
 	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
 	var node = treeObj.getNodeByTId(tId);
 	var createId = node.createId;
-	if(doAudit(peopleId + ":" + createId, auditStatus)){
+	if(doAudit(peopleId + ":" + createId, auditStatus, includeType)){
 		$(obj).parent().remove();
 		node.nocheck = true;
 		treeObj.updateNode(node);
 	}
 }
 
-function batckAudit(obj, auditStatus){
+function batchAudit(obj, auditStatus){
 	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
 	var chkNodes = treeObj.getCheckedNodes(true);
 	if(chkNodes.length <= 0){
@@ -510,19 +546,31 @@ function batckAudit(obj, auditStatus){
 	}
 	var ids = "";
 	var names = "";
-	var createIds = "";
+    var auditStatuss = "";
 	for(var i=0;i<chkNodes.length;i++){
 		var ii = chkNodes[i];
 		ids += "," + ii.id + ":" + ii.createId;
 		names += "," + ii.name;
-		createIds += "" + ii.createId;
+		var peopleStatus = ii.peopleStatus;
+		if(auditStatus == 1){
+            if(peopleStatus == 5 || peopleStatus == 51){
+                auditStatuss += "," + 1;
+            }
+            if(peopleStatus == 52){
+                auditStatuss += "," + 9;
+            }
+        }else{
+            auditStatuss += "," + 7;
+        }
+
+
 	}
 	ids = ids.substring(1);
 	names = names.substring(1);
-	createIds = createIds.substring(1);
+    auditStatuss = auditStatuss.substring(1);
 	$.messager.confirm('Confirm','确定要批量审核这些(' + names + ')人吗？',function(r){
 	    if (r){
-	    	if(doAudit(ids, auditStatus)){
+	    	if(doAudit(ids, auditStatuss)){
 	    		var zNodes = initPeopleData(familyId);
 	    	    initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
 	    	}
@@ -531,14 +579,14 @@ function batckAudit(obj, auditStatus){
 
 }
 
-function doAudit(peopleId, auditStatus){
+function doAudit(peopleId, auditStatus, includeType){
 	var auditB = false;
 	$.ajax({
         type:'post',
         url:projectUrl + '/consoles/auditIncludePeople',
         dataType:'json',
         async:false,
-        data:{peopleIds : peopleId,auditStatus:auditStatus},
+        data:{peopleIds : peopleId,auditStatus:auditStatus,includeType:includeType},
         success:function (data) {
             if(data.code >= 1){
             	auditB = true;

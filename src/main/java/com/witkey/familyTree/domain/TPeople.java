@@ -1,21 +1,19 @@
 package com.witkey.familyTree.domain;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Generated;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by Administrator on 2016/12/21 0021.
+ * Created by Administrator on 2017/6/2 0002.
  */
 @Entity
 @Table(name = "t_people")
-public class TPeople implements Serializable {
-    private static final long serialVersionUID = 8603696737469498574L;
-    private Integer id;
-    private Integer familyId;
+public class TPeople {
+    private int id;
+    private int familyId;
     private Integer generation;
     private String name;
     private String usedName;
@@ -49,73 +47,30 @@ public class TPeople implements Serializable {
     private Integer mateType;
     private Integer peopleType;
     private Integer peopleStatus;
-    
-    private Integer createId;
-
     private Integer isSupplement;
-
+    private Integer createId;
     private Integer superiorId;
-
-    public TPeople() {
-    }
-
-    public TPeople(Integer id, Integer familyId, Integer generation, String name, String usedName, Integer sex, Integer familyGeneration, Integer familyRank, String generationActor, String nationality, String nation, String education, String job, String idCard, String phone, String email, Integer fatherId, Integer motherId, Date birthTime, String birthAddr, Date dieTime, String dieAddr, String liveAddr, String specialRemark, Integer state, String xing, String artName, String cName, String photoUrl, String remark, String createMan, Date createTime, Integer mateType, Integer peopleType, Integer isSupplement, Integer superiorId) {
-        this.id = id;
-        this.familyId = familyId;
-        this.generation = generation;
-        this.name = name;
-        this.usedName = usedName;
-        this.sex = sex;
-        this.familyGeneration = familyGeneration;
-        this.familyRank = familyRank;
-        this.generationActor = generationActor;
-        this.nationality = nationality;
-        this.nation = nation;
-        this.education = education;
-        this.job = job;
-        this.idCard = idCard;
-        this.phone = phone;
-        this.email = email;
-        this.fatherId = fatherId;
-        this.motherId = motherId;
-        this.birthTime = birthTime;
-        this.birthAddr = birthAddr;
-        this.dieTime = dieTime;
-        this.dieAddr = dieAddr;
-        this.liveAddr = liveAddr;
-        this.specialRemark = specialRemark;
-        this.state = state;
-        this.xing = xing;
-        this.artName = artName;
-        this.cName = cName;
-        this.photoUrl = photoUrl;
-        this.remark = remark;
-        this.createMan = createMan;
-        this.createTime = createTime;
-        this.mateType = mateType;
-        this.peopleType = peopleType;
-        this.isSupplement = isSupplement;
-        this.superiorId = superiorId;
-    }
+    private String updateMan;
+    private String updateTime;
 
     @Id
-    @Column(name = "id",unique = true)
+    @Column(name = "id", unique = true)
     @GeneratedValue
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "family_id")
-    public Integer getFamilyId() {
+    public int getFamilyId() {
         return familyId;
     }
 
-    public void setFamilyId(Integer familyId) {
+    public void setFamilyId(int familyId) {
         this.familyId = familyId;
     }
 
@@ -462,14 +417,14 @@ public class TPeople implements Serializable {
     @Basic
     @Column(name = "create_id")
     public Integer getCreateId() {
-		return createId;
-	}
+        return createId;
+    }
 
-	public void setCreateId(Integer createId) {
-		this.createId = createId;
-	}
+    public void setCreateId(Integer createId) {
+        this.createId = createId;
+    }
 
-	@Basic
+    @Basic
     @Column(name = "superior_id")
     public Integer getSuperiorId() {
         return superiorId;
@@ -477,6 +432,26 @@ public class TPeople implements Serializable {
 
     public void setSuperiorId(Integer superiorId) {
         this.superiorId = superiorId;
+    }
+
+    @Basic
+    @Column(name = "update_man")
+    public String getUpdateMan() {
+        return updateMan;
+    }
+
+    public void setUpdateMan(String updateMan) {
+        this.updateMan = updateMan;
+    }
+
+    @Basic
+    @Column(name = "update_time")
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -523,10 +498,15 @@ public class TPeople implements Serializable {
         if (createTime != null ? !createTime.equals(tPeople.createTime) : tPeople.createTime != null) return false;
         if (mateType != null ? !mateType.equals(tPeople.mateType) : tPeople.mateType != null) return false;
         if (peopleType != null ? !peopleType.equals(tPeople.peopleType) : tPeople.peopleType != null) return false;
-        if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null) return false;
-        if (isSupplement != null ? !isSupplement.equals(tPeople.isSupplement) : tPeople.isSupplement != null) return false;
+        if (peopleStatus != null ? !peopleStatus.equals(tPeople.peopleStatus) : tPeople.peopleStatus != null)
+            return false;
+        if (isSupplement != null ? !isSupplement.equals(tPeople.isSupplement) : tPeople.isSupplement != null)
+            return false;
         if (createId != null ? !createId.equals(tPeople.createId) : tPeople.createId != null) return false;
         if (superiorId != null ? !superiorId.equals(tPeople.superiorId) : tPeople.superiorId != null) return false;
+        if (updateMan != null ? !updateMan.equals(tPeople.updateMan) : tPeople.updateMan != null) return false;
+        if (updateTime != null ? !updateTime.equals(tPeople.updateTime) : tPeople.updateTime != null) return false;
+
         return true;
     }
 
@@ -570,6 +550,8 @@ public class TPeople implements Serializable {
         result = 31 * result + (isSupplement != null ? isSupplement.hashCode() : 0);
         result = 31 * result + (createId != null ? createId.hashCode() : 0);
         result = 31 * result + (superiorId != null ? superiorId.hashCode() : 0);
+        result = 31 * result + (updateMan != null ? updateMan.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
         return result;
     }
 

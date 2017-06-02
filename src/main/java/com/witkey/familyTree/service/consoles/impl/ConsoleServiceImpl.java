@@ -686,18 +686,21 @@ public class ConsoleServiceImpl implements ConsoleService {
 		
 		String peopleIds = params.get("peopleIds") + "";
 		String[] peopleId = peopleIds.split(",");
+
+		String auditStatuss = params.get("auditStatus") + "";
+		String[] auditStatus = auditStatuss.split(",");
 		
-		//修改族人状态为1
+		//修改族人状态为审核状态
 		String sql = "update t_people set people_status=? where id=?";
 		
 		int ii = 0;
 		for(int i=0;i<peopleId.length;i++){
 			String id = peopleId[i];
 			String[] ids = id.split(":");
-			ii += jdbcTemplate.update(sql,params.get("auditStatus"),ids[0]);
+			ii += jdbcTemplate.update(sql,auditStatus[i],ids[0]);
 			
-			//如果是同意收录，增加创建者的积分
-			if(ids.length > 1){//如果当前存在创建人ID
+			//如果是同意收录，并且为添加，增加创建者的积分
+			if(ids.length > 1 && CommonUtil.parseInt(params.get("includeType")) == 1){//如果当前存在创建人ID
 				if(CommonUtil.parseInt(params.get("auditStatus")) == 1){
 					
 					TUserPoints tUserPoints = new TUserPoints();

@@ -20,6 +20,7 @@
                     </c:choose>
                     <c:if test="${userInfo.isVolunteer == 1}">
                         <a href="<%=request.getContextPath()%>/family/personalInfo?xxx=2">创建族谱</a>&nbsp;|&nbsp;
+                        <a href="<%=request.getContextPath()%>/family/personalInfo?xxx=3">补录族谱</a>&nbsp;|&nbsp;
                     </c:if>
                     【欢迎您，
 

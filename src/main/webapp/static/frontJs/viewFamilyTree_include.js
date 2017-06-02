@@ -61,6 +61,9 @@ $(function () {
 
     $("#savePeople").click(function () {
 
+        $(this).text("处理中，请稍后...");
+        $(this).attr('disabled',"true");
+
         if($.trim($("#generation").val()).length <= 0){
             alert("请输入是第几代人");
             return;
@@ -72,8 +75,7 @@ $(function () {
                 return;
             }
         }
-        $(this).text("处理中，请稍后...");
-        $(this).attr('disabled',"true");
+
         var formData = $("#peopleForm").serializeArray();
         var testData = {};
         for (var item in formData) {
@@ -81,7 +83,7 @@ $(function () {
         }
         $.ajax({
             type:'post',
-            url: projectUrl + '/family/savePeople',
+            url: projectUrl + '/family/savePeople_include',
             dataType: 'json',
             data:testData,
             async:false,
@@ -234,6 +236,15 @@ function addDiyDom(treeId, treeNode) {
     }
     var mateName = treeNode.mateName;
     var editStr = "";
+    if(treeNode.peopleStatus == 5 && treeNode.isSupplement == 1){
+        editStr += "<span style='color:#CC2222'>(补录添加待审核)</span>";
+    }
+    if(treeNode.peopleStatus == 51 && treeNode.isSupplement == 1){
+        editStr += "<span style='color:#CC2222'>(补录修改待审核)</span>";
+    }
+    if(treeNode.peopleStatus == 52 && treeNode.isSupplement == 1){
+        editStr += "<span style='color:#CC2222'>(补录删除待审核)</span>";
+    }
     if($.trim(mateName).length > 0){
         var mates = mateName.split(",");
         editStr += "配偶:";
@@ -243,8 +254,17 @@ function addDiyDom(treeId, treeNode) {
             var mateStatus = mate[2];
             var mateSupplement = mate[3];
 
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
-
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0];// + "</a>"
+            if(mateStatus == 5 && mateSupplement == 1){
+                editStr += "<span style='color:#CC2222'>(补录添加待审核)</span>";
+            }
+            if(mateStatus == 51 && mateSupplement == 1){
+                editStr += "<span style='color:#CC2222'>(补录修改待审核)</span>";
+            }
+            if(mateStatus == 52 && mateSupplement == 1){
+                editStr += "<span style='color:#CC2222'>(补录删除待审核)</span>";
+            }
+            editStr += "</a>";
             editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "')\">删除</a>";
         }
     }
@@ -254,8 +274,7 @@ function addDiyDom(treeId, treeNode) {
     // }
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
-    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
-
+    editStr += "<a style='display: inline-block;margin-left: 10px;color:#ff0000' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
 
     aObj.after(editStr);
 }
@@ -403,6 +422,8 @@ function editPeople(peopleId,generation){
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
+    // $("#fatherId").val(tPeople.fatherId);
+    // $("#motherId").val(tPeople.motherId);
     $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
 
     var imgPath = tPeople.photoUrl;
@@ -507,7 +528,7 @@ function deletePeople(peopleId,peopleName) {
     if(confirm("确定要删除成员(" + peopleName + ")吗？")){
         $.ajax({
             type:'post',
-            url:projectUrl + '/family/deletePeople',
+            url:projectUrl + '/family/deletePeople_include',
             dataType:'json',
             async:false,
             data:{peopleId : peopleId, familyId:familyId},

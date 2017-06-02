@@ -8,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>世界何氏族谱--个人族谱详情</title>
@@ -36,31 +37,38 @@
 <%--<%@include file="common/header.jsp" %>--%>
 <div class="container-fluid" style="margin-top: 20px;margin-bottom: 10px;">
         <div id="familyShow" class="row">
-        <c:forEach var="family" items="${familyList}">
+        <c:choose>
+            <c:when test="${familyList != null && fn:length(familyList) > 0}">
+                <c:forEach var="family" items="${familyList}">
 
-            <div class="col-sm-6 col-md-2">
-                <div class="thumbnail">
+                    <div class="col-sm-6 col-md-2">
+                        <div class="thumbnail">
 
-                    <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
-                        <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
-                    <%--<img data-src="holder.js/300x300" alt="...">--%>
-                    <div class="caption">
-                        <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>
-                        <h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">世界何氏族谱（${family.id}）</a></h6>
-                        <p>家族人数：${family.peopleCount}人</p>
-                        <p>状态：
-                            <c:if test="${family.visitStatus == 0}">加密</c:if>
-                            <c:if test="${family.visitStatus == 1}">开放</c:if>
-                        </p>
-                        <p style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden">${family.familyName}</p>
-                        <p name="familyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
-                            ${family.familyDesc}
-                        </p>
+                            <a href="javascript:void(0)" onclick="viewFamily('${family.id}','${family.visitStatus}','${family.visitPassword}')" style="float: none;width: 100%;">
+                                <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
+                                <%--<img data-src="holder.js/300x300" alt="...">--%>
+                            <div class="caption">
+                                    <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>
+                                <h6><a href="javascript:void 0;">世界何氏族谱（${family.id}）</a></h6>
+                                <p>家族人数：${family.peopleCount}人</p>
+                                <p>状态：
+                                    <c:if test="${family.visitStatus == 0}">加密</c:if>
+                                    <c:if test="${family.visitStatus == 1}">开放</c:if>
+                                </p>
+                                <p style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden">${family.familyName}</p>
+                                <p name="familyDesc" onmouseover="pPopover(this,1)" onmouseout="pPopover(this,2)" style="text-overflow: ellipsis;white-space: nowrap;overflow: hidden" data-container="body" data-toggle="popover" data-placement="right" data-content="${family.familyDesc}">
+                                        ${family.familyDesc}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-        </c:forEach>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <p style="color: #ff5500;font-size: 18px;text-align: center">当前没有可补录的族谱！</p>
+            </c:otherwise>
+        </c:choose>
         </div>
 </div>
 <!-- 添加族谱 Modal -->
@@ -176,7 +184,7 @@
 <%@include file="common/commonJS.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalIndex.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/includeFamily.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.MD5.js"></script>
 <script type="text/javascript">
     var winHeight = $(window).height();

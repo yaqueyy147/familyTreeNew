@@ -280,6 +280,10 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select * from t_family where state<>9 and state=1";
         sql += " and supplement_flag in (1,5) ";
         if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("onlyInclude")) && CommonUtil.parseInt(params.get("onlyInclude")) == 1){
+                sql += " and create_id<>'" + params.get("userId") + "'";
+            }
+
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and province='" + params.get("province") + "'";
             }
@@ -404,10 +408,14 @@ public class FamilyServiceImpl implements FamilyService {
                 sql += " and generation='" + params.get("generation") + "'";
 //            filter.put("generation",params.get("generation"));
             }
-            if(!CommonUtil.isBlank(params.get("fatherId"))){
-                sql += " and father_id='" + params.get("fatherId") + "'";
+            if(!CommonUtil.isBlank(params.get("superiorId"))){
+                sql += " and superior_id='" + params.get("superiorId") + "'";
 //            filter.put("generation",params.get("generation"));
             }
+//            if(!CommonUtil.isBlank(params.get("fatherId"))){
+//                sql += " and father_id='" + params.get("fatherId") + "'";
+////            filter.put("generation",params.get("generation"));
+//            }
 
             if(!CommonUtil.isBlank(params.get("orderBy"))){
                 sql += " " + params.get("orderBy");

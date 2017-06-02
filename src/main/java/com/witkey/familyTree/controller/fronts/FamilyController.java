@@ -65,9 +65,9 @@ public class FamilyController {
         params.put("userId",jsonUser.get("id"));
 //        params.put("state",1);
 //        params.put("tt",1);
-        params.put("province",jsonUser.get("province"));
-        params.put("city",jsonUser.get("city"));
-        params.put("district",jsonUser.get("district"));
+//        params.put("province",jsonUser.get("province"));
+//        params.put("city",jsonUser.get("city"));
+//        params.put("district",jsonUser.get("district"));
         List<TFamily> list = familyService.getFamilyList1(params);
 
         //查询被收录的族谱
@@ -99,7 +99,7 @@ public class FamilyController {
     }
 
     /**
-     * 个人中心
+     * 补录族谱
      * @param model
      * @return
      */
@@ -115,6 +115,7 @@ public class FamilyController {
         params.put("province",jsonUser.get("province"));
         params.put("city",jsonUser.get("city"));
         params.put("district",jsonUser.get("district"));
+        params.put("onlyInclude",1);
         List<TFamily> list = familyService.getFamilyList2(params);
 
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
@@ -276,6 +277,35 @@ public class FamilyController {
     }
 
     /**
+     * 族谱收录展示页面
+     * @param model
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/viewFamily_include")
+    public ModelAndView viewFamily_include(Model model, @RequestParam Map<String,Object> map, HttpServletRequest request) throws UnsupportedEncodingException{
+        String familyId = map.get("familyId") + "";
+        model.addAttribute("familyId",familyId);
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
+        model.addAttribute("tFamily",tFamily);
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        int maxGeneration = familyService.getFamilyMaxGeneration(CommonUtil.parseInt(familyId));
+
+        model.addAttribute("maxGeneration",maxGeneration);
+
+        //查询家族的收录情况
+        Map<String,Object> map1 = new HashMap<String,Object>();
+        map1.put("primaryFamilyId",familyId);
+        List<TFamilyMerge> listMerge = familyService.getMergeList(map1);
+        if(listMerge != null && listMerge.size() > 0){
+            model.addAttribute("merge",listMerge.get(0));
+        }
+
+        return new ModelAndView("/fronts/viewFamilyTree_include");
+    }
+
+    /**
      * 族谱树展示页面--仅供查看
      * @param model
      * @param map
@@ -365,20 +395,15 @@ public class FamilyController {
             tPeople.setCreateId(tPeopleOld.getCreateId());
             tPeople.setCreateTime(tPeopleOld.getCreateTime());
             tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
+            tPeople.setUpdateMan(userName);
+            tPeople.setUpdateTime(CommonUtil.getDateLong());
+
             familyService.updatePeople(tPeople);
             msg = "修改成功";
             //记录日志
             logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
-
-            //根据登录人和族谱创建人判断是否是补录
-            TFamily tFamily = familyService.getFamilyFromId(tPeople.getFamilyId());
-            //如果登录人不是族谱创建人，并且不是系统管理员，则为补录
-            if(!tFamily.getCreateMan().equals(userName) && !"系统管理员".equals(userName) && !"admin".equals(userName)){
-                tPeople.setIsSupplement(1);//设置该成员为补录成员
-                tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
-            }
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
@@ -406,6 +431,84 @@ public class FamilyController {
         return map;
     }
 
+    /**
+     * 补录保存族人
+     * @param tPeople
+     * @param birth_time
+     * @param die_time
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/savePeople_include")
+    @ResponseBody
+    public Map<String,Object> savePeople_include(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        String userName = jsonUser.get("userName") + "";
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(!CommonUtil.isBlank(birth_time)){
+            tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
+        }
+        if(!CommonUtil.isBlank(die_time)){
+            tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
+        }
+
+        String msg = "保存成功";
+        //修改成员信息
+        if(tPeople.getId() > 0){
+            TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
+            tPeople.setCreateMan(tPeopleOld.getCreateMan());
+            tPeople.setCreateId(tPeopleOld.getCreateId());
+            tPeople.setCreateTime(tPeopleOld.getCreateTime());
+            tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
+            tPeople.setUpdateMan(userName);
+            tPeople.setUpdateTime(CommonUtil.getDateLong());
+            tPeople.setIsSupplement(1);
+            tPeople.setPeopleStatus(51);
+
+            familyService.updatePeople(tPeople);
+            msg = "修改成功";
+            //记录日志
+            logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
+
+        }else{//新建成员
+
+            tPeople.setIsSupplement(1);//设置该成员为补录成员
+            tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
+
+            tPeople.setCreateMan(jsonUser.get("userName")+"");
+            tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
+            tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+            int peopleId = familyService.savePeople(tPeople);
+            tPeople.setId(peopleId);
+//            //添加积分
+//            //获取积分对应关系
+//            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
+//            TUserPoints tUserPoints = new TUserPoints(CommonUtil.parseInt(jsonUser.get("id")),listDic.get(0).getPointsValue(),1);
+//
+//            familyService.setPoints(tUserPoints,1);
+
+            //如果是添加配偶
+            if(tPeople.getPeopleType() == 0){
+                //保存配偶信息
+                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
+                familyService.saveMateInfo(tMate);
+            }
+            //记录日志
+            logService.createLog(new TLog(1,userName,tPeople.toString()));
+        }
+        map.put("msg",msg);
+        map.put("code",1);
+        return map;
+    }
+
+    /**
+     * 删除族人
+     * @param peopleId
+     * @param familyId
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
     public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
@@ -426,10 +529,6 @@ public class FamilyController {
 
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         tPeople.setPeopleStatus(9);
-        if(tPeople.getCreateId() != CommonUtil.parseInt(jsonUser.get("id"))){
-            tPeople.setIsSupplement(1);
-            tPeople.setPeopleStatus(99);
-        }
 //        int i = familyService.deletePeople(peopleId);
         int i = 0;
         familyService.updatePeople(tPeople);
@@ -437,6 +536,46 @@ public class FamilyController {
         result.put("code",i);
         //记录日志
         logService.createLog(new TLog(3,userName,"删除族人-->" + tPeople.toString()));
+        return result;
+    }
+
+    /**
+     * 补录族谱删除
+     * @param peopleId
+     * @param familyId
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/deletePeople_include")
+    @ResponseBody
+    public Map<String,Object> deletePeople_include(int peopleId, int familyId, HttpServletRequest request) throws Exception{
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        String userName = jsonUser.get("userName") + "";
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        //查询当前成员是否含有下一代人
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("fatherId",peopleId);
+        params.put("superiorId",peopleId);
+        params.put("familyId",familyId);
+        //如果有下一代人，不能删除
+        List<TPeople> list = familyService.getPeopleList(params);
+        if(list != null && list.size() > 0){
+            result.put("code",-1);
+            return result;
+        }
+
+        TPeople tPeople = familyService.getPeopleInfo(peopleId);
+        tPeople.setIsSupplement(1);
+        tPeople.setPeopleStatus(52);
+//        int i = familyService.deletePeople(peopleId);
+        int i = 0;
+        familyService.updatePeople(tPeople);
+        i ++ ;
+        result.put("code",i);
+        //记录日志
+        logService.createLog(new TLog(3,userName,"补录删除族人-->" + tPeople.toString()));
         return result;
     }
 

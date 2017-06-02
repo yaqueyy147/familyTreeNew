@@ -42,8 +42,8 @@
                         <c:when test="${merge.mergeState == 5}">
                             <span id="supplementDesc" class="easyui-linkbutton" style="margin-left: 20px">补录中...</span>
                             
-                            <button type="button" id="batchAcceptIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batckAudit(this,1)">批量通过审核</button>
-                            <button type="button" id="batchRefuseIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batckAudit(this,7)">批量不通过审核</button>
+                            <button type="button" id="batchAcceptIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batchAudit(this,1)">批量通过审核</button>
+                            <button type="button" id="batchRefuseIn" class="easyui-linkbutton" style="margin-left: 20px" onclick="batchAudit(this,7)">批量不通过审核</button>
                             
                             <button type="button" id="completeIn" class="easyui-linkbutton" style="margin-left: 20px">完成收录,关闭补录</button>
                         </c:when>

@@ -301,6 +301,11 @@
 //            $("#myFamilyTabLi").addClass("active");
             $("#myFamilyTabLi a").tab("show");
         }
+        if(isVolunteer == 1 && xxx == 3){
+//            $("#userDetailTabLi").removeClass("active");
+//            $("#myFamilyTabLi").addClass("active");
+            $("#includeFamilyTabLi a").tab("show");
+        }
 
         $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
         $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");

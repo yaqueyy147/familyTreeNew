@@ -36,26 +36,26 @@ function drawPic(){
         var txt = str[randomNum(0,str.length)];
         checkCode += txt;
         ctx.fillStyle = randomColor(50,160);  //随机生成字体颜色
-        ctx.font = randomNum(18,40)+'px SimHei'; //随机生成字体大小
+        ctx.font = randomNum(20,30)+'px SimHei'; //随机生成字体大小
         var x = 10+i*20;
         var y = randomNum(25,34);
         var deg = randomNum(-45, 45);
         //修改坐标原点和旋转角度
         ctx.translate(x,y);
-        ctx.rotate(deg*Math.PI/180);
+        // ctx.rotate(deg*Math.PI/180);
         ctx.fillText(txt, 0,0);
         //恢复坐标原点和旋转角度
-        ctx.rotate(-deg*Math.PI/180);
+        // ctx.rotate(-deg*Math.PI/180);
         ctx.translate(-x,-y);
     }
-    /**绘制干扰线**/
-    for(var i=0; i<6; i++){
-        ctx.strokeStyle = randomColor(40,180);
-        ctx.beginPath();
-        ctx.moveTo( randomNum(0,width), randomNum(0,height) );
-        ctx.lineTo( randomNum(0,width), randomNum(0,height) );
-        ctx.stroke();
-    }
+    // /**绘制干扰线**/
+    // for(var i=0; i<6; i++){
+    //     ctx.strokeStyle = randomColor(40,180);
+    //     ctx.beginPath();
+    //     ctx.moveTo( randomNum(0,width), randomNum(0,height) );
+    //     ctx.lineTo( randomNum(0,width), randomNum(0,height) );
+    //     ctx.stroke();
+    // }
     /**绘制干扰点**/
     for(var i=0; i<100; i++){
         ctx.fillStyle = randomColor(0,255);
