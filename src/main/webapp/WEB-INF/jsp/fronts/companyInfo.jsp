@@ -286,9 +286,9 @@
     var businessLicense = "${companyInfo.businessLicense}";
     $(document).ready(function () {
 //        containerDiv
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
 
         setTimeout(function() {
             $('#imgFile').uploadify({
