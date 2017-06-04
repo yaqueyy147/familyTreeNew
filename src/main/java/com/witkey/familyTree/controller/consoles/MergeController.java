@@ -5,6 +5,7 @@ import com.witkey.familyTree.domain.TFamilyMerge;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -71,8 +73,9 @@ public class MergeController {
      */
     @RequestMapping(value = "/mergePrimary")
     @ResponseBody
-    public Map<String,Object> mergePrimary(HttpServletRequest request,@RequestParam Map<String,Object> params) throws Exception{
+    public Map<String,Object> mergePrimary(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
@@ -110,9 +113,10 @@ public class MergeController {
      */
     @RequestMapping(value = "/rejectInclude")
     @ResponseBody
-    public Map<String,Object> rejectInclude(HttpServletRequest request, @RequestParam Map<String,Object> params) throws UnsupportedEncodingException {
+    public Map<String,Object> rejectInclude(HttpServletRequest request,HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception {
         Map<String,Object> result = new HashMap<String,Object>();
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
 
         int i = consoleService.rejectInclude(CommonUtil.parseInt(params.get("mergeId")),params.get("rejectDesc") + "",userName);
@@ -163,9 +167,10 @@ public class MergeController {
      */
     @RequestMapping(value = "completeIn")
     @ResponseBody
-    public Map<String,Object> completeIn(HttpServletRequest request,@RequestParam Map<String,Object> params) throws Exception{
+    public Map<String,Object> completeIn(HttpServletRequest request,HttpServletResponse response,@RequestParam Map<String,Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
+        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         params.put("auditMan", userName);//设置审核人
         params.put("auditTime", CommonUtil.getDateLong());

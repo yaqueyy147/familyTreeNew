@@ -216,4 +216,13 @@ public class CompanyServiceImpl implements CompanyService {
 
         return ii;
     }
+
+    @Override
+    public int applySponsor(int companyId) {
+
+        String sql = "update t_company_sponsor set state=3 where id=?";
+        int i = jdbcTemplate.update(sql,companyId);
+
+        return i;
+    }
 }

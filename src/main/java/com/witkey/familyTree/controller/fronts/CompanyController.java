@@ -3,6 +3,7 @@ package com.witkey.familyTree.controller.fronts;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
+import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -52,9 +54,9 @@ public class CompanyController {
     }
 
     @RequestMapping(value = "/info")
-    public ModelAndView companyInfo(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
+    public ModelAndView companyInfo(Model model, HttpServletRequest request,HttpServletResponse response) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-
+        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),2);
         TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
 
         double totalMoney = companyService.getTotalCompanyMoney(CommonUtil.parseInt(jsonUser.get("id")));
@@ -116,9 +118,9 @@ public class CompanyController {
 
     @RequestMapping(value = "/saveIntro")
     @ResponseBody
-    public Map<String,Object> saveIntro(HttpServletRequest request,TCompanyIntroduce tCompanyIntroduce) throws UnsupportedEncodingException{
+    public Map<String,Object> saveIntro(HttpServletRequest request,HttpServletResponse response,TCompanyIntroduce tCompanyIntroduce) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-
+        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),2);
         Map<String,Object> result = new HashMap<String,Object>();
 
         if(tCompanyIntroduce.getId() > 0){
@@ -202,6 +204,24 @@ public class CompanyController {
         result.put("code",i);
         result.put("msg","添加成功!");
         return result;
+    }
+
+    /**
+     * 申请成为志愿者
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/applySponsor")
+    @ResponseBody
+    public Map<String,Object> applyVolunteer(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),1);
+        int i = companyService.applySponsor(CommonUtil.parseInt(jsonUser.get("id")));
+        map.put("code",i);
+        map.put("msg","申请成功!");
+        return map;
     }
 
 }

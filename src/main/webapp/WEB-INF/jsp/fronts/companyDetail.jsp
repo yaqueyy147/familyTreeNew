@@ -34,6 +34,17 @@
             .popover {
                 word-break: break-all;
             }
+            .modal-header{
+                padding-top: 5px !important;
+                padding-bottom: 5px !important;
+            }
+            .modal-body{
+                padding:0px !important;
+            }
+            .modal-footer{
+                padding-top: 5px !important;
+                padding-bottom: 5px !important;
+            }
         </style>
 </head>
 <body>
@@ -174,12 +185,12 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="addIntroModalLabel">添加公司简介</h4>
             </div>
-            <div class="modal-body" style="height: 450px">
+            <div class="modal-body" style="height: 430px">
                 <input type="hidden" id="companyId4Intro" name="companyId" value="${tCompanySponsor.id}" >
                 <input type="hidden" id="introduceId" name="id" value="${introduce.id}" >
                 <input type="hidden" id="introduceA" name="introduceA" value="${introduce.companyIntroduce}" >
                 <div>
-                    <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc"">
+                    <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc">
                         ${introduce.companyIntroduce}
                     </textarea>
                 </div>

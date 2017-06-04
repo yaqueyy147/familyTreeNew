@@ -235,7 +235,7 @@ function addDiyDom(treeId, treeNode) {
         for(var i=0;i<mates.length;i++){
             var mate = mates[i].split("--");
             editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "')\">删除</a>";
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "',2)\">删除</a>";
         }
     }
 
@@ -245,7 +245,7 @@ function addDiyDom(treeId, treeNode) {
     // }
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
-    editStr += "<a style='display: inline-block;margin-left: 10px;color:#ff0000' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "')\">删除</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px;color:#ff0000' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "',1)\">删除</a>";
     aObj.after(editStr);
 }
 
@@ -413,14 +413,14 @@ function editPeople(peopleId,generation){
     $("#addModal").modal('show');
 }
 
-function deletePeople(peopleId,peopleName) {
+function deletePeople(peopleId,peopleName,peopleType) {
     if(confirm("确定要删除成员(" + peopleName + ")吗？")){
         $.ajax({
             type:'post',
             url:projectUrl + '/consoles/deletePeople',
             dataType:'json',
             async:false,
-            data:{peopleId : peopleId, familyId:familyId},
+            data:{peopleId : peopleId, familyId:familyId,peopleType:peopleType},
             success:function (data) {
                 if(data.code >= 1){
                     alert("删除完成!");

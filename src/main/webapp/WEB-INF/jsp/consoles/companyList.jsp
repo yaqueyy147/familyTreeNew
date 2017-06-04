@@ -67,7 +67,6 @@
     <table id="moneyTable" class="easyui-datagrid" style="width:100%;height:100%"
            title="充值列表" toolbar="#tb2" data-options="
 				rownumbers:true,
-				singleSelect:true,
 				autoRowHeight:false,
 				pagination:true,
 				pageSize:10">

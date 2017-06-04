@@ -28,6 +28,9 @@
             /*margin-bottom: 50px;*/
             overflow: auto
         }
+        .form-control{
+            padding:0px !important;
+        }
 
     </style>
 </head>
@@ -82,7 +85,7 @@
                                         <button type="button" class="btn btn-primary" id="applyVolunteer">申请宣传/赞助</button>
                                     </c:if>
                                     <c:if test="${companyInfo.state == 3}">
-                                        <span style="color: #ff8000">请等待审核！</span>
+                                        <span style="color: #ff8000">已申请，请等待审核！</span>
                                     </c:if>
                                     <c:if test="${companyInfo.state == 1}">
                                         <span style="color: #00ff00">可宣传/赞助！</span>
@@ -140,7 +143,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-md-12">
                                             <input type="file" name="imgFile1" id="imgFile1" style="display: none" />
-                                            <a id="show_img1"><img id="result_img1" height="128px" width="128px" src="${companyInfo.businessLicense}" /></a>
+                                            <a id="show_img1"><img style="display: none;" id="result_img1" height="128px" width="128px" src="${companyInfo.businessLicense}" /></a>
                                         </div>
                                     </div>
                                     上传公司营业执照<span class="glyphicon glyphicon-asterisk" style="color: #a94442"></span>
@@ -286,9 +289,9 @@
     var businessLicense = "${companyInfo.businessLicense}";
     $(document).ready(function () {
 //        containerDiv
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 90) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
 
         setTimeout(function() {
             $('#imgFile').uploadify({
@@ -359,10 +362,10 @@
                     $("#show_img1").mouseover(function () {
                         $("#result_img1").attr('src', projectUrl + "/static/images/deleteImg.png");
                     });
-                    $("#show_img").mouseout(function () {
+                    $("#show_img1").mouseout(function () {
                         $("#result_img1").attr('src', imgPath);
                     });
-                    $("#result_img").click(function () {
+                    $("#result_img1").click(function () {
                         $("#result_img1").hide();
                         $("#imgFile1").show();
                         $("#businessLicense").removeAttr('value');
@@ -375,24 +378,28 @@
                     alert("error-->" + errorString);
                 }
             });
+
+            if(businessLicense){
+                $("#result_img1").show();
+                $("#imgFile1").hide();
+                $("#show_img1").mouseover(function(){
+                    $("#result_img1").attr('src',projectUrl + "/static/images/deleteImg.png");
+                });
+                $("#show_img1").mouseout(function(){
+                    $("#result_img1").attr('src',projectUrl + businessLicense);
+                });
+                $("#result_img1").click(function(){
+                    $("#result_img1").hide();
+                    $("#imgFile1").show();
+                    $("#businessLicense").removeAttr('value');
+                    $("#show_img1").unbind('mouseover');
+                    $("#show_img1").unbind('mouseout');
+
+                });
+            }
         },10);
 
-        $("#result_img1").show();
-        $("#imgFile1").hide();
-        $("#show_img1").mouseover(function(){
-            $("#result_img1").attr('src',projectUrl + "/static/images/deleteImg.png");
-        });
-        $("#show_img1").mouseout(function(){
-            $("#result_img1").attr('src',projectUrl + businessLicense);
-        });
-        $("#result_img1").click(function(){
-            $("#result_img1").hide();
-            $("#imgFile1").show();
-            $("#businessLicense").removeAttr('value');
-            $("#show_img1").unbind('mouseover');
-            $("#show_img1").unbind('mouseout');
 
-        });
     });
 
 </script>

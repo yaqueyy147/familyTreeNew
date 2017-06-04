@@ -307,11 +307,11 @@
             $("#includeFamilyTabLi a").tab("show");
         }
 
-        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#includeFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#includeFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
-        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 100) + "px");
+        $("#myFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#myFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#includeFamilyTab").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#includeFamilyTab iframe").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
+        $("#userDetail").attr("style","height:" + (winHeigth - 70 - 20 - 10 - 22 - 60) + "px");
         $("#province").val("${tUserFront.province}");
         $("#province").change();
         $("#city").val("${tUserFront.city}");

@@ -139,4 +139,23 @@ $(function () {
 
     });
 
+
+    $("#applyVolunteer").click(function () {
+        $.ajax({
+            type:'post',
+            url: projectUrl + '/company/applySponsor',
+            dataType: 'json',
+            data:{},
+            async:false,
+            success:function (data) {
+                if(data.code >= 1){
+                    alert(data.msg);
+                    $("#applyVolunteer").replaceWith("<span>已申请，请等待审核！</span>");
+                }
+            },
+            error:function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+    });
 });

@@ -146,8 +146,8 @@ $(function () {
         });
     });
 
-    var params = {};
-    loadCompanyData(params)
+    var params = {type:2};
+    loadCompanyData(params);
 
 });
 

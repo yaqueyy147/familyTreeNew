@@ -511,21 +511,25 @@ public class FamilyController {
      */
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople(int peopleId, int familyId, int peopleType, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
-        //查询当前成员是否含有下一代人
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("fatherId",peopleId);
-        params.put("familyId",familyId);
-        //如果有下一代人，不能删除
-        List<TPeople> list = familyService.getPeopleList(params);
-        if(list != null && list.size() > 0){
-            result.put("code",-1);
-            return result;
+        //如果是本族人，查询当前成员是否含有下一代人
+        if(peopleType == 1){
+            Map<String,Object> params = new HashMap<String,Object>();
+            params.put("fatherId",peopleId);
+            params.put("familyId",familyId);
+            params.put("superiorId",peopleId);
+            //如果有下一代人，不能删除
+            List<TPeople> list = familyService.getPeopleList(params);
+            if(list != null && list.size() > 0){
+                result.put("code",-1);
+                return result;
+            }
         }
+
 
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         tPeople.setPeopleStatus(9);

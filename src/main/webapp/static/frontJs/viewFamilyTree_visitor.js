@@ -52,7 +52,12 @@ function addDiyDom(treeId, treeNode) {
     var mateName = treeNode.mateName;
     var editStr = "";
     if($.trim(mateName).length > 0){
-        editStr += "  配偶:" + treeNode.mateName;
+        var mates = mateName.split(",");
+        editStr += "配偶:";
+        for(var i=0;i<mates.length;i++){
+            var mate = mates[i].split("--");
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 5px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+        }
     }
 
     aObj.after(editStr);
@@ -125,7 +130,7 @@ function initPeopleData(familyId){
                 var mateName = "";
                 for(var j=0;j<mateList.length;j++){
                     var jj = mateList[j];
-                    mateName += "  " + jj.name;
+                    mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
                 }
                 node.mateName = mateName;
                 node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
@@ -140,15 +145,61 @@ function initPeopleData(familyId){
 }
 
 function zTreeOnClick(event, treeId, treeNode) {
-    initParent(treeNode.level);
-    var params = {"peopleId":treeNode.id};
+    editPeople(treeNode.id,treeNode.level);
+    // initParent(treeNode.level);
+    // var params = {"peopleId":treeNode.id};
+    // var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    // tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    // tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    // $("#peopleForm").populateForm(tPeople);
+    // $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    // $("#addModal").modal('show');
+
+}
+
+function editPeople(peopleId,generation){
+    initParent(generation);
+    var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);
-    $("#addModalLabel").text("族人【" + tPeople.name + "】信息");
-    $("#addModal").modal('show');
+    $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
 
     var imgPath = tPeople.photoUrl;
     $("#result_img").attr('src',imgPath);
+    $("#result_img").show();
+    $("#imgFile").hide();
+    $("#photoUrl").attr('value',imgPath);
+    $("#show_img").mouseover(function(){
+        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+    });
+    $("#show_img").mouseout(function(){
+        $("#result_img").attr('src',imgPath);
+    });
+
+    $("#result_img").click(function(){
+        $("#result_img").hide();
+        $("#imgFile").show();
+        $("#photoUrl").removeAttr('value');
+        $("#show_img").unbind('mouseover');
+        $("#show_img").unbind('mouseout');
+
+    });
+
+    $("#addModal").modal('show');
 }
+
+    // function zTreeOnClick(event, treeId, treeNode) {
+    //     initParent(treeNode.level);
+    //     var params = {"peopleId":treeNode.id};
+    //     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    //     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    //     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    //     $("#peopleForm").populateForm(tPeople);
+    //     $("#addModalLabel").text("族人【" + tPeople.name + "】信息");
+    //     $("#addModal").modal('show');
+    //
+    //     var imgPath = tPeople.photoUrl;
+    //     $("#result_img").attr('src',imgPath);
+    // }

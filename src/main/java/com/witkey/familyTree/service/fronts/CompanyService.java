@@ -51,4 +51,7 @@ public interface CompanyService {
 
     //删除公司充值记录
     public int deleteMoney(Map<String,Object> params);
+
+    //申请赞助
+    public int applySponsor(int companyId);
 }

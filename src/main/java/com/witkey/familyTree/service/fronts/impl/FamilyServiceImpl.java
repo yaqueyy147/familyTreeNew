@@ -392,10 +392,10 @@ public class FamilyServiceImpl implements FamilyService {
                 sql += " and people_status=1";
 //            filter.put("peopleType",params.get("peopleType"));
             }
-            if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
-                sql += " and family_id=" + params.get("familyId");
-//            filter.put("familyId",params.get("familyId"));
-            }
+//            if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
+//                sql += " and family_id=" + params.get("familyId");
+////            filter.put("familyId",params.get("familyId"));
+//            }
             if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
                 sql += " and people_type='" + params.get("peopleType") + "'";
 //            filter.put("peopleType",params.get("peopleType"));
