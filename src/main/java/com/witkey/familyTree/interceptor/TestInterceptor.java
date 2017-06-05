@@ -32,6 +32,7 @@ public class TestInterceptor implements HandlerInterceptor {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
     private List<String> excludeMappings;
     private static JSONObject jsonUser;
+    private static String currentUrl;
 
     @Autowired
     private UserService userService;
@@ -43,30 +44,44 @@ public class TestInterceptor implements HandlerInterceptor {
     }
 
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-//        String url = urlPathHelper.getLookupPathForRequest(httpServletRequest);
-//        //查找到，表示不需要权限控制
-//        if(!StringUtils.isEmpty(lookupGroup(url))){
-//            return Boolean.TRUE;
-//        }
+        currentUrl = urlPathHelper.getLookupPathForRequest(httpServletRequest);
+        //查找到，表示不需要权限控制
+        if(!StringUtils.isEmpty(lookupGroup(currentUrl))){
+            return Boolean.TRUE;
+        }
+//        System.out.println("*********\n当前路径-->" + currentUrl + "\n************");
         //从cookie中读取用户信息
-//        jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
-//        if(!CommonUtil.isBlank(jsonUser)){
-//            return true;
-//        }
-//        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/sign?loginCode=-2");
-//        return false;
-        return true;
+        int type = 1;
+        if(isConsoles(currentUrl)){//后台用户
+            jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"consoleUserInfo");
+            type = 1;
+        }else{//前台用户
+            jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
+            type = 2;
+        }
+
+        if(!CommonUtil.isBlank(jsonUser)){
+            return true;
+        }
+        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/sign/out?type=" + type);
+        return false;
+//        return true;
     }
 
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
+        String url = urlPathHelper.getLookupPathForRequest(httpServletRequest);
         //从cookie获取用户信息
 //        TUserFront tUserFront = (TUserFront)JSONObject.toBean(jsonUser,TUserFront.class);
-        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
+//        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(httpServletRequest,"userInfo");
         Map<String,Object> map = new HashMap<String, Object>();
         if(!CommonUtil.isBlank(jsonUser)){
 
-            map.put("userInfo",jsonUser);
+            if(isConsoles(url)){
+                map.put("consoleUserInfo",jsonUser);
+            }else{
+                map.put("userInfo",jsonUser);
+            }
+
             if(!CommonUtil.isBlank(modelAndView)){
                 modelAndView.addAllObjects(map);
             }
@@ -93,6 +108,18 @@ public class TestInterceptor implements HandlerInterceptor {
             }
         }
         return bestPathMatch;
+    }
+
+    /**
+     * 判断链接是后台还是前台
+     * @param url
+     * @return
+     */
+    private boolean isConsoles(String url){
+        if(url.indexOf("consoles") >= 0){
+            return true;
+        }
+        return false;
     }
 
 }

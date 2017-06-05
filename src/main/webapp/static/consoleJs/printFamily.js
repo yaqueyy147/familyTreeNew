@@ -60,10 +60,9 @@ function loadFamilyList(params){
         data:dataList,
         loadMsg:"加载中...",
         selectOnCheck:true,
-        singleSelect:false,
+        singleSelect:true,
         nowrap: true,
         columns:[[
-            {field:"ck",checkbox:"true"},
             {field:"id",title:"族谱Id",width:"80",hidden:true},
             {field:"familyName",title:"族谱名称",width:"200",
                 formatter: function(value,row,index){

@@ -348,9 +348,12 @@ public class FamilyController {
         //查询族人
         params.put("peopleType",1);
         params.put("orderBy"," order by family_rank asc");
+
+        System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+
 //        params.put("isIndex",1);
         List<TPeople> listPeople = familyService.getPeopleList(params);
-
+        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
         List<Map<String,Object>> list = new ArrayList<>();
 
         //根据族人Id查询配偶
@@ -362,7 +365,7 @@ public class FamilyController {
             map.put("mateList",listMate);
             list.add(map);
         }
-
+        System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
         return list;
     }
 
@@ -745,6 +748,41 @@ public class FamilyController {
         }
 
         return list;
+    }
+
+    /**
+     * 申请成为志愿者
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/applyVolunteer")
+    @ResponseBody
+    public Map<String,Object> applyVolunteer(HttpServletRequest request) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+//        TVolunteer tVolunteer = new TVolunteer();
+//        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
+//        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
+//        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+//        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+        int i = userService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+        map.put("code",i);
+        map.put("msg","申请成功!");
+        return map;
+    }
+
+    @RequestMapping(value = "/modifyPhoto")
+    @ResponseBody
+    public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+//        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+        int i = userService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+        map.put("code",i);
+        map.put("msg","修改成功!");
+        return map;
     }
 
 }

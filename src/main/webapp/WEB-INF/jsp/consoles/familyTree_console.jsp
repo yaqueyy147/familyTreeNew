@@ -16,6 +16,25 @@
         .container{
             width:100% !important;
         }
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>

@@ -75,7 +75,6 @@ public class MergeController {
     @ResponseBody
     public Map<String,Object> mergePrimary(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
@@ -116,7 +115,6 @@ public class MergeController {
     public Map<String,Object> rejectInclude(HttpServletRequest request,HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception {
         Map<String,Object> result = new HashMap<String,Object>();
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
 
         int i = consoleService.rejectInclude(CommonUtil.parseInt(params.get("mergeId")),params.get("rejectDesc") + "",userName);
@@ -170,7 +168,6 @@ public class MergeController {
     public Map<String,Object> completeIn(HttpServletRequest request,HttpServletResponse response,@RequestParam Map<String,Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         params.put("auditMan", userName);//设置审核人
         params.put("auditTime", CommonUtil.getDateLong());

@@ -84,8 +84,6 @@ public class ConsoleController {
     public Map<String,Object> auditCompany(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
 
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
-
         String userName = consolesUser.get("userName") + "";
         params.put("auditMan",userName);
         int i = 0;
@@ -111,7 +109,6 @@ public class ConsoleController {
     @RequestMapping(value = "family")
     public ModelAndView family(HttpServletRequest request, HttpServletResponse response,Model model) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         model.addAttribute("consolesUser",consolesUser);
         return new ModelAndView("/consoles/familyList");
     }
@@ -127,7 +124,6 @@ public class ConsoleController {
         Map<String,Object> result = new HashMap<String,Object>();
         
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
 
         List<TFamily> list = new ArrayList<TFamily>();
@@ -164,7 +160,6 @@ public class ConsoleController {
     public Map<String,Object> saveFamily(HttpServletRequest request,HttpServletResponse response, TFamily tFamily,String createTime4Modify) throws Exception{
 
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("loginName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
         int ii = 0;
@@ -224,7 +219,6 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params, HttpServletRequest request, HttpServletResponse response) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
@@ -249,7 +243,6 @@ public class ConsoleController {
     @RequestMapping(value = "familyTree")
     public ModelAndView familyTree(HttpServletRequest request,HttpServletResponse response, Model model, @RequestParam Map<String,Object> map) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         model.addAttribute("consolesUser",consolesUser);
 
         String familyId = map.get("familyId") + "";
@@ -500,7 +493,6 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> saveMeritorcat(HttpServletRequest request,HttpServletResponse response, TMeritocrat tMeritocrat) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         tMeritocrat.setCreateMan(userName);
         tMeritocrat.setCreateTime(CommonUtil.getDateLong());
@@ -525,7 +517,6 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> deleteMeritorcat(@RequestParam Map<String,Object> params, HttpServletResponse response, HttpServletRequest request) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
         int i = consoleService.deleteMeritocrat(params);
@@ -633,7 +624,6 @@ public class ConsoleController {
     public Map<String,Object> savePointsRelation(HttpServletRequest request,HttpServletResponse response,TPointsDic tPointsDic) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
 
         tPointsDic.setCreateMan(userName);
@@ -738,7 +728,6 @@ public class ConsoleController {
     @RequestMapping(value = "printFamily")
     public ModelAndView printFamily(Model model,HttpServletRequest request,HttpServletResponse response) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(request,response,consolesUser,1);
         model.addAttribute("consolesUser",consolesUser);
         return new ModelAndView("/consoles/printFamily");
     }

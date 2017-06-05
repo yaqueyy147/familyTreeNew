@@ -164,10 +164,10 @@
             </div>
         </div>
         <div class="tab-pane" role="tabpanel" id="myFamilyTab">
-            <iframe src="<%=request.getContextPath()%>/family/personalIndex"></iframe>
+            <iframe src=""></iframe>
         </div>
         <div class="tab-pane" role="tabpanel" id="includeFamilyTab">
-            <iframe src="<%=request.getContextPath()%>/family/includeFamily"></iframe>
+            <iframe src=""></iframe>
         </div>
     </div>
 </div>

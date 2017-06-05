@@ -42,7 +42,7 @@
             <a href="#userDetailTab"  aria-controls="userDetailTab" role="tab" data-toggle="tab">个人信息</a>
         </li>
         <c:if test="${companyInfo.state == 1}">
-        <li role="presentation">
+        <li role="presentation" id="myCompanyTabLi">
             <a href="#myFamilyTab" aria-controls="myFamilyTab" role="tab" data-toggle="tab">我的公司</a>
         </li>
         </c:if>
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div class="tab-pane" role="tabpanel" id="myFamilyTab">
-            <iframe src="<%=request.getContextPath()%>/company/detail?companyId=${companyInfo.id}&xxx=2"></iframe>
+            <iframe src=""></iframe>
         </div>
     </div>
 </div>

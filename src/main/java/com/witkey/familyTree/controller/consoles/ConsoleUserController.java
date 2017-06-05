@@ -88,7 +88,6 @@ public class ConsoleUserController {
     @ResponseBody
     public Map<String,Object> auditVolunteer(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
         params.put("auditMan",userName);
         int i = 0;
@@ -190,7 +189,6 @@ public class ConsoleUserController {
         int i = 0;
 
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-        BaseUtil.validateUserInfo(response,consolesUser,request.getContextPath(),1);
         String userName = consolesUser.get("userName") + "";
 
         Map<String,Object> params = new HashMap<String,Object>();

@@ -97,7 +97,7 @@ $(function () {
     $("#applyVolunteer").click(function () {
         $.ajax({
             type:'post',
-            url: projectUrl + '/sign/applyVolunteer',
+            url: projectUrl + '/family/applyVolunteer',
             dataType: 'json',
             data:{},
             async:false,
@@ -117,7 +117,7 @@ $(function () {
         var photoPath = $("#photoUrl").val();
         $.ajax({
             type:'post',
-            url: projectUrl + '/sign/modifyPhoto',
+            url: projectUrl + '/family/modifyPhoto',
             dataType: 'json',
             data:{photoPath:photoPath},
             async:false,
@@ -166,5 +166,13 @@ $(function () {
         });
 
     });
-    
+
+    $('#myFamilyTabLi a').on('shown.bs.tab', function (e) {
+        var myFamilyUrl = projectUrl + "/family/personalIndex";
+        $("#myFamilyTab iframe").attr("src",myFamilyUrl);
+    });
+    $('#includeFamilyTabLi a').on('shown.bs.tab', function (e) {
+        var myFamilyUrl = projectUrl + "/family/includeFamily";
+        $("#includeFamilyTab iframe").attr("src",myFamilyUrl);
+    })
 });

@@ -58,18 +58,27 @@ function addDiyDom(treeId, treeNode) {
     }
     var mateName = treeNode.mateName;
     var editStr = "";
+    var dieAddr = treeNode.dieAddr;
+    if($.trim(dieAddr).length > 0){
+        editStr += "<br/><span id='diyBtnMate_dieAddr_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' href='javascript:void 0;'>卒葬地点:" + dieAddr + "</span>";
+    }
     if($.trim(mateName).length > 0){
         var mates = mateName.split(",");
         editStr += "<br/>配偶:";
         for(var i=0;i<mates.length;i++){
             var mate = mates[i].split("--");
-            editStr += "<span id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' href='javascript:void 0;'>" + mate[0] + "</span>";
+            editStr += "<br/><span id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;' href='javascript:void 0;'>" + mate[0];
+            if(mate.length > 1){
+                var mateDieAddr = mate[1];
+                if($.trim(mateDieAddr).length > 0){
+                    editStr += "(卒葬地点:" + mateDieAddr + ")";
+                }
+
+            }
+            editStr += "</span>";
         }
     }
-    var dieAddr = treeNode.dieAddr;
-    if($.trim(dieAddr).length > 0){
-        editStr += "<br/><span id='diyBtnMate_dieAddr_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' href='javascript:void 0;'>卒葬地点:" + dieAddr + "</span>";
-    }
+
     aObj.after(editStr);
 }
 

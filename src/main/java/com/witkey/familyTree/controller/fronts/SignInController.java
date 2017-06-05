@@ -405,62 +405,69 @@ public class SignInController {
         return map;
     }
 
-    /**
-     * 申请成为志愿者
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/applyVolunteer")
-    @ResponseBody
-    public Map<String,Object> applyVolunteer(HttpServletRequest request) throws Exception{
-        Map<String,Object> map = new HashMap<String,Object>();
-        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+//    /**
+//     * 申请成为志愿者
+//     * @param request
+//     * @return
+//     * @throws Exception
+//     */
+//    @RequestMapping(value = "/applyVolunteer")
+//    @ResponseBody
+//    public Map<String,Object> applyVolunteer(HttpServletRequest request) throws Exception{
+//        Map<String,Object> map = new HashMap<String,Object>();
+//        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+//
+////        TVolunteer tVolunteer = new TVolunteer();
+////        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
+////        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
+////        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+////        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+//        int i = userService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
+//        map.put("code",i);
+//        map.put("msg","申请成功!");
+//        return map;
+//    }
+//
+//    @RequestMapping(value = "/modifyPhoto")
+//    @ResponseBody
+//    public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{
+//        Map<String,Object> map = new HashMap<String,Object>();
+//        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+////        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+//        int i = userService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
+//        map.put("code",i);
+//        map.put("msg","修改成功!");
+//        return map;
+//    }
+//
+//    /**
+//     * 修改公司信息
+//     * @param tCompanySponsor
+//     * @return
+//     */
+//    @RequestMapping(value = "/modifyCompanyInfo")
+//    @ResponseBody
+//    public Map<String,Object> modifyCompanyInfo(TCompanySponsor tCompanySponsor) throws Exception{
+//        Map<String,Object> map = new HashMap<String,Object>();
+//
+//        TCompanySponsor tCompanySponsor1 = companyService.getCompanyFromId(tCompanySponsor.getId());
+//        tCompanySponsor.setState(tCompanySponsor1.getState());
+//        tCompanySponsor.setCreateMan(tCompanySponsor1.getCreateMan());
+//        tCompanySponsor.setCreateTime(tCompanySponsor1.getCreateTime());
+//
+//        int i = companyService.saveCompanyInfo(tCompanySponsor);
+//
+//
+//        map.put("code",i);
+//        map.put("msg","修改成功!");
+//        return map;
+//    }
 
-//        TVolunteer tVolunteer = new TVolunteer();
-//        tVolunteer.setUserId(CommonUtil.parseInt(jsonUser.get("id")));
-//        tVolunteer.setCreateMan(jsonUser.get("userName") + "");
-//        tVolunteer.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-//        int i = userFrontService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
-        int i = userService.applyVolunteer(CommonUtil.parseInt(jsonUser.get("id")));
-        map.put("code",i);
-        map.put("msg","申请成功!");
-        return map;
-    }
-
-    @RequestMapping(value = "/modifyPhoto")
-    @ResponseBody
-    public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{
-        Map<String,Object> map = new HashMap<String,Object>();
-        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-//        int i = userFrontService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
-        int i = userService.modifyPhoto(jsonUser.get("id") + "", photoPath, jsonUser.get("userType")+"");
-        map.put("code",i);
-        map.put("msg","修改成功!");
-        return map;
-    }
-
-    /**
-     * 修改公司信息
-     * @param tCompanySponsor
-     * @return
-     */
-    @RequestMapping(value = "/modifyCompanyInfo")
-    @ResponseBody
-    public Map<String,Object> modifyCompanyInfo(TCompanySponsor tCompanySponsor) throws Exception{
-        Map<String,Object> map = new HashMap<String,Object>();
-
-        TCompanySponsor tCompanySponsor1 = companyService.getCompanyFromId(tCompanySponsor.getId());
-        tCompanySponsor.setState(tCompanySponsor1.getState());
-        tCompanySponsor.setCreateMan(tCompanySponsor1.getCreateMan());
-        tCompanySponsor.setCreateTime(tCompanySponsor1.getCreateTime());
-
-        int i = companyService.saveCompanyInfo(tCompanySponsor);
-
-
-        map.put("code",i);
-        map.put("msg","修改成功!");
-        return map;
+    @RequestMapping(value = "/out")
+    public ModelAndView redirectOut(Model model,int type){
+        System.out.println("进来了。。。");
+        model.addAttribute("type",type);
+        return new ModelAndView("/out");
     }
 
 }

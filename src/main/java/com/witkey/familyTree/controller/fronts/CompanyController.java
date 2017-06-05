@@ -56,7 +56,6 @@ public class CompanyController {
     @RequestMapping(value = "/info")
     public ModelAndView companyInfo(Model model, HttpServletRequest request,HttpServletResponse response) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),2);
         TCompanySponsor tCompanySponsor = companyService.getCompanyFromId(CommonUtil.parseInt(jsonUser.get("id")));
 
         double totalMoney = companyService.getTotalCompanyMoney(CommonUtil.parseInt(jsonUser.get("id")));
@@ -120,7 +119,6 @@ public class CompanyController {
     @ResponseBody
     public Map<String,Object> saveIntro(HttpServletRequest request,HttpServletResponse response,TCompanyIntroduce tCompanyIntroduce) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),2);
         Map<String,Object> result = new HashMap<String,Object>();
 
         if(tCompanyIntroduce.getId() > 0){
@@ -217,10 +215,32 @@ public class CompanyController {
     public Map<String,Object> applyVolunteer(HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String,Object> map = new HashMap<String,Object>();
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        BaseUtil.validateUserInfo(response,jsonUser,request.getContextPath(),1);
         int i = companyService.applySponsor(CommonUtil.parseInt(jsonUser.get("id")));
         map.put("code",i);
         map.put("msg","申请成功!");
+        return map;
+    }
+
+    /**
+     * 修改公司信息
+     * @param tCompanySponsor
+     * @return
+     */
+    @RequestMapping(value = "/modifyCompanyInfo")
+    @ResponseBody
+    public Map<String,Object> modifyCompanyInfo(TCompanySponsor tCompanySponsor) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+
+        TCompanySponsor tCompanySponsor1 = companyService.getCompanyFromId(tCompanySponsor.getId());
+        tCompanySponsor.setState(tCompanySponsor1.getState());
+        tCompanySponsor.setCreateMan(tCompanySponsor1.getCreateMan());
+        tCompanySponsor.setCreateTime(tCompanySponsor1.getCreateTime());
+
+        int i = companyService.saveCompanyInfo(tCompanySponsor);
+
+
+        map.put("code",i);
+        map.put("msg","修改成功!");
         return map;
     }
 

@@ -74,17 +74,22 @@
             <mvc:mapping path="/**" />
             <mvc:exclude-mapping path="/static/**" />
             <bean class="com.witkey.familyTree.interceptor.TestInterceptor">
-                <!--<property name="excludeMappings">-->
-                    <!--<list>-->
-                        <!--<value>/</value>-->
-                        <!--<value>/login/**</value>-->
-                        <!--<value>/sign/**</value>-->
-                        <!--<value>/upload/**</value>-->
-                        <!--<value>/static/**</value>-->
-                        <!--<value>/scripts/**</value>-->
+                <property name="excludeMappings">
+                    <list>
+                        <value>/</value>
+                        <value>/login/**</value>
+                        <value>/sign/**</value>
+                        <value>/upload/**</value>
+                        <value>/static/**</value>
+                        <value>/scripts/**</value>
                         <!--<value>/familyTree</value>-->
-                    <!--</list>-->
-                <!--</property>-->
+                        <value>/consoles/</value>
+                        <value>/consoles/login</value>
+                        <value>/consoles</value>
+                        <value>/consoles/loginIn</value>
+                        <value>/consoles/logout</value>
+                    </list>
+                </property>
             </bean>
         </mvc:interceptor>
 

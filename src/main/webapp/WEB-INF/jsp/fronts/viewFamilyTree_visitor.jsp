@@ -352,8 +352,8 @@
         if(!descHeight){
             descHeight = 0;
         }
-        $("#familyTree").attr("style","height:" + (winHeight - descHeight - 150) + "px");
-        $(".rankDiv").attr("style","height:" + (winHeight - descHeight - 150) + "px")
+        $("#familyTree").attr("style","height:" + (winHeight - descHeight - 105) + "px");
+        $(".rankDiv").attr("style","height:" + (winHeight - descHeight - 105) + "px")
         $("#goBack").click(function () {
             window.history.back();
         });

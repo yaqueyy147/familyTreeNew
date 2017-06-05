@@ -12,10 +12,17 @@
 </head>
 <body>
 <script language="JavaScript" type="text/javascript">
-    if (window != top){
-        top.location.href = location.href;
+    var type = "${type}";
+    var url = "";
+    if(type == 1) {//后台跳转
+        url = "<%=request.getContextPath()%>/consoles/login?loginCode=-2";
+    }else{
+        url = "<%=request.getContextPath()%>/sign?loginCode=-2";
     }
-
+    if (window != top){
+        top.location.href = url;
+    }
+    location.href = url;
 </script>
 </body>
 </html>

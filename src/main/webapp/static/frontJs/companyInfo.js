@@ -12,7 +12,7 @@ $(function () {
         }
         $.ajax({
             type:'post',
-            url: projectUrl + '/sign/modifyCompanyInfo',
+            url: projectUrl + '/company/modifyCompanyInfo',
             dataType: 'json',
             data:testData,
             async:false,
@@ -68,28 +68,7 @@ $(function () {
         var photoPath = $("#photoUrl").val();
         $.ajax({
             type:'post',
-            url: projectUrl + '/sign/modifyPhoto',
-            dataType: 'json',
-            data:{photoPath:photoPath},
-            async:false,
-            success:function (data) {
-                if(data.code >= 1){
-                    alert(data.msg);
-                    $("#userPhotoBox img").attr("src",photoPath);
-                    $("#companyphoto").val(photoPath);
-                    $("#photoModal").modal('hide');
-                }
-            },
-            error:function (data) {
-                alert(JSON.stringify(data));
-            }
-        });
-    });
-    $("#toModify-license").click(function () {
-        var photoPath = $("#photoUrl1").val();
-        $.ajax({
-            type:'post',
-            url: projectUrl + '/sign/modifyPhoto',
+            url: projectUrl + '/family/modifyPhoto',
             dataType: 'json',
             data:{photoPath:photoPath},
             async:false,
@@ -157,5 +136,11 @@ $(function () {
                 alert(JSON.stringify(data));
             }
         });
+    });
+
+    $('#myCompanyTabLi a').on('shown.bs.tab', function (e) {
+        var myCompanyUrl = projectUrl + "/company/detail?companyId=" + companyId + "&xxx=2";
+        alert(myCompanyUrl);
+        $("#myFamilyTab iframe").attr("src",myCompanyUrl);
     });
 });
