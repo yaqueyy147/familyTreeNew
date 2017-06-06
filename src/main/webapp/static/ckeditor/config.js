@@ -7,7 +7,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-
+    var modalBodyHeight = $("#addIntroModal .modal-content .modal-body").height();
+    var editHeight = modalBodyHeight - 140;
     // config.width = 970; //宽度
-    config.height = 290; //高度
+    config.height = editHeight; //高度
 };

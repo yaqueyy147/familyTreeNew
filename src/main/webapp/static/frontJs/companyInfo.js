@@ -140,7 +140,6 @@ $(function () {
 
     $('#myCompanyTabLi a').on('shown.bs.tab', function (e) {
         var myCompanyUrl = projectUrl + "/company/detail?companyId=" + companyId + "&xxx=2";
-        alert(myCompanyUrl);
         $("#myFamilyTab iframe").attr("src",myCompanyUrl);
     });
 });

@@ -73,7 +73,7 @@ $(function () {
 
     $("#cancelIntro").on({
         click:function () {
-            var primaryIntro = $("#introduceA").val();
+            // var primaryIntro = $("#introduceA").html();
             $.ajax({
                 type:'post',
                 url:projectUrl + "/company/getIntro",

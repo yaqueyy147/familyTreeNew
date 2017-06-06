@@ -182,13 +182,16 @@
     <div class="modal-dialog" style="width:1000px">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <%--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>--%>
                 <h4 class="modal-title" id="addIntroModalLabel">添加公司简介</h4>
             </div>
-            <div class="modal-body" style="height: 430px">
+            <div class="modal-body">
                 <input type="hidden" id="companyId4Intro" name="companyId" value="${tCompanySponsor.id}" >
                 <input type="hidden" id="introduceId" name="id" value="${introduce.id}" >
-                <input type="hidden" id="introduceA" name="introduceA" value="${introduce.companyIntroduce}" >
+                <div style="display: none" id="introduceA" name="introduceA">
+                    ${introduce.companyIntroduce}
+                </div>
+                <%--<input type="hidden" id="introduceA" name="introduceA" value="${introduce.companyIntroduce}" >--%>
                 <div>
                     <textarea style="width: 100%;height: 100%" class="ckeditor" name="companyDesc" id="companyDesc">
                         ${introduce.companyIntroduce}
@@ -207,11 +210,14 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/companyDetail.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-    var winHeight = $(document).height();
+    var winHeight = $(window.parent).height();
     var companyId = "${tCompanySponsor.id}";
     $(function () {
         $("body").attr("style","height:" + (winHeight - 50) + "px");
-        CKEDITOR.replace('companyDesc',{toolbar:'Full', skin : 'kama'});
+        var introModalHeight = winHeight - 150;
+        $("#addIntroModal .modal-content").attr("style","height:" + introModalHeight + "px");
+        $("#addIntroModal .modal-content .modal-body").attr("style","height:" + (introModalHeight - 90) + "px");
+        var companyDescEditor=CKEDITOR.replace('companyDesc',{toolbar:'Full', skin : 'kama'});
         setTimeout(function() {
             $('#imgFile').uploadify({
                 'swf': projectUrl + '/static/uploadify/uploadify.swf',

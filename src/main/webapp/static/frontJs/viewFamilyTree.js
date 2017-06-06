@@ -79,6 +79,9 @@ $(function () {
         for (var item in formData) {
             testData["" + formData[item].name + ""] = formData[item].value;
         }
+        var treeObj = $.fn.zTree.getZTreeObj("familyTree");
+        var parentNode = treeObj.getNodeByParam("id", testData.superiorId, null);
+
         $.ajax({
             type:'post',
             url: projectUrl + '/family/savePeople',
@@ -87,8 +90,31 @@ $(function () {
             async:false,
             success:function (data) {
                 alert(data.msg);
-                var zNodes = initPeopleData(familyId);
-                initFamilyTree(zNodes,setting);
+                // var zNodes = initPeopleData(familyId);
+                // initFamilyTree(zNodes,setting);
+                var tPeople = data.tPeople;
+                if(tPeople.peopleType == 1){//添加本族人，直接新增节点
+                    var newNodes = {name:testData.name,pId:testData.superiorId};
+                    newNodes.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+                    newNodes.open = true;
+                    newNodes.peopleStatus = tPeople.peopleStatus;
+                    newNodes.isSupplement = tPeople.isSupplement;
+                    newNodes.id = tPeople.id;
+                    treeObj.addNodes(parentNode, newNodes);
+                }else{//添加配偶，修改当前节点
+                    alert(JSON.stringify(testData));
+                    var cNode = treeObj.getNodeByParam("id", testData.mateId, null);
+                    var newMate = tPeople.name + "--" + tPeople.id + "--" + tPeople.peopleStatus + "--" + tPeople.isSupplement;
+                    var mateName = cNode.mateName;
+                    if($.trim(mateName).length > 0){
+                        mateName += "," + newMate;
+                    }else{
+                        mateName += newMate;
+                    }
+                    cNode.mateName = mateName;
+                    alert(JSON.stringify(cNode));
+                    treeObj.updateNode(cNode);
+                }
                 $("#addModal").modal('hide');
                 $("#peopleForm")[0].reset();
                 $("#savePeople").text("保 存");
@@ -98,6 +124,7 @@ $(function () {
                 alert(JSON.stringify(data));
             }
         });
+
     });
 
     var zNodes = initPeopleData(familyId);

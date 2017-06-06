@@ -429,6 +429,7 @@ public class FamilyController {
             //记录日志
             logService.createLog(new TLog(1,userName,tPeople.toString()));
         }
+        map.put("tPeople",tPeople);
         map.put("msg",msg);
         map.put("code",1);
         return map;
