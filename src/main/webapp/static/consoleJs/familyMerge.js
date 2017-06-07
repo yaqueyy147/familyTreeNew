@@ -344,7 +344,7 @@ function initPeopleData(familyId){
     var zNodes = [];
     $.ajax({
         type:'post',
-        url:projectUrl + '/family/getPeopleList',
+        url:projectUrl + '/consoles/getPeopleList',
         dataType:'json',
         async:false,
         data:{familyId : familyId,isIndex:0},
@@ -387,31 +387,6 @@ function initPeopleData(familyId){
     });
     return zNodes;
 
-}
-
-function initTargetFamily() {
-    $.ajax({
-        type:'post',
-        url:projectUrl + '/family/familyMatch',
-        dataType:'json',
-        async:true,
-        data:{familyId : familyId},
-        success:function (data) {
-            if(data.code == 1){
-                var targetFamilyList = data.resultFamilyList;
-                if(targetFamilyList && targetFamilyList.length > 0){
-                    var html = "<label for='targetFamily'>请选择收录的目标族谱</label>";
-                    html += "";
-                    for(var i=0;i<targetFamilyList.length;i++) {
-                        var ii = targetFamilyList[i];
-                        html += "<option value='" + ii.id + "' family-desc='" + ii.familyDesc + "' family-addr='" + ii.province + ii.city + ii.district + "'>" + ii.familyName + "(" + ii.id + ")" + "</option>";
-                    }
-                    $("#targetFamily").html(html);
-                }
-            }
-            selectTarget($("#targetFamily"));
-        }
-    });
 }
 
 function selectTarget(obj) {
@@ -488,7 +463,7 @@ function editPeople(peopleId,generation){
 function initParent(familyId,generation){
     $.ajax({
         type:'post',
-        url:projectUrl + '/family/getParent',
+        url:projectUrl + '/consoles/getParent',
         dataType:'json',
         async:false,
         data:{familyId : familyId,generation:generation},

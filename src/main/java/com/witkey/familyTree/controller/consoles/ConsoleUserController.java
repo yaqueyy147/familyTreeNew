@@ -3,6 +3,7 @@ package com.witkey.familyTree.controller.consoles;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.consoles.LogService;
+import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.BaseUtil;
@@ -36,6 +37,8 @@ public class ConsoleUserController {
     private ConsoleService consoleService;
     @Autowired
     private FamilyService familyService;
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private UserService userService;
@@ -379,6 +382,63 @@ public class ConsoleUserController {
 
         result.put("code",i);
         result.put("msg","授权完成");
+        return result;
+    }
+
+    @RequestMapping(value = "/addMoney")
+    @ResponseBody
+    public Map<String,Object> addMoney(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        List<TPointsDic> listP = familyService.getPointsRelation(2,1);
+        double points = 0.0;
+        if(listP != null && listP.size() > 0){
+            points = Math.ceil(listP.get(0).getPointsValue()/listP.get(0).getPointsNum());
+        }
+
+        int i = 0;
+        if(CommonUtil.parseInt(params.get("type")) == 1){
+            TUserMoney tUserMoney = new TUserMoney();
+            tUserMoney.setUserId(CommonUtil.parseInt(params.get("userId")));
+            tUserMoney.setPayDesc(params.get("payDesc") + "");
+            tUserMoney.setPayMoney(CommonUtil.parseDouble(params.get("payMoney")));
+            tUserMoney.setPayMan(params.get("userName") + "");
+            tUserMoney.setPayTime(new Date());
+            tUserMoney.setState(1);
+            tUserMoney.setCurrentPoints(points);
+
+            i += familyService.addMoney(tUserMoney);
+        }else if(CommonUtil.parseInt(params.get("type")) == 2){
+            TCompanyMoney tCompanyMoney = new TCompanyMoney();
+            tCompanyMoney.setCompanyId(CommonUtil.parseInt(params.get("companyId")));
+            tCompanyMoney.setPayDesc(params.get("payDesc") + "");
+            tCompanyMoney.setPayMoney(CommonUtil.parseDouble(params.get("payMoney")));
+            tCompanyMoney.setPayMan(params.get("companyName") + "");
+            tCompanyMoney.setPayTime(new Date());
+            tCompanyMoney.setState(1);
+            tCompanyMoney.setCurrentPoints(points);
+
+            i += companyService.addMoney(tCompanyMoney);
+        }
+
+        result.put("code",i);
+        result.put("msg","添加成功!");
+        return result;
+    }
+
+    @RequestMapping(value = "/moneyList")
+    @ResponseBody
+    public Map<String,Object> moneyList(@RequestParam Map<String,Object> params){
+        Map<String,Object> result = new HashMap<String,Object>();
+
+        if(CommonUtil.parseInt(params.get("type")) == 2){
+            List<TCompanyMoney> list = companyService.getCompanyMoney(params);
+            result.put("dataList",list);
+        } else if(CommonUtil.parseInt(params.get("type")) == 1){
+            List<TUserMoney> list = familyService.getUserMoney(params);
+            result.put("dataList",list);
+
+        }
         return result;
     }
 

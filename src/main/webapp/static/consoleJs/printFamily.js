@@ -13,7 +13,7 @@ $(function () {
             {
                 "text":"提交",
                 handler:function(){
-                    $("#printGenForm").attr("action",projectUrl + "/family/print");
+                    $("#printGenForm").attr("action",projectUrl + "/consoles/print");
                     $("#printGenForm").submit();
                 }
             },

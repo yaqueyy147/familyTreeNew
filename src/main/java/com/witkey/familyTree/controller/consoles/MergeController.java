@@ -192,4 +192,23 @@ public class MergeController {
         return result;
     }
 
+    @RequestMapping(value = "/applyMerge")
+    @ResponseBody
+    public Map<String,Object> applyMerge(HttpServletRequest request, @RequestParam Map<String,Object> params) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+
+        TFamilyMerge tFamilyMerge = new TFamilyMerge();
+        tFamilyMerge.setPrimaryFamilyId(CommonUtil.parseInt(params.get("primaryFamilyId")));
+        tFamilyMerge.setTargetFamilyId(CommonUtil.parseInt(params.get("targetFamilyId")));
+        tFamilyMerge.setState(2);
+        tFamilyMerge.setApplyMan(jsonUser.get("userName") + "");
+        tFamilyMerge.setApplyTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+
+        int i = familyService.saveInclude(tFamilyMerge);
+
+        result.put("code",i);
+        return result;
+    }
+
 }

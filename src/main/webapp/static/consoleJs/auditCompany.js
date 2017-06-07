@@ -65,7 +65,7 @@ $(function () {
             moneyInfo.type = 2;
             $.ajax({
             	type:'post',
-                url: projectUrl + "/company/addMoney",
+                url: projectUrl + "/consoles/addMoney",
                 dataType:'json',
                 data:moneyInfo,
                 success:function (data) {
@@ -245,7 +245,7 @@ function loadCompanyData(params) {
 
 function showMoneyList(companyId,companyName){
     var params = {"companyId":companyId,"type":2};
-    var moneyList = getData("/company/moneyList",params).dataList;
+    var moneyList = getData("/consoles/moneyList",params).dataList;
     $("#moneyTable").datagrid({
     	data:moneyList,
     	columns:[[

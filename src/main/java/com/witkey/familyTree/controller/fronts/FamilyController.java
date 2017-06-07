@@ -370,6 +370,20 @@ public class FamilyController {
     }
 
     /**
+     * 族谱组人数据
+     * @param peopleId
+     * @return
+     */
+    @RequestMapping(value = "getPeopleInfo")
+    @ResponseBody
+    public Map<String,Object> getPeopleInfo(int peopleId){
+        Map<String,Object> result = new HashMap<String,Object>();
+        TPeople tPeople = familyService.getPeopleInfo(peopleId);
+        result.put("tPeople",tPeople);
+        return result;
+    }
+
+    /**
      * 录入保存族人
      * @param tPeople
      * @param birth_time
@@ -460,6 +474,7 @@ public class FamilyController {
         //修改成员信息
         if(tPeople.getId() > 0){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
+
             tPeople.setCreateMan(tPeopleOld.getCreateMan());
             tPeople.setCreateId(tPeopleOld.getCreateId());
             tPeople.setCreateTime(tPeopleOld.getCreateTime());
@@ -500,6 +515,7 @@ public class FamilyController {
             //记录日志
             logService.createLog(new TLog(1,userName,tPeople.toString()));
         }
+        map.put("tPeople",tPeople);
         map.put("msg",msg);
         map.put("code",1);
         return map;

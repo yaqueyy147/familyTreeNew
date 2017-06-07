@@ -160,7 +160,7 @@ function zTreeOnClick(event, treeId, treeNode) {
 function editPeople(peopleId,generation){
     initParent(generation);
     var params = {"peopleId":peopleId};
-    var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    var tPeople = getData("/family/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
     $("#peopleForm").populateForm(tPeople);

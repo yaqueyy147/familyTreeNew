@@ -95,7 +95,7 @@ $(function () {
             moneyInfo.type = 1;
             $.ajax({
             	type:'post',
-                url: projectUrl + "/company/addMoney",
+                url: projectUrl + "/consoles/addMoney",
                 dataType:'json',
                 data:moneyInfo,
                 success:function (data) {
@@ -336,7 +336,7 @@ function viewIdCard(idCardUrl){
 
 function showMoneyList(userId,userName){
     var params = {"userId":userId,"type":1};
-    var moneyList = getData("/company/moneyList",params).dataList;
+    var moneyList = getData("/consoles/moneyList",params).dataList;
     $("#moneyTable").datagrid({
     	data:moneyList,
     	columns:[[

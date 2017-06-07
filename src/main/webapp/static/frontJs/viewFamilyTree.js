@@ -93,27 +93,81 @@ $(function () {
                 // var zNodes = initPeopleData(familyId);
                 // initFamilyTree(zNodes,setting);
                 var tPeople = data.tPeople;
-                if(tPeople.peopleType == 1){//添加本族人，直接新增节点
-                    var newNodes = {name:testData.name,pId:testData.superiorId};
-                    newNodes.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                    newNodes.open = true;
-                    newNodes.peopleStatus = tPeople.peopleStatus;
-                    newNodes.isSupplement = tPeople.isSupplement;
-                    newNodes.id = tPeople.id;
-                    treeObj.addNodes(parentNode, newNodes);
-                }else{//添加配偶，修改当前节点
-                    alert(JSON.stringify(testData));
-                    var cNode = treeObj.getNodeByParam("id", testData.mateId, null);
-                    var newMate = tPeople.name + "--" + tPeople.id + "--" + tPeople.peopleStatus + "--" + tPeople.isSupplement;
-                    var mateName = cNode.mateName;
-                    if($.trim(mateName).length > 0){
-                        mateName += "," + newMate;
-                    }else{
-                        mateName += newMate;
+                if(tPeople.peopleType == 1){//操作本族人，直接新增节点
+
+                    //如果id存在并且大于0，则为修改族人
+                    if($.trim(testData.id).length > 0 && testData.id > 0){
+                        //获取原节点
+                        var cNode = treeObj.getNodeByParam("id", testData.id, null);
+                        //修改节点名
+                        cNode["name"] = tPeople.name;
+                        //更新节点信息
+                        treeObj.updateNode(cNode);
+                    }else{//新增
+                        //创建一个新节点
+                        var newNodes = {name:testData.name,pId:testData.superiorId};
+                        newNodes.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+                        newNodes.open = true;
+                        newNodes.peopleStatus = tPeople.peopleStatus;
+                        newNodes.isSupplement = tPeople.isSupplement;
+                        newNodes.id = tPeople.id;
+                        //将新节点添加到当前节点集的最后面
+                        treeObj.addNodes(parentNode, newNodes);
                     }
-                    cNode.mateName = mateName;
-                    alert(JSON.stringify(cNode));
-                    treeObj.updateNode(cNode);
+
+                }else{//操作配偶，修改当前节点
+                    //获取原节点
+                    var cNode = treeObj.getNodeByParam("id", testData.mateId, null);
+                    //获取节点位置
+                    var nodeIndex =  treeObj.getNodeIndex(cNode);
+                    //获要移动到的目标节点为当前节点前一节点，供最后移动节点用
+                    var targetNode = cNode.getPreNode();
+                    //设置移动类型
+                    var moveType = "next";
+                    //如果当前节点的位置在最前
+                    if(nodeIndex == 0){
+                        //设置要移动到的目标节点为当前节点后一节点
+                        targetNode = cNode.getNextNode();
+                        //设置移动类型
+                        moveType = "prev";
+                    }
+                    //先删除原有节点
+                    treeObj.removeNode(cNode);
+                    //获取节点的配偶信息
+                    var mateStr = cNode.mateName;
+                    //修改配偶，设置配偶信息
+                    if($.trim(testData.id).length > 0 && testData.id > 0){
+
+                        var mates = mateStr.split(",");
+                        //修改配偶信息
+                        for(var i=0;i<mates.length;i++){
+                            var mate = mates[i].split("--");
+                            var mateId = mate[1];
+                            var mateName = mate[0];
+                            if(tPeople.id == mateId){
+                                mateStr = mateStr.replace(mateName + "--" + mateId,tPeople.name + "--" + tPeople.id);
+                                break;
+                            }
+                        }
+
+                    }else{//新增配偶
+                        var newMate = tPeople.name + "--" + tPeople.id + "--" + tPeople.peopleStatus + "--" + tPeople.isSupplement;
+
+                        if($.trim(mateStr).length > 0){
+                            mateStr += "," + newMate;
+                        }else{
+                            mateStr += newMate;
+                        }
+
+                    }
+                    //修改原节点的配偶信息
+                    cNode["mateName"] = mateStr;
+                    //将节点添加到树
+                    treeObj.addNodes(parentNode,cNode);
+                    //获取添加后的当前节点
+                    cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                    //根据之前设置的规则移动当前节点
+                    treeObj.moveNode(targetNode, cNode, moveType);
                 }
                 $("#addModal").modal('hide');
                 $("#peopleForm")[0].reset();
@@ -270,9 +324,9 @@ function addDiyDom(treeId, treeNode) {
             var mateStatus = mate[2];
             var mateSupplement = mate[3];
 
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\">" + mate[0] + "</a>";
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "','" + treeNode.id + "')\">" + mate[0] + "</a>";
 
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "',2)\">删除</a>";
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "',2,'" + treeNode.id + "')\">删除</a>";
         }
     }
 
@@ -281,7 +335,7 @@ function addDiyDom(treeId, treeNode) {
     // }
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn1_" +treeNode.id+ "' onclick=\"addPeople(1,'"+ (nodeLevel + 1) +"','"+ treeNode.id +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加子女</a>";
     editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn2_" +treeNode.id+ "' onclick=\"addPeople(2,'"+ (nodeLevel + 1) +"','"+ parentId +"','" + treeNode.name + "','"+ treeNode.id +"')\">添加配偶</a>";
-    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "',1)\">删除</a>";
+    editStr += "<a style='display: inline-block;margin-left: 10px' id='diyBtn3_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "',1,null)\">删除</a>";
 
 
     aObj.after(editStr);
@@ -411,7 +465,7 @@ function initPeopleData(familyId){
 }
 
 function zTreeOnClick(event, treeId, treeNode) {
-    editPeople(treeNode.id,treeNode.level);
+    editPeople(treeNode.id,treeNode.level,null);
     // initParent(treeNode.level);
     // var params = {"peopleId":treeNode.id};
     // var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
@@ -423,13 +477,17 @@ function zTreeOnClick(event, treeId, treeNode) {
 
 }
 
-function editPeople(peopleId,generation){
+function editPeople(peopleId,generation,mateId){
     initParent(generation);
     var params = {"peopleId":peopleId};
-    var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
+    var tPeople = getData("/family/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+
     $("#peopleForm").populateForm(tPeople);
+    if($.trim(mateId).length > 0 && mateId > 0){
+        $("#mateId").val(mateId);
+    }
     $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
 
     var imgPath = tPeople.photoUrl;
@@ -530,8 +588,9 @@ function selectTarget(obj) {
     });
 }
 
-function deletePeople(peopleId,peopleName,peopleType) {
+function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
     if(confirm("确定要删除成员(" + peopleName + ")吗？")){
+        var treeObj = $.fn.zTree.getZTreeObj("familyTree");
         $.ajax({
             type:'post',
             url:projectUrl + '/family/deletePeople',
@@ -541,8 +600,43 @@ function deletePeople(peopleId,peopleName,peopleType) {
             success:function (data) {
                 if(data.code >= 1){
                     alert("删除完成!");
-                    var zNodes = initPeopleData(familyId);
-                    initFamilyTree(zNodes,setting);
+                    // var zNodes = initPeopleData(familyId);
+                    // initFamilyTree(zNodes,setting);
+
+                    if(peopleType == 1){//删除本族人,移除当前节点
+                        var cNode = treeObj.getNodeByParam("id", peopleId, null);
+                        treeObj.removeNode(cNode);
+                    }else{//删除配偶,修改当前节点
+                        var cNode = treeObj.getNodeByParam("id", cNodeId, null);
+                        var nodeIndex =  treeObj.getNodeIndex(cNode);
+                        var targetNode = cNode.getPreNode();
+                        var moveType = "next";
+                        if(nodeIndex == 0){
+                            targetNode = cNode.getNextNode();
+                            moveType = "prev";
+                        }
+
+                        var parentNode = cNode.getParentNode();
+                        treeObj.removeNode(cNode);
+                        var mateStr = cNode.mateName;
+                        var mates = mateStr.split(",");
+
+                        for(var i=0;i<mates.length;i++){
+                            var mate = mates[i].split("--");
+                            var mateId = mate[1];
+                            var mateName = mate[0];
+                            if(peopleId == mateId){
+                                mates.splice(i, 1);
+                                break;
+                            }
+                        }
+
+                        cNode["mateName"] = mates.toString();
+                        treeObj.addNodes(parentNode,cNode);
+                        cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                        treeObj.moveNode(targetNode, cNode, moveType);
+                    }
+
                 }
                 if(data.code == -1){
                     alert("该成员含有下一代，不能删除！如需删除，请先删除其后代！");

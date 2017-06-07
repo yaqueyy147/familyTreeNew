@@ -389,6 +389,39 @@ public class ConsoleController {
     }
 
     /**
+     * 根据家族ID获取家族成员
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/getPeopleList")
+    @ResponseBody
+    public List<Map<String,Object>> getPeopleList(@RequestParam Map<String,Object> params){
+
+        //查询族人
+        params.put("peopleType",1);
+        params.put("orderBy"," order by family_rank asc");
+
+        System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+
+//        params.put("isIndex",1);
+        List<TPeople> listPeople = familyService.getPeopleList(params);
+        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        //根据族人Id查询配偶
+        for (TPeople tPeople : listPeople) {
+            Map<String,Object> map = new HashMap<>();
+            map = CommonUtil.bean2Map(tPeople);
+            int peopleId = tPeople.getId();
+            List<TPeople> listMate = familyService.getMateList(peopleId);
+            map.put("mateList",listMate);
+            list.add(map);
+        }
+        System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+        return list;
+    }
+
+    /**
      * 族谱组人数据
      * @param peopleId
      * @return
@@ -399,6 +432,14 @@ public class ConsoleController {
         Map<String,Object> result = new HashMap<String,Object>();
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         result.put("tPeople",tPeople);
+        return result;
+    }
+
+    @RequestMapping(value = "/getParent")
+    @ResponseBody
+    public Map<String,Object> getParent(int familyId,int generation){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result = familyService.getParentFromGen(familyId,generation);
         return result;
     }
 
@@ -759,6 +800,20 @@ public class ConsoleController {
         result.put("code",ii);
         result.put("msg","删除完成！");
         return result;
+    }
+
+    @RequestMapping(value = "/print")
+    public ModelAndView print(HttpServletRequest request, Model model, @RequestParam Map<String,Object> params){
+        int familyId = CommonUtil.parseInt(params.get("printFamilyId"));
+
+        TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
+        model.addAttribute("tFamily",tFamily);
+
+        model.addAttribute("familyId",params.get("printFamilyId"));
+        model.addAttribute("beginGen",params.get("beginGen"));
+        model.addAttribute("endGen",params.get("endGen"));
+        model.addAttribute("isAddIntro",params.get("isAddIntro"));
+        return new ModelAndView("/fronts/print");
     }
 
 }
