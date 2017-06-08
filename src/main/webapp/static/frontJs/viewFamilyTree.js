@@ -153,7 +153,7 @@ $(function () {
                     }else{//新增配偶
                         var newMate = tPeople.name + "--" + tPeople.id + "--" + tPeople.peopleStatus + "--" + tPeople.isSupplement;
 
-                        if($.trim(mateStr).length > 0){
+                        if($.trim(mateStr).length > 0 && mateStr != "undefined" && mateStr != "null"){
                             mateStr += "," + newMate;
                         }else{
                             mateStr += newMate;
