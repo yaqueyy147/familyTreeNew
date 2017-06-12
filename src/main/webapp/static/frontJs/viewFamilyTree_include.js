@@ -135,6 +135,8 @@ $(function () {
                     var nodeIndex =  treeObj.getNodeIndex(cNode);
                     //获要移动到的目标节点为当前节点前一节点，供最后移动节点用
                     var targetNode = cNode.getPreNode();
+                    //当前子节点集的节点数
+                    var nodesCount = treeObj.getNodesByParam("pId", testData.superiorId, parentNode);
                     //设置移动类型
                     var moveType = "next";
                     //如果当前节点的位置在最前
@@ -178,10 +180,12 @@ $(function () {
                     cNode["mateName"] = mateStr;
                     //将节点添加到树
                     treeObj.addNodes(parentNode,cNode);
-                    //获取添加后的当前节点
-                    cNode = treeObj.getNodeByParam("id", cNode.id, null);
-                    //根据之前设置的规则移动当前节点
-                    treeObj.moveNode(targetNode, cNode, moveType);
+                    if(nodesCount > 1){
+                        //获取添加后的当前节点
+                        cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                        //根据之前设置的规则移动当前节点
+                        treeObj.moveNode(targetNode, cNode, moveType);
+                    }
                 }
                 $("#addModal").modal('hide');
                 $("#peopleForm")[0].reset();
@@ -677,6 +681,7 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
                         var cNode = treeObj.getNodeByParam("id", peopleId, null);
                         var parentNode = cNode.getParentNode();
                         var nodeIndex =  treeObj.getNodeIndex(cNode);
+                        var nodesCount = treeObj.getNodesByParam("pId", cNode.pId, parentNode);
                         var targetNode = cNode.getPreNode();
                         var moveType = "next";
                         if(nodeIndex == 0){
@@ -687,11 +692,16 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
                         cNode["isSupplement"] = 1;
                         cNode["peopleStatus"] = 52;
                         treeObj.addNodes(parentNode,cNode);
-                        cNode = treeObj.getNodeByParam("id", cNode.id, null);
-                        treeObj.moveNode(targetNode, cNode, moveType);
+                        if(nodesCount > 1){
+                            //获取添加后的当前节点
+                            cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                            //根据之前设置的规则移动当前节点
+                            treeObj.moveNode(targetNode, cNode, moveType);
+                        }
                     }else{//删除配偶,修改当前节点
                         var cNode = treeObj.getNodeByParam("id", cNodeId, null);
                         var nodeIndex =  treeObj.getNodeIndex(cNode);
+                        var nodesCount = treeObj.getNodesByParam("pId", cNode.pId, parentNode);
                         var targetNode = cNode.getPreNode();
                         var moveType = "next";
                         if(nodeIndex == 0){
@@ -716,8 +726,12 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
 
                         cNode["mateName"] = mates.toString();
                         treeObj.addNodes(parentNode,cNode);
-                        cNode = treeObj.getNodeByParam("id", cNode.id, null);
-                        treeObj.moveNode(targetNode, cNode, moveType);
+                        if(nodesCount > 1){
+                            //获取添加后的当前节点
+                            cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                            //根据之前设置的规则移动当前节点
+                            treeObj.moveNode(targetNode, cNode, moveType);
+                        }
                     }
                 }
                 if(data.code == -1){
