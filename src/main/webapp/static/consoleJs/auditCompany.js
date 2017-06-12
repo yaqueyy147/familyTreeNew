@@ -86,7 +86,12 @@ $(function () {
                 error:function (data) {
                 	$('#moneyTable').datagrid('selectRow', editIndex);
                     $('#moneyTable').datagrid('beginEdit',editIndex);
-                    alert(JSON.stringify(data));
+                    var responseText = data.responseText;
+                    if(responseText.indexOf("登出跳转页面") >= 0){
+                        ajaxErrorToLogin();
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
                 }
             });
     	}
@@ -139,7 +144,12 @@ $(function () {
                         loadCompanyData(params);
                     },
                     error:function (data) {
-                        alert(JSON.stringify(data));
+                        var responseText = data.responseText;
+                        if(responseText.indexOf("登出跳转页面") >= 0){
+                            ajaxErrorToLogin();
+                        }else{
+                            alert(JSON.stringify(data));
+                        }
                     }
                 });
             }
@@ -295,7 +305,12 @@ function auditCompany(companyId,state) {
             }
         },
         error:function (data) {
-            alert(JSON.stringify(data));
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
         }
     });
 }

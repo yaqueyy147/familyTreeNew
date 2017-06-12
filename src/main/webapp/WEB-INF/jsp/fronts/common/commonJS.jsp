@@ -11,3 +11,4 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.cookie.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/uploadify/jquery.uploadify.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/commonUtilJs.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/frontCommonJs.js"></script>

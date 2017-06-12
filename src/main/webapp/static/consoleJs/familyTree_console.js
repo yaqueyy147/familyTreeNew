@@ -153,7 +153,7 @@ $(function () {
                         if($.trim(mateStr).length > 0 && mateStr != "undefined" && mateStr != "null"){
                             mateStr += "," + newMate;
                         }else{
-                            mateStr += newMate;
+                            mateStr = newMate;
                         }
 
                     }
@@ -172,7 +172,12 @@ $(function () {
                 $("#savePeople").removeAttr("disabled");
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -226,7 +231,12 @@ $(function () {
                 }
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -400,7 +410,12 @@ function initParent(generation){
 
         },
         error:function (data) {
-            alert(JSON.stringify(data));
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
 
         }
     });
@@ -442,6 +457,15 @@ function initPeopleData(familyId){
                 zNodes[i] = node;
             }
             $(".loading").hide();
+        },
+        error:function (data) {
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
+
         }
     });
     return zNodes;
@@ -548,6 +572,15 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
                 if(data.code == -1){
                     alert("该成员含有下一代，不能删除！如需删除，请先删除其后代！");
                 }
+            },
+            error:function (data) {
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
             }
         });
     }

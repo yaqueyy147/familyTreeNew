@@ -53,7 +53,12 @@ $(function () {
 
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -88,7 +93,12 @@ $(function () {
 
                 },
                 error:function (data) {
-                    alert(JSON.stringify(data));
+                    var responseText = data.responseText;
+                    if(responseText.indexOf("登出跳转页面") >= 0){
+                        ajaxErrorToLogin();
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
                 }
             });
         }
@@ -108,7 +118,12 @@ $(function () {
                 }
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -130,7 +145,12 @@ $(function () {
                 }
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -161,7 +181,12 @@ $(function () {
                 $("#moneyModal").modal('show');
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
 

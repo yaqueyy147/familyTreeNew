@@ -60,7 +60,7 @@ public class TestInterceptor implements HandlerInterceptor {
             type = 2;
         }
 
-        if(!CommonUtil.isBlank(jsonUser)){
+        if(!CommonUtil.isBlank(jsonUser) && jsonUser.size() > 0){
             return true;
         }
         httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/sign/out?type=" + type);

@@ -43,6 +43,7 @@
             margin-top: 20px;
             overflow: auto;
             float: left;
+            background-color: #ffffff;
         }
         .loading{
             z-index: 8888;

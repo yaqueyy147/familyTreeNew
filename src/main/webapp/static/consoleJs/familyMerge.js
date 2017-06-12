@@ -41,7 +41,12 @@ $(function () {
                             }
                         },
                         error:function (data) {
-                            alert(JSON.stringify(data));
+                            var responseText = data.responseText;
+                            if(responseText.indexOf("登出跳转页面") >= 0){
+                                ajaxErrorToLogin();
+                            }else{
+                                alert(JSON.stringify(data));
+                            }
                         }
                     });
                 }
@@ -135,7 +140,12 @@ $(function () {
                     $("#peopleForm")[0].reset();
                 },
                 error:function (data) {
-                    alert(JSON.stringify(data));
+                    var responseText = data.responseText;
+                    if(responseText.indexOf("登出跳转页面") >= 0){
+                        ajaxErrorToLogin();
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
                 }
             });
         }
@@ -195,7 +205,12 @@ $(function () {
                 }
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
     });
@@ -217,7 +232,12 @@ $(function () {
                 }
             },
             error:function (data) {
-                alert(JSON.stringify(data));
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
             }
         });
 	});
@@ -383,6 +403,14 @@ function initPeopleData(familyId){
             // $("#primaryDesc").append(peopleHtml);
             $("#peopleCount").text(data.length);
             $("#familyGenNum").text(genNum);
+        },
+        error:function (data) {
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
         }
     });
     return zNodes;
@@ -495,7 +523,12 @@ function initParent(familyId,generation){
 
         },
         error:function (data) {
-            alert(JSON.stringify(data));
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
 
         }
     });
@@ -569,7 +602,12 @@ function doAudit(peopleId, auditStatus, includeType){
             }
         },
         error:function (data) {
-            alert(JSON.stringify(data));
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
 
         }
     });

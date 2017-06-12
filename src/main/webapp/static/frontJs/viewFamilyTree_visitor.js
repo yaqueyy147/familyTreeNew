@@ -98,7 +98,12 @@ function initParent(generation){
 
         },
         error:function (data) {
-            alert(JSON.stringify(data));
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
 
         }
     });
@@ -138,6 +143,15 @@ function initPeopleData(familyId){
                 zNodes[i] = node;
             }
             $(".loading").hide();
+        },
+        error:function (data) {
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
+
         }
     });
     return zNodes;
