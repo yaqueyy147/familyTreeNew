@@ -173,10 +173,10 @@ $(function () {
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deleteMoney",
-                    async:false,
+                    // async:false,
                     dataType:'json',
                     data:{moneyIds:selectIds,type:1,userId:userId,totalMoney:totalMoney},
-                    async:false,
+                    // async:false,
                     success:function (data) {
                         alert(data.msg);
                         var params = {};

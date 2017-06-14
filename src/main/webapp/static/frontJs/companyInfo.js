@@ -15,7 +15,7 @@ $(function () {
             url: projectUrl + '/company/modifyCompanyInfo',
             dataType: 'json',
             data:testData,
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     alert(data.msg);
@@ -48,7 +48,7 @@ $(function () {
                 url: projectUrl + '/sign/modifyPassword',
                 dataType: 'json',
                 data:{userId:userInfo.id,newPassword:newP,oldPassword:oldP},
-                async:false,
+                // async:false,
                 success:function (data) {
                     if(data.code >= 1){
                         alert(data.msg);
@@ -81,7 +81,7 @@ $(function () {
             url: projectUrl + '/family/modifyPhoto',
             dataType: 'json',
             data:{photoPath:photoPath},
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     alert(data.msg);
@@ -145,7 +145,7 @@ $(function () {
             url: projectUrl + '/company/applySponsor',
             dataType: 'json',
             data:{},
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     alert(data.msg);

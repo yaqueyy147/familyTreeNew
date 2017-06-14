@@ -108,7 +108,7 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:formData,
                         success:function (data) {
@@ -166,7 +166,7 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: projectUrl + "/consoles/saveAuth",
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:{userId:userId,sourceIds:selectIds},
                         success:function (data) {
@@ -220,7 +220,7 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: projectUrl + "/consoles/saveUserFamily",
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:{userId:userId,sourceIds:selectIds},
                         success:function (data) {
@@ -275,10 +275,9 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:params,
-                        async:false,
                         success:function (data) {
                             if(data.code >= 1){
                                 alert(data.msg);
@@ -429,10 +428,9 @@ $(function () {
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deleteUser",
-                    async:false,
+                    // async:false,
                     dataType:'json',
                     data:{ids:selectIds},
-                    async:false,
                     success:function (data) {
                         alert(data.msg);
                         var params = {};

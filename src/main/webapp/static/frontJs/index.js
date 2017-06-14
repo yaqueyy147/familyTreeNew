@@ -50,7 +50,7 @@ $(function () {
             url: projectUrl + '/familyTree/queryFamily',
             dataType: 'json',
             data:params,
-            async:false,
+            // async:false,
             success:function (data) {
                 var familyList = data.familyList;
                 var familyContent = "";

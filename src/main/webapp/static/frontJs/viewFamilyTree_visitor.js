@@ -25,8 +25,11 @@ $(function () {
         }
     };
 
-    var zNodes = initPeopleData(familyId);
-    initFamilyTree(zNodes,setting);
+    $.when(initPeopleData(familyId)).done(function(data){
+        initFamilyTree(data,setting);
+    });
+    // var zNodes = initPeopleData(familyId);
+    // initFamilyTree(zNodes,setting);
     // $.fn.zTree.init($("#familyTree"), setting, zNodes);
 
     $("#generation").bind("propertychange input",function(){
@@ -64,11 +67,12 @@ function addDiyDom(treeId, treeNode) {
 }
 
 function initParent(generation){
+    var defer = $.Deferred();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/getParent',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,generation:generation},
         success:function (data) {
             var fathers = data.fatherList;
@@ -95,7 +99,7 @@ function initParent(generation){
             }
             $("#motherId").html(motherHtml);
 
-
+            defer.resolve(data);
         },
         error:function (data) {
             var responseText = data.responseText;
@@ -107,6 +111,7 @@ function initParent(generation){
 
         }
     });
+    return defer.promise();
 }
 
 /**
@@ -115,33 +120,35 @@ function initParent(generation){
  * @returns {Array}
  */
 function initPeopleData(familyId){
+    var defer = $.Deferred();
     var zNodes = [];
     $(".loading").show();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/getPeopleList',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,isIndex:1},
         success:function (data) {
 
-            for(var i=0;i<data.length;i++) {
-                var ii = data[i];
-                var node = {};
-                node.id = ii.id;
-                node.pId = ii.superiorId;
-                node.name = ii.name;
-                var mateList = ii.mateList;
-                var mateName = "";
-                for(var j=0;j<mateList.length;j++){
-                    var jj = mateList[j];
-                    mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
-                }
-                node.mateName = mateName;
-                node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                node.open = true;
-                zNodes[i] = node;
-            }
+            // for(var i=0;i<data.length;i++) {
+            //     var ii = data[i];
+            //     var node = {};
+            //     node.id = ii.id;
+            //     node.pId = ii.superiorId;
+            //     node.name = ii.name;
+            //     var mateList = ii.mateList;
+            //     var mateName = "";
+            //     for(var j=0;j<mateList.length;j++){
+            //         var jj = mateList[j];
+            //         mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
+            //     }
+            //     node.mateName = mateName;
+            //     node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+            //     node.open = true;
+            //     zNodes[i] = node;
+            // }
+            defer.resolve(data);
             $(".loading").hide();
         },
         error:function (data) {
@@ -154,7 +161,7 @@ function initPeopleData(familyId){
 
         }
     });
-    return zNodes;
+    return defer.promise();
 
 }
 

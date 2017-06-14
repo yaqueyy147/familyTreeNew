@@ -23,10 +23,9 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:formData,
-                        async:false,
                         success:function (data) {
                             if(data.code >= 1){
                                 alert("保存成功！");
@@ -97,10 +96,9 @@ $(function () {
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deletePointsRelation",
-                    async:false,
+                    // async:false,
                     dataType:'json',
                     data:{ids:selectIds},
-                    async:false,
                     success:function (data) {
                         alert("删除成功!");
                         var params = {};

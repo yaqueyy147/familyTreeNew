@@ -39,10 +39,9 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:formData,
-                        async:false,
                         success:function (data) {
 
                             alert(data.msg);
@@ -122,10 +121,9 @@ $(function () {
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deleteMeritorcat",
-                    async:false,
+                    // async:false,
                     dataType:'json',
                     data:{ids:selectIds},
-                    async:false,
                     success:function (data) {
                         alert(data.msg);
                         var params = {};

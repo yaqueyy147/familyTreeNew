@@ -24,10 +24,9 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:formData,
-                        async:false,
                         success:function (data) {
 
                             alert(data.msg);
@@ -86,10 +85,9 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:params,
-                        async:false,
                         success:function (data) {
                             if(data.code >= 1){
                                 alert(data.msg);

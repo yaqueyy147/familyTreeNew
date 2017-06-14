@@ -28,7 +28,7 @@ function meritocratTablePageChange(pageNo) {
         url: projectUrl + '/familyTree/meritocratList',
         dataType: 'json',
         data:params,
-        async:false,
+        // async:false,
         success:function (data) {
             var meritocratList = data.meritocratList;
             var meritocrat = "";

@@ -87,7 +87,7 @@ $(function () {
             url: projectUrl + '/family/savePeople',
             dataType: 'json',
             data:testData,
-            async:false,
+            // async:false,
             success:function (data) {
                 alert(data.msg);
                 // var zNodes = initPeopleData(familyId);
@@ -119,15 +119,15 @@ $(function () {
                     //获取原节点
                     var cNode = treeObj.getNodeByParam("id", testData.mateId, null);
                     //获取节点位置
-                    var nodeIndex =  treeObj.getNodeIndex(cNode);
+                    // var nodeIndex =  treeObj.getNodeIndex(cNode);
                     //获要移动到的目标节点为当前节点前一节点，供最后移动节点用
                     var targetNode = cNode.getPreNode();
                     //当前子节点集的节点数
-                    var nodesCount = treeObj.getNodesByParam("pId", testData.superiorId, parentNode);
+                    var nodesCount = treeObj.getNodesByParam("pId", testData.superiorId, parentNode).length;
                     //设置移动类型
                     var moveType = "next";
                     //如果当前节点的位置在最前
-                    if(nodeIndex == 0){
+                    if(cNode.isFirstNode){
                         //设置要移动到的目标节点为当前节点后一节点
                         targetNode = cNode.getNextNode();
                         //设置移动类型
@@ -191,8 +191,12 @@ $(function () {
 
     });
 
-    var zNodes = initPeopleData(familyId);
-    initFamilyTree(zNodes,setting);
+
+    $.when(initPeopleData(familyId)).done(function(data){
+        initFamilyTree(data,setting);
+    });
+    // var zNodes = initPeopleData(familyId);
+
     // $.fn.zTree.init($("#familyTree"), setting, zNodes);
 
     $('#addModal').on('hidden.bs.modal', function (e) {
@@ -377,26 +381,32 @@ function addPeople(type,generation,parentId,name,peopleId){
         $("#mateId").val(peopleId);
         parentGen = Number(parentGen) - 1;
     }
-    initParent(parentGen);
+    // initParent(parentGen);
+
+    $.when(initParent(parentGen)).done(function(data){
+        $("#fatherId").val(parentId);
+        $("#fatherId").change();
+        $("#motherId").val(parentId);
+        $("#motherId").change();
+        $("#superiorId").val(parentId);
+    });
+
     $("#generation").val(generationN);
     $("#peopleType").val(peopleType);
     $("#peopleInfo").text(peopleInfo);
-    $("#fatherId").val(parentId);
-    $("#fatherId").change();
-    $("#motherId").val(parentId);
-    $("#motherId").change();
-    $("#superiorId").val(parentId);
+
     $("#addModalLabel").text(modalTitle);
     $("#addModal").modal('show');
 
 }
 
 function initParent(generation){
+    var defer = $.Deferred();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/getParent',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,generation:generation},
         success:function (data) {
             var fathers = data.fatherList;
@@ -418,7 +428,7 @@ function initParent(generation){
                 }
             }
             $("#motherId").html(motherHtml);
-
+            defer.resolve(data);
 
         },
         error:function (data) {
@@ -430,6 +440,7 @@ function initParent(generation){
             }
         }
     });
+    return defer.promise();
 }
 
 /**
@@ -438,44 +449,48 @@ function initParent(generation){
  * @returns {Array}
  */
 function initPeopleData(familyId){
+    var defer = $.Deferred();
     var zNodes = [];
-    $(".loading").show();
+    // $(".loading").show();
     $.ajax({
         type:'post',
         url:projectUrl + '/family/getPeopleList',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,isIndex:0},
         success:function (data) {
             // var generation = 1;
-            for(var i=0;i<data.length;i++) {
-                var ii = data[i];
-                // if(ii.generation > generation){
-                //     generation = ii.generation;
-                // }
-                var node = {};
-                node.id = ii.id;
-                node.pId = ii.superiorId;
-                node.name = ii.name;
-                var mateList = ii.mateList;
-                var mateName = "";
-                for(var j=0;j<mateList.length;j++){
-                    var jj = mateList[j];
-                    mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
-                }
-                node.mateName = mateName.substring(1);
-                node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                node.open = true;
-                node.peopleStatus = ii.peopleStatus;
-                node.isSupplement = ii.isSupplement;
-                zNodes[i] = node;
-
-            }
+            // for(var i=0;i<data.length;i++) {
+            //     var ii = data[i];
+            //     // if(ii.generation > generation){
+            //     //     generation = ii.generation;
+            //     // }
+            //     var node = {};
+            //     node.id = ii.id;
+            //     node.pId = ii.superiorId;
+            //     node.name = ii.name;
+            //     var mateList = ii.mateList;
+            //     var mateName = "";
+            //     for(var j=0;j<mateList.length;j++){
+            //         var jj = mateList[j];
+            //         mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
+            //     }
+            //     node.mateName = mateName.substring(1);
+            //     node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+            //     node.open = true;
+            //     node.peopleStatus = ii.peopleStatus;
+            //     node.isSupplement = ii.isSupplement;
+            //     zNodes[i] = node;
+            //
+            // }
             // var generationHtml = "";
             // for(var i=1;i<=generation;i++){
             //     generationHtml += "<option value='" + i + "'>" + i + "</option>";
             // }
             // $("#generation").html(generationHtml);
+
+            // alert(JSON.stringify(data));
+            defer.resolve(data);
             $(".loading").hide();
         },
         error:function (data) {
@@ -487,7 +502,8 @@ function initPeopleData(familyId){
             }
         }
     });
-    return zNodes;
+
+    return defer.promise();
 
 }
 
@@ -604,7 +620,7 @@ function selectTarget(obj) {
         type:'post',
         url:projectUrl + '/family/getPeopleList',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,orderBy:"order by generation asc",limit:"limit 0,2"},
         success:function (data) {
             var html = "<p>选择的目标族谱前两代人：";
@@ -638,7 +654,7 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
             type:'post',
             url:projectUrl + '/family/deletePeople',
             dataType:'json',
-            async:false,
+            // async:false,
             data:{peopleId : peopleId, familyId:familyId,peopleType:peopleType},
             success:function (data) {
                 if(data.code >= 1){
@@ -651,11 +667,11 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
                         treeObj.removeNode(cNode);
                     }else{//删除配偶,修改当前节点
                         var cNode = treeObj.getNodeByParam("id", cNodeId, null);
-                        var nodeIndex =  treeObj.getNodeIndex(cNode);
-                        var nodesCount = treeObj.getNodesByParam("pId", cNode.pId, parentNode);
+                        // var nodeIndex =  treeObj.getNodeIndex(cNode);
+                        var nodesCount = treeObj.getNodesByParam("pId", cNode.pId, parentNode).length;
                         var targetNode = cNode.getPreNode();
                         var moveType = "next";
-                        if(nodeIndex == 0){
+                        if(cNode.isFirstNode){
                             targetNode = cNode.getNextNode();
                             moveType = "prev";
                         }

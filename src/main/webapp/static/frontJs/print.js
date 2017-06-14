@@ -38,8 +38,26 @@ $(document).ready(function () {
         return o;
     };
 
-    var zNodes = initPeopleData(familyId);
-    initFamilyTree(zNodes,setting);
+    $.when(initPeopleData(familyId)).done(function(data){
+        initFamilyTree(data,setting);
+
+        var totalWidth = 0;
+
+        var topTree = $("#familyTree > li");
+        $.each(topTree,function () {
+
+            var liWidth = $(this).outerWidth();
+            if(liWidth*1 < 1000){
+                liWidth = liWidth*1 + 100;
+            }
+            totalWidth = totalWidth*1 + liWidth*1;
+
+        });
+        $("#familyTreeDiv").attr("style","width:" + (totalWidth) + "px");
+
+    });
+    // var zNodes = initPeopleData(familyId);
+    // initFamilyTree(zNodes,setting);
 
 });
 function initFamilyTree(zNodes,setting) {
@@ -88,48 +106,50 @@ function addDiyDom(treeId, treeNode) {
  * @returns {Array}
  */
 function initPeopleData(familyId){
+    var defer = $.Deferred();
     var zNodes = [];
     $(".loading").show();
     $.ajax({
         type:'post',
-        url:projectUrl + '/family/peopleInfo4Print',
+        url:projectUrl + '/consoles/peopleInfo4Print',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId, beginGen : beginGen, endGen : endGen},
         success:function (data) {
             // var generation = 1;
-            for(var i=0;i<data.length;i++) {
-                var ii = data[i];
-                // if(ii.generation > generation){
-                //     generation = ii.generation;
-                // }
-                var node = {};
-                node.id = ii.id;
-                node.pId = ii.superiorId;
-                node.name = ii.name;
-                node.dieAddr = ii.dieAddr;
-                var mateList = ii.mateList;
-                var mateName = "";
-                for(var j=0;j<mateList.length;j++){
-                    var jj = mateList[j];
-                    mateName += "," + jj.name + "--" + jj.dieAddr;
-                }
-                node.mateName = mateName.substring(1);
-                node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                node.open = true;
-                zNodes[i] = node;
-
-            }
+            // for(var i=0;i<data.length;i++) {
+            //     var ii = data[i];
+            //     // if(ii.generation > generation){
+            //     //     generation = ii.generation;
+            //     // }
+            //     var node = {};
+            //     node.id = ii.id;
+            //     node.pId = ii.superiorId;
+            //     node.name = ii.name;
+            //     node.dieAddr = ii.dieAddr;
+            //     var mateList = ii.mateList;
+            //     var mateName = "";
+            //     for(var j=0;j<mateList.length;j++){
+            //         var jj = mateList[j];
+            //         mateName += "," + jj.name + "--" + jj.dieAddr;
+            //     }
+            //     node.mateName = mateName.substring(1);
+            //     node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+            //     node.open = true;
+            //     zNodes[i] = node;
+            //
+            // }
             // var generationHtml = "";
             // for(var i=1;i<=generation;i++){
             //     generationHtml += "<option value='" + i + "'>" + i + "</option>";
             // }
             // $("#generation").html(generationHtml);
+            defer.resolve(data);
             $(".loading").hide();
         }
 
     });
-    return zNodes;
+    return defer.promise();
 
 }
 

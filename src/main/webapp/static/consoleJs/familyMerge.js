@@ -23,10 +23,10 @@ $(function () {
                     $.ajax({
                         type:'post',
                         url: postUrl,
-                        async:false,
+                        // async:false,
                         dataType:'json',
                         data:formData,
-                        async:false,
+                        // async:false,
                         success:function (data) {
 
                             alert(data.msg);
@@ -131,7 +131,7 @@ $(function () {
                 url: projectUrl + '/consoles/savePeople',
                 dataType: 'json',
                 data:testData,
-                async:false,
+                // async:false,
                 success:function (data) {
                     alert(data.msg);
                     // var zNodes = initPeopleData(familyId);
@@ -194,7 +194,7 @@ $(function () {
             url: projectUrl + '/consoles/confirmInclude',
             dataType: 'json',
             data:{familyId:familyId},
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     alert("操作成功!");
@@ -221,7 +221,7 @@ $(function () {
             url: projectUrl + '/consoles/completeIn',
             dataType: 'json',
             data:{familyId:familyId},
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     alert("操作成功!");
@@ -266,8 +266,12 @@ $(function () {
         // }
     };
 
-    var zNodes = initPeopleData(familyId);
-    initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
+    $.when(initPeopleData(familyId)).done(function(data){
+        initFamilyTree("primaryFamilyTree",primarySetting,data);
+    });
+
+    // var zNodes = initPeopleData(familyId);
+    // initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
 
     // initTargetFamily();
     $("#localBack").click(function () {
@@ -361,46 +365,48 @@ function addDiyDom(treeId, treeNode) {
  * @returns {Array}
  */
 function initPeopleData(familyId){
+    var defer = $.Deferred();
     var zNodes = [];
     $.ajax({
         type:'post',
         url:projectUrl + '/consoles/getPeopleList',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,isIndex:0},
         success:function (data) {
 
-            var genNum = 0;
-            for(var i=0;i<data.length;i++) {
-                var ii = data[i];
-                var node = {};
-                node.id = ii.id;
-                node.pId = ii.superiorId;
-                node.name = ii.name;
-                node.createId = ii.createId;
-                var mateList = ii.mateList;
-                var mateName = "";
-                for(var j=0;j<mateList.length;j++){
-                    var jj = mateList[j];
-                    mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
-                }
-                node.mateName = mateName;
-                node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
-                node.open = true;
-                node.peopleStatus = ii.peopleStatus;
-                if(ii.peopleStatus != 5 && ii.peopleStatus != 51 && ii.peopleStatus != 52){
-                    node.nocheck = true;
-                }
-                node.isSupplement = ii.isSupplement;
-                zNodes[i] = node;
-                if(genNum < ii.generation){
-                    genNum = ii.generation;
-                }
-            }
+            // var genNum = 0;
+            // for(var i=0;i<data.length;i++) {
+            //     var ii = data[i];
+            //     var node = {};
+            //     node.id = ii.id;
+            //     node.pId = ii.superiorId;
+            //     node.name = ii.name;
+            //     node.createId = ii.createId;
+            //     var mateList = ii.mateList;
+            //     var mateName = "";
+            //     for(var j=0;j<mateList.length;j++){
+            //         var jj = mateList[j];
+            //         mateName += "," + jj.name + "--" + jj.id + "--" + jj.peopleStatus + "--" + jj.isSupplement;
+            //     }
+            //     node.mateName = mateName;
+            //     node.icon = projectUrl + "/static/jquery/ztree/icon/head2.ico";
+            //     node.open = true;
+            //     node.peopleStatus = ii.peopleStatus;
+            //     if(ii.peopleStatus != 5 && ii.peopleStatus != 51 && ii.peopleStatus != 52){
+            //         node.nocheck = true;
+            //     }
+            //     node.isSupplement = ii.isSupplement;
+            //     zNodes[i] = node;
+            //     if(genNum < ii.generation){
+            //         genNum = ii.generation;
+            //     }
+            // }
 
             // var peopleHtml = "<p style=\"margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;\">家族人数：&nbsp;" + data.length + "&nbsp;人</p>";
             // peopleHtml += "<p style=\"margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;\">家族代数：&nbsp;" + genNum + "&nbsp;代</p>";
             // $("#primaryDesc").append(peopleHtml);
+            defer.resolve(data);
             $("#peopleCount").text(data.length);
             $("#familyGenNum").text(genNum);
         },
@@ -413,7 +419,7 @@ function initPeopleData(familyId){
             }
         }
     });
-    return zNodes;
+    return defer.promise();
 
 }
 
@@ -489,11 +495,12 @@ function editPeople(peopleId,generation){
 }
 
 function initParent(familyId,generation){
+    var defer = $.Deferred();
     $.ajax({
         type:'post',
         url:projectUrl + '/consoles/getParent',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId : familyId,generation:generation},
         success:function (data) {
             var fathers = data.fatherList;
@@ -520,7 +527,7 @@ function initParent(familyId,generation){
             }
             $("#motherId").html(motherHtml);
 
-
+            defer.resolve(data);
         },
         error:function (data) {
             var responseText = data.responseText;
@@ -532,17 +539,24 @@ function initParent(familyId,generation){
 
         }
     });
+    return defer.promise();
 }
 
 function affirmInclude(obj, peopleId, auditStatus, tId, includeType) {
 	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
 	var node = treeObj.getNodeByTId(tId);
 	var createId = node.createId;
-	if(doAudit(peopleId + ":" + createId, auditStatus, includeType)){
-		$(obj).parent().remove();
-		node.nocheck = true;
-		treeObj.updateNode(node);
-	}
+    $.when(doAudit(peopleId + ":" + createId, auditStatus, includeType)).done(function(data){
+        if(data == 1){
+            $(obj).parent().remove();
+            node.nocheck = true;
+            treeObj.updateNode(node);
+        }
+    })
+
+	// if(doAudit(peopleId + ":" + createId, auditStatus, includeType)){
+	//
+	// }
 }
 
 function batchAudit(obj, auditStatus){
@@ -578,26 +592,38 @@ function batchAudit(obj, auditStatus){
     auditStatuss = auditStatuss.substring(1);
 	$.messager.confirm('Confirm','确定要批量审核这些(' + names + ')人吗？',function(r){
 	    if (r){
-	    	if(doAudit(ids, auditStatuss)){
-	    		var zNodes = initPeopleData(familyId);
-	    	    initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
-	    	}
+
+            $.when(doAudit(ids, auditStatuss)).done(function(data){
+                if(data == 1){
+                    $.when(initPeopleData(familyId)).done(function(data){
+                        initFamilyTree("primaryFamilyTree",primarySetting,data);
+                    });
+                }
+            })
+
+	    	// if(doAudit(ids, auditStatuss)){
+             //
+             //    // var zNodes = initPeopleData(familyId);
+	    	//     // initFamilyTree("primaryFamilyTree",primarySetting,zNodes);
+	    	// }
 	    }
 	});
 
 }
 
 function doAudit(peopleId, auditStatus, includeType){
-	var auditB = false;
+    var defer = $.Deferred();
+	var auditB = 0;
 	$.ajax({
         type:'post',
         url:projectUrl + '/consoles/auditIncludePeople',
         dataType:'json',
-        async:false,
+        // async:false,
         data:{peopleIds : peopleId,auditStatus:auditStatus,includeType:includeType},
         success:function (data) {
             if(data.code >= 1){
-            	auditB = true;
+            	auditB = 1;
+                defer.resolve(auditB);
             	alert("审核完成");
             }
         },
@@ -611,7 +637,7 @@ function doAudit(peopleId, auditStatus, includeType){
 
         }
     });
-	return auditB;
+    return defer.promise();
 }
 
 function reject(mergeId) {

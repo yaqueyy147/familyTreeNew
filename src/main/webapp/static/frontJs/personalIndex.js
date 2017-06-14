@@ -52,7 +52,7 @@ $(function () {
             url:postUrl,
             dataType:'json',
             data:formData,
-            async:false,
+            // async:false,
             success:function (data) {
                 if(data.code >= 1){
                     var tFamily = data.tFamily;
@@ -128,7 +128,7 @@ function toEdit(familyId) {
         type:'post',
         url: projectUrl + "/family/getFamilyFromId",
         dataType:'json',
-        async:false,
+        // async:false,
         data:{familyId:familyId},
         success:function (data) {
             var family = data.tFamily;

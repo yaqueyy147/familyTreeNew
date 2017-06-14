@@ -197,23 +197,23 @@
     $(document).ready(function () {
 
         var treeLi = $(".ztree li");
-        var totalWidth = 0;
-
-        var topTree = $("#familyTree > li");
-        $.each(topTree,function () {
-
-            var liWidth = $(this).outerWidth();
-            if(liWidth*1 < 1000){
-                liWidth = liWidth*1 + 100;
-            }
-            totalWidth = totalWidth*1 + liWidth*1;
-
-//            liCss.width = liWidth + "px";
-//            $(this).append("<style>.ztree li::before{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
-//            $(this).append("<style>.ztree li::after{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
-//            $(".ztree li::after").css(liCss);
-        });
-        $("#familyTreeDiv").attr("style","width:" + (totalWidth) + "px");
+//        var totalWidth = 0;
+//
+//        var topTree = $("#familyTree > li");
+//        $.each(topTree,function () {
+//
+//            var liWidth = $(this).outerWidth();
+//            if(liWidth*1 < 1000){
+//                liWidth = liWidth*1 + 100;
+//            }
+//            totalWidth = totalWidth*1 + liWidth*1;
+//
+////            liCss.width = liWidth + "px";
+////            $(this).append("<style>.ztree li::before{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
+////            $(this).append("<style>.ztree li::after{width:" + liWidth + "px;right:" + liWidth + "px;}</style>");
+////            $(".ztree li::after").css(liCss);
+//        });
+//        $("#familyTreeDiv").attr("style","width:" + (totalWidth) + "px");
 
 //        window.print();
 

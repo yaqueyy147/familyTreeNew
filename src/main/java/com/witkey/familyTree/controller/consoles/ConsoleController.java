@@ -9,6 +9,7 @@ import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
+import com.witkey.familyTree.util.PeopleTree;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -395,7 +396,7 @@ public class ConsoleController {
      */
     @RequestMapping(value = "/getPeopleList")
     @ResponseBody
-    public List<Map<String,Object>> getPeopleList(@RequestParam Map<String,Object> params){
+    public Object getPeopleList(@RequestParam Map<String,Object> params, HttpServletRequest request){
 
         //查询族人
         params.put("peopleType",1);
@@ -406,19 +407,39 @@ public class ConsoleController {
 //        params.put("isIndex",1);
         List<TPeople> listPeople = familyService.getPeopleList(params);
         System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
-        List<Map<String,Object>> list = new ArrayList<>();
+//        List<Map<String,Object>> list = new ArrayList<>();
+        List<PeopleTree> list1 = new ArrayList<>();
 
         //根据族人Id查询配偶
         for (TPeople tPeople : listPeople) {
             Map<String,Object> map = new HashMap<>();
-            map = CommonUtil.bean2Map(tPeople);
+            PeopleTree pp = new PeopleTree();
+            pp.setId(tPeople.getId() + "");
+            pp.setpId(tPeople.getSuperiorId() + "");
+            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+            pp.setOpen(true);
+            pp.setName(tPeople.getName());
+            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            map = CommonUtil.bean2Map(tPeople);
             int peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
-            map.put("mateList",listMate);
-            list.add(map);
+            String mate = "";
+            if(listMate != null && listMate.size() > 0){
+                for(TPeople tPeople1 : listMate){
+                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                }
+                mate = mate.substring(1);
+            }
+
+            pp.setMateName(mate);
+
+//            map.put("mateList",listMate);
+//            list.add(map);
+            list1.add(pp);
         }
         System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
-        return list;
+        return list1;
     }
 
     /**
@@ -814,6 +835,48 @@ public class ConsoleController {
         model.addAttribute("endGen",params.get("endGen"));
         model.addAttribute("isAddIntro",params.get("isAddIntro"));
         return new ModelAndView("/fronts/print");
+    }
+
+    @RequestMapping(value = "peopleInfo4Print")
+    @ResponseBody
+    public Object peopleInfo4Print(@RequestParam Map<String,Object> params,HttpServletRequest request){
+
+        //查询族人
+        List<TPeople> listPeople = familyService.getPeopleList4Print(params);
+
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<PeopleTree> list1 = new ArrayList<>();
+
+        //根据族人Id查询配偶
+        for (TPeople tPeople : listPeople) {
+            Map<String,Object> map = new HashMap<>();
+            PeopleTree pp = new PeopleTree();
+            pp.setId(tPeople.getId() + "");
+            pp.setpId(tPeople.getSuperiorId() + "");
+            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+            pp.setOpen(true);
+            pp.setName(tPeople.getName());
+            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            map = CommonUtil.bean2Map(tPeople);
+            int peopleId = tPeople.getId();
+            List<TPeople> listMate = familyService.getMateList(peopleId);
+
+            String mate = "";
+            if(listMate != null && listMate.size() > 0){
+                for(TPeople tPeople1 : listMate){
+                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                }
+                mate = mate.substring(1);
+            }
+
+            pp.setMateName(mate);
+//            map.put("mateList",listMate);
+//            list.add(map);
+            list1.add(pp);
+        }
+
+        return list1;
     }
 
 }

@@ -89,7 +89,7 @@ $(function () {
                 url:projectUrl + "/company/getIntro",
                 dataType:'json',
                 data:{companyId:companyId},
-                async:false,
+                // async:false,
                 success:function (data) {
                     if(data){
                         CKEDITOR.instances.companyDesc.setData(data.companyIntroduce);

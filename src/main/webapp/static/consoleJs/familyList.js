@@ -55,7 +55,7 @@ $(function () {
                         url: postUrl,
                         dataType:'json',
                         data:formData,
-                        async:false,
+                        // async:false,
                         success:function (data) {
 
                             alert(data.msg);
@@ -156,7 +156,7 @@ $(function () {
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deleteFamily",
-                    async:false,
+                    // async:false,
                     dataType:'json',
                     data:{ids:selectIds},
                     success:function (data) {
