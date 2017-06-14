@@ -521,13 +521,15 @@ function zTreeOnClick(event, treeId, treeNode) {
 }
 
 function editPeople(peopleId,generation,mateId){
-    initParent(generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/family/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    initParent(generation);
+    $.when(initParent(generation)).done(function(data){
+        $("#peopleForm").populateForm(tPeople);
+    });
 
-    $("#peopleForm").populateForm(tPeople);
     if($.trim(mateId).length > 0 && mateId > 0){
         $("#mateId").val(mateId);
     }
