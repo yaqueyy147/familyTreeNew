@@ -77,7 +77,7 @@ function addDiyDom(treeId, treeNode) {
     var mateName = treeNode.mateName;
     var editStr = "";
     var dieAddr = treeNode.dieAddr;
-    if($.trim(dieAddr).length > 0){
+    if($.trim(dieAddr).length > 0 && dieAddr.toLowerCase() != "null" && dieAddr.toLowerCase() != "undefined"){
         editStr += "<br/><span id='diyBtnMate_dieAddr_" +treeNode.id+ "' style='display: inline-block;margin-left: 10px' href='javascript:void 0;'>卒葬地点:" + dieAddr + "</span>";
     }
     if($.trim(mateName).length > 0){
@@ -88,7 +88,7 @@ function addDiyDom(treeId, treeNode) {
             editStr += "<br/><span id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;' href='javascript:void 0;'>" + mate[0];
             if(mate.length > 1){
                 var mateDieAddr = mate[1];
-                if($.trim(mateDieAddr).length > 0){
+                if($.trim(mateDieAddr).length > 0  && mateDieAddr.toLowerCase() != "null" && mateDieAddr.toLowerCase() != "undefined"){
                     editStr += "(卒葬地点:" + mateDieAddr + ")";
                 }
 

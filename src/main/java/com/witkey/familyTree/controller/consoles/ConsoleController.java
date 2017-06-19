@@ -858,6 +858,7 @@ public class ConsoleController {
             pp.setOpen(true);
             pp.setName(tPeople.getName());
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+            pp.setDieAddr(tPeople.getDieAddr());
 //            map = CommonUtil.bean2Map(tPeople);
             int peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
@@ -865,7 +866,7 @@ public class ConsoleController {
             String mate = "";
             if(listMate != null && listMate.size() > 0){
                 for(TPeople tPeople1 : listMate){
-                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                    mate += "," + tPeople1.getName() + "--" + tPeople1.getDieAddr();
                 }
                 mate = mate.substring(1);
             }

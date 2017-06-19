@@ -14,6 +14,7 @@ public class PeopleTree {
     private boolean open;
     private String peopleStatus;
     private String isSupplement;
+    private String dieAddr;
 
     public String getId() {
         return id;
@@ -77,5 +78,13 @@ public class PeopleTree {
 
     public void setIsSupplement(String isSupplement) {
         this.isSupplement = isSupplement;
+    }
+
+    public String getDieAddr() {
+        return dieAddr;
+    }
+
+    public void setDieAddr(String dieAddr) {
+        this.dieAddr = dieAddr;
     }
 }

@@ -64,10 +64,11 @@ function loadFamilyList(params){
         nowrap: true,
         columns:[[
             {field:"id",title:"族谱Id",width:"80",hidden:true},
-            {field:"familyName",title:"族谱名称",width:"200",
-                formatter: function(value,row,index){
-                    return "<a href=\"" + projectUrl + "/consoles/familyTree?familyId=" + row.id + "\" title='" + value + "'>" + value +" </a>";
-                }},
+            // {field:"familyName",title:"族谱名称",width:"200",
+            //     formatter: function(value,row,index){
+            //         return "<a href=\"" + projectUrl + "/consoles/familyTree?familyId=" + row.id + "\" title='" + value + "'>" + value +" </a>";
+            //     }},
+            {field:"familyName",title:"族谱名称",width:"200"},
             {field:"familyFirstName",title:"族谱姓氏",width:"150"},
             {field:"peopleCount",title:"族谱人数",width:"80"},
             {field:"createMan",title:"创建人",width:"80"},
