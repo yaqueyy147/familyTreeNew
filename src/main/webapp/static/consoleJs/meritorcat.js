@@ -152,10 +152,10 @@ function closeDialog(dialogId){
 }
 
 function loadDataGrid(params) {
-    var dataList = getData("/consoles/meritorcatList",params).meritorcatList;
+    // var dataList = getData("/consoles/meritorcatList",params).meritorcatList;
     // dataList = rankData.listPersonalPoints;
     $("#meritorcatList").datagrid({
-        data:dataList,
+        url:"/consoles/meritorcatList",
         loadMsg:"加载中...",
         selectOnCheck:true,
         singleSelect:false,

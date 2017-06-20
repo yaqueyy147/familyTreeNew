@@ -174,6 +174,7 @@ public class ConsoleController {
                 tFamily.setCreateTime(tFamilyOld.getCreateTime());
                 tFamily.setCreateId(tFamilyOld.getCreateId());
                 tFamily.setCreateMan(tFamilyOld.getCreateMan());
+                tFamily.setSupplementFlag(tFamilyOld.getSupplementFlag());
                 ii = familyService.updateFamily(tFamily);
                 msg = "修改成功";
 
@@ -538,12 +539,14 @@ public class ConsoleController {
 
     @RequestMapping(value = "/meritorcatList")
     @ResponseBody
-    public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params) {
+    public List<Map<String,Object>> meritorcatList(@RequestParam Map<String,Object> params) {
         Map<String, Object> result = new HashMap<String, Object>();
 
+        System.out.println("英才录开始************-->" + CommonUtil.getDateLong() + "::" + CommonUtil.getTimeStamp() + "**********");
         List<Map<String,Object>> list = consoleService.getMeritocratList(params);
+        System.out.println("英才录结束************-->" + CommonUtil.getDateLong() + "::" + CommonUtil.getTimeStamp() + "**********");
         result.put("meritorcatList",list);
-        return result;
+        return list;
     }
 
     /**

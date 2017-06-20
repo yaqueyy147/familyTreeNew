@@ -179,12 +179,15 @@ function zTreeOnClick(event, treeId, treeNode) {
 }
 
 function editPeople(peopleId,generation){
-    initParent(generation);
+    // initParent(generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/family/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
-    $("#peopleForm").populateForm(tPeople);
+    $.when(initParent(generation)).done(function(data){
+        $("#peopleForm").populateForm(tPeople);
+    });
+
     $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
 
     var imgPath = tPeople.photoUrl;

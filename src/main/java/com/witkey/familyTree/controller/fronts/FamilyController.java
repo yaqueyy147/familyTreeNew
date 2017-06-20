@@ -187,6 +187,7 @@ public class FamilyController {
                 tFamily.setCreateTime(tFamilyOld.getCreateTime());
                 tFamily.setCreateId(tFamilyOld.getCreateId());
                 tFamily.setCreateMan(tFamilyOld.getCreateMan());
+                tFamily.setSupplementFlag(tFamilyOld.getSupplementFlag());
                 familyService.updateFamily(tFamily);
                 msg = "修改成功";
                 map.put("code",2);

@@ -525,38 +525,38 @@ function editPeople(peopleId,generation,mateId){
     var tPeople = getData("/family/getPeopleInfo",params).tPeople;
     tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
     tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
-    initParent(generation);
+    // initParent(generation);
     $.when(initParent(generation)).done(function(data){
         $("#peopleForm").populateForm(tPeople);
-    });
+        if($.trim(mateId).length > 0 && mateId > 0){
+            $("#mateId").val(mateId);
+        }
+        $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
 
-    if($.trim(mateId).length > 0 && mateId > 0){
-        $("#mateId").val(mateId);
-    }
-    $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
-
-    var imgPath = tPeople.photoUrl;
-    $("#result_img").attr('src',imgPath);
-    $("#result_img").show();
-    $("#imgFile").hide();
-    $("#photoUrl").attr('value',imgPath);
-    $("#show_img").mouseover(function(){
-        $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
-    });
-    $("#show_img").mouseout(function(){
+        var imgPath = tPeople.photoUrl;
         $("#result_img").attr('src',imgPath);
+        $("#result_img").show();
+        $("#imgFile").hide();
+        $("#photoUrl").attr('value',imgPath);
+        $("#show_img").mouseover(function(){
+            $("#result_img").attr('src',projectUrl + "/static/images/deleteImg.png");
+        });
+        $("#show_img").mouseout(function(){
+            $("#result_img").attr('src',imgPath);
+        });
+
+        $("#result_img").click(function(){
+            $("#result_img").hide();
+            $("#imgFile").show();
+            $("#photoUrl").removeAttr('value');
+            $("#show_img").unbind('mouseover');
+            $("#show_img").unbind('mouseout');
+
+        });
+
+        $("#addModal").modal('show');
     });
 
-    $("#result_img").click(function(){
-        $("#result_img").hide();
-        $("#imgFile").show();
-        $("#photoUrl").removeAttr('value');
-        $("#show_img").unbind('mouseover');
-        $("#show_img").unbind('mouseout');
-
-    });
-
-    $("#addModal").modal('show');
 }
 
 function loadTargetFamily(familyId){
