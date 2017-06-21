@@ -13,8 +13,32 @@
     <title>英才录</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/uploadify/uploadify.css" />
     <%@include file="common/commonCss.jsp"%>
+    <style>
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
+<div class="loading">
+    <div>加载中,请稍后...</div>
+</div>
     <table id="meritorcatList" class="easyui-datagrid" style="width:100%;height:98%"
            title="何氏英才录" toolbar="#tb" data-options="
 				rownumbers:true,

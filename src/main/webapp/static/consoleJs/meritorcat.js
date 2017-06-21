@@ -36,6 +36,7 @@ $(function () {
                     for (var item in testData) {
                         formData["" + testData[item].name + ""] = testData[item].value;
                     }
+                    $(".loading").show();
                     $.ajax({
                         type:'post',
                         url: postUrl,
@@ -74,6 +75,7 @@ $(function () {
     });
 
     $("#doSearch").click(function () {
+        $(".loading").show();
         var params = {};
         params.meritocrat_name = $("#meritocratName4Search").val();
         params.meritocrat_area = $("#province").val();
@@ -118,6 +120,7 @@ $(function () {
         selectIds = selectIds.substring(1);
         $.messager.confirm('Confirm','确定要删除英才(' + selectNames + ')  吗?',function(r){
             if (r){
+                $(".loading").show();
                 $.ajax({
                     type:'post',
                     url: projectUrl + "/consoles/deleteMeritorcat",
@@ -152,36 +155,56 @@ function closeDialog(dialogId){
 }
 
 function loadDataGrid(params) {
-    // var dataList = getData("/consoles/meritorcatList",params).meritorcatList;
+    // var dataList = getData("/consoles/meritorcatList",params);
     // dataList = rankData.listPersonalPoints;
-    $("#meritorcatList").datagrid({
-        url:"/consoles/meritorcatList",
-        loadMsg:"加载中...",
-        selectOnCheck:true,
-        singleSelect:false,
-        nowrap: true,
-        columns:[[
-            {field:"ck",checkbox:"true"},
-            {field:"id",title:"英才Id",width:"80",hidden:true},
-            {field:"phone",title:"联系电话",width:"80",hidden:true},
-            {field:"fax",title:"传真",width:"80",hidden:true},
-            {field:"post_code",title:"邮编",width:"80",hidden:true},
-            {field:"photo",title:"头像",width:"80",hidden:true},
-            {field:"meritocrat_name",title:"英才姓名",width:"120"},
-            {field:"meritocrat_area",title:"英才属地",width:"80"},
-            {field:"meritocrat_attr",title:"英才属性",width:"120"},
-            {field:"meritocrat_attr_id",title:"英才属性Id",width:"80",hidden:true},
-            {field:"meritocrat_addr",title:"详细地址",width:"200",
-                formatter: function(value,row,index){
-                    return '<span title='+value+'>'+value+'</span>'
-                }},
-            {field:"meritocrat_desc",title:"英才简介",width:"400",
-                formatter: function(value,row,index){
-                    return '<span title='+value+'>'+value+'</span>'
-                }}
-        ]],
-        loadFilter:pagerFilter
+    var defer = $.Deferred();
+    $.ajax({
+        type:'post',
+        url: projectUrl + "/consoles/meritorcatList",
+        dataType:'json',
+        data:params,
+        success:function (data) {
+            $("#meritorcatList").datagrid({
+                data:data,
+                loadMsg:"加载中...",
+                selectOnCheck:true,
+                singleSelect:false,
+                nowrap: true,
+                columns:[[
+                    {field:"ck",checkbox:"true"},
+                    {field:"id",title:"英才Id",width:"80",hidden:true},
+                    {field:"phone",title:"联系电话",width:"80",hidden:true},
+                    {field:"fax",title:"传真",width:"80",hidden:true},
+                    {field:"post_code",title:"邮编",width:"80",hidden:true},
+                    {field:"photo",title:"头像",width:"80",hidden:true},
+                    {field:"meritocrat_name",title:"英才姓名",width:"120"},
+                    {field:"meritocrat_area",title:"英才属地",width:"80"},
+                    {field:"meritocrat_attr",title:"英才属性",width:"120"},
+                    {field:"meritocrat_attr_id",title:"英才属性Id",width:"80",hidden:true},
+                    {field:"meritocrat_addr",title:"详细地址",width:"200",
+                        formatter: function(value,row,index){
+                            return '<span title='+value+'>'+value+'</span>'
+                        }},
+                    {field:"meritocrat_desc",title:"英才简介",width:"400",
+                        formatter: function(value,row,index){
+                            return '<span title='+value+'>'+value+'</span>'
+                        }}
+                ]],
+                loadFilter:pagerFilter
+            });
+            defer.resolve(data);
+            $(".loading").hide();
+        },
+        error:function (data) {
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
+        }
     });
+    return defer.promise();
 }
 
 function formatDataList(data){
