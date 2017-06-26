@@ -41,6 +41,9 @@
     <div style="padding:10px 40px 20px 40px">
         <form id="userInfoForm" method="post">
             <input class="easyui-validatebox" type="hidden" id="userId" name="id" value="0" />
+            <input class="easyui-validatebox" type="hidden" id="userFrom" name="userFrom" value="0" />
+            <input class="easyui-validatebox" type="hidden" id="userPhoto" name="userPhoto" value="" />
+            <input class="easyui-validatebox" type="hidden" id="idCardPhoto" name="idCardPhoto" value="" />
             <table cellpadding="5">
                 <tr>
                     <td>登录账号:</td>
@@ -53,6 +56,10 @@
                     <td><input class="easyui-validatebox" type="password" id="password" name="password" value="123456" data-options="required:true" /></td>
                     <td>确认密码:</td>
                     <td><input class="easyui-validatebox" type="password" id="passwordAffirm" name="passwordAffirm" value="123456" data-options="required:true" /></td>
+                </tr>
+                <tr>
+                    <td>身份证号:</td>
+                    <td><input class="easyui-validatebox" type="text" id="idCard" name="idCard" /></td>
                 </tr>
                 <tr>
                     <td>联系电话:</td>

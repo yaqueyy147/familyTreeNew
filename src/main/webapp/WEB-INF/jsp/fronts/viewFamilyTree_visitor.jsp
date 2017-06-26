@@ -103,7 +103,16 @@
                         <tr>
                             <td>${status.index + 1}</td>
                             <td>${personalPoints.user_name}</td>
-                            <td>${personalPoints.points}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty personalPoints.totalPoints}">
+                                        ${personalPoints.totalPoints}
+                                    </c:when>
+                                    <c:otherwise>
+                                        0
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:if>
@@ -130,7 +139,16 @@
                         <tr>
                             <td>${status.index + 1}</td>
                             <td style="word-break: break-all;max-width: 100px;"><a href="<%=request.getContextPath()%>/company/detail?companyId=${companyPoints.company_id}&xxx=1">${companyPoints.company_name}</a></td>
-                            <td>${companyPoints.points}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty companyPoints.totalPoints}">
+                                        ${companyPoints.totalPoints}
+                                    </c:when>
+                                    <c:otherwise>
+                                        0
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:if>

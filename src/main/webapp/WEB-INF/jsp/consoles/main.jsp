@@ -112,48 +112,50 @@
         <form id="userInfoForm" method="post">
             <input type="hidden" id="userId" name="id" value="${consoleUserInfo.id}" />
             <input type="hidden" id="state" name="state" value="${consoleUserInfo.state}" />
+            <input type="hidden" id="isFront" name="isFront" value="${consoleUserInfo.isFront}" />
+            <input type="hidden" id="isConsole" name="isConsole" value="${consoleUserInfo.isConsole}" />
+            <input type="hidden" id="isVolunteer" name="isVolunteer" value="${consoleUserInfo.isVolunteer}" />
+            <input type="hidden" id="userFrom" name="userFrom" value="${consoleUserInfo.userFrom}" />
+            <input type="hidden" id="userPhoto" name="userPhoto" value="" />
+            <input type="hidden" id="idCardPhoto" name="idCardPhoto" value="" />
+            <input type="hidden" value="${consoleUserInfo.userPassword}" id="password" name="password" />
             <table cellpadding="5">
                 <tr>
-                    <td>账号:</td>
-                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userName}" type="text" id="userName" name="userName" data-options="required:true" readonly /></td>
-                    <td>昵称:</td>
-                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userNickName}" type="text" id="userNickName" name="userNickName" /></td>
+                    <td>登录账号:</td>
+                    <td><input value="" type="text" id="loginName" name="loginName" readonly/></td>
+                    <td>用户名/真实姓名:</td>
+                    <td><input value="" type="text" id="userName" name="userName" /></td>
                 </tr>
-                <tr id="passwordTr" style="display: none">
-                    <td>密码:</td>
-                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userPassword}" type="password" id="userPassword" name="userPassword" value="123456" data-options="required:true" /></td>
-                    <td>确认密码:</td>
-                    <td><input class="easyui-validatebox" value="${consoleUserInfo.userPassword}" type="password" id="userPasswordAffirm" name="userPasswordAffirm" value="123456" data-options="required:true" /></td>
-                </tr>
+
                 <tr>
                     <td>联系电话:</td>
                     <td>
-                        <input class="easyui-validatebox" value="${consoleUserInfo.userPhone}" type="text" id="userPhone" name="userPhone"/>
+                        <input value="" type="text" id="phone" name="phone"/>
                     </td>
-                    <td>邮箱:</td>
-                    <td>
-                        <input class="easyui-validatebox" value="${consoleUserInfo.userEmail}" type="text" id="userEmail" name="userEmail" />
-                    </td>
-                </tr>
-                <tr>
                     <td>QQ:</td>
                     <td>
-                        <input class="easyui-validatebox" value="${consoleUserInfo.userQq}" type="text" id="userQq" name="userQq"/>
-                    </td>
-                    <td>微信:</td>
-                    <td>
-                        <input class="easyui-validatebox" value="${consoleUserInfo.userWechart}" type="text" id="userWechart" name="userWechart" />
+                        <input value="" type="text" id="qqNum" name="qqNum"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>用户说明:</td>
+                    <td>微信:</td>
                     <td>
-                        <%--<input class="easyui-validatebox" id="userDesc" name="userDesc" data-options="multiline:true" style="height:60px" />--%>
-                        <textarea class="text-area easyui-validatebox" id="userDesc" name="userDesc" rows="3" cols="14">
-                            ${consoleUserInfo.userDesc}
-                        </textarea>
+                        <input value="" type="text" id="wechart" name="wechart" />
+                    </td>
+                    <td>身份证号:</td>
+                    <td><input type="text" id="idCard" name="idCard" /></td>
+                </tr>
+                <tr>
+                    <td>地址:</td>
+                    <td colspan="3">
+                        <div data-toggle="distpicker">
+                            <select id="province" name="province" data-province="---- 全部 ----"></select>
+                            <select id="city" name="city" data-city="---- 全部 ----"></select>
+                            <select id="district" name="district" data-district="---- 全部 ----"></select>
+                        </div>
                     </td>
                 </tr>
+
 
             </table>
         </form>
@@ -162,10 +164,10 @@
 <div id="modifyPasswordDialog" class="easyui-dialog" title="修改密码" style="width:400px;height:200px;padding:10px;top: 20%;left: 20%;">
     <div style="padding:10px 40px 20px 40px">
         <form id="modifyPasswordForm" method="post">
-            <input type="hidden" id="userIdForModify" name="id" value="0" />
+            <input type="hidden" id="userIdForModify" name="id" value="${consoleUserInfo.id}" />
             <table cellpadding="5">
                 <tr>
-                    <td>新原密码:</td>
+                    <td>原密码:</td>
                     <td><input class="easyui-validatebox" type="password" id="oldPassword" name="oldPassword" data-options="required:true" /></td>
                 </tr>
                 <tr>
@@ -182,10 +184,20 @@
 </div>
 <%@include file="common/springUrl.jsp"%>
 <%@ include file="common/commonJs.jsp" %>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/mainJs.js"></script>
 <script>
     var userId = "${consoleUserInfo.id}";
+    $(document).ready(function () {
+        $("#province").val("${consoleUserInfo.province}");
+        $("#province").change();
+        $("#city").val("${consoleUserInfo.city}");
+        $("#city").change();
+        $("#district").val("${consoleUserInfo.district}");
+        $("#district").change();
+    });
 </script>
 </body>
 </html>

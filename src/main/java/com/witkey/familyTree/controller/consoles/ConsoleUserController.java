@@ -218,6 +218,7 @@ public class ConsoleUserController {
             tUser1.setCreateMan(list.get(0).get("createMan") + "");
             tUser1.setCreateTime(list.get(0).get("createTime") + "");
             tUser1.setUserFrom(CommonUtil.parseInt(list.get(0).get("userFrom")));
+            tUser1.setPassword(consolesUser.get("password") + "");
 //            i = consoleService.saveUserBase(tUserBase);
         }
         i = consoleService.saveUser1(tUser1);
@@ -286,11 +287,14 @@ public class ConsoleUserController {
 
         String oldPassword = CommonUtil.string2MD5(params.get("oldPassword") + "");
 
-        if(!CommonUtil.isBlank(oldPassword)){
-            if(oldPassword.equals(list.get(0).get("password"))){
-                result.put("msg","原密码输入有误!");
-                result.put("code",-2);
-                return result;
+        //非管理员操作时，要验证原密码
+        if(CommonUtil.isBlank(params.get("isAdmin"))){
+            if(!CommonUtil.isBlank(oldPassword)){
+                if(!oldPassword.equals(list.get(0).get("password"))){
+                    result.put("msg","原密码输入有误!");
+                    result.put("code",-2);
+                    return result;
+                }
             }
         }
 

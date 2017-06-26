@@ -5,7 +5,7 @@ var setting;
 $(function () {
 
     $("#userDialog").dialog({
-        width: 600,
+        width: 800,
         height: 400,
         closed: true,
         cache: false,
@@ -31,10 +31,7 @@ $(function () {
 
                             alert(data.msg);
                             if(data.code >= 1){
-                                var params = {};
-                                loadDataGrid(params);
-                                $("#userInfoForm").form('clear');
-                                closeDialog("userDialog");
+                                $("#userDialog").dialog('close');
                             }
                         },
                         error:function (data) {
@@ -52,8 +49,7 @@ $(function () {
             {
                 "text":"取消",
                 handler:function () {
-                    $("#userInfoForm").form('clear');
-                    closeDialog("userDialog");
+                    $("#userDialog").dialog('close');
                 }
             }
         ]
@@ -61,7 +57,7 @@ $(function () {
 
     $("#modifyPasswordDialog").dialog({
         width: 400,
-        height: 200,
+        height: 250,
         closed: true,
         cache: false,
         modal: true,
@@ -90,11 +86,9 @@ $(function () {
                         data:params,
                         success:function (data) {
                             if(data.code >= 1){
-                                alert(data.msg);
-                                var params = {};
-                                loadDataGrid(params);
+                                alert("修改成功，以后登录请使用新密码！");
                                 $("#modifyPasswordForm").form('clear');
-                                closeDialog("modifyPasswordDialog");
+                                $("#modifyPasswordDialog").dialog('close');
                             } else if(data.code == -2){
                                 alert(data.msg);
                             }
@@ -114,14 +108,61 @@ $(function () {
                 "text":"取消",
                 handler:function () {
                     $("#modifyPasswordForm").form('clear');
-                    closeDialog("modifyPasswordDialog");
+                    $("#modifyPasswordDialog").dialog('close');
                 }
             }
         ]
     });
 
     $("#toEditUser").click(function () {
-        $("#userDialog").dialog('open');
+        // alert(userId);
+        $.ajax({
+            type:'post',
+            url: projectUrl + "/consoles/userList",
+            // async:false,
+            dataType:'json',
+            data:{id:userId},
+            success:function (data) {
+                var userList = data.dataList;
+                if(userList != null && userList.length > 0){
+                    var userInfo = userList[0];
+                    $("#userId").val(userInfo.id);
+                    $("#state").val(userInfo.state);
+                    $("#isFront").val(userInfo.isFront);
+                    $("#isConsole").val(userInfo.isConsole);
+                    $("#isVolunteer").val(userInfo.isVolunteer);
+                    $("#password").val(userInfo.password);
+                    $("#userFrom").val(userInfo.userFrom);
+                    $("#idCard").val(userInfo.idCard);
+                    $("#userPhoto").val(userInfo.userPhoto);
+                    $("#idCardPhoto").val(userInfo.idCardPhoto);
+                    $("#loginName").val(userInfo.loginName);
+                    $("#userName").val(userInfo.userName);
+                    $("#phone").val(userInfo.phone);
+                    $("#qqNum").val(userInfo.qqNum);
+                    $("#wechart").val(userInfo.wechart);
+                    $("#province").val(userInfo.province);
+                    $("#province").change();
+                    $("#city").val(userInfo.city);
+                    $("#city").change();
+                    $("#district").val(userInfo.district);
+                    $("#district").change();
+                    $("#userDialog").dialog('open');
+                }else{
+                    alert("用户信息读取错误，请重新登录尝试！");
+                }
+            },
+            error:function (data) {
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
+            }
+        });
+
+
     });
 
     $("#toModifyPassword").click(function () {

@@ -272,6 +272,7 @@ $(function () {
                     var params = {};
                     params.userId = $("#userIdForModify").val();
                     params.newPassword = newPassword;
+                    params.isAdmin = 1;
                     $.ajax({
                         type:'post',
                         url: postUrl,
@@ -279,12 +280,13 @@ $(function () {
                         dataType:'json',
                         data:params,
                         success:function (data) {
+                            alert(data.msg);
                             if(data.code >= 1){
-                                alert(data.msg);
-                                var params = {};
-                                loadDataGrid(params);
+
+                                var params2 = {};
+                                loadDataGrid(params2);
                                 $("#modifyPasswordForm").form('clear');
-                                closeDialog("modifyPasswordDialog");
+                                $("#modifyPasswordDialog").dialog("close");
                             }
                         },
                         error:function (data) {
@@ -302,7 +304,7 @@ $(function () {
                 "text":"取消",
                 handler:function () {
                     $("#modifyPasswordForm").form('clear');
-                    closeDialog("modifyPasswordDialog");
+                    $("#modifyPasswordDialog").dialog("close");
                 }
             }
         ]
@@ -537,7 +539,7 @@ function formatDataList(data){
     if(data){
 
         for(var i=0;i<data.length;i++){
-            data[i].userCode = "<a href=\"javascript:void 0;\" onclick=\"editUser('"+ data[i].id +"')\">" + data[i].userCode +" </a>";
+            // data[i].userCode = "<a href=\"javascript:void 0;\" onclick=\"editUser('"+ data[i].id +"')\">" + data[i].userCode +" </a>";
             // data[i].createTime = new Date(data[i].createTime).Format("yyyy-MM-dd hh:mm:ss");
 
 
@@ -555,13 +557,13 @@ function formatDataList(data){
 }
 
 function loadDataToForm(data){
-
     $("#userId").val(data.id);
     $("#userName").val(data.userName);
     $("#loginName").val(data.loginName);
     $("#loginName").attr("readonly","readonly");
     $("#password").val(data.password);
     $("#passwordAffirm").val(data.password);
+    $("#idCard").val(data.idCard);
     $("#phone").val(data.phone);
     $("#qqNum").val(data.qqNum);
     $("#wechart").val(data.wechart);
@@ -575,6 +577,9 @@ function loadDataToForm(data){
     $("#isFront").combobox("setValue",data.isFront);
     $("#isConsole").combobox("setValue",data.isConsole);
     $("#isVolunteer").combobox("setValue",data.isVolunteer);
+    $("#userFrom").val(data.userFrom);
+    $("#userPhoto").val(data.userPhoto);
+    $("#idCardPhoto").val(data.idCardPhoto);
 }
 
 function loadFamilyList(params) {

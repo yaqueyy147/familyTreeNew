@@ -625,7 +625,7 @@ public class FamilyServiceImpl implements FamilyService {
         }else{//公司
             String sql = "select t1.points,t1.total_money,t1.total_money*" + pointsCurrent4Pay + " totalPoints";
             sql += ",t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
-            sql += " where t1.company_id=t2.id";
+            sql += " where t1.company_id=t2.id and t2.state=1";
             if(!CommonUtil.isBlank(params.get("province"))){
                 sql += " and t2.province='" + params.get("province") + "'";
             }
