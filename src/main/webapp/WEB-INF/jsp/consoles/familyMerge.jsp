@@ -19,6 +19,18 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/fonts/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/css/fronts/viewFamilyTree.css" />
     <%@include file="common/commonCss.jsp"%>
+    <style rel="stylesheet">
+        #peopleForm input[type="text"]{
+            height:20px;
+        }
+        .modal-header{
+            padding-top:5px !important;
+            padding-bottom: 5px !important;
+        }
+        .modal-dialog{
+            margin-top: 5px !important;
+        }
+    </style>
 </head>
 <body>
 <div class="easyui-layout" style="width:100%;height:100%;">

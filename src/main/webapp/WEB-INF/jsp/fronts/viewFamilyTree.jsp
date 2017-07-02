@@ -48,6 +48,16 @@
             color: #ff0000;
             font-size: 16px;
         }
+        #peopleForm input[type="text"]{
+            height:20px;
+        }
+        .modal-header{
+            padding-top:5px !important;
+            padding-bottom: 5px !important;
+        }
+        .modal-dialog{
+            margin-top: 5px !important;
+        }
     </style>
 </head>
 <body>
@@ -257,7 +267,7 @@
                                 <%--<input name="motherId" id="motherId" type="text" value="0" />--%>
                             </td>
                         </tr>
-                        <tr style="height: 15px;"><td colspan="9"></td></tr>
+                        <tr style="height: 10px;"><td colspan="9"></td></tr>
                         <tr class="topBorder rightBorder leftBorder">
                             <td>出生时间：</td>
                             <td colspan="7">

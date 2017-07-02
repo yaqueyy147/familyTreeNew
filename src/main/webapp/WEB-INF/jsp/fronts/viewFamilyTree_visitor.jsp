@@ -64,6 +64,16 @@
             color: #ff0000;
             font-size: 16px;
         }
+        #peopleForm input[type="text"]{
+            height:20px;
+        }
+        .modal-header{
+            padding-top:5px !important;
+            padding-bottom: 5px !important;
+        }
+        .modal-dialog{
+            margin-top: 5px !important;
+        }
     </style>
 </head>
 <body>

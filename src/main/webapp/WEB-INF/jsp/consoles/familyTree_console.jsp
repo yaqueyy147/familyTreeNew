@@ -35,6 +35,17 @@
             color: #ff0000;
             font-size: 16px;
         }
+        #peopleForm input[type="text"]{
+             height:20px;
+         }
+        .modal-header{
+            padding-top:5px !important;
+            padding-bottom: 5px !important;
+        }
+        .modal-dialog{
+            margin-top: 5px !important;
+        }
+
     </style>
 </head>
 <body>
@@ -283,7 +294,7 @@
                                         <input name="liveAddr" id="liveAddr" class="inputLg" type="text" />
                                     </td>
                                 </tr>
-                                <tr style="height: 15px;"><td colspan="9"></td></tr>
+                                <tr style="height: 10px;"><td colspan="9"></td></tr>
                                 <tr>
                                     <td colspan="9" style="text-align: right">
                                         <input id="savePeople" type="button" class="btn btn-primary" value="保 存" />
