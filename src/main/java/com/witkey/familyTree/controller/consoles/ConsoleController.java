@@ -123,20 +123,22 @@ public class ConsoleController {
     @ResponseBody
     public Map<String,Object> getFamilyList(HttpServletRequest request,HttpServletResponse response, @RequestParam Map<String, Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
-        
+        //获取登录用户信息
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("userName") + "";
 
         List<TFamily> list = new ArrayList<TFamily>();
+        //如果不是系统管理员，则根据登录人id和登录名查询相应的族谱
         if(!"admin".equals(userName) && !"系统管理员".equals(userName)){
             params.put("userName",userName);
             params.put("userId",consolesUser.get("id"));
             list = familyService.getFamilyList1(params);
-        }else{
+        }else{//如果是系统管理员登录，则查询所有可用的族谱
         	list = familyService.getFamilyList(params);
         }
         
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+        //遍历族谱，设置族谱人数
         for(TFamily tFamily : list){
             int peopleCount = 0;
             Map<String,Object> map = new HashMap<String,Object>();
@@ -156,10 +158,19 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 保存/修改族谱
+     * @param request
+     * @param response
+     * @param tFamily  传入的族谱数据
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "saveFamily")
     @ResponseBody
-    public Map<String,Object> saveFamily(HttpServletRequest request,HttpServletResponse response, TFamily tFamily,String createTime4Modify) throws Exception{
+    public Map<String,Object> saveFamily(HttpServletRequest request,HttpServletResponse response, TFamily tFamily) throws Exception{
 
+        //获取登录用户信息
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("loginName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
@@ -167,20 +178,25 @@ public class ConsoleController {
         String msg = "创建成功";
         try {
             tFamily.setState(1);
+            //如果传入的族谱有id，则为修改族谱
             if(tFamily.getId() > 0){
+                //根据族谱id获取族谱原信息
                 TFamily tFamilyOld = familyService.getFamilyFromId(tFamily.getId());
 
                 LOGGER.info("修改族谱-->" + tFamily);
+                //将原族谱不能修改的信息设置到新族谱中
                 tFamily.setCreateTime(tFamilyOld.getCreateTime());
                 tFamily.setCreateId(tFamilyOld.getCreateId());
                 tFamily.setCreateMan(tFamilyOld.getCreateMan());
                 tFamily.setSupplementFlag(tFamilyOld.getSupplementFlag());
+                //修改族谱
                 ii = familyService.updateFamily(tFamily);
                 msg = "修改成功";
 
                 //记录日志
                 logService.createLog(new TLog(2,userName,tFamily.toString(),tFamilyOld.toString()));
-            }else{
+            }else{//如果传入的族谱id为空或者为0，则为新增族谱
+                //设置创建人和创建时间
                 tFamily.setCreateId(consolesUser.get("id") + "");
                 tFamily.setCreateTime(new Date());
                 tFamily.setCreateMan(userName);
@@ -217,9 +233,18 @@ public class ConsoleController {
         return map;
     }
 
+    /**
+     * 删除族谱
+     * @param params
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/deleteFamily")
     @ResponseBody
     public Map<String,Object> deleteFamily(@RequestParam Map<String,Object> params, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        //获取登录用户信息
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = consolesUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -244,14 +269,17 @@ public class ConsoleController {
      */
     @RequestMapping(value = "familyTree")
     public ModelAndView familyTree(HttpServletRequest request,HttpServletResponse response, Model model, @RequestParam Map<String,Object> map) throws Exception{
+        //获取登录用户信息
         JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         model.addAttribute("consolesUser",consolesUser);
 
+        //根据familyId查询族谱信息
         String familyId = map.get("familyId") + "";
         model.addAttribute("familyId",familyId);
         TFamily tFamily = familyService.getFamilyFromId(CommonUtil.parseInt(familyId));
         model.addAttribute("tFamily",tFamily);
 
+        //查询当前族谱总共多少代
         int maxGeneration = familyService.getFamilyMaxGeneration(CommonUtil.parseInt(familyId));
 
         model.addAttribute("maxGeneration",maxGeneration);
@@ -277,6 +305,7 @@ public class ConsoleController {
     @RequestMapping(value = "/savePeople")
     @ResponseBody
     public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId,String userCC) throws Exception{
+        //获取登录用户信息
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> map = new HashMap<String,Object>();
@@ -360,6 +389,14 @@ public class ConsoleController {
         return map;
     }
 
+    /**
+     * 删除族人
+     * @param peopleId
+     * @param familyId
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
     public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
@@ -371,6 +408,7 @@ public class ConsoleController {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("fatherId",peopleId);
         params.put("familyId",familyId);
+        params.put("superiorId",peopleId);
         //如果有下一代人，不能删除
         List<TPeople> list = familyService.getPeopleList(params);
         if(list != null && list.size() > 0){
@@ -420,7 +458,7 @@ public class ConsoleController {
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
-            pp.setName(tPeople.getName());
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
             int peopleId = tPeople.getId();

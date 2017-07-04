@@ -145,11 +145,12 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public int deletePeople(int peopleId) {
+    public int deletePeople(int peopleId, int familyId, int peopleType) {
 
-        int i = 0;
-        tPeopleDao.removeById(peopleId);
-        i ++;
+//        int i = 0;
+//        tPeopleDao.removeById(peopleId);
+//        i ++;
+        int i = deletePeopleAndChildren(peopleId,familyId,peopleType);
 
         return i;
     }
@@ -841,6 +842,37 @@ public class FamilyServiceImpl implements FamilyService {
             return CommonUtil.parseInt(list.get(0).get("peopleCount"));
         }
         return 0;
+    }
+
+    /**
+     * 递归删除族人以及其子孙
+     * @param peopleId
+     * @param familyId
+     * @param peopleType
+     * @return
+     */
+    private int deletePeopleAndChildren(int peopleId, int familyId, int peopleType){
+
+        int i=0;
+        //如果是本族人，查询当前成员是否含有下一代人
+        if(peopleType == 1){
+            Map<String,Object> params = new HashMap<String,Object>();
+            params.put("fatherId",peopleId);
+            params.put("familyId",familyId);
+            params.put("superiorId",peopleId);
+            //如果有下一代人，不能删除
+            List<TPeople> list = this.getPeopleList(params);
+            if(list != null && list.size() > 0){
+                for(TPeople tPeople : list){
+                    deletePeopleAndChildren(tPeople.getId(),tPeople.getFamilyId(),tPeople.getPeopleType());
+                    tPeople.setPeopleStatus(9);
+                    this.updatePeople(tPeople);
+                    i ++ ;
+                }
+            }
+        }
+
+        return i;
     }
 
 }

@@ -650,7 +650,9 @@ function selectTarget(obj) {
 }
 
 function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
+    //删除成员将会同事删除其所有的子孙，
     if(confirm("确定要删除成员(" + peopleName + ")吗？")){
+        $(".loading").show();
         var treeObj = $.fn.zTree.getZTreeObj("familyTree");
         $.ajax({
             type:'post',
@@ -707,6 +709,7 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
                 if(data.code == -1){
                     alert("该成员含有下一代，不能删除！如需删除，请先删除其后代！");
                 }
+                $(".loading").hide();
             },
             error:function (data) {
                 var responseText = data.responseText;

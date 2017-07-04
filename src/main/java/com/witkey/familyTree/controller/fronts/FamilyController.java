@@ -368,7 +368,7 @@ public class FamilyController {
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
-            pp.setName(tPeople.getName());
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
             int peopleId = tPeople.getId();
