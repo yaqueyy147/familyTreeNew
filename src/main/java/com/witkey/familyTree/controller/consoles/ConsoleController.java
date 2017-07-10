@@ -864,6 +864,13 @@ public class ConsoleController {
         return result;
     }
 
+    /**
+     * 族谱打印页面
+     * @param request
+     * @param model
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/print")
     public ModelAndView print(HttpServletRequest request, Model model, @RequestParam Map<String,Object> params){
         int familyId = CommonUtil.parseInt(params.get("printFamilyId"));
@@ -878,6 +885,12 @@ public class ConsoleController {
         return new ModelAndView("/fronts/print");
     }
 
+    /**
+     * 打印页面族谱信息
+     * @param params
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "peopleInfo4Print")
     @ResponseBody
     public Object peopleInfo4Print(@RequestParam Map<String,Object> params,HttpServletRequest request){
@@ -897,7 +910,7 @@ public class ConsoleController {
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
-            pp.setName(tPeople.getName());
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
             pp.setDieAddr(tPeople.getDieAddr());
 //            map = CommonUtil.bean2Map(tPeople);

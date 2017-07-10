@@ -21,6 +21,15 @@ import java.util.Map;
 @RequestMapping(value = "/upload")
 public class UploadController {
 
+    /**
+     * 上传图片
+     * @param uploadFile
+     * @param targetFile
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/uploadImg")
     @ResponseBody
     public String uploadImg(MultipartFile uploadFile, String targetFile, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -42,6 +51,14 @@ public class UploadController {
         return resultStr;
     }
 
+    /**
+     * 企业简介页面富文本编辑器上传图片
+     * @param upload
+     * @param CKEditorFuncNum
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/uploadImg2")
     public void uploadImg2(MultipartFile upload, String CKEditorFuncNum, HttpServletRequest request, HttpServletResponse response) throws IOException {
 

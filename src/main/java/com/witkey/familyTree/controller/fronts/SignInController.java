@@ -463,9 +463,15 @@ public class SignInController {
 //        return map;
 //    }
 
+    /**
+     * 登录失效或者用户信息验证失败跳转页面
+     * @param model
+     * @param type
+     * @return
+     */
     @RequestMapping(value = "/out")
     public ModelAndView redirectOut(Model model,int type){
-        System.out.println("进来了。。。");
+//        System.out.println("进来了。。。");
         model.addAttribute("type",type);
         return new ModelAndView("/out");
     }

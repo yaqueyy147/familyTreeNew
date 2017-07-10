@@ -753,6 +753,13 @@ public class FamilyController {
         return result;
     }
 
+    /**
+     * 族谱打印页面
+     * @param request
+     * @param model
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/print")
     public ModelAndView print(HttpServletRequest request, Model model, @RequestParam Map<String,Object> params){
         int familyId = CommonUtil.parseInt(params.get("printFamilyId"));
@@ -767,6 +774,12 @@ public class FamilyController {
         return new ModelAndView("/fronts/print");
     }
 
+    /**
+     * 打印页面族谱信息--前台打印暂未使用
+     * @param params
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "peopleInfo4Print")
     @ResponseBody
     public Object peopleInfo4Print(@RequestParam Map<String,Object> params,HttpServletRequest request){
@@ -786,7 +799,7 @@ public class FamilyController {
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
-            pp.setName(tPeople.getName());
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
             pp.setDieAddr(tPeople.getDieAddr());
 //            map = CommonUtil.bean2Map(tPeople);
@@ -833,6 +846,13 @@ public class FamilyController {
         return map;
     }
 
+    /**
+     * 修改头像
+     * @param request
+     * @param photoPath
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/modifyPhoto")
     @ResponseBody
     public Map<String,Object> modifyPhoto(HttpServletRequest request,String photoPath) throws Exception{

@@ -46,6 +46,13 @@ public class IndexController {
     @Autowired
     private CompanyService companyService;
 
+    /**
+     * 前台首页
+     * @param model
+     * @param request
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping(value = {"","/","/index"})
     public ModelAndView index(Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 
@@ -96,8 +103,10 @@ public class IndexController {
 //        model.addAttribute("familyList",list);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("state",5);
+        //查询前台可展示的族谱
         List<TFamily> list = familyService.getFamilyList2(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+        //遍历族谱，查询设置族谱总人数
         for(TFamily tFamily : list){
             int peopleCount = 0;
             Map<String,Object> map = new HashMap<String,Object>();
@@ -134,6 +143,11 @@ public class IndexController {
         return new ModelAndView("/fronts/index");
     }
 
+    /**
+     * 首页查询族谱
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/queryFamily")
     @ResponseBody
     public Map<String,Object> queryFamily(@RequestParam Map<String,Object> params){
@@ -171,6 +185,11 @@ public class IndexController {
         return result;
     }
 
+    /**
+     * 何止英才录页面
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/meritocrat")
     public ModelAndView meritocrat(Model model){
 
@@ -184,27 +203,38 @@ public class IndexController {
         return new ModelAndView("/fronts/meritocrat");
     }
 
+    /**
+     * 分页查询英才录列表
+     * @param params
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/meritocratList")
     @ResponseBody
     public Map<String,Object> meritorcatList(@RequestParam Map<String,Object> params) throws Exception{
         Map<String,Object> result = new HashMap<String,Object>();
 
+        //查询总条数
         int total = familyService.getTotalMeritocrat(params);
 
+        //获取/设置每页条数
         int pageSize = CommonUtil.parseInt(params.get("pageSize"));
         pageSize = pageSize == 0 ? PAGE_SIZE : pageSize;
+        //计算总页数
         int totalPage = (int)Math.ceil((double)total / (double) pageSize);
+        //获取/设置当前页面
         int pageNo = CommonUtil.parseInt(params.get("pageNo"));
         pageNo = pageNo == 0 ? 1 : pageNo;
 
         params.put("pageSize",pageSize);
         params.put("beginRow",(pageNo - 1)*pageSize);
 
-
+        //设置翻页栏信息
         String pageChanger = PageUtil.getNumberPageChanger(pageNo,totalPage,PAGE_NUM,pageSize,params.get("tableId")+"");
 
 //        pageChanger = new String(pageChanger.getBytes("GBK"),"UTF-8");
 
+        //查询英才
         List<Map<String,Object>> list = familyService.getMeritocrat(params);
         result.put("meritocratList",list);
 
