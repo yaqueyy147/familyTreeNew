@@ -44,7 +44,7 @@
                 <p style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;">
                     家族名：${primaryFamily.familyName}
                     <span style="margin-left: 20px">家族人数：&nbsp;<span id="peopleCount">0</span>&nbsp;人</span>
-                    <span style="margin-left: 20px">家族代数：&nbsp;<span id="familyGenNum">0</span>&nbsp;代</span>
+                    <span style="margin-left: 20px">家族代数：&nbsp;<span id="familyGenNum">${maxGen}</span>&nbsp;代</span>
                     <button type="button" id="localBack" class="easyui-linkbutton" style="margin-left: 20px">返回</button>
                     <c:choose>
                         <c:when test="${merge.mergeState == 2 || merge.mergeState == 0}">

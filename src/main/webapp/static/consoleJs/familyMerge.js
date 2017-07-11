@@ -369,7 +369,7 @@ function initPeopleData(familyId){
     var zNodes = [];
     $.ajax({
         type:'post',
-        url:projectUrl + '/consoles/getPeopleList',
+        url:projectUrl + '/consoles/getPeopleList4Merge',
         dataType:'json',
         // async:false,
         data:{familyId : familyId,isIndex:0},
@@ -408,7 +408,7 @@ function initPeopleData(familyId){
             // $("#primaryDesc").append(peopleHtml);
             defer.resolve(data);
             $("#peopleCount").text(data.length);
-            $("#familyGenNum").text(genNum);
+            // $("#familyGenNum").text(genNum);
         },
         error:function (data) {
             var responseText = data.responseText;

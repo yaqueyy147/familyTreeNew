@@ -15,6 +15,8 @@ public class PeopleTree {
     private String peopleStatus;
     private String isSupplement;
     private String dieAddr;
+    private String createId;
+    private boolean nocheck;
 
     public String getId() {
         return id;
@@ -86,5 +88,21 @@ public class PeopleTree {
 
     public void setDieAddr(String dieAddr) {
         this.dieAddr = dieAddr;
+    }
+
+    public String getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(String createId) {
+        this.createId = createId;
+    }
+
+    public boolean isNocheck() {
+        return nocheck;
+    }
+
+    public void setNocheck(boolean nocheck) {
+        this.nocheck = nocheck;
     }
 }

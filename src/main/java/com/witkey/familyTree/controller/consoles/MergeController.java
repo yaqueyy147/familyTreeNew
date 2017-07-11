@@ -8,6 +8,7 @@ import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
+import com.witkey.familyTree.util.PeopleTree;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,9 @@ public class MergeController {
         List<Map<String,Object>> mm = consoleService.getMergeList(params);
         model.addAttribute("mergeId",params.get("mergeId"));
         model.addAttribute("merge",mm.get(0));
+
+        int maxGen = familyService.getFamilyMaxGeneration(tFamily.getId());
+        model.addAttribute("maxGen", maxGen);
         return new ModelAndView("/consoles/familyMerge");
     }
 
@@ -209,6 +214,64 @@ public class MergeController {
 
         result.put("code",i);
         return result;
+    }
+
+
+    /**
+     * 根据家族ID获取家族成员
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/getPeopleList4Merge")
+    @ResponseBody
+    public Object getPeopleList(@RequestParam Map<String,Object> params, HttpServletRequest request){
+
+        //查询族人
+        params.put("peopleType",1);
+        params.put("orderBy"," order by family_rank asc");
+
+        System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+
+//        params.put("isIndex",1);
+        List<TPeople> listPeople = familyService.getPeopleList(params);
+        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+//        List<Map<String,Object>> list = new ArrayList<>();
+        List<PeopleTree> list1 = new ArrayList<>();
+
+        //根据族人Id查询配偶
+        for (TPeople tPeople : listPeople) {
+            Map<String,Object> map = new HashMap<>();
+            PeopleTree pp = new PeopleTree();
+            pp.setId(tPeople.getId() + "");
+            pp.setpId(tPeople.getSuperiorId() + "");
+            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+            pp.setOpen(true);
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+            pp.setCreateId(tPeople.getCreateId() + "");
+            if(tPeople.getPeopleStatus() != 5 && tPeople.getPeopleStatus() != 51 && tPeople.getPeopleStatus() != 52){
+                pp.setNocheck(true);
+            }
+//            map = CommonUtil.bean2Map(tPeople);
+            int peopleId = tPeople.getId();
+            List<TPeople> listMate = familyService.getMateList(peopleId);
+            String mate = "";
+            if(listMate != null && listMate.size() > 0){
+                for(TPeople tPeople1 : listMate){
+                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                }
+                mate = mate.substring(1);
+            }
+
+            pp.setMateName(mate);
+
+//            map.put("mateList",listMate);
+//            list.add(map);
+            list1.add(pp);
+        }
+        System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+        return list1;
     }
 
 }
