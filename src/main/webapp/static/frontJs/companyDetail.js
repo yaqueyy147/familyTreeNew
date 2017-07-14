@@ -61,14 +61,15 @@ $(function () {
             dataType:'json',
             data:{companyId:companyId, companyIntroduce: companyDesc, id:id},
             success:function (data) {
-                if(data.code == 1){
+                if(data.code >= 1){
                     $("#introduceId").val(data.tCompanyIntroduce.id);
                     $("#introBtn").text("修改公司介绍");
                     $("#companyDesc").val(data.tCompanyIntroduce.companyIntroduce);
                     $("#companyShow").html(data.tCompanyIntroduce.companyIntroduce);
-                    $("#addIntroModal").modal('hide');
+
                 }
                 alert(data.msg);
+                $("#addIntroModal").modal('hide');
             },
             error:function (data) {
                 var responseText = data.responseText;
