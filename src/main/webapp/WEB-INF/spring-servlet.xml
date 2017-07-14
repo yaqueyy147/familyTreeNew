@@ -88,6 +88,7 @@
                         <value>/consoles</value>
                         <value>/consoles/loginIn</value>
                         <value>/consoles/logout</value>
+                        <value>/log/**</value>
                     </list>
                 </property>
             </bean>

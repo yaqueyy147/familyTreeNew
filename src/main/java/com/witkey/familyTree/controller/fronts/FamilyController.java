@@ -509,7 +509,7 @@ public class FamilyController {
             familyService.updatePeople(tPeople);
             msg = "修改成功";
             //记录日志
-            logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
+            logService.createLog(new TLog(2,userName,"补录修改族人-->" + tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
 
@@ -535,7 +535,7 @@ public class FamilyController {
                 familyService.saveMateInfo(tMate);
             }
             //记录日志
-            logService.createLog(new TLog(1,userName,tPeople.toString()));
+            logService.createLog(new TLog(1,userName,"补录新增族人-->" + tPeople.toString()));
         }
         map.put("tPeople",tPeople);
         map.put("msg",msg);
