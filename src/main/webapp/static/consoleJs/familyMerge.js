@@ -546,6 +546,13 @@ function affirmInclude(obj, peopleId, auditStatus, tId, includeType) {
 	var treeObj = $.fn.zTree.getZTreeObj("primaryFamilyTree");
 	var node = treeObj.getNodeByTId(tId);
 	var createId = node.createId;
+
+	var parentNode = node.getParentNode();
+    if(parentNode.peopleStatus != 1){
+        alert("该成员父级还没有通过审核生效，不能审核该成员！");
+        return;
+    }
+
     $.when(doAudit(peopleId + ":" + createId, auditStatus, includeType)).done(function(data){
         if(data == 1){
             $(obj).parent().remove();

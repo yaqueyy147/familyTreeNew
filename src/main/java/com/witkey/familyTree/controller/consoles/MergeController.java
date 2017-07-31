@@ -155,7 +155,7 @@ public class MergeController {
     @ResponseBody
     public Map<String,Object> auditIncludePeople(HttpServletRequest request,@RequestParam Map<String,Object> params){
         Map<String,Object> result = new HashMap<String,Object>();
-        
+
         int i = consoleService.auditIncludePeople(params);
 
         result.put("code",i);
