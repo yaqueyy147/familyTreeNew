@@ -69,8 +69,8 @@ $(function () {
                     imgHtml += "<a href=\"javascript:void(0)\" onclick=\"viewFamily('" + tFamily.id + "','" + visitStatus + "','" + tFamily.visitPassword + "')\" style='float: none;width: 100%'>";
                     imgHtml += "<img class=\"familyImgFF\" src=\"" + familyImg + "\" class=\"img-thumbnail\"/></a>";
                     imgHtml += "<div class=\"caption\">";
-                    // imgHtml += "<h3>" + tFamily.familyFirstName + "氏族谱（" + tFamily.id + "）</h3>";
-                    imgHtml += "<h6><a href=\"javascript:void 0;\" onclick=\"toEdit('" + tFamily.id + "')\">世界何氏族谱（" + tFamily.id + "）</h6>";
+                    // imgHtml += "<h6><a href=\"javascript:void 0;\" onclick=\"toEdit('" + tFamily.id + "')\">世界何氏族谱（" + tFamily.id + "）</h6>";
+                    imgHtml += "<h6><a href=\"javascript:void 0;\" onclick=\"toEdit('" + tFamily.id + "')\">" + tFamily.familyFirstName + "（" + tFamily.id + "）</h6>";
                     imgHtml += "<p>家族人数：0人</p>";
                     imgHtml += "<p>状态：" + statusDesc + "</p>";
                     imgHtml += "<p>" + tFamily.familyName + "</p>";

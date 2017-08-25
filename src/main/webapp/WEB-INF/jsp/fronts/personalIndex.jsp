@@ -46,8 +46,8 @@
                         <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
                     <%--<img data-src="holder.js/300x300" alt="...">--%>
                     <div class="caption">
-                        <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}氏族谱（${family.id}）</a></h6>--%>
-                        <h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">世界何氏族谱（${family.id}）</a></h6>
+                        <h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}（${family.id}）</a></h6>
+                        <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">世界何氏族谱（${family.id}）</a></h6>--%>
                         <p>家族人数：${family.peopleCount}人</p>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
@@ -80,7 +80,7 @@
                         <div class="form-group">
                             <label for="familyFirstName" class="col-sm-2 control-label">家族姓氏</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="世界何氏族谱" readonly>
+                                <input type="text" class="form-control" id="familyFirstName" name="familyFirstName" value="世界何氏族谱">
                             </div>
                         </div>
                         <div class="form-group">

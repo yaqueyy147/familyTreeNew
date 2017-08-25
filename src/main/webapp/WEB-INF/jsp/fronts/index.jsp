@@ -41,8 +41,8 @@
                                 <img class="familyImgFF" src="${family.photoUrl}" class="img-thumbnail"/></a>
                                 <%--<img data-src="holder.js/300x300" alt="...">--%>
                             <div class="caption">
-                                    <%--<h6>${family.familyFirstName}氏族谱（${family.id}）</h6>--%>
-                                <h6>世界何氏族谱（${family.id}）</h6>
+                                <h6>${family.familyFirstName}（${family.id}）</h6>
+                                <%--<h6>世界何氏族谱（${family.id}）</h6>--%>
                                 <p>家族人数：${family.peopleCount}人</p>
                                 <p>状态：
                                     <c:if test="${family.visitStatus == 0}">加密</c:if>

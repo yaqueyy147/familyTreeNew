@@ -70,8 +70,8 @@ $(function () {
                         familyContent += "<a href='javascript:void(0)' onclick=\"viewFamily('" + ii.id + "','" + ii.visitStatus + "','" + ii.visitPassword + "')\" style=\"float: none;width: 100%;\">";
                         familyContent += "<img class=\"familyImgFF\" src='" + ii.photoUrl + "' class='img-thumbnail'/></a>";
                         familyContent += "<div class='caption'>";
-                        // familyContent += "<h6>" + ii.familyFirstName + "氏族谱（" + ii.id + "）</h6>";
-                        familyContent += "<h6>世界何氏族谱（" + ii.id + "）</h6>";
+                        familyContent += "<h6>" + ii.familyFirstName + "（" + ii.id + "）</h6>";
+                        // familyContent += "<h6>世界何氏族谱（" + ii.id + "）</h6>";
                         familyContent += "<p>家族人数：" + ii.peopleCount + "人</p>";
                         familyContent += "<p>状态：" + visitDesc + "</p>";
                         familyContent += "<p>" + ii.familyName + "</p>";

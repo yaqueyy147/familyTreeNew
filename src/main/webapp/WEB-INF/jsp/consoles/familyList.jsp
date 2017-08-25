@@ -50,7 +50,7 @@
             <table cellpadding="5" style="width: 100%">
                 <tr>
                     <td>家族姓氏:</td>
-                    <td><input type="text" id="familyFirstName" name="familyFirstName" value="何" readonly /></td>
+                    <td><input type="text" id="familyFirstName" name="familyFirstName" value="何" /></td>
                     <td>家族名称:</td>
                     <td><input type="text" id="familyName" name="familyName" data-options="required:true" /></td>
                 </tr>
