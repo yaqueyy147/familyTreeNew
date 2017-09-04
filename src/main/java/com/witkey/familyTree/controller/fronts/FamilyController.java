@@ -558,12 +558,13 @@ public class FamilyController {
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
 
-        //如果是本族人，查询当前成员是否含有下一代人
+        //如果是本族人，查询当前成员是否含有下一代本族人
         if(peopleType == 1){
             Map<String,Object> params = new HashMap<String,Object>();
             params.put("fatherId",peopleId);
             params.put("familyId",familyId);
             params.put("superiorId",peopleId);
+            params.put("peopleType",1);
             //如果有下一代人，不能删除
             List<TPeople> list = familyService.getPeopleList(params);
             if(list != null && list.size() > 0){
