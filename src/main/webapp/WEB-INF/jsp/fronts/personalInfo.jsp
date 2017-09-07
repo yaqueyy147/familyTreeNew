@@ -127,7 +127,7 @@
                                             <input type="file" name="imgFile1" id="imgFile1" />
                                             <a id="show_img1">
                                                 <img style="display: none;" id="result_img1"  height="128px" width="128px" />
-                                                <span id="result_img1_wm" style="display: none;position: absolute; top: 50px; left: 0;">本图片仅用于注册何氏族谱网</span>
+                                                <span id="result_img1_wm" style="display: none;position: absolute; top: 50px; left: 0;">本图片仅用于何氏族谱网</span>
                                             </a>
                                         </div>
                                     </div>
@@ -292,6 +292,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/personalInfo.js"></script>
 <script type="text/javascript">
     var isVolunteer = "${tUserFront.isVolunteer}";
+    var userIdCard = "${tUserFront.idCardPhoto}";
     var xxx = "${xxx}";
     var userId = "${tUserFront.id}";
     var winHeigth = $(window).height();
@@ -409,6 +410,31 @@
                     alert("error-->" + errorString);
                 }
             });
+
+            if(userIdCard){
+                $("#result_img1").show();
+                $("#imgFile1").hide();
+                $("#result_img1_wm").show();
+                $("#idCardPhoto").attr('value', userIdCard);
+                $("#show_img1").mouseover(function(){
+                    $("#result_img1_wm").hide();
+                    $("#result_img1").attr('src',projectUrl + "/static/images/deleteImg.png");
+                });
+                $("#show_img1").mouseout(function(){
+                    $("#result_img1").attr('src',projectUrl + userIdCard);
+                    $("#result_img1_wm").show();
+                });
+                $("#result_img1").click(function(){
+                    $("#result_img1").hide();
+                    $("#result_img1_wm").hide();
+                    $("#imgFile1").show();
+                    $("#idCardPhoto").removeAttr('value');
+                    $("#show_img1").unbind('mouseover');
+                    $("#show_img1").unbind('mouseout');
+
+                });
+            }
+
         },10);
     });
 
