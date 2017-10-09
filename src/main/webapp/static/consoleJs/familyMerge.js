@@ -597,7 +597,7 @@ function batchAudit(obj, auditStatus){
 	ids = ids.substring(1);
 	names = names.substring(1);
     auditStatuss = auditStatuss.substring(1);
-	$.messager.confirm('Confirm','确定要批量审核这些(' + names + ')人吗？',function(r){
+	$.messager.confirm('提示','确定要批量审核这些(' + names + ')人吗？',function(r){
 	    if (r){
 
             $.when(doAudit(ids, auditStatuss)).done(function(data){

@@ -93,7 +93,7 @@ $(function () {
             selectNames.push(ii.roleName);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除角色(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('提示','确定要删除角色(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',

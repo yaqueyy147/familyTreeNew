@@ -425,7 +425,7 @@ $(function () {
             selectNames.push(ii.userName);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除用户(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('提示','确定要删除用户(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',

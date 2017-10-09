@@ -104,7 +104,7 @@ $(function () {
             selectNames.push(ii.sourceName);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除资源(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('提示','确定要删除资源(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',

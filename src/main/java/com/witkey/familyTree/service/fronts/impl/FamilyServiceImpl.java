@@ -621,6 +621,9 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("district"))){
                 sql += " and t2.district='" + params.get("district") + "'";
             }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and t2.id<>6 and t2.id<>99 and t2.id<>7 and t2.id<>9 and t2.id<>10 and t2.id<>11 and t2.id<>15";
+            }
             sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司

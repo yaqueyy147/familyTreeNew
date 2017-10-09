@@ -168,7 +168,7 @@ $(function () {
             totalMoney = parseInt(totalMoney)*1 + parseInt(ii.payMoney)*1;
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除这些充值记录(' + selectIds + ')  吗?',function(r){
+        $.messager.confirm('提示','确定要删除这些充值记录(' + selectIds + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',

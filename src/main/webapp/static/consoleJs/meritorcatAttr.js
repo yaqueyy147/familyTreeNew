@@ -92,7 +92,7 @@ $(function () {
             selectNames.push(ii.meritocratAttr);
         }
         selectIds = selectIds.substring(1);
-        $.messager.confirm('Confirm','确定要删除属性(' + selectNames + ')  吗?',function(r){
+        $.messager.confirm('提示','确定要删除属性(' + selectNames + ')  吗?',function(r){
             if (r){
                 $.ajax({
                     type:'post',
