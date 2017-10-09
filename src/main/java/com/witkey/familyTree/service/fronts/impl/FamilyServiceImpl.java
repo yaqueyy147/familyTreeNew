@@ -777,7 +777,7 @@ public class FamilyServiceImpl implements FamilyService {
         List<TUserPoints> tUserPointsList = tUserPointsDao.find(params);
         if(tUserPointsList != null && tUserPointsList.size() > 0){
         	tUserPoints = tUserPointsList.get(0);
-        	tUserPoints.setTotalMoney(tUserMoney.getPayMoney() + tUserPoints.getTotalMoney());
+        	tUserPoints.setTotalMoney(CommonUtil.parseDouble(tUserMoney.getPayMoney()) + CommonUtil.parseDouble(tUserPoints.getTotalMoney()));
         	tUserPointsDao.save(tUserPoints);
         }else{
         	tUserPoints = new TUserPoints();

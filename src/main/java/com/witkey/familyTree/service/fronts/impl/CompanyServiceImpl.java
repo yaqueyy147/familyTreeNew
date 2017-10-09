@@ -145,7 +145,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<TCompanyPoints> tCompanyPointsList = tCompanyPointsDao.find(params);
         if(tCompanyPointsList != null && tCompanyPointsList.size() > 0){
         	tCompanyPoints = tCompanyPointsList.get(0);
-        	tCompanyPoints.setTotalMoney(tCompanyMoney.getPayMoney() + tCompanyPoints.getTotalMoney());
+        	tCompanyPoints.setTotalMoney(CommonUtil.parseDouble(tCompanyMoney.getPayMoney()) + CommonUtil.parseDouble(tCompanyPoints.getTotalMoney()));
         	tCompanyPointsDao.save(tCompanyPoints);
         }else{
         	tCompanyPoints = new TCompanyPoints();
