@@ -329,23 +329,24 @@ function addDiyDom(treeId, treeNode) {
             var mate = mates[i].split("--");
             var mateStatus = mate[2];
             var mateSupplement = mate[3];
+            var mateid = mate[1];
             editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;'>" + mate[0] + "</a>";// onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\"
             if(mateStatus == 5 && mateSupplement == 1){
                 editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
                 editStr += "</div>";
             }
             if(mateStatus == 51 && mateSupplement == 1){
                 editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
                 editStr += "</div>";
             }
             if(mateStatus == 52 && mateSupplement == 1){
                 editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
+                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
                 editStr += "</div>";
             }
         }
