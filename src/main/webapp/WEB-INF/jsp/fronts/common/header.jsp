@@ -9,13 +9,13 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="min-height: 0;">
     <div class="container">
         <div class="userInfo">
-            <a href="<%=request.getContextPath()%>/familyTree/index">首页</a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/family/index">首页</a>&nbsp;|&nbsp;
             <c:choose>
                 <c:when test="${not empty userInfo}">
                     <c:choose>
                         <c:when test="${(userInfo.userType == 1 && userInfo.isVolunteer == 1) || (userInfo.userType == 2 && userInfo.state == 1)}">
-                            <a href="<%=request.getContextPath()%>/familyTree/meritocrat">何氏英才录</a>&nbsp;|&nbsp;
-                            <a href="<%=request.getContextPath()%>/familyTree/pointsRanking">积分排行榜</a>&nbsp;|&nbsp;
+                            <a href="<%=request.getContextPath()%>/family/meritocrat">何氏英才录</a>&nbsp;|&nbsp;
+                            <a href="<%=request.getContextPath()%>/family/pointsRanking">积分排行榜</a>&nbsp;|&nbsp;
                         </c:when>
                     </c:choose>
                     <c:if test="${userInfo.isVolunteer == 1}">

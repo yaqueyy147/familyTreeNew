@@ -47,7 +47,7 @@ $(function () {
 
         $.ajax({
             type:'post',
-            url: projectUrl + '/familyTree/queryFamily',
+            url: projectUrl + '/family/queryFamily',
             dataType: 'json',
             data:params,
             // async:false,

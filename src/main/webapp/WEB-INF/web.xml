@@ -72,7 +72,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   <servlet-mapping>
     <servlet-name>spring</servlet-name>
     <url-pattern>/</url-pattern>
-    <url-pattern>/sign</url-pattern>
+    <!--<url-pattern>/sign</url-pattern>-->
   </servlet-mapping>
 
   <welcome-file-list>

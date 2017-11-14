@@ -25,7 +25,7 @@ function meritocratTablePageChange(pageNo) {
 
     $.ajax({
         type:'post',
-        url: projectUrl + '/familyTree/meritocratList',
+        url: projectUrl + '/family/meritocratList',
         dataType: 'json',
         data:params,
         // async:false,

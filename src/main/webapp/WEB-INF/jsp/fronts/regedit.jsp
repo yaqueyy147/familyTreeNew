@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-xs-4 form-actions col-xs-offset-4" style="margin-top: 15px">
                     <button class="btn btn-primary" style="margin-bottom: 20px;" id="regedit" type="button">注 册</button>&nbsp;&nbsp;
-                    <a class="btn btn-primary bbtt" style="margin-bottom: 20px;" href="<%=request.getContextPath()%>/familyTree/index" type="button">取 消</a>
+                    <a class="btn btn-primary bbtt" style="margin-bottom: 20px;" href="<%=request.getContextPath()%>/family/index" type="button">取 消</a>
                 </div>
             </form>
         </div>

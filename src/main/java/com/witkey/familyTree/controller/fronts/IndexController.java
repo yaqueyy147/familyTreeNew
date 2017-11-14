@@ -1,6 +1,8 @@
 package com.witkey.familyTree.controller.fronts;
 
-import com.witkey.familyTree.domain.*;
+import com.witkey.familyTree.domain.TFamily;
+import com.witkey.familyTree.domain.TMeritocratAttr;
+import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -13,14 +15,12 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Created by suyx on 2016/12/18.
  */
 @Controller
-@RequestMapping(value = "/familyTree")
+@RequestMapping(value = "/family")
 public class IndexController {
     private static final int PAGE_SIZE = 20;//初始每页条数
     private static final int PAGE_NUM = 6;//初始显示页数

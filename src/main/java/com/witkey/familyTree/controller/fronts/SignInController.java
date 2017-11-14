@@ -3,7 +3,6 @@ package com.witkey.familyTree.controller.fronts;
 import com.witkey.familyTree.domain.TCompanySponsor;
 import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserFront;
-import com.witkey.familyTree.domain.TVolunteer;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.service.fronts.UserService;
@@ -128,13 +127,13 @@ public class SignInController {
             mapUserInfo.put("userType",1);//设置用户类型为个人用户
             //将用户信息添加到cookie
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
-            return new RedirectView(contextPath + "/familyTree/index");
+            return new RedirectView(contextPath + "/family/index");
         }else if(listCompanyUser != null && listCompanyUser.size() > 0){//否则检查是否公司用户
             mapUserInfo = CommonUtil.bean2Map(listCompanyUser.get(0));
             mapUserInfo.put("userType",2);//设置用户类型为企业用户
             //将用户信息添加到cookie
             CookieUtil.addCookie("userInfo", JSONObject.fromObject(mapUserInfo).toString(),response);
-            return new RedirectView(contextPath + "/familyTree/index");
+            return new RedirectView(contextPath + "/family/index");
         }
         //否则跳回登录页面
         ra.addFlashAttribute("loginCode",-1);
@@ -188,7 +187,7 @@ public class SignInController {
         tUserFront.setId(id);
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", JSONObject.fromObject(tUserFront).toString(),response);
-        return new RedirectView(contextPath + "/familyTree/index");
+        return new RedirectView(contextPath + "/family/index");
     }
 
     /**
@@ -223,7 +222,7 @@ public class SignInController {
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
 
-        return new RedirectView(contextPath + "/familyTree/index");
+        return new RedirectView(contextPath + "/family/index");
     }
 
     /**
@@ -275,7 +274,7 @@ public class SignInController {
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
 
-        return new RedirectView(contextPath + "/familyTree/index");
+        return new RedirectView(contextPath + "/family/index");
     }
 
     /**
@@ -309,7 +308,7 @@ public class SignInController {
 
         //注册成功，自动登录，添加cookie
         CookieUtil.addCookie("userInfo", jsonObject.toString(),response);
-        return new RedirectView(contextPath + "/familyTree/index");
+        return new RedirectView(contextPath + "/family/index");
     }
 
     /**
