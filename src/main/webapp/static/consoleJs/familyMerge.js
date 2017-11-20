@@ -558,6 +558,7 @@ function affirmInclude(obj, peopleId, auditStatus, tId, includeType) {
         if(data == 1){
             $(obj).parent().remove();
             node.nocheck = true;
+            node.peopleStatus = auditStatus;
             treeObj.updateNode(node);
         }
     })
