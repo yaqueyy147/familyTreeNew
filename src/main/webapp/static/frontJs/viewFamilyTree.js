@@ -523,15 +523,24 @@ function zTreeOnClick(event, treeId, treeNode) {
 function editPeople(peopleId,generation,mateId){
     var params = {"peopleId":peopleId};
     var tPeople = getData("/family/getPeopleInfo",params).tPeople;
-    tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
-    tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    if(tPeople.birthTime){
+        tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.birth_time = "";
+    }
+    if(tPeople.dieTime){
+        tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.die_time = "";
+    }
+
     // initParent(generation);
     $.when(initParent(generation)).done(function(data){
         $("#peopleForm").populateForm(tPeople);
         if($.trim(mateId).length > 0 && mateId > 0){
             $("#mateId").val(mateId);
         }
-        $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+        $("#addModalLabel").text("族人【" + tPeople.name + "】信息");
 
         var imgPath = tPeople.photoUrl;
         $("#result_img").attr('src',imgPath);

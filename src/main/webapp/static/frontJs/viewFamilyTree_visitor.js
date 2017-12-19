@@ -182,8 +182,16 @@ function editPeople(peopleId,generation){
     // initParent(generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/family/getPeopleInfo",params).tPeople;
-    tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
-    tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    if(tPeople.birthTime){
+        tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.birth_time = "";
+    }
+    if(tPeople.dieTime){
+        tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.die_time = "";
+    }
     $.when(initParent(generation)).done(function(data){
         $("#peopleForm").populateForm(tPeople);
     });

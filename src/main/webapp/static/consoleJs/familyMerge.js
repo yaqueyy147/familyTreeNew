@@ -463,8 +463,16 @@ function editPeople(peopleId,generation){
     initParent(familyId,generation);
     var params = {"peopleId":peopleId};
     var tPeople = getData("/consoles/getPeopleInfo",params).tPeople;
-    tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
-    tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    if(tPeople.birthTime){
+        tPeople.birth_time = new Date(tPeople.birthTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.birth_time = "";
+    }
+    if(tPeople.dieTime){
+        tPeople.die_time =  new Date(tPeople.dieTime).Format("yyyy-MM-dd hh:mm:ss");
+    }else{
+        tPeople.die_time = "";
+    }
     $("#peopleForm").populateForm(tPeople);
     // $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
     // $("#familyId").val(targetFamilyId);
