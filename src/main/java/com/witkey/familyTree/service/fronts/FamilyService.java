@@ -102,5 +102,6 @@ public interface FamilyService {
     public int getFamilyMaxGeneration(int familyId);
 
     //获取家族总人数
-    public int getFamilyTotalPeopleNum(int familyId);
+    public int getFamilyTotalPeopleNum(int familyId,int state);
+
 }

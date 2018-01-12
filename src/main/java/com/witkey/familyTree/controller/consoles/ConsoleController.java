@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -456,6 +455,9 @@ public class ConsoleController {
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
@@ -908,6 +910,9 @@ public class ConsoleController {
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");

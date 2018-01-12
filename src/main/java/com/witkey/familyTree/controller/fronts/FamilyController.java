@@ -10,23 +10,16 @@ import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import com.witkey.familyTree.util.PeopleTree;
 import net.sf.json.JSONObject;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -366,6 +359,9 @@ public class FamilyController {
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
@@ -798,6 +794,9 @@ public class FamilyController {
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");

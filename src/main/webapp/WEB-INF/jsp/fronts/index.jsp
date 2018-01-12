@@ -31,6 +31,7 @@
                     </div>
                     <button type="button" id="searchBtn" class="btn btn-default">查询</button>
                 </form>
+                <div class="peoplecount">族谱总人数：${totalCount}人</div>
             </nav>
             <div class="row" id="familyContent">
                 <c:forEach var="family" items="${familyList}">

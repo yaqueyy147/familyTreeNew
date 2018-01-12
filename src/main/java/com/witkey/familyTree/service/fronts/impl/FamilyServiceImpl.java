@@ -837,10 +837,15 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public int getFamilyTotalPeopleNum(int familyId) {
-        String sql = "select count(id) peopleCount from t_people where family_id=? and people_status=1";
-
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,familyId);
+    public int getFamilyTotalPeopleNum(int familyId,int state) {
+        String sql = "select count(id) peopleCount from t_people where people_status=1";
+        if(!CommonUtil.isBlank(familyId) && familyId > -1){
+            sql += " and family_id=" + familyId;
+        }
+        if(!CommonUtil.isBlank(state) && state > -1){
+            sql += " and state=" + state;
+        }
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         if(list != null && list.size() > 0){
             return CommonUtil.parseInt(list.get(0).get("peopleCount"));
         }

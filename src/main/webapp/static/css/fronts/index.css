@@ -44,3 +44,10 @@ body{
     margin-top: 0px !important;
     margin-bottom: 5px !important;
 }
+
+.peoplecount{
+    float: right;
+    margin-right: 50px;
+    line-height: 50px;
+    color: #0000ff;
+}

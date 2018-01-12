@@ -5,7 +5,6 @@ import com.witkey.familyTree.domain.TFamilyMerge;
 import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.FamilyService;
-import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import com.witkey.familyTree.util.PeopleTree;
@@ -245,6 +244,9 @@ public class MergeController {
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");

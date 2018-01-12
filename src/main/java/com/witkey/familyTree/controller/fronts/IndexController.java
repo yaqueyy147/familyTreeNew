@@ -83,24 +83,9 @@ public class IndexController {
 //            model.addAttribute("userInfo",temp);
 //        }
 
-//        Map<String,Object> params = new HashMap<String,Object>();
-//        params.put("familyArea",1);
-//        List<List<TFamily>> list = new ArrayList<List<TFamily>>();
-//        List<TFamily> listMainland = familyService.getFamilyList(params);
-//        list.add(listMainland);
-//
-//        params.put("familyArea",2);
-//        List<TFamily> listHongKong = familyService.getFamilyList(params);
-//        list.add(listHongKong);
-//
-//        params.put("familyArea",3);
-//        List<TFamily> listTaiwan = familyService.getFamilyList(params);
-//        list.add(listTaiwan);
-//
-//        params.put("familyArea",4);
-//        List<TFamily> listAoMen = familyService.getFamilyList(params);
-//        list.add(listAoMen);
-//        model.addAttribute("familyList",list);
+        //获取所有有效族人人数
+        int totalCount = familyService.getFamilyTotalPeopleNum(-1,-1);
+        model.addAttribute("totalCount",totalCount);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("state",5);
         //查询前台可展示的族谱
