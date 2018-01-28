@@ -13,8 +13,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="<%=request.getContextPath()%>/static/css/fronts/index.css" rel="stylesheet" type="text/css" />
     <%@include file="common/commonCss.jsp"%>
+    <style>
+        .loading{
+            z-index: 8888;
+            width: 100%;
+            height: 100%;
+            background-color: #999999;
+            opacity: 0.5;
+            text-align: center;
+            position: fixed;
+            margin-top: -50px;
+            display: none;
+        }
+        .loading div{
+            z-index: 9999;
+            width: 200px;
+            height:200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            color: #ff0000;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
+<div class="loading">
+    <div>查询中,请稍后...</div>
+</div>
 <%@include file="common/header.jsp" %>
 <c:choose>
     <c:when test="${(userInfo.userType == 1 && userInfo.isVolunteer == 1) || (userInfo.userType == 2 && userInfo.state == 1)}">
@@ -23,6 +49,9 @@
                 <form class="navbar-form navbar-left searchForm" role="search">
                     <div class="form-group">
                         <input type="text" id="familyName" name="familyName" class="form-control" placeholder="族谱名">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="searchname" name="searchname" class="form-control" placeholder="姓名">
                     </div>
                     <div class="form-group addressSelect" data-toggle="distpicker">
                         <select id="province" name="province" data-province="---- 选择省 ----"></select>
@@ -44,7 +73,8 @@
                             <div class="caption">
                                 <h6>${family.familyFirstName}（${family.id}）</h6>
                                 <%--<h6>世界何氏族谱（${family.id}）</h6>--%>
-                                <p>家族人数：${family.peopleCount}人</p>
+                                <p>家族人数：${family.zspeopleCount}&nbsp;/&nbsp;${family.peopleCount}人</p>
+                                <%--<p>在世人数：${family.zspeopleCount}人</p>--%>
                                 <p>状态：
                                     <c:if test="${family.visitStatus == 0}">加密</c:if>
                                     <c:if test="${family.visitStatus == 1}">开放</c:if>

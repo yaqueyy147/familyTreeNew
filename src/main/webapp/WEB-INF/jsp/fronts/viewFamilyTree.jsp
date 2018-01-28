@@ -63,11 +63,11 @@
 <body>
 
 <%--<%@include file="common/header.jsp" %>--%>
-
+<div class="loading">
+    <div>加载中,请稍后...</div>
+</div>
 <div class="container" style="margin-top: 50px">
-    <div class="loading">
-        <div>加载中,请稍后...</div>
-    </div>
+
     <input type="hidden" value="${familyId}" id="familyIdT" name="familyIdT" />
     <div style="text-align: center;font-size: 20px">
         <p style="border-bottom: solid 1px #999999">

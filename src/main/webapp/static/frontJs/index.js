@@ -39,11 +39,13 @@ $(function () {
     });
 
     $("#searchBtn").click(function () {
+        $(".loading").show();
         var params = {};
         params.familyName = $("#familyName").val();
         params.province = $("#province").val();
         params.city = $("#city").val();
         params.district = $("#district").val();
+        params.searchname = $("#searchname").val();
 
         $.ajax({
             type:'post',
@@ -111,7 +113,7 @@ $(function () {
                 // $("#personalPoints").html(personalPointsContent);
                 // $("#companyPoints").html(companyPointsContent);
                 $("#familyContent").html(familyContent);
-
+                $(".loading").hide();
             },
             error:function (data) {
                 var responseText = data.responseText;

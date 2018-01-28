@@ -52,6 +52,7 @@ public class TPeople {
     private Integer superiorId;
     private String updateMan;
     private String updateTime;
+    private String isshield;
 
     @Id
     @Column(name = "id", unique = true)
@@ -454,6 +455,16 @@ public class TPeople {
         this.updateTime = updateTime;
     }
 
+    @Basic
+    @Column(name = "isshield")
+    public String getIsshield() {
+        return isshield;
+    }
+
+    public void setIsshield(String isshield) {
+        this.isshield = isshield;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -506,7 +517,7 @@ public class TPeople {
         if (superiorId != null ? !superiorId.equals(tPeople.superiorId) : tPeople.superiorId != null) return false;
         if (updateMan != null ? !updateMan.equals(tPeople.updateMan) : tPeople.updateMan != null) return false;
         if (updateTime != null ? !updateTime.equals(tPeople.updateTime) : tPeople.updateTime != null) return false;
-
+        if (isshield != null ? !isshield.equals(tPeople.isshield) : tPeople.isshield != null) return false;
         return true;
     }
 
@@ -552,6 +563,7 @@ public class TPeople {
         result = 31 * result + (superiorId != null ? superiorId.hashCode() : 0);
         result = 31 * result + (updateMan != null ? updateMan.hashCode() : 0);
         result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        result = 31 * result + (isshield != null ? isshield.hashCode() : 0);
         return result;
     }
 

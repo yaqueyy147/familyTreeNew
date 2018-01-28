@@ -93,19 +93,21 @@ public class IndexController {
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         //遍历族谱，查询设置族谱总人数
         for(TFamily tFamily : list){
-            int peopleCount = 0;
+            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
+            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
             Map<String,Object> map = new HashMap<String,Object>();
             Map<String,Object> paramss = new HashMap<>();
-            paramss.put("familyId",tFamily.getId());
-            paramss.put("peopleType",1);
-            paramss.put("isIndex",1);
-            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-            if(peopleList != null && peopleList.size() > 0)
-            {
-                peopleCount = peopleList.size();
-            }
+//            paramss.put("familyId",tFamily.getId());
+//            paramss.put("peopleType",1);
+//            paramss.put("isIndex",1);
+//            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+//            if(peopleList != null && peopleList.size() > 0)
+//            {
+//                peopleCount = peopleList.size();
+//            }
             map = CommonUtil.bean2Map(tFamily);
             map.put("peopleCount",peopleCount);
+            map.put("zspeopleCount",zspeopleCount);
             list1.add(map);
         }
         //查询被收录的族谱
@@ -136,8 +138,14 @@ public class IndexController {
     @RequestMapping(value = "/queryFamily")
     @ResponseBody
     public Map<String,Object> queryFamily(@RequestParam Map<String,Object> params){
+        String searchname = params.get("searchname") + "";
+        String indexsearchfamilyid = "";
+        if(!CommonUtil.isBlank(searchname)){
+            indexsearchfamilyid = familyService.getFamilyFromPeopleName(searchname);
+        }
         Map<String,Object> result = new HashMap<String,Object>();
         params.put("state",5);
+        params.put("indexsearchfamilyid",indexsearchfamilyid);
         List<TFamily> list = familyService.getFamilyList2(params);
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
