@@ -303,6 +303,9 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("familyName"))){
                 sql += " and family_name like '%" + params.get("familyName") + "%'";
             }
+            if(!CommonUtil.isBlank(params.get("indexsearchfamilyid"))){
+                sql += " and id in (" + params.get("indexsearchfamilyid") + ")";
+            }
         }
 
 //        List<TFamily> list = tFamilyDao.find(filter);
@@ -418,10 +421,9 @@ public class FamilyServiceImpl implements FamilyService {
                 sql += " and superior_id='" + params.get("superiorId") + "'";
 //            filter.put("generation",params.get("generation"));
             }
-//            if(!CommonUtil.isBlank(params.get("fatherId"))){
-//                sql += " and father_id='" + params.get("fatherId") + "'";
-////            filter.put("generation",params.get("generation"));
-//            }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and state='" + params.get("state") + "'";
+            }
 
             if(!CommonUtil.isBlank(params.get("orderBy"))){
                 sql += " " + params.get("orderBy");
@@ -843,18 +845,38 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public int getFamilyTotalPeopleNum(int familyId,int state) {
-        String sql = "select count(id) peopleCount from t_people where people_status=1";
+        String sql = "select count(id) peopleCount from t_people where people_status=1 and people_type=1";
         if(!CommonUtil.isBlank(familyId) && familyId > -1){
             sql += " and family_id=" + familyId;
         }
         if(!CommonUtil.isBlank(state) && state > -1){
             sql += " and state=" + state;
         }
+
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         if(list != null && list.size() > 0){
             return CommonUtil.parseInt(list.get(0).get("peopleCount"));
         }
         return 0;
+    }
+
+    @Override
+    public String getFamilyFromPeopleName(String name) {
+
+        String sql = "select family_id from t_people where name=? and people_status=1";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,name);
+
+        String result = ",";
+
+        if(list != null && list.size() > 0){
+            for (Map map : list) {
+                result += "'" + map.get("family_id") + "'";
+            }
+            return result.substring(1);
+        }
+
+        return null;
     }
 
     /**

@@ -48,7 +48,7 @@
                     <div class="caption">
                         <h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">${family.familyFirstName}（${family.id}）</a></h6>
                         <%--<h6><a href="javascript:void 0;" onclick="toEdit('${family.id}')">世界何氏族谱（${family.id}）</a></h6>--%>
-                        <p>家族人数：${family.peopleCount}人</p>
+                        <p>家族人数：${family.zspeopleCount}&nbsp;/&nbsp;${family.peopleCount}人</p>
                         <p>状态：
                             <c:if test="${family.visitStatus == 0}">加密</c:if>
                             <c:if test="${family.visitStatus == 1}">开放</c:if>

@@ -104,4 +104,7 @@ public interface FamilyService {
     //获取家族总人数
     public int getFamilyTotalPeopleNum(int familyId,int state);
 
+    //根据族人姓名查询族谱,返回包含有该族人的家族id的字符串
+    public String getFamilyFromPeopleName(String name);
+
 }

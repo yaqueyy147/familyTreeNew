@@ -76,18 +76,20 @@ public class FamilyController {
 
         List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         for(TFamily tFamily : list){
-            int peopleCount = 0;
+            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
+            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
             Map<String,Object> map = new HashMap<String,Object>();
-            Map<String,Object> paramss = new HashMap<>();
-            paramss.put("familyId",tFamily.getId());
-            paramss.put("peopleType",1);
-            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-            if(peopleList != null && peopleList.size() > 0)
-            {
-                peopleCount = peopleList.size();
-            }
+//            Map<String,Object> paramss = new HashMap<>();
+//            paramss.put("familyId",tFamily.getId());
+//            paramss.put("peopleType",1);
+//            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+//            if(peopleList != null && peopleList.size() > 0)
+//            {
+//                peopleCount = peopleList.size();
+//            }
             map = CommonUtil.bean2Map(tFamily);
             map.put("peopleCount",peopleCount);
+            map.put("zspeopleCount",zspeopleCount);
             list1.add(map);
         }
         model.addAttribute("familyList",list1);
@@ -367,21 +369,30 @@ public class FamilyController {
             }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
+
+            if(CommonUtil.parseInt(tPeople.getIsshield()) == 1){
+                pp.setName("***");
+            }else{
+                pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+                int peopleId = tPeople.getId();
+                List<TPeople> listMate = familyService.getMateList(peopleId);
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
             String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
 
-            String mate = "";
-            if(listMate != null && listMate.size() > 0){
-                for(TPeople tPeople1 : listMate){
-                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                String mate = "";
+                if(listMate != null && listMate.size() > 0){
+                    for(TPeople tPeople1 : listMate){
+                        mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                    }
+                    mate = mate.substring(1);
                 }
-                mate = mate.substring(1);
-            }
 
-            pp.setMateName(mate);
+                pp.setMateName(mate);
+            }
+//            map = CommonUtil.bean2Map(tPeople);
 //            map.put("mateList",listMate);
 //            list.add(map);
             list1.add(pp);
@@ -397,7 +408,7 @@ public class FamilyController {
      */
     @RequestMapping(value = "getPeopleInfo")
     @ResponseBody
-    public Map<String,Object> getPeopleInfo(String peopleId){
+    public Map<String,Object> getPeopleInfo(int peopleId){
         Map<String,Object> result = new HashMap<String,Object>();
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         result.put("tPeople",tPeople);
@@ -499,7 +510,7 @@ public class FamilyController {
 
         String msg = "保存成功";
         //修改成员信息
-        if(!CommonUtil.isBlank(tPeople.getId()) && !"0".equals(tPeople.getId())){
+        if(tPeople.getId() > 0){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
 
             tPeople.setCreateMan(tPeopleOld.getCreateMan());
@@ -517,16 +528,15 @@ public class FamilyController {
             logService.createLog(new TLog(2,userName,"补录修改族人-->" + tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
-            tPeople.setId(CommonUtil.uuid());
+
             tPeople.setIsSupplement(1);//设置该成员为补录成员
             tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-//            int peopleId = familyService.savePeople(tPeople);
-//            tPeople.setId(peopleId);
-            tPeopleDao.save(tPeople);
+            int peopleId = familyService.savePeople(tPeople);
+            tPeople.setId(peopleId);
 //            //添加积分
 //            //获取积分对应关系
 //            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
@@ -537,7 +547,7 @@ public class FamilyController {
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){
                 //保存配偶信息
-                TMate tMate = new TMate(mateId,tPeople.getId(),"",tPeople.getMateType());
+                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
                 familyService.saveMateInfo(tMate);
             }
             //记录日志
