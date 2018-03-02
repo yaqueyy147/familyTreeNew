@@ -3,7 +3,6 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -217,21 +216,21 @@ public class TPeople {
 
     @Basic
     @Column(name = "father_id")
-    public Integer getFatherId() {
+    public String getFatherId() {
         return fatherId;
     }
 
-    public void setFatherId(Integer fatherId) {
+    public void setFatherId(String fatherId) {
         this.fatherId = fatherId;
     }
 
     @Basic
     @Column(name = "mother_id")
-    public Integer getMotherId() {
+    public String getMotherId() {
         return motherId;
     }
 
-    public void setMotherId(Integer motherId) {
+    public void setMotherId(String motherId) {
         this.motherId = motherId;
     }
 
@@ -427,11 +426,11 @@ public class TPeople {
 
     @Basic
     @Column(name = "superior_id")
-    public Integer getSuperiorId() {
+    public String getSuperiorId() {
         return superiorId;
     }
 
-    public void setSuperiorId(Integer superiorId) {
+    public void setSuperiorId(String superiorId) {
         this.superiorId = superiorId;
     }
 
