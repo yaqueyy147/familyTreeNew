@@ -184,7 +184,8 @@ $(function () {
         $("#peopleType").val(1);
         $("#peopleInfo").text("");
         $("#mateId").val("");
-        $("#id").val(0);
+        $("#superiorId").val("");
+        $("#id").val("");
     });
 
     //同意收录，同意开启

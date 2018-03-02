@@ -22,6 +22,11 @@ $(function () {
         },
         callback:{
             onClick:zTreeOnClick
+        },
+        check:{
+            enable:true,
+            chkStyle:"checkbox",
+            chkboxType: { "Y": "", "N": "" }
         }
     };
 
@@ -196,14 +201,14 @@ $(function () {
 
     $('#addModal').on('hidden.bs.modal', function (e) {
         $("#peopleForm")[0].reset();
-        var ss = "<option value='0'>无</option>";
+        var ss = "<option value=''>无</option>";
         $("#fatherId").html(ss);
         $("#motherId").html(ss);
         $("#peopleType").val(1);
         $("#peopleInfo").text("");
-        $("#superiorId").val(0);
+        $("#superiorId").val("");
         $("#mateId").val("");
-        $("#id").val(0);
+        $("#id").val("");
     });
 
     // $("#generation").change(function(){
@@ -213,7 +218,7 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
-        $("#superiorId").val(0);
+        $("#superiorId").val("");
         initParent(generation-1);
     });
 
@@ -293,7 +298,7 @@ $(function () {
             if(fatherType == 1){
                 $("#superiorId").val($(this).val());
             }else{
-                $("#superiorId").val(0);
+                $("#superiorId").val("");
             }
         }
     });
@@ -309,6 +314,22 @@ $(function () {
                 $("#superiorId").val($("#fatherId").val());
             }
         }
+    });
+
+    $("a[name='setpeoplehideornot01']").click(function () {
+        var treeObj = $.fn.zTree.getZTreeObj("familyTree");
+        var checkednodes =  treeObj.getCheckedNodes(true);
+        if(checkednodes.length <= 0){
+            alert("请选择要屏蔽或者解除屏蔽的族人");
+            return;
+        }
+        var ids = "";
+        for(var i=0;i<checkednodes.length;i++){
+            var ii = checkednodes[i];
+            ids += ",'" + ii.id + "'";
+        }
+        ids = ids.substring(1);
+        alert(ids);
     });
 
 });
@@ -612,4 +633,33 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
             }
         });
     }
+}
+function setpeoplehideornot(familyid,peopleid){
+    $(".loading").show();
+    var url = "/consoles/setpeoplehideornot02";
+    if($.trim(peopleid).length > 0){
+        url = "/consoles/setpeoplehideornot01";
+    }
+    $.ajax({
+        type:'post',
+        url:projectUrl + url,
+        dataType:'json',
+        // async:false,
+        data:{familyid : familyid,peopleid:peopleid},
+        success:function (data) {
+            if(data.code){
+                alert("操作完成");
+            }
+            $(".loading").hide();
+        },
+        error:function (data) {
+            var responseText = data.responseText;
+            if(responseText.indexOf("登出跳转页面") >= 0){
+                ajaxErrorToLogin();
+            }else{
+                alert(JSON.stringify(data));
+            }
+
+        }
+    });
 }

@@ -13,15 +13,15 @@ import java.io.Serializable;
 public class TMate implements Serializable {
     private static final long serialVersionUID = 1949041494717743989L;
     private int id;
-    private int peopleId;
-    private int mateId;
+    private String peopleId;
+    private String mateId;
     private String remark;
     private Integer mateType;
 
     public TMate() {
     }
 
-    public TMate(int peopleId, int mateId, String remark, Integer mateType) {
+    public TMate(String peopleId, String mateId, String remark, Integer mateType) {
         this.peopleId = peopleId;
         this.mateId = mateId;
         this.remark = remark;
@@ -41,21 +41,21 @@ public class TMate implements Serializable {
 
     @Basic
     @Column(name = "people_id")
-    public int getPeopleId() {
+    public String getPeopleId() {
         return peopleId;
     }
 
-    public void setPeopleId(int peopleId) {
+    public void setPeopleId(String peopleId) {
         this.peopleId = peopleId;
     }
 
     @Basic
     @Column(name = "mate_id")
-    public int getMateId() {
+    public String getMateId() {
         return mateId;
     }
 
-    public void setMateId(int mateId) {
+    public void setMateId(String mateId) {
         this.mateId = mateId;
     }
 
@@ -98,8 +98,8 @@ public class TMate implements Serializable {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + peopleId;
-        result = 31 * result + mateId;
+        result = 31 * result + (peopleId != null ? peopleId.hashCode() : 0);
+        result = 31 * result + (mateId != null ? mateId.hashCode() : 0);
         result = 31 * result + (remark != null ? remark.hashCode() : 0);
         result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
         return result;

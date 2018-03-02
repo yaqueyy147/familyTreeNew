@@ -1,29 +1,26 @@
 package com.witkey.familyTree.util;
 
-import java.beans.PropertyDescriptor;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-
-import com.witkey.familyTree.domain.TMate;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.*;
-import java.util.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 普通的工具类
@@ -1801,6 +1798,10 @@ public class CommonUtil {
 			e.printStackTrace();
 		}
 		return params;
+	}
+
+	public static String uuid() {
+		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
 	public static void main(String[] args) throws Exception

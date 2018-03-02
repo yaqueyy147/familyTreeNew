@@ -133,19 +133,24 @@ public class FamilyServiceImpl implements FamilyService {
         return ii;
     }
 
-    /**
-     * 录入族人
-     * @param tPeople
-     * @return
-     */
     @Override
-    public int savePeople(TPeople tPeople) {
-        int peopleId = CommonUtil.parseInt(tPeopleDao.create(tPeople));
-        return peopleId;
+    public String savePeople(TPeople tPeople) {
+        return null;
     }
 
+//    /**
+//     * 录入族人
+//     * @param tPeople
+//     * @return
+//     */
+//    @Override
+//    public int savePeople(TPeople tPeople) {
+//        int peopleId = CommonUtil.parseInt(tPeopleDao.create(tPeople));
+//        return peopleId;
+//    }
+
     @Override
-    public int deletePeople(int peopleId, int familyId, int peopleType) {
+    public int deletePeople(String peopleId, int familyId, int peopleType) {
 
 //        int i = 0;
 //        tPeopleDao.removeById(peopleId);
@@ -491,7 +496,7 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public List<TPeople> getMateList(int peopleId) {
+    public List<TPeople> getMateList(String peopleId) {
 
         StringBuffer sql = new StringBuffer("select * from t_people where id in(");
         sql.append(" select mate_id from t_mate where people_id=?) and people_status<>9");
@@ -502,7 +507,7 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public TPeople getPeopleInfo(int peopleId) {
+    public TPeople getPeopleInfo(String peopleId) {
 
         TPeople tPeople = tPeopleDao.get(peopleId);
 
@@ -859,7 +864,7 @@ public class FamilyServiceImpl implements FamilyService {
      * @param peopleType
      * @return
      */
-    private int deletePeopleAndChildren(int peopleId, int familyId, int peopleType){
+    private int deletePeopleAndChildren(String peopleId, int familyId, int peopleType){
 
         int i=0;
         //如果是本族人，查询当前成员是否含有下一代人

@@ -20,10 +20,10 @@ public interface FamilyService {
     public int deleteFamily(Map<String,Object> params);
 
     //保存家族成员
-    public int savePeople(TPeople tPeople);
+    public String savePeople(TPeople tPeople);
 
     //删除成员
-    public int deletePeople(int peopleId, int familyId, int peopleType);
+    public int deletePeople(String peopleId, int familyId, int peopleType);
 
     //修改成员信息
     public void updatePeople(TPeople tPeople);
@@ -54,10 +54,10 @@ public interface FamilyService {
     public TFamily getFamilyFromId(int familyId);
 
     //根据peopleID查询配偶
-    public List<TPeople> getMateList(int peopleId);
+    public List<TPeople> getMateList(String peopleId);
 
     //根据peopleID查询people信息
-    public TPeople getPeopleInfo(int peopleId);
+    public TPeople getPeopleInfo(String peopleId);
 
     //查询积分对应关系
     public List<TPointsDic> getPointsRelation(int type,int state);

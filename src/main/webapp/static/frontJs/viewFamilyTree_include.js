@@ -212,14 +212,14 @@ $(function () {
 
     $('#addModal').on('hidden.bs.modal', function (e) {
         $("#peopleForm")[0].reset();
-        var ss = "<option value='0'>无</option>";
+        var ss = "<option value=''>无</option>";
         $("#fatherId").html(ss);
         $("#motherId").html(ss);
         $("#peopleType").val(1);
-        $("#superiorId").val(0);
+        $("#superiorId").val("");
         $("#peopleInfo").text("");
         $("#mateId").val("");
-        $("#id").val(0);
+        $("#id").val("");
     });
 
     // $("#generation").change(function(){
@@ -229,7 +229,7 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
-        $("#superiorId").val(0);
+        $("#superiorId").val("");
         initParent(generation-1);
     });
 
@@ -310,7 +310,7 @@ $(function () {
             if(fatherType == 1){
                 $("#superiorId").val($(this).val());
             }else{
-                $("#superiorId").val(0);
+                $("#superiorId").val("");
             }
         }
     });

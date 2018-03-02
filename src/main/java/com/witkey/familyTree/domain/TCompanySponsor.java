@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -38,6 +37,7 @@ public class TCompanySponsor implements Serializable {
     private String county;
     private String town;
     private String detailAddr;
+    private String rankfamily;
 
     public TCompanySponsor(){
 
@@ -294,6 +294,16 @@ public class TCompanySponsor implements Serializable {
         this.detailAddr = detailAddr;
     }
 
+    @Basic
+    @Column(name = "rankfamily")
+    public String getRankfamily() {
+        return rankfamily;
+    }
+
+    public void setRankfamily(String rankfamily) {
+        this.rankfamily = rankfamily;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -332,7 +342,7 @@ public class TCompanySponsor implements Serializable {
         if (county != null ? !county.equals(that.county) : that.county != null) return false;
         if (town != null ? !town.equals(that.town) : that.town != null) return false;
         if (detailAddr != null ? !detailAddr.equals(that.detailAddr) : that.detailAddr != null) return false;
-
+        if (rankfamily != null ? !rankfamily.equals(that.rankfamily) : that.rankfamily != null) return false;
         return true;
     }
 
@@ -363,6 +373,8 @@ public class TCompanySponsor implements Serializable {
         result = 31 * result + (county != null ? county.hashCode() : 0);
         result = 31 * result + (town != null ? town.hashCode() : 0);
         result = 31 * result + (detailAddr != null ? detailAddr.hashCode() : 0);
+
+        result = 31 * result + (rankfamily != null ? rankfamily.hashCode() : 0);
         return result;
     }
 

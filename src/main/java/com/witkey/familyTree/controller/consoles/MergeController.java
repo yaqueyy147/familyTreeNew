@@ -256,7 +256,7 @@ public class MergeController {
                 pp.setNocheck(true);
             }
 //            map = CommonUtil.bean2Map(tPeople);
-            int peopleId = tPeople.getId();
+            String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
             String mate = "";
             if(listMate != null && listMate.size() > 0){

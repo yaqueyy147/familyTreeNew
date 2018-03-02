@@ -1,5 +1,6 @@
 package com.witkey.familyTree.controller.consoles;
 
+import com.witkey.familyTree.dao.fronts.TPeopleDao;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.consoles.LogService;
@@ -45,6 +46,8 @@ public class ConsoleController {
     @Autowired
     private LogService logService;
 
+    @Autowired
+    private TPeopleDao tPeopleDao;
     /**
      * 公司列表页面
      * @param model
@@ -316,11 +319,11 @@ public class ConsoleController {
         }
 
         if("1".equals(userCC)){
-            tPeople.setId(0);
+            tPeople.setId("");
         }
         String msg = "保存成功";
         //修改成员信息
-        if(tPeople.getId() > 0){
+        if(!CommonUtil.isBlank(tPeople.getId()) && !"0".equals(tPeople.getId())){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
             tPeople.setCreateMan(tPeopleOld.getCreateMan());
             tPeople.setCreateId(tPeopleOld.getCreateId());
@@ -334,7 +337,7 @@ public class ConsoleController {
             logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
-
+            tPeople.setId(CommonUtil.uuid());
             //根据登录人和族谱创建人判断是否是补录
             TFamily tFamily = familyService.getFamilyFromId(tPeople.getFamilyId());
             //如果登录人不是族谱创建人，则为补录
@@ -345,8 +348,9 @@ public class ConsoleController {
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-            int peopleId = familyService.savePeople(tPeople);
-            tPeople.setId(peopleId);
+//            int peopleId = familyService.savePeople(tPeople);
+//            tPeople.setId(peopleId);
+            tPeopleDao.save(tPeople);
 
 //            if(CommonUtil.isBlank(userCC) || !"1".equals(userCC)){
 //                //添加积分
@@ -375,7 +379,7 @@ public class ConsoleController {
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){
                 //保存配偶信息
-                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
+                TMate tMate = new TMate(mateId,tPeople.getId(),"",tPeople.getMateType());
                 familyService.saveMateInfo(tMate);
             }
 
@@ -398,7 +402,7 @@ public class ConsoleController {
      */
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId, int familyId, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople(String peopleId, int familyId, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -463,7 +467,7 @@ public class ConsoleController {
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
-            int peopleId = tPeople.getId();
+            String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
             String mate = "";
             if(listMate != null && listMate.size() > 0){
@@ -490,7 +494,7 @@ public class ConsoleController {
      */
     @RequestMapping(value = "getPeopleInfo")
     @ResponseBody
-    public Map<String,Object> getPeopleInfo(int peopleId){
+    public Map<String,Object> getPeopleInfo(String peopleId){
         Map<String,Object> result = new HashMap<String,Object>();
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         result.put("tPeople",tPeople);
@@ -919,7 +923,7 @@ public class ConsoleController {
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
             pp.setDieAddr(tPeople.getDieAddr());
 //            map = CommonUtil.bean2Map(tPeople);
-            int peopleId = tPeople.getId();
+            String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
 
             String mate = "";

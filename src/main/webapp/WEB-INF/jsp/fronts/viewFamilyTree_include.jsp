@@ -136,11 +136,11 @@
                                 <%--</select>--%>
                                 <%--代--%>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input name="id" id="id" type="hidden" value="0" />
+                                <input name="id" id="id" type="hidden" value="" />
                                 <input name="mateId" id="mateId" type="hidden"/>
                                 <input name="peopleType" id="peopleType" type="hidden" value="1" />
                                 <input name="peopleStatus" id="peopleStatus" type="hidden" value="5" />
-                                <input name="superiorId" id="superiorId" type="hidden" value="0" />
+                                <input name="superiorId" id="superiorId" type="hidden" value="" />
                                 <span id="peopleInfo"></span>
                             </td>
                         </tr>

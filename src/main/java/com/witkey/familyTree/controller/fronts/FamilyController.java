@@ -1,5 +1,6 @@
 package com.witkey.familyTree.controller.fronts;
 
+import com.witkey.familyTree.dao.fronts.TPeopleDao;
 import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -44,6 +45,8 @@ public class FamilyController {
 
     @Autowired
     private LogService logService;
+    @Autowired
+    private TPeopleDao tPeopleDao;
 
     /**
      * 个人中心
@@ -367,7 +370,7 @@ public class FamilyController {
             pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
-            int peopleId = tPeople.getId();
+            String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
 
             String mate = "";
@@ -394,7 +397,7 @@ public class FamilyController {
      */
     @RequestMapping(value = "getPeopleInfo")
     @ResponseBody
-    public Map<String,Object> getPeopleInfo(int peopleId){
+    public Map<String,Object> getPeopleInfo(String peopleId){
         Map<String,Object> result = new HashMap<String,Object>();
         TPeople tPeople = familyService.getPeopleInfo(peopleId);
         result.put("tPeople",tPeople);
@@ -411,40 +414,43 @@ public class FamilyController {
      */
     @RequestMapping(value = "/savePeople")
     @ResponseBody
-    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId) throws Exception{
-        JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
-        String userName = jsonUser.get("userName") + "";
+    public Map<String,Object> savePeople(HttpServletRequest request, TPeople tPeople,String birth_time,String die_time,String mateId){
         Map<String,Object> map = new HashMap<String,Object>();
-        if(!CommonUtil.isBlank(birth_time)){
-            tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
-        }
-        if(!CommonUtil.isBlank(die_time)){
-            tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
-        }
+        try {
+            JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
+            String userName = jsonUser.get("userName") + "";
 
-        String msg = "保存成功";
-        //修改成员信息
-        if(tPeople.getId() > 0){
-            TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
-            tPeople.setCreateMan(tPeopleOld.getCreateMan());
-            tPeople.setCreateId(tPeopleOld.getCreateId());
-            tPeople.setCreateTime(tPeopleOld.getCreateTime());
-            tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
-            tPeople.setUpdateMan(userName);
-            tPeople.setUpdateTime(CommonUtil.getDateLong());
+            if(!CommonUtil.isBlank(birth_time)){
+                tPeople.setBirthTime(CommonUtil.ObjToDate(birth_time));
+            }
+            if(!CommonUtil.isBlank(die_time)){
+                tPeople.setDieTime(CommonUtil.ObjToDate(die_time));
+            }
 
-            familyService.updatePeople(tPeople);
-            msg = "修改成功";
-            //记录日志
-            logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
+            String msg = "保存成功";
+            //修改成员信息
+            if(!CommonUtil.isBlank(tPeople.getId()) && !"0".equals(tPeople.getId())){
+                TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
+                tPeople.setCreateMan(tPeopleOld.getCreateMan());
+                tPeople.setCreateId(tPeopleOld.getCreateId());
+                tPeople.setCreateTime(tPeopleOld.getCreateTime());
+                tPeople.setIsSupplement(tPeopleOld.getIsSupplement());
+                tPeople.setUpdateMan(userName);
+                tPeople.setUpdateTime(CommonUtil.getDateLong());
 
-        }else{//新建成员
+                familyService.updatePeople(tPeople);
+                msg = "修改成功";
+                //记录日志
+                logService.createLog(new TLog(2,userName,tPeople.toString(),tPeopleOld.toString()));
 
-            tPeople.setCreateMan(jsonUser.get("userName")+"");
-            tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
-            tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-            int peopleId = familyService.savePeople(tPeople);
-            tPeople.setId(peopleId);
+            }else{//新建成员
+                tPeople.setId(CommonUtil.uuid());
+                tPeople.setCreateMan(jsonUser.get("userName")+"");
+                tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
+                tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
+                tPeopleDao.save(tPeople);
+//            String peopleId = familyService.savePeople(tPeople);
+//            tPeople.setId(peopleId);
 //            //添加积分
 //            //获取积分对应关系
 //            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
@@ -452,18 +458,21 @@ public class FamilyController {
 //
 //            familyService.setPoints(tUserPoints,1);
 
-            //如果是添加配偶
-            if(tPeople.getPeopleType() == 0){
-                //保存配偶信息
-                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
-                familyService.saveMateInfo(tMate);
+                //如果是添加配偶
+                if(tPeople.getPeopleType() == 0){
+                    //保存配偶信息
+                    TMate tMate = new TMate(mateId,tPeople.getId(),"",tPeople.getMateType());
+                    familyService.saveMateInfo(tMate);
+                }
+                //记录日志
+                logService.createLog(new TLog(1,userName,tPeople.toString()));
             }
-            //记录日志
-            logService.createLog(new TLog(1,userName,tPeople.toString()));
+            map.put("tPeople",tPeople);
+            map.put("msg",msg);
+            map.put("code",1);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        map.put("tPeople",tPeople);
-        map.put("msg",msg);
-        map.put("code",1);
         return map;
     }
 
@@ -490,7 +499,7 @@ public class FamilyController {
 
         String msg = "保存成功";
         //修改成员信息
-        if(tPeople.getId() > 0){
+        if(!CommonUtil.isBlank(tPeople.getId()) && !"0".equals(tPeople.getId())){
             TPeople tPeopleOld = familyService.getPeopleInfo(tPeople.getId());
 
             tPeople.setCreateMan(tPeopleOld.getCreateMan());
@@ -508,15 +517,16 @@ public class FamilyController {
             logService.createLog(new TLog(2,userName,"补录修改族人-->" + tPeople.toString(),tPeopleOld.toString()));
 
         }else{//新建成员
-
+            tPeople.setId(CommonUtil.uuid());
             tPeople.setIsSupplement(1);//设置该成员为补录成员
             tPeople.setPeopleStatus(5);//设置状态为补录未审核状态
 
             tPeople.setCreateMan(jsonUser.get("userName")+"");
             tPeople.setCreateId(CommonUtil.parseInt(jsonUser.get("id")));
             tPeople.setCreateTime(CommonUtil.ObjToDate(CommonUtil.getDateLong()));
-            int peopleId = familyService.savePeople(tPeople);
-            tPeople.setId(peopleId);
+//            int peopleId = familyService.savePeople(tPeople);
+//            tPeople.setId(peopleId);
+            tPeopleDao.save(tPeople);
 //            //添加积分
 //            //获取积分对应关系
 //            List<TPointsDic> listDic = familyService.getPointsRelation(1,1);
@@ -527,7 +537,7 @@ public class FamilyController {
             //如果是添加配偶
             if(tPeople.getPeopleType() == 0){
                 //保存配偶信息
-                TMate tMate = new TMate(CommonUtil.parseInt(mateId),tPeople.getId(),"",tPeople.getMateType());
+                TMate tMate = new TMate(mateId,tPeople.getId(),"",tPeople.getMateType());
                 familyService.saveMateInfo(tMate);
             }
             //记录日志
@@ -549,7 +559,7 @@ public class FamilyController {
      */
     @RequestMapping(value = "/deletePeople")
     @ResponseBody
-    public Map<String,Object> deletePeople(int peopleId, int familyId, int peopleType, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople(String peopleId, int familyId, int peopleType, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -592,7 +602,7 @@ public class FamilyController {
      */
     @RequestMapping(value = "/deletePeople_include")
     @ResponseBody
-    public Map<String,Object> deletePeople_include(int peopleId, int familyId, HttpServletRequest request) throws Exception{
+    public Map<String,Object> deletePeople_include(String peopleId, int familyId, HttpServletRequest request) throws Exception{
         JSONObject jsonUser = CookieUtil.cookieValueToJsonObject(request,"userInfo");
         String userName = jsonUser.get("userName") + "";
         Map<String,Object> result = new HashMap<String,Object>();
@@ -803,7 +813,7 @@ public class FamilyController {
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
             pp.setDieAddr(tPeople.getDieAddr());
 //            map = CommonUtil.bean2Map(tPeople);
-            int peopleId = tPeople.getId();
+            String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
 
             String mate = "";

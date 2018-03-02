@@ -3,7 +3,6 @@ package com.witkey.familyTree.domain;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -12,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "t_people")
 public class TPeople {
-    private int id;
+    private String id;
     private int familyId;
     private Integer generation;
     private String name;
@@ -28,8 +27,8 @@ public class TPeople {
     private String idCard;
     private String phone;
     private String email;
-    private Integer fatherId;
-    private Integer motherId;
+    private String fatherId;
+    private String motherId;
     private Date birthTime;
     private String birthAddr;
     private Date dieTime;
@@ -49,18 +48,19 @@ public class TPeople {
     private Integer peopleStatus;
     private Integer isSupplement;
     private Integer createId;
-    private Integer superiorId;
+    private String superiorId;
     private String updateMan;
     private String updateTime;
+    private String ishide;
 
     @Id
-    @Column(name = "id", unique = true)
-    @GeneratedValue
-    public int getId() {
+    @Column(name = "id")
+//    @GeneratedValue
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -216,21 +216,21 @@ public class TPeople {
 
     @Basic
     @Column(name = "father_id")
-    public Integer getFatherId() {
+    public String getFatherId() {
         return fatherId;
     }
 
-    public void setFatherId(Integer fatherId) {
+    public void setFatherId(String fatherId) {
         this.fatherId = fatherId;
     }
 
     @Basic
     @Column(name = "mother_id")
-    public Integer getMotherId() {
+    public String getMotherId() {
         return motherId;
     }
 
-    public void setMotherId(Integer motherId) {
+    public void setMotherId(String motherId) {
         this.motherId = motherId;
     }
 
@@ -426,11 +426,11 @@ public class TPeople {
 
     @Basic
     @Column(name = "superior_id")
-    public Integer getSuperiorId() {
+    public String getSuperiorId() {
         return superiorId;
     }
 
-    public void setSuperiorId(Integer superiorId) {
+    public void setSuperiorId(String superiorId) {
         this.superiorId = superiorId;
     }
 
@@ -452,6 +452,16 @@ public class TPeople {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Basic
+    @Column(name = "ishide")
+    public String getIshide() {
+        return ishide;
+    }
+
+    public void setIshide(String ishide) {
+        this.ishide = ishide;
     }
 
     @Override
@@ -506,53 +516,8 @@ public class TPeople {
         if (superiorId != null ? !superiorId.equals(tPeople.superiorId) : tPeople.superiorId != null) return false;
         if (updateMan != null ? !updateMan.equals(tPeople.updateMan) : tPeople.updateMan != null) return false;
         if (updateTime != null ? !updateTime.equals(tPeople.updateTime) : tPeople.updateTime != null) return false;
-
+        if (ishide != null ? !ishide.equals(tPeople.ishide) : tPeople.ishide != null) return false;
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + familyId;
-        result = 31 * result + (generation != null ? generation.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (usedName != null ? usedName.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + (familyGeneration != null ? familyGeneration.hashCode() : 0);
-        result = 31 * result + (familyRank != null ? familyRank.hashCode() : 0);
-        result = 31 * result + (generationActor != null ? generationActor.hashCode() : 0);
-        result = 31 * result + (nationality != null ? nationality.hashCode() : 0);
-        result = 31 * result + (nation != null ? nation.hashCode() : 0);
-        result = 31 * result + (education != null ? education.hashCode() : 0);
-        result = 31 * result + (job != null ? job.hashCode() : 0);
-        result = 31 * result + (idCard != null ? idCard.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (fatherId != null ? fatherId.hashCode() : 0);
-        result = 31 * result + (motherId != null ? motherId.hashCode() : 0);
-        result = 31 * result + (birthTime != null ? birthTime.hashCode() : 0);
-        result = 31 * result + (birthAddr != null ? birthAddr.hashCode() : 0);
-        result = 31 * result + (dieTime != null ? dieTime.hashCode() : 0);
-        result = 31 * result + (dieAddr != null ? dieAddr.hashCode() : 0);
-        result = 31 * result + (liveAddr != null ? liveAddr.hashCode() : 0);
-        result = 31 * result + (specialRemark != null ? specialRemark.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (xing != null ? xing.hashCode() : 0);
-        result = 31 * result + (artName != null ? artName.hashCode() : 0);
-        result = 31 * result + (cName != null ? cName.hashCode() : 0);
-        result = 31 * result + (photoUrl != null ? photoUrl.hashCode() : 0);
-        result = 31 * result + (remark != null ? remark.hashCode() : 0);
-        result = 31 * result + (createMan != null ? createMan.hashCode() : 0);
-        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
-        result = 31 * result + (mateType != null ? mateType.hashCode() : 0);
-        result = 31 * result + (peopleType != null ? peopleType.hashCode() : 0);
-        result = 31 * result + (peopleStatus != null ? peopleStatus.hashCode() : 0);
-        result = 31 * result + (isSupplement != null ? isSupplement.hashCode() : 0);
-        result = 31 * result + (createId != null ? createId.hashCode() : 0);
-        result = 31 * result + (superiorId != null ? superiorId.hashCode() : 0);
-        result = 31 * result + (updateMan != null ? updateMan.hashCode() : 0);
-        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
-        return result;
     }
 
     @Override
