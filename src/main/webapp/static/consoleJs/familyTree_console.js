@@ -24,7 +24,7 @@ $(function () {
             onClick:zTreeOnClick
         },
         check:{
-            enable:true,
+            enable:"true",
             chkStyle:"checkbox",
             chkboxType: { "Y": "", "N": "" }
         }
@@ -329,7 +329,13 @@ $(function () {
             ids += ",'" + ii.id + "'";
         }
         ids = ids.substring(1);
-        alert(ids);
+        var ishide = $(this).attr("data-ishide");
+        setpeoplehideornot("",ids,ishide);
+    });
+
+    $("a[name='setpeoplehideornot02']").click(function () {
+        var ishide = $(this).attr("data-ishide");
+        setpeoplehideornot(familyId,"",ishide);
     });
 
 });
@@ -469,7 +475,6 @@ function initPeopleData(familyId){
         // async:false,
         data:{familyId : familyId,isIndex:0},
         success:function (data) {
-
             // for(var i=0;i<data.length;i++) {
             //     var ii = data[i];
             //     var node = {};
@@ -634,10 +639,10 @@ function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
         });
     }
 }
-function setpeoplehideornot(familyid,peopleid){
+function setpeoplehideornot(familyid,peopleids,ishide){
     $(".loading").show();
     var url = "/consoles/setpeoplehideornot02";
-    if($.trim(peopleid).length > 0){
+    if($.trim(peopleids).length > 0){
         url = "/consoles/setpeoplehideornot01";
     }
     $.ajax({
@@ -645,10 +650,17 @@ function setpeoplehideornot(familyid,peopleid){
         url:projectUrl + url,
         dataType:'json',
         // async:false,
-        data:{familyid : familyid,peopleid:peopleid},
+        data:{familyid : familyid,peopleids:peopleids,ishide:ishide},
         success:function (data) {
             if(data.code){
                 alert("操作完成");
+
+                //屏蔽完成，标记节点为已屏蔽
+                if($.trim(peopleids).length > 0){
+                    sethidedesc(peopleids,ishide);
+                }else{
+                    sethidedesc("",ishide);
+                }
             }
             $(".loading").hide();
         },
@@ -662,4 +674,37 @@ function setpeoplehideornot(familyid,peopleid){
 
         }
     });
+}
+
+function sethidedesc(peopleids,ishide){
+    var treeObj = $.fn.zTree.getZTreeObj("familyTree");
+    var hidedesc = "--已屏蔽";
+    if($.trim(peopleids).length > 0){
+        var peopleid = peopleids.split(",");
+        for(var i=0;i<peopleid.length;i++){
+            var ii = peopleid[i];//.replaceAll("'","")
+            ii = ii.replace("'","");
+            var node = treeObj.getNodeByParam("id", ii, null);
+            var name = node["name"];
+            if(ishide == 1){
+                node["name"] = name + hidedesc;
+            }else{
+                node["name"] = name.replaceAll(hidedesc,"");
+            }
+            treeObj.updateNode(node);
+        }
+    }else {
+        var nodes = treeObj.getNodesByParam("isdie", 1, null);
+
+        for(var i=0;i<nodes.length;i++){
+            var node = nodes[i];
+            var name = node["name"];
+            if(ishide == 1){
+                node["name"] = name + hidedesc;
+            }else{
+                node["name"] = name.replaceAll(hidedesc,"");
+            }
+            treeObj.updateNode(node);
+        }
+    }
 }

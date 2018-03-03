@@ -456,6 +456,8 @@ public class ConsoleController {
         for (TPeople tPeople : listPeople) {
             Map<String,Object> map = new HashMap<>();
             PeopleTree pp = new PeopleTree();
+            pp.setNocheck(false);
+            pp.setChkDisabled(false);
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
@@ -464,7 +466,12 @@ public class ConsoleController {
             }
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
-            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+            pp.setIsdie(tPeople.getState() + "");
+            String name = tPeople.getName() + "(第" + tPeople.getGeneration() + "世)";
+            if("1".equals(tPeople.getIshide())){
+                name += "--已屏蔽";
+            }
+            pp.setName(name);
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
 //            map = CommonUtil.bean2Map(tPeople);
             String peopleId = tPeople.getId();

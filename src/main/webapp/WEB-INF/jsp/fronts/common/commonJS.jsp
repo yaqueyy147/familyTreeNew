@@ -5,6 +5,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.zh-CN.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/fileInput/fileinput.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/fileInput/fileinput_locale_zh.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery.form.js"></script>

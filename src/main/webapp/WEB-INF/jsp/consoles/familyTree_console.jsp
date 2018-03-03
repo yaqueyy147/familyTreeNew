@@ -78,10 +78,10 @@
             </c:if>
             &nbsp;&nbsp;
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
-            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeople" name="setpeoplehideornot01">屏蔽已选</a>
-            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeopleAll" name="setpeoplehideornot02">屏蔽所有在世</a>
-            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="unhidePeople" name="setpeoplehideornot01">解除屏蔽已选</a>
-            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="unhidePeopleAll" name="setpeoplehideornot02">解除屏蔽所有在世</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeople" name="setpeoplehideornot01" data-ishide="1">屏蔽已选</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeopleAll" name="setpeoplehideornot02" data-ishide="1">屏蔽所有在世</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="unhidePeople" name="setpeoplehideornot01" data-ishide="0">解除屏蔽已选</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="unhidePeopleAll" name="setpeoplehideornot02" data-ishide="0">解除屏蔽所有在世</a>
             <%--<a class="btn btn-primary btn-sm" href="javascript:void 0;" id="print" data-toggle="modal" data-target="#printModal">打印</a>--%>
             <c:if test="${merge.state == 3}">
                 <span>驳回意见:${merge.rejectDesc}</span>

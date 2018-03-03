@@ -24,8 +24,8 @@ public class ConsoleFamilyServiceImpl implements ConsoleFamilyService {
      */
     @Override
     public int setHideOrNotFromId(Map<String, Object> params) throws Exception {
-        String sql = "update t_people set ishide=? where id in(?) and state=1";
-        int i = jdbcTemplate.update(sql,params.get("ishide"),params.get("ids"));
+        String sql = "update t_people set ishide=? where id in(" + params.get("peopleids") + ")";
+        int i = jdbcTemplate.update(sql,params.get("ishide"));
         return i;
     }
 

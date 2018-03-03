@@ -1,7 +1,9 @@
 package com.witkey.familyTree.controller.consoles;
 
+import com.witkey.familyTree.service.consoles.ConsoleFamilyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,9 @@ public class ConsoleFamilyController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleFamilyController.class);
 
+    @Autowired
+    private ConsoleFamilyService consoleFamilyService;
+
     /**
      * 设置选择的族人屏蔽或者解除屏蔽
      * @param request
@@ -35,16 +40,15 @@ public class ConsoleFamilyController {
 
         Map<String,Object> map = new HashMap<String,Object>();
         try {
-            String ids = params.get("ids") + "";
-
-
+            consoleFamilyService.setHideOrNotFromId(params);
+            map.put("msg","屏蔽完成");
+            map.put("code",1);
         }catch (Exception e){
             LOGGER.error("操作出错了-->",e);
             map.put("msg","系统错误");
             map.put("code",-1);
         }
-        map.put("msg","屏蔽完成");
-        map.put("code",1);
+
         return map;
     }
 
@@ -62,16 +66,15 @@ public class ConsoleFamilyController {
 
         Map<String,Object> map = new HashMap<String,Object>();
         try {
-            String ids = params.get("ids") + "";
-
-
+            consoleFamilyService.setHideOrNotFromFamily(params);
+            map.put("msg","屏蔽完成");
+            map.put("code",1);
         }catch (Exception e){
             LOGGER.error("操作出错了-->",e);
             map.put("msg","系统错误");
             map.put("code",-1);
         }
-        map.put("msg","屏蔽完成");
-        map.put("code",1);
+
         return map;
     }
 
