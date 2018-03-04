@@ -207,7 +207,7 @@ public class ConsoleServiceImpl implements ConsoleService {
     @Override
     public List<Map<String, Object>> getCompanyList(Map<String, Object> params) {
 
-        String sql = "select * from t_company_sponsor where 1=1";// where state=?
+        String sql = "select * from t_company_sponsor where 1=1";
 
         if(!CommonUtil.isBlank(params)){
 

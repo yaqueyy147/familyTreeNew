@@ -1,4 +1,4 @@
-package com.witkey.familyTree.controller.fronts;
+package com.witkey.familyTree.controller.tools;
 
 import com.witkey.familyTree.util.CommonUtil;
 import net.sf.json.JSONObject;

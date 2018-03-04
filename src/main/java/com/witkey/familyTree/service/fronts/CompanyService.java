@@ -54,4 +54,7 @@ public interface CompanyService {
 
     //申请赞助
     public int applySponsor(int companyId);
+
+    //设置积分排序家族
+    public int setrankfamily(Map<String,Object> params) throws Exception;
 }

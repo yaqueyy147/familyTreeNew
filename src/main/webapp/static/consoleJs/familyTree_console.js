@@ -218,6 +218,10 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
+        if(generation <= 0){
+            generation = 1;
+            $(this).val(1);
+        }
         $("#superiorId").val("");
         initParent(generation-1);
     });
@@ -657,9 +661,9 @@ function setpeoplehideornot(familyid,peopleids,ishide){
 
                 //屏蔽完成，标记节点为已屏蔽
                 if($.trim(peopleids).length > 0){
-                    sethidedesc(peopleids,ishide);
+                    sethidedesc(1,ishide);
                 }else{
-                    sethidedesc("",ishide);
+                    sethidedesc(0,ishide);
                 }
             }
             $(".loading").hide();
@@ -676,35 +680,56 @@ function setpeoplehideornot(familyid,peopleids,ishide){
     });
 }
 
-function sethidedesc(peopleids,ishide){
+function sethidedesc(type,ishide){
     var treeObj = $.fn.zTree.getZTreeObj("familyTree");
     var hidedesc = "--已屏蔽";
-    if($.trim(peopleids).length > 0){
-        var peopleid = peopleids.split(",");
-        for(var i=0;i<peopleid.length;i++){
-            var ii = peopleid[i];//.replaceAll("'","")
-            ii = ii.replace("'","");
-            var node = treeObj.getNodeByParam("id", ii, null);
-            var name = node["name"];
-            if(ishide == 1){
-                node["name"] = name + hidedesc;
-            }else{
-                node["name"] = name.replaceAll(hidedesc,"");
-            }
-            treeObj.updateNode(node);
-        }
+    var nodes;
+    if(type == 1){
+        nodes = treeObj.getCheckedNodes(true);
     }else {
-        var nodes = treeObj.getNodesByParam("isdie", 1, null);
-
-        for(var i=0;i<nodes.length;i++){
-            var node = nodes[i];
-            var name = node["name"];
-            if(ishide == 1){
-                node["name"] = name + hidedesc;
-            }else{
-                node["name"] = name.replaceAll(hidedesc,"");
-            }
-            treeObj.updateNode(node);
+        nodes = treeObj.getNodesByParam("isdie", 1, null);
+    }
+    for(var i=0;i<nodes.length;i++){
+        var node = nodes[i];
+        var name = node["name"];
+        if(ishide == 1){
+            node["name"] = name + hidedesc;
+        }else{
+            node["name"] = name.replace(hidedesc,"");
         }
+        treeObj.updateNode(node);
     }
 }
+
+// function sethidedesc(peopleids,ishide){
+//     var treeObj = $.fn.zTree.getZTreeObj("familyTree");
+//     var hidedesc = "--已屏蔽";
+//     if($.trim(peopleids).length > 0){
+//         var peopleid = peopleids.split(",");
+//         for(var i=0;i<peopleid.length;i++){
+//             var ii = peopleid[i];//.replaceAll("'","")
+//             ii = ii.replace("'","");
+//             var node = treeObj.getNodeByParam("id", ii, null);
+//             var name = node["name"];
+//             if(ishide == 1){
+//                 node["name"] = name + hidedesc;
+//             }else{
+//                 node["name"] = name.replaceAll(hidedesc,"");
+//             }
+//             treeObj.updateNode(node);
+//         }
+//     }else {
+//         var nodes = treeObj.getNodesByParam("isdie", 1, null);
+//
+//         for(var i=0;i<nodes.length;i++){
+//             var node = nodes[i];
+//             var name = node["name"];
+//             if(ishide == 1){
+//                 node["name"] = name + hidedesc;
+//             }else{
+//                 node["name"] = name.replaceAll(hidedesc,"");
+//             }
+//             treeObj.updateNode(node);
+//         }
+//     }
+// }

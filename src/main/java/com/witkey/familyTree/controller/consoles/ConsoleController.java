@@ -48,62 +48,7 @@ public class ConsoleController {
 
     @Autowired
     private TPeopleDao tPeopleDao;
-    /**
-     * 公司列表页面
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "company")
-    public ModelAndView companyList(Model model){
 
-//        Map<String,Object> params = new HashMap<String,Object>();
-//        params.put("state",0);
-//        List<Map<String,Object>> list = consoleService.getCompanyList(params);
-//        model.addAttribute("companyList",list);
-        return new ModelAndView("/consoles/companyList");
-    }
-
-    /**
-     * 赞助商列表数据
-     * @param params
-     * @return
-     */
-    @RequestMapping(value = "companyList")
-    @ResponseBody
-    public Map<String,Object> getCompanyList(@RequestParam Map<String,Object> params){
-        Map<String,Object> result = new HashMap<String,Object>();
-        List<Map<String,Object>> list = consoleService.getCompanyList(params);
-        result.put("dataList",list);
-        return result;
-    }
-
-    /**
-     * 审核赞助商
-     * @param params
-     * @return
-     */
-    @RequestMapping(value = "/auditCompany")
-    @ResponseBody
-    public Map<String,Object> auditCompany(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
-        JSONObject consolesUser = CookieUtil.cookieValueToJsonObject(request,"consoleUserInfo");
-
-        String userName = consolesUser.get("userName") + "";
-        params.put("auditMan",userName);
-        int i = 0;
-        Map<String,Object> map = new HashMap<String,Object>();
-        try {
-            i = consoleService.auditCompany(params);
-            map.put("msg","审核完成");
-            map.put("code",1);
-        }catch (Exception e){
-            LOGGER.error("操作出错了-->",e);
-            map.put("msg","系统错误");
-            map.put("code",-1);
-        }
-        map.put("msg","审核完成");
-        map.put("code",1);
-        return map;
-    }
 
     /**
      * 族谱列表页面

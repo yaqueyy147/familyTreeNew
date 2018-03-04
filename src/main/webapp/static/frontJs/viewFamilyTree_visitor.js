@@ -34,6 +34,10 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
+        if(generation <= 0){
+            generation = 1;
+            $(this).val(1);
+        }
         initParent(generation-1);
     });
 
@@ -125,7 +129,7 @@ function initPeopleData(familyId){
     $(".loading").show();
     $.ajax({
         type:'post',
-        url:projectUrl + '/family/getPeopleList',
+        url:projectUrl + '/family/getPeopleList4Index',
         dataType:'json',
         // async:false,
         data:{familyId : familyId,isIndex:1},

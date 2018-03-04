@@ -330,6 +330,7 @@ public class FamilyController {
         List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params2);
         //公司积分排名
         params2.put("type",2);
+        params2.put("familyId",familyId);
         List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params2);
         model.addAttribute("listPersonalPoints",listPersonalPoints);
         model.addAttribute("listCompanyPoints",listCompanyPoints);
@@ -370,15 +371,65 @@ public class FamilyController {
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
 
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+            String peopleId = tPeople.getId();
+            List<TPeople> listMate = familyService.getMateList(peopleId);
+
+            String mate = "";
+            if(listMate != null && listMate.size() > 0){
+                for(TPeople tPeople1 : listMate){
+                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+                }
+                mate = mate.substring(1);
+            }
+
+            pp.setMateName(mate);
+            list1.add(pp);
+        }
+        System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+        return list1;
+    }
+
+    /**
+     * 根据家族ID获取家族成员
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/getPeopleList4Index")
+    @ResponseBody
+    public Object getPeopleList4Index(@RequestParam Map<String,Object> params, HttpServletRequest request){
+
+        //查询族人
+        params.put("peopleType",1);
+        params.put("orderBy"," order by family_rank asc");
+
+        System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+
+//        params.put("isIndex",1);
+        List<TPeople> listPeople = familyService.getPeopleList(params);
+        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+//        List<Map<String,Object>> list = new ArrayList<>();
+        List<PeopleTree> list1 = new ArrayList<>();
+
+        //根据族人Id查询配偶
+        for (TPeople tPeople : listPeople) {
+            Map<String,Object> map = new HashMap<>();
+            PeopleTree pp = new PeopleTree();
+            pp.setId(tPeople.getId() + "");
+            pp.setpId(tPeople.getSuperiorId() + "");
+            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+            if(tPeople.getState() == 0){
+                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+            }
+            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+            pp.setOpen(true);
+
             if(CommonUtil.parseInt(tPeople.getIshide()) == 1){
                 pp.setName("***");
             }else{
-//                pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
-//                String peopleId = tPeople.getId();
-//                List<TPeople> listMate = familyService.getMateList(peopleId);
                 pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
                 pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
-    //            map = CommonUtil.bean2Map(tPeople);
                 String peopleId = tPeople.getId();
                 List<TPeople> listMate = familyService.getMateList(peopleId);
 
@@ -392,9 +443,6 @@ public class FamilyController {
 
                 pp.setMateName(mate);
             }
-//            map = CommonUtil.bean2Map(tPeople);
-//            map.put("mateList",listMate);
-//            list.add(map);
             list1.add(pp);
         }
         System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );

@@ -229,6 +229,10 @@ $(function () {
 
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
+        if(generation <= 0){
+            generation = 1;
+            $(this).val(1);
+        }
         $("#superiorId").val("");
         initParent(generation-1);
     });

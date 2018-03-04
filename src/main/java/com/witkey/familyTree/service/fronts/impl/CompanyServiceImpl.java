@@ -225,4 +225,13 @@ public class CompanyServiceImpl implements CompanyService {
 
         return i;
     }
+
+    @Override
+    public int setrankfamily(Map<String, Object> params) throws Exception {
+
+        String sql = "update t_company_sponsor set rankfamily=?,rankfamilyname=? where id=?";
+        int i = jdbcTemplate.update(sql,params.get("familyid"),params.get("familyname"),params.get("companyid"));
+
+        return i;
+    }
 }

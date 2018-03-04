@@ -38,6 +38,7 @@ public class TCompanySponsor implements Serializable {
     private String town;
     private String detailAddr;
     private String rankfamily;
+    private String rankfamilyname;
 
     public TCompanySponsor(){
 
@@ -302,6 +303,16 @@ public class TCompanySponsor implements Serializable {
 
     public void setRankfamily(String rankfamily) {
         this.rankfamily = rankfamily;
+    }
+
+    @Basic
+    @Column(name = "rankfamilyname")
+    public String getRankfamilyname() {
+        return rankfamilyname;
+    }
+
+    public void setRankfamilyname(String rankfamilyname) {
+        this.rankfamilyname = rankfamilyname;
     }
 
     @Override

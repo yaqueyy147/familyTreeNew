@@ -29,6 +29,7 @@
 
     <context:component-scan base-package="com.witkey.familyTree.controller.consoles" />
     <context:component-scan base-package="com.witkey.familyTree.controller.fronts" />
+    <context:component-scan base-package="com.witkey.familyTree.controller.tools" />
     <context:component-scan base-package="com.witkey.familyTree.service.fronts" />
     <context:component-scan base-package="com.witkey.familyTree.service.consoles" />
     <!--<context:component-scan base-package="com.witkey.familyTree.dao.consoles" />-->
@@ -85,6 +86,7 @@
                         <value>/upload/**</value>
                         <value>/static/**</value>
                         <value>/scripts/**</value>
+                        <value>/output/**</value>
                         <!--<value>/familyTree</value>-->
                         <value>/consoles/</value>
                         <value>/consoles/login</value>
