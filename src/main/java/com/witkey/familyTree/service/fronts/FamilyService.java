@@ -43,7 +43,8 @@ public interface FamilyService {
 
     //查询族谱的成员
     public List<TPeople> getPeopleList(Map<String,Object> params);//int familyId,int peopleType
-
+    //查询族谱的成员
+    public List<Map<String,Object>> getPeopleList4Export(Map<String,Object> params);
     //查询族谱的成员
     public List<TPeople> getPeopleList4Print(Map<String,Object> params);
 

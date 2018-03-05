@@ -439,6 +439,54 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     /**
+     * 根据族谱ID获取家族成员,导出用
+     * @param params
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> getPeopleList4Export(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+
+        String sql = "select t1.*,t2.name as fathername from t_people t1";
+        sql += " left join t_people t2 on t2.id=t1.superior_id";
+        sql += " where t1.people_status<>9 and t1.family_id=?";
+
+        if(!CommonUtil.isBlank(params)){
+
+            if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
+                sql += " and t1.people_type='" + params.get("peopleType") + "'";
+//            filter.put("peopleType",params.get("peopleType"));
+            }
+            if(!CommonUtil.isBlank(params.get("peopleName"))){
+                sql += " and t1.name='" + params.get("peopleName") + "'";
+//            filter.put("name",params.get("peopleName"));
+            }
+            if(!CommonUtil.isBlank(params.get("generation"))){
+                sql += " and t1.generation='" + params.get("generation") + "'";
+//            filter.put("generation",params.get("generation"));
+            }
+            if(!CommonUtil.isBlank(params.get("superiorId"))){
+                sql += " and t1.superior_id='" + params.get("superiorId") + "'";
+//            filter.put("generation",params.get("generation"));
+            }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and t1.state='" + params.get("state") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
+        }
+
+//        List<TPeople> list = tPeopleDao.find(filter);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,params.get("familyId"));
+        return list;
+    }
+
+    /**
      * 根据族谱ID获取家族成员
      * @param params
      * @return
