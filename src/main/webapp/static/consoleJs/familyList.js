@@ -209,7 +209,9 @@ function loadFamilyList(params){
                 }},
             {field:"export",title:"操作",width:"300",
                 formatter: function(value,row,index){
-                    return "<a href=\"" + projectUrl + "/output/exportfamily?familyId=" + row.id + "&familyname=" + row.familyName + "\" title='" + value + "' target='_blank'>导出 </a>";
+                    var html = "<a href=\"" + projectUrl + "/output/exportfamily?familyId=" + row.id + "&familyname=" + row.familyName + "\" title='" + value + "' target='_blank'>导出 </a>";
+                    html += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"loadTab('','族谱合并','" + projectUrl + "/consoles/familyJoint?familyId=" + row.id + "&familyname=" + row.familyName + "')\" title='" + value + "'>合并 </a>";
+                    return html;
                 }},
             {field:"familyArea",title:"族谱属地",width:"80",hidden:true},
             {field:"province",title:"族谱所在省",width:"80",hidden:true},
@@ -283,4 +285,9 @@ function loadDataToForm(data) {
         $("#show_img").unbind('mouseout');
 
     });
+}
+
+function loadTab(tabId,tabTitle,tabUrl) {
+    parent.loadTab(tabId,tabTitle,tabUrl);
+
 }

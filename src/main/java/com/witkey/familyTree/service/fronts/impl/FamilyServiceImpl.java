@@ -241,6 +241,20 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
+    public List<TFamily> getFamilyListJoint(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+        String sql = "select * from t_family where state<>9 and id<>?";
+
+        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class),params.get("familyId"));
+
+        return list;
+    }
+
+    /**
+     * 根据登录人查询创建的族谱list
+     * @return
+     */
+    @Override
     public List<TFamily> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
         String sql = "select * from t_family where state<>9 and state=1";
