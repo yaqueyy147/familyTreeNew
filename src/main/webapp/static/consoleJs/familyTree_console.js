@@ -376,6 +376,10 @@ $(function () {
         $("#importparentid").val("");
     });
 
+    $("#downloadtemp").click(function () {
+        window.location.href = projectUrl + "/import/downloadtemp";
+    });
+
 });
 
 function initFamilyTree(zNodes,setting) {

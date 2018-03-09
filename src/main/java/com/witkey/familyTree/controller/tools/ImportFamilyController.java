@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 导入族人
@@ -144,6 +149,41 @@ public class ImportFamilyController {
             result = 1;
         }
         return result;
+    }
+
+    /**下载导入模板*/
+    @RequestMapping(value="/downloadtemp")
+    public void export(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String ctxPath=request.getSession().getServletContext().
+                getRealPath("/")+"/static/template/";
+        File file=new File(ctxPath+"family.xls");
+        response.setContentType("octets/stream");
+        String fileName=file.getName();
+        String userAgent = request.getHeader("User-Agent");
+        //针对IE或者以IE为内核的浏览器：
+        if (userAgent.contains("MSIE")||userAgent.contains("Trident")) {
+            fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+        } else {
+            //非IE浏览器的处理：
+            fileName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1");
+        }
+        response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", fileName));
+        download(file, response);
+    }
+    public static void download(File file,HttpServletResponse response) throws IOException{
+        response.setContentLength((int)file.length());
+        InputStream in=new FileInputStream(file);
+        OutputStream out=response.getOutputStream();
+        BufferedOutputStream bos=new BufferedOutputStream(out);
+        int length=0;
+        byte [] b=new byte[524288];
+        while((length=in.read(b))!=-1){
+            bos.write(b, 0, length);
+            bos.flush();
+        }
+        in.close();
+        out.close();
+        bos.close();
     }
 
 }
