@@ -271,7 +271,7 @@
                         <tr class="topBorder rightBorder leftBorder">
                             <td>出生时间：</td>
                             <td colspan="7">
-                                <input name="birth_time" id="birth_time" class="form-datetime inputLg" type="text" />
+                                <input name="birth_time" id="birth_time" onclick="WdatePicker()" class="form-datetime inputLg" type="text" />
                             </td>
                             <td rowspan="5" style="text-align: center">状态：<br/>
                                 <label><input type="radio" name="state" checked value="1" />&nbsp;在世</label>
@@ -288,7 +288,7 @@
                         <tr class="leftBorder rightBorder">
                             <td>去世时间：</td>
                             <td colspan="7">
-                                <input name="die_time" id="die_time" class="form-datetime inputLg" type="text" />
+                                <input name="die_time" id="die_time" onclick="WdatePicker()" class="form-datetime inputLg" type="text" />
                             </td>
                         </tr>
                         <tr class="leftBorder rightBorder">

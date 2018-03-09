@@ -26,19 +26,6 @@ $(function () {
         }
     };
 
-
-    //时间空间初始化
-    $("#birth_time").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii:ss',
-        language: 'zh-CN',
-        autoclose:true,
-    });
-
-    $("#die_time").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii:ss',
-        language: 'zh-CN',
-        autoclose:true
-    });
     $.fn.serializeObject = function()
     {
         var o = {};

@@ -1,8 +1,8 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.zh-CN.js"></script>
+<%--<script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.js"></script>--%>
+<%--<script type="text/javascript" src="<%=request.getContextPath()%>/static/bootstrap/datetime-picker/bootstrap-datetimepicker.zh-CN.js"></script>--%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.exedit-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.excheck-3.5.js"></script>
@@ -13,3 +13,4 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/uploadify/jquery.uploadify.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/commonUtilJs.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/frontJs/frontCommonJs.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/datepicker/WdatePicker.js"></script>

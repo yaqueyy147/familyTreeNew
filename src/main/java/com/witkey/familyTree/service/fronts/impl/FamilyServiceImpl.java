@@ -926,9 +926,11 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public String getFamilyFromPeopleName(String name) {
 
-        String sql = "select family_id from t_people where name=? and people_status=1";
+        String sql = "select family_id from t_people";
+        sql += " where people_status=1";
+        sql += " and (name like '%" + name + "%' or special_remark like '%" + name + "%')";
 
-        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,name);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
         String result = ",";
 

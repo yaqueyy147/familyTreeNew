@@ -405,6 +405,7 @@ public class ConsoleController {
             pp.setChkDisabled(false);
             pp.setId(tPeople.getId() + "");
             pp.setpId(tPeople.getSuperiorId() + "");
+            pp.setGeneration(tPeople.getGeneration() + "");
             pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
             if(tPeople.getState() == 0){
                 pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");

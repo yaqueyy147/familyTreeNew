@@ -1,7 +1,5 @@
 package com.witkey.familyTree.util;
 
-import java.io.Serializable;
-
 /**
  * Created by suyx on 2017/6/14 0014.
  */
@@ -19,6 +17,7 @@ public class PeopleTree {
     private boolean nocheck;
     private boolean chkDisabled;
     private String isdie;
+    private String generation;
 
     public String getId() {
         return id;
@@ -122,5 +121,13 @@ public class PeopleTree {
 
     public void setIsdie(String isdie) {
         this.isdie = isdie;
+    }
+
+    public String getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(String generation) {
+        this.generation = generation;
     }
 }

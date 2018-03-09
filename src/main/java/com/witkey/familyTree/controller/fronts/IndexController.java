@@ -86,6 +86,10 @@ public class IndexController {
         //获取所有有效族人人数
         int totalCount = familyService.getFamilyTotalPeopleNum(-1,-1);
         model.addAttribute("totalCount",totalCount);
+        //获取所有在世人数
+        int totalCountlive = familyService.getFamilyTotalPeopleNum(-1,1);
+        model.addAttribute("totalCountlive",totalCountlive);
+
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("state",5);
         //查询前台可展示的族谱

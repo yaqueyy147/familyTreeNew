@@ -82,8 +82,9 @@ public class JointController {
             pp.setIsSupplement(tPeople.getIsSupplement() + "");
             pp.setOpen(true);
             pp.setIsdie(tPeople.getState() + "");
-            pp.setName(tPeople.getName());
+            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
             pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+            pp.setGeneration(tPeople.getGeneration() + "");
             String peopleId = tPeople.getId();
             List<TPeople> listMate = familyService.getMateList(peopleId);
             String mate = "";

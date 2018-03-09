@@ -39,7 +39,7 @@
     <mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="prefix" value="/WEB-INF/jsp" />
         <property name="suffix" value=".jsp" />
         <property name="order" value="0" />
     </bean>
@@ -87,6 +87,7 @@
                         <value>/static/**</value>
                         <value>/scripts/**</value>
                         <value>/output/**</value>
+                        <value>/import/**</value>
                         <!--<value>/familyTree</value>-->
                         <value>/consoles/</value>
                         <value>/consoles/login</value>

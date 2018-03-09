@@ -78,6 +78,7 @@
             </c:if>
             &nbsp;&nbsp;
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="addPeople">添加族人</a>
+            <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="importPeople">导入族人</a>
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeople" name="setpeoplehideornot01" data-ishide="1">屏蔽已选</a>
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="hidePeopleAll" name="setpeoplehideornot02" data-ishide="1">屏蔽所有在世</a>
             <a class="btn btn-primary btn-sm" href="javascript:void 0;" id="unhidePeople" name="setpeoplehideornot01" data-ishide="0">解除屏蔽已选</a>
@@ -266,7 +267,7 @@
                                 <tr class="topBorder rightBorder leftBorder">
                                     <td>出生时间：</td>
                                     <td colspan="7">
-                                        <input name="birth_time" id="birth_time" class="form-datetime inputLg" type="text" />
+                                        <input name="birth_time" id="birth_time" onclick="WdatePicker()" class="form-datetime inputLg" type="text" />
                                     </td>
                                     <td rowspan="5" style="text-align: center">状态：<br/>
                                         <label><input type="radio" name="state" checked value="1" />&nbsp;在世</label>
@@ -283,7 +284,7 @@
                                 <tr class="leftBorder rightBorder">
                                     <td>去世时间：</td>
                                     <td colspan="7">
-                                        <input name="die_time" id="die_time" class="form-datetime inputLg" type="text" />
+                                        <input name="die_time" id="die_time" onclick="WdatePicker()" class="form-datetime inputLg" type="text" />
                                     </td>
                                 </tr>
                                 <tr class="leftBorder rightBorder">
@@ -348,9 +349,37 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="importModalLabel">导入族人</h4>
+            </div>
+            <div class="modal-body">
+                <form id="importWorks" class="form-horizontal" ENCTYPE="multipart/form-data" action="/import/work.htm" method="post">
+                    <input type="hidden" id="importfamilyid" name="importfamilyid" value="${familyId}" />
+                    <input type="hidden" id="importparentid" name="importparentid" />
+                    <input type="hidden" id="importparentgeneration" name="importparentgeneration" value="0" />
+                    <div class="form-group">
+                        <div class="col-sm-10 inputDiv">
+                            <input type="file" id="file" name="file" accept="application/vnd.ms-excel"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="downloadtemp">下载模板</button>
+                <button class="btn btn-primary" id="toImport">提 交</button>
+                <button class="btn btn-default" id="closeimportModal" data-dismiss="modal">取 消</button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@ include file="common/springUrl.jsp"%>
 <%@ include file="../fronts/common/commonJS.jsp"%>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/easyUi/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/easyUi/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/familyTree_console.js"></script>
 <script type="text/javascript">
     var familyId = "${familyId}";

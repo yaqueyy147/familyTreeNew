@@ -30,20 +30,20 @@ $(function () {
         }
     };
 
-    //时间空间初始化
-    $("#birth_time").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii:ss',
-        language: 'zh-CN',
-        autoclose:true,
-        bootcssVer:3
-    });
-
-    $("#die_time").datetimepicker({
-        format: 'yyyy-mm-dd hh:ii:ss',
-        language: 'zh-CN',
-        autoclose:true,
-        bootcssVer:3
-    });
+    // //时间空间初始化
+    // $("#birth_time").datetimepicker({
+    //     format: 'yyyy-mm-dd hh:ii:ss',
+    //     language: 'zh-CN',
+    //     autoclose:true,
+    //     bootcssVer:3
+    // });
+    //
+    // $("#die_time").datetimepicker({
+    //     format: 'yyyy-mm-dd hh:ii:ss',
+    //     language: 'zh-CN',
+    //     autoclose:true,
+    //     bootcssVer:3
+    // });
 
     $.fn.serializeObject = function()
     {
@@ -211,11 +211,6 @@ $(function () {
         $("#id").val("");
     });
 
-    // $("#generation").change(function(){
-    //     var generation = $(this).val();
-    //     initParent(generation-1);
-    // });
-
     $("#generation").bind("propertychange input",function(){
         var generation = $(this).val();
         if(generation <= 0){
@@ -340,6 +335,45 @@ $(function () {
     $("a[name='setpeoplehideornot02']").click(function () {
         var ishide = $(this).attr("data-ishide");
         setpeoplehideornot(familyId,"",ishide);
+    });
+
+
+    $("#importPeople").click(function () {
+
+        var treeObj = $.fn.zTree.getZTreeObj("familyTree");
+        var checkednodes =  treeObj.getCheckedNodes(true);
+        var chknodeid = "";
+        var gg = 0;
+        if(checkednodes.length > 0){
+            chknodeid = checkednodes[0].id;
+            gg = checkednodes[0].generation;
+        }
+        $("#importparentid").val(chknodeid);
+        $("#importparentgeneration").val(gg);
+        $("#importModal").modal('show');
+    });
+
+    $("#toImport").click(function () {
+        $("#importWorks").form('submit',{
+            url:projectUrl + "/import/work",
+            success:function (data) {
+                alert(data.message);
+                $.when(initPeopleData(familyId)).done(function(data){
+                    initFamilyTree(data,setting);
+                });
+                $("#importModal").modal('hide');
+            }
+        })
+    });
+
+    $('#importModal').on('hidden.bs.modal', function (e) {
+        var ff = $("#file");
+        ff.after(ff.clone().val(""));
+        ff.remove();
+        $("#file").val("");
+
+        $("#importparentgeneration").val("0");
+        $("#importparentid").val("");
     });
 
 });
