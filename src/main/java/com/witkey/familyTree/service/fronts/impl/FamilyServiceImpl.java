@@ -277,8 +277,11 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("familyName"))){
                 sql += " and family_name like '%" + params.get("familyName") + "%'";
             }
+            if(CommonUtil.isBlank(params.get("nopage"))){
+                sql += " limit " + pageNumber + "," + pageSize;
+            }
         }
-        sql += " limit " + pageNumber + "," + pageSize;
+
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
         for (Map<String,Object> map : list) {

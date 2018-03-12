@@ -60,6 +60,7 @@ public class FamilyController {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userName",jsonUser.get("userName"));
         params.put("userId",jsonUser.get("id"));
+        params.put("nopage",1);
 //        params.put("state",1);
 //        params.put("tt",1);
 //        params.put("province",jsonUser.get("province"));
