@@ -7,8 +7,6 @@ import com.witkey.familyTree.dao.consoles.TVolunteerDao;
 import com.witkey.familyTree.dao.fronts.TUserFrontDao;
 import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserFamily;
-import com.witkey.familyTree.domain.TUserFront;
-import com.witkey.familyTree.service.fronts.UserFrontService;
 import com.witkey.familyTree.service.fronts.UserService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -271,6 +269,15 @@ public class UserServiceImpl implements UserService {
         ii += jdbcTemplate.update(sql,params.get("totalMoney"),params.get("userId"));
 
         return ii;
+    }
+
+    @Override
+    public int setuserrankfamily(Map<String, Object> params) throws Exception {
+
+        String sql = "update t_user_1 set rankfamily=?,rankfamilyname=? where id=?";
+        int i = jdbcTemplate.update(sql,params.get("familyid"),params.get("familyname"),params.get("userid"));
+
+        return i;
     }
 
 }

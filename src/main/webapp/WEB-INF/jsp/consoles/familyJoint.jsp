@@ -68,6 +68,7 @@
                     <span style="margin-left: 20px">家族人数：&nbsp;<span id="peopleCount">0</span>&nbsp;人</span>
                     <span style="margin-left: 20px">家族代数：&nbsp;<span id="familyGenNum">${maxGen}</span>&nbsp;代</span>
                     <button type="button" id="tojoint" class="easyui-linkbutton" style="margin-left: 20px">确定合并</button>
+                    <%--<button type="button" id="todelete" class="easyui-linkbutton" style="margin-left: 20px">删除</button>--%>
                 </p>
                 <p style="margin-bottom: 1px;padding-bottom: 1px;margin-top: 1px;padding-top: 1px;">家族属地：${mianFamily.province}${mianFamily.city}${mianFamily.district}
                 </p>

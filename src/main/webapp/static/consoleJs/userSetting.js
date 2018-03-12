@@ -310,6 +310,62 @@ $(function () {
         ]
     });
 
+    $("#familylistDialog").dialog({
+        width: 660,
+        height: 200,
+        "closed":true,
+        modal:true,
+        resizable:true,
+        "buttons":[
+            {
+                "text":"关闭",
+                handler:function () {
+                    $("#companyid4set").val("");
+                    closeDialog("familylistDialog");
+                }
+            },
+            {
+                "text":"确定",
+                handler:function () {
+                    var userid = $("#userid4set").val();
+                    var familyid = $("#rankfamily").val();
+                    var familyname = $("#rankfamily").find("option:selected").text();
+                    $.ajax({
+                        type:'post',
+                        url: projectUrl + "/consoles/setuserrankfamily",
+                        dataType:'json',
+                        data:{userid:userid,familyid:familyid,familyname:familyname},
+                        success:function (data) {
+
+                            alert(data.msg);
+                            if(data.code >= 1){
+
+                                var params = {};
+                                params.loginName = $("#loginName4Search").val();
+                                params.userName = $("#userName4Search").val();
+                                params.province = $("#province4Search").val();
+                                params.city = $("#city4Search").val();
+                                params.district = $("#district4Search").val();
+                                loadDataGrid(params);
+                                editIndex = undefined;
+                            }
+                        },
+                        error:function (data) {
+                            var responseText = data.responseText;
+                            if(responseText.indexOf("登出跳转页面") >= 0){
+                                ajaxErrorToLogin();
+                            }else{
+                                alert(JSON.stringify(data));
+                            }
+                        }
+                    });
+                    $("#companyid4set").val("");
+                    closeDialog("familylistDialog");
+                }
+            }
+        ]
+    });
+
     $("#toAdd").click(function () {
 
         $("#userInfoForm").form('clear');
@@ -491,6 +547,18 @@ function loadDataGrid(params) {
                     }
                     return '<span title='+ address + '>'+address+'</span>';
                 }},
+            {field:"rankfamilyname",title:"积分排名家族",width:"120",
+                formatter: function(value,row,index){
+                    var html = value;
+                    html += "&nbsp;&nbsp;";
+                    if($.trim(value).length > 0){
+                        html += "<a href=\"javascript:void 0;\" onclick=\"setrankfamily('" + row.id + "','" + row.userName + "')\">修改</a>";
+                    }else{
+                        html += "<a href=\"javascript:void 0;\" onclick=\"setrankfamily('" + row.id + "','" + row.userName + "')\">设置</a>";
+                    }
+
+                    return html;
+                }},
             {field:"createMan",title:"创建人",width:"120"},
             {field:"createTime",title:"创建时间",width:"150",
                 formatter: function(value,row,index){
@@ -616,4 +684,9 @@ function loadFamilyList(params) {
         ]],
         loadFilter:pagerFilter
     });
+}
+function setrankfamily(userid,username) {
+    $("#userid4set").val(userid);
+    $("#username4set").text(username);
+    $("#familylistDialog").dialog("open");
 }

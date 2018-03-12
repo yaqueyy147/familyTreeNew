@@ -65,8 +65,8 @@ public class FamilyController {
 //        params.put("province",jsonUser.get("province"));
 //        params.put("city",jsonUser.get("city"));
 //        params.put("district",jsonUser.get("district"));
-        List<TFamily> list = familyService.getFamilyList1(params);
-
+//        List<TFamily> list = familyService.getFamilyList1(params);
+        List<Map<String,Object>> list1 = familyService.getFamilyList1(params);
         //查询被收录的族谱
 //        params.put("userName",jsonUser.get("userName"));
 //        params.put("state","");
@@ -74,24 +74,24 @@ public class FamilyController {
 //        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
 //        list.addAll(list2);
 
-        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
-        for(TFamily tFamily : list){
-            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
-            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
-            Map<String,Object> map = new HashMap<String,Object>();
-//            Map<String,Object> paramss = new HashMap<>();
-//            paramss.put("familyId",tFamily.getId());
-//            paramss.put("peopleType",1);
-//            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-//            if(peopleList != null && peopleList.size() > 0)
-//            {
-//                peopleCount = peopleList.size();
-//            }
-            map = CommonUtil.bean2Map(tFamily);
-            map.put("peopleCount",peopleCount);
-            map.put("zspeopleCount",zspeopleCount);
-            list1.add(map);
-        }
+//        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+//        for(TFamily tFamily : list){
+//            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
+//            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
+//            Map<String,Object> map = new HashMap<String,Object>();
+////            Map<String,Object> paramss = new HashMap<>();
+////            paramss.put("familyId",tFamily.getId());
+////            paramss.put("peopleType",1);
+////            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+////            if(peopleList != null && peopleList.size() > 0)
+////            {
+////                peopleCount = peopleList.size();
+////            }
+//            map = CommonUtil.bean2Map(tFamily);
+//            map.put("peopleCount",peopleCount);
+//            map.put("zspeopleCount",zspeopleCount);
+//            list1.add(map);
+//        }
         model.addAttribute("familyList",list1);
 
         return new ModelAndView("/fronts/personalIndex");
@@ -115,24 +115,24 @@ public class FamilyController {
         params.put("city",jsonUser.get("city"));
         params.put("district",jsonUser.get("district"));
         params.put("onlyInclude",1);
-        List<TFamily> list = familyService.getFamilyList2(params);
+        List<Map<String,Object>> list1 = familyService.getFamilyList2(params);
 
-        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
-        for(TFamily tFamily : list){
-            int peopleCount = 0;
-            Map<String,Object> map = new HashMap<String,Object>();
-            Map<String,Object> paramss = new HashMap<>();
-            paramss.put("familyId",tFamily.getId());
-            paramss.put("peopleType",1);
-            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-            if(peopleList != null && peopleList.size() > 0)
-            {
-                peopleCount = peopleList.size();
-            }
-            map = CommonUtil.bean2Map(tFamily);
-            map.put("peopleCount",peopleCount);
-            list1.add(map);
-        }
+//        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+//        for(TFamily tFamily : list){
+//            int peopleCount = 0;
+//            Map<String,Object> map = new HashMap<String,Object>();
+//            Map<String,Object> paramss = new HashMap<>();
+//            paramss.put("familyId",tFamily.getId());
+//            paramss.put("peopleType",1);
+//            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+//            if(peopleList != null && peopleList.size() > 0)
+//            {
+//                peopleCount = peopleList.size();
+//            }
+//            map = CommonUtil.bean2Map(tFamily);
+//            map.put("peopleCount",peopleCount);
+//            list1.add(map);
+//        }
         model.addAttribute("familyList",list1);
 
         return new ModelAndView("/fronts/includeFamily");
@@ -330,7 +330,7 @@ public class FamilyController {
         List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params2);
         //公司积分排名
         params2.put("type",2);
-        params2.put("familyId",familyId);
+        params2.put("rankfamilyId",familyId);
         List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params2);
         model.addAttribute("listPersonalPoints",listPersonalPoints);
         model.addAttribute("listCompanyPoints",listCompanyPoints);
@@ -348,47 +348,47 @@ public class FamilyController {
 
         //查询族人
         params.put("peopleType",1);
-        params.put("orderBy"," order by family_rank asc");
+        params.put("orderBy"," order by generation asc,family_rank asc");
 
         System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
 
 //        params.put("isIndex",1);
-        List<TPeople> listPeople = familyService.getPeopleList(params);
+        List<PeopleTree> listPeople = familyService.getPeopleList4view(params);
         System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
 //        List<Map<String,Object>> list = new ArrayList<>();
-        List<PeopleTree> list1 = new ArrayList<>();
-
-        //根据族人Id查询配偶
-        for (TPeople tPeople : listPeople) {
-            Map<String,Object> map = new HashMap<>();
-            PeopleTree pp = new PeopleTree();
-            pp.setId(tPeople.getId() + "");
-            pp.setpId(tPeople.getSuperiorId() + "");
-            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
-            if(tPeople.getState() == 0){
-                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
-            }
-            pp.setIsSupplement(tPeople.getIsSupplement() + "");
-            pp.setOpen(true);
-
-            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
-            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
-            String peopleId = tPeople.getId();
-            List<TPeople> listMate = familyService.getMateList(peopleId);
-
-            String mate = "";
-            if(listMate != null && listMate.size() > 0){
-                for(TPeople tPeople1 : listMate){
-                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
-                }
-                mate = mate.substring(1);
-            }
-
-            pp.setMateName(mate);
-            list1.add(pp);
-        }
+//        List<PeopleTree> list1 = new ArrayList<>();
+//
+//        //根据族人Id查询配偶
+//        for (TPeople tPeople : listPeople) {
+//            Map<String,Object> map = new HashMap<>();
+//            PeopleTree pp = new PeopleTree();
+//            pp.setId(tPeople.getId() + "");
+//            pp.setpId(tPeople.getSuperiorId() + "");
+//            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+//            if(tPeople.getState() == 0){
+//                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+//            }
+//            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+//            pp.setOpen(true);
+//
+//            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+//            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            String peopleId = tPeople.getId();
+//            List<TPeople> listMate = familyService.getMateList(peopleId);
+//
+//            String mate = "";
+//            if(listMate != null && listMate.size() > 0){
+//                for(TPeople tPeople1 : listMate){
+//                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+//                }
+//                mate = mate.substring(1);
+//            }
+//
+//            pp.setMateName(mate);
+//            list1.add(pp);
+//        }
         System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
-        return list1;
+        return listPeople;
     }
 
     /**
@@ -402,49 +402,48 @@ public class FamilyController {
 
         //查询族人
         params.put("peopleType",1);
-        params.put("orderBy"," order by family_rank asc");
+        params.put("orderBy"," order by generation asc,family_rank asc");
 
         System.out.print("******\n开始-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
-
-//        params.put("isIndex",1);
-        List<TPeople> listPeople = familyService.getPeopleList(params);
-        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
-//        List<Map<String,Object>> list = new ArrayList<>();
-        List<PeopleTree> list1 = new ArrayList<>();
-
-        //根据族人Id查询配偶
-        for (TPeople tPeople : listPeople) {
-            Map<String,Object> map = new HashMap<>();
-            PeopleTree pp = new PeopleTree();
-            pp.setId(tPeople.getId() + "");
-            pp.setpId(tPeople.getSuperiorId() + "");
-            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
-            if(tPeople.getState() == 0){
-                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
-            }
-            pp.setIsSupplement(tPeople.getIsSupplement() + "");
-            pp.setOpen(true);
-
-            if(CommonUtil.parseInt(tPeople.getIshide()) == 1){
-                pp.setName("***");
-            }else{
-                pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
-                pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
-                String peopleId = tPeople.getId();
-                List<TPeople> listMate = familyService.getMateList(peopleId);
-
-                String mate = "";
-                if(listMate != null && listMate.size() > 0){
-                    for(TPeople tPeople1 : listMate){
-                        mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
-                    }
-                    mate = mate.substring(1);
-                }
-
-                pp.setMateName(mate);
-            }
-            list1.add(pp);
-        }
+        List<PeopleTree> list1 = familyService.getPeopleListIndex(params);
+////        params.put("isIndex",1);
+//        List<TPeople> listPeople = familyService.getPeopleList(params);
+//        System.out.print("******\n结束1-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
+////        List<Map<String,Object>> list = new ArrayList<>();
+//        List<PeopleTree> list1 = new ArrayList<>();
+//
+//        //根据族人Id查询配偶
+//        for (TPeople tPeople : listPeople) {
+//            Map<String,Object> map = new HashMap<>();
+//            PeopleTree pp = new PeopleTree();
+//            pp.setId(tPeople.getId() + "");
+//            pp.setpId(tPeople.getSuperiorId() + "");
+//            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+//            if(tPeople.getState() == 0){
+//                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+//            }
+//            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+//            pp.setOpen(true);
+//            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            if(CommonUtil.parseInt(tPeople.getIshide()) == 1){
+//                pp.setName("***");
+//            }else{
+//                pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+//                String peopleId = tPeople.getId();
+//                List<TPeople> listMate = familyService.getMateList(peopleId);
+//
+//                String mate = "";
+//                if(listMate != null && listMate.size() > 0){
+//                    for(TPeople tPeople1 : listMate){
+//                        mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+//                    }
+//                    mate = mate.substring(1);
+//                }
+//
+//                pp.setMateName(mate);
+//            }
+//            list1.add(pp);
+//        }
         System.out.print("******\n结束2-->" + CommonUtil.getDateLong() + "::" + System.currentTimeMillis() + "\n********" );
         return list1;
     }
@@ -852,43 +851,43 @@ public class FamilyController {
     public Object peopleInfo4Print(@RequestParam Map<String,Object> params,HttpServletRequest request){
 
         //查询族人
-        List<TPeople> listPeople = familyService.getPeopleList4Print(params);
+//        List<TPeople> listPeople = familyService.getPeopleList4Print(params);
 
 //        List<Map<String,Object>> list = new ArrayList<>();
-        List<PeopleTree> list1 = new ArrayList<>();
+        List<PeopleTree> list1 = familyService.getPeopleList4Print(params);
 
-        //根据族人Id查询配偶
-        for (TPeople tPeople : listPeople) {
-            Map<String,Object> map = new HashMap<>();
-            PeopleTree pp = new PeopleTree();
-            pp.setId(tPeople.getId() + "");
-            pp.setpId(tPeople.getSuperiorId() + "");
-            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
-            if(tPeople.getState() == 0){
-                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
-            }
-            pp.setIsSupplement(tPeople.getIsSupplement() + "");
-            pp.setOpen(true);
-            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
-            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
-            pp.setDieAddr(tPeople.getDieAddr());
-//            map = CommonUtil.bean2Map(tPeople);
-            String peopleId = tPeople.getId();
-            List<TPeople> listMate = familyService.getMateList(peopleId);
-
-            String mate = "";
-            if(listMate != null && listMate.size() > 0){
-                for(TPeople tPeople1 : listMate){
-                    mate += "," + tPeople1.getName() + "--" + tPeople1.getDieAddr();
-                }
-                mate = mate.substring(1);
-            }
-
-            pp.setMateName(mate);
-//            map.put("mateList",listMate);
-//            list.add(map);
-            list1.add(pp);
-        }
+//        //根据族人Id查询配偶
+//        for (TPeople tPeople : listPeople) {
+//            Map<String,Object> map = new HashMap<>();
+//            PeopleTree pp = new PeopleTree();
+//            pp.setId(tPeople.getId() + "");
+//            pp.setpId(tPeople.getSuperiorId() + "");
+//            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+//            if(tPeople.getState() == 0){
+//                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+//            }
+//            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+//            pp.setOpen(true);
+//            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+//            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            pp.setDieAddr(tPeople.getDieAddr());
+////            map = CommonUtil.bean2Map(tPeople);
+//            String peopleId = tPeople.getId();
+//            List<TPeople> listMate = familyService.getMateList(peopleId);
+//
+//            String mate = "";
+//            if(listMate != null && listMate.size() > 0){
+//                for(TPeople tPeople1 : listMate){
+//                    mate += "," + tPeople1.getName() + "--" + tPeople1.getDieAddr();
+//                }
+//                mate = mate.substring(1);
+//            }
+//
+//            pp.setMateName(mate);
+////            map.put("mateList",listMate);
+////            list.add(map);
+//            list1.add(pp);
+//        }
 
         return list1;
     }

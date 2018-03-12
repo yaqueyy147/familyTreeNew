@@ -1,6 +1,5 @@
 package com.witkey.familyTree.controller.consoles;
 
-import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -50,7 +49,7 @@ public class ConsoleCompanyController {
 //        params.put("state",0);
 //        List<Map<String,Object>> list = consoleService.getCompanyList(params);
 //        model.addAttribute("companyList",list);
-        List<TFamily> familylist = familyService.getFamilyList2(null);
+        List<Map<String,Object>> familylist = familyService.getFamilyList2(null);
         model.addAttribute("familylist",familylist);
         return new ModelAndView("/consoles/companyList");
     }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,41 +62,41 @@ public class JointController {
 
         //查询族人
         params.put("peopleType",1);
-        params.put("orderBy"," order by family_rank asc");
-        List<TPeople> listPeople = familyService.getPeopleList(params);
-        List<PeopleTree> list1 = new ArrayList<>();
+        params.put("orderBy"," order by generation asc,family_rank asc");
+//        List<TPeople> listPeople = familyService.getPeopleList(params);
+        List<PeopleTree> list1 = familyService.getPeopleList4view(params);
 
-        //根据族人Id查询配偶
-        for (TPeople tPeople : listPeople) {
-            Map<String,Object> map = new HashMap<>();
-            PeopleTree pp = new PeopleTree();
-            pp.setNocheck(false);
-            pp.setChkDisabled(false);
-            pp.setId(tPeople.getId() + "");
-            pp.setpId(tPeople.getSuperiorId() + "");
-            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
-            if(tPeople.getState() == 0){
-                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
-            }
-            pp.setIsSupplement(tPeople.getIsSupplement() + "");
-            pp.setOpen(true);
-            pp.setIsdie(tPeople.getState() + "");
-            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
-            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
-            pp.setGeneration(tPeople.getGeneration() + "");
-            String peopleId = tPeople.getId();
-            List<TPeople> listMate = familyService.getMateList(peopleId);
-            String mate = "";
-            if(listMate != null && listMate.size() > 0){
-                for(TPeople tPeople1 : listMate){
-                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
-                }
-                mate = mate.substring(1);
-            }
-
-            pp.setMateName(mate);
-            list1.add(pp);
-        }
+//        //根据族人Id查询配偶
+//        for (TPeople tPeople : listPeople) {
+//            Map<String,Object> map = new HashMap<>();
+//            PeopleTree pp = new PeopleTree();
+//            pp.setNocheck(false);
+//            pp.setChkDisabled(false);
+//            pp.setId(tPeople.getId() + "");
+//            pp.setpId(tPeople.getSuperiorId() + "");
+//            pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head2.ico");
+//            if(tPeople.getState() == 0){
+//                pp.setIcon(request.getContextPath() + "/static/jquery/ztree/icon/head_die.ico");
+//            }
+//            pp.setIsSupplement(tPeople.getIsSupplement() + "");
+//            pp.setOpen(true);
+//            pp.setIsdie(tPeople.getState() + "");
+//            pp.setName(tPeople.getName() + "(第" + tPeople.getGeneration() + "世)");
+//            pp.setPeopleStatus(tPeople.getPeopleStatus() + "");
+//            pp.setGeneration(tPeople.getGeneration() + "");
+//            String peopleId = tPeople.getId();
+//            List<TPeople> listMate = familyService.getMateList(peopleId);
+//            String mate = "";
+//            if(listMate != null && listMate.size() > 0){
+//                for(TPeople tPeople1 : listMate){
+//                    mate += "," + tPeople1.getName() + "--" + tPeople1.getId() + "--" + tPeople1.getPeopleStatus() + "--" + tPeople1.getIsSupplement();
+//                }
+//                mate = mate.substring(1);
+//            }
+//
+//            pp.setMateName(mate);
+//            list1.add(pp);
+//        }
         return list1;
     }
 
@@ -164,6 +163,15 @@ public class JointController {
             e.printStackTrace();
             result.put("code",0);
         }
+
+        return result;
+    }
+
+    @RequestMapping(value = "deletepeople")
+    @ResponseBody
+    public Object deletepeople(@RequestParam Map<String,Object> params, HttpServletRequest request){
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("code",1);
 
         return result;
     }

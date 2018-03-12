@@ -16,31 +16,7 @@
     <%@include file="common/commonCss.jsp"%>
 </head>
 <body>
-
-<table id="familyList" class="easyui-datagrid" style="width:100%;height:98%"
-       title="族谱列表" toolbar="#tb" data-options="
-				rownumbers:true,
-				singleSelect:true,
-				pagination:true,
-				pageSize:10">
-</table>
-<div id="tb">
-    <span>族谱名:</span>
-    <input id="familyName4Search" name="familyName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
-    <span>族谱属地:</span>
-    <span data-toggle="distpicker">
-        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 选择省 ----"></select>
-        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 选择市 ----"></select>
-        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 选择区 ----"></select>
-    </span>
-
-    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
-</div>
-
-<div id="familyDialog" class="easyui-dialog" title="族谱信息" style="width:400px;height:200px;padding:10px;top: 0;left: 20%;">
+<div id="familyDialog" class="easyui-dialog" title="族谱信息" style="width:400px;height:200px;padding:10px;top: 0;left: 20%; display: none">
     <div style="padding:10px 40px 20px 40px">
         <form id="familyForm" method="post">
             <input type="hidden" id="familyId" name="id" value="0" />
@@ -105,6 +81,31 @@
         </form>
     </div>
 </div>
+
+<table id="familyList" class="easyui-datagrid" style="width:100%;height:98%"
+       title="族谱列表" toolbar="#tb" data-options="
+				rownumbers:true,
+				singleSelect:true,
+				pagination:true,
+				pageSize:10">
+</table>
+<div id="tb">
+    <span>族谱名:</span>
+    <input id="familyName4Search" name="familyName" style="line-height:26px;border:1px solid #ccc;height: 23px;">
+    <span>族谱属地:</span>
+    <span data-toggle="distpicker">
+        <select id="province4Search" name="province" style="line-height:26px;border:1px solid #ccc" data-province="---- 选择省 ----"></select>
+        <select id="city4Search" name="city" style="line-height:26px;border:1px solid #ccc" data-city="---- 选择市 ----"></select>
+        <select id="district4Search" name="district" style="line-height:26px;border:1px solid #ccc" data-district="---- 选择区 ----"></select>
+    </span>
+
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch">查询</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="toAdd">添加</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" id="toEdit" >编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" id="toDel" >删除</a>
+</div>
+
+
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>

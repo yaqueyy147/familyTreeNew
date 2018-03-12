@@ -1,8 +1,6 @@
 package com.witkey.familyTree.controller.fronts;
 
-import com.witkey.familyTree.domain.TFamily;
 import com.witkey.familyTree.domain.TMeritocratAttr;
-import com.witkey.familyTree.domain.TPeople;
 import com.witkey.familyTree.service.consoles.ConsoleService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,27 +90,27 @@ public class IndexController {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("state",5);
         //查询前台可展示的族谱
-        List<TFamily> list = familyService.getFamilyList2(params);
-        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+        List<Map<String,Object>> list1 = familyService.getFamilyList2(params);
+//        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
         //遍历族谱，查询设置族谱总人数
-        for(TFamily tFamily : list){
-            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
-            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
-            Map<String,Object> map = new HashMap<String,Object>();
-            Map<String,Object> paramss = new HashMap<>();
-//            paramss.put("familyId",tFamily.getId());
-//            paramss.put("peopleType",1);
-//            paramss.put("isIndex",1);
-//            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-//            if(peopleList != null && peopleList.size() > 0)
-//            {
-//                peopleCount = peopleList.size();
-//            }
-            map = CommonUtil.bean2Map(tFamily);
-            map.put("peopleCount",peopleCount);
-            map.put("zspeopleCount",zspeopleCount);
-            list1.add(map);
-        }
+//        for(TFamily tFamily : list){
+//            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
+//            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
+//            Map<String,Object> map = new HashMap<String,Object>();
+//            Map<String,Object> paramss = new HashMap<>();
+////            paramss.put("familyId",tFamily.getId());
+////            paramss.put("peopleType",1);
+////            paramss.put("isIndex",1);
+////            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+////            if(peopleList != null && peopleList.size() > 0)
+////            {
+////                peopleCount = peopleList.size();
+////            }
+//            map = CommonUtil.bean2Map(tFamily);
+//            map.put("peopleCount",peopleCount);
+//            map.put("zspeopleCount",zspeopleCount);
+//            list1.add(map);
+//        }
         //查询被收录的族谱
 //        params.put("state","");
 //        List<TFamily> list2 = familyService.getIncludeFamilyList(params);
@@ -150,34 +147,26 @@ public class IndexController {
         Map<String,Object> result = new HashMap<String,Object>();
         params.put("state",5);
         params.put("indexsearchfamilyid",indexsearchfamilyid);
-        List<TFamily> list = familyService.getFamilyList2(params);
-        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
-        for(TFamily tFamily : list){
-            int peopleCount = 0;
-            Map<String,Object> map = new HashMap<String,Object>();
-            Map<String,Object> paramss = new HashMap<>();
-            paramss.put("familyId",tFamily.getId());
-            paramss.put("peopleType",1);
-            List<TPeople> peopleList = familyService.getPeopleList(paramss);
-            if(peopleList != null && peopleList.size() > 0)
-            {
-                peopleCount = peopleList.size();
-            }
-            map = CommonUtil.bean2Map(tFamily);
-            map.put("peopleCount",peopleCount);
-            list1.add(map);
-        }
+        List<Map<String,Object>> list1 = familyService.getFamilyList2(params);
+//        List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+//        for(TFamily tFamily : list){
+//            int peopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),-1);
+//            int zspeopleCount = familyService.getFamilyTotalPeopleNum(tFamily.getId(),1);
+//            Map<String,Object> map = new HashMap<String,Object>();
+////            Map<String,Object> paramss = new HashMap<>();
+////            paramss.put("familyId",tFamily.getId());
+////            paramss.put("peopleType",1);
+////            List<TPeople> peopleList = familyService.getPeopleList(paramss);
+////            if(peopleList != null && peopleList.size() > 0)
+////            {
+////                peopleCount = peopleList.size();
+////            }
+//            map = CommonUtil.bean2Map(tFamily);
+//            map.put("peopleCount",peopleCount);
+//            map.put("zspeopleCount",zspeopleCount);
+//            list1.add(map);
+//        }
         result.put("familyList",list1);
-
-//        //个人积分排名
-//        params.put("type",1);
-//        params.put("userType",1);
-//        List<Map<String,Object>> listPersonalPoints = familyService.getPointsRanking(params);
-//        //公司积分排名
-//        params.put("type",2);
-//        List<Map<String,Object>> listCompanyPoints = familyService.getPointsRanking(params);
-//        result.put("listPersonalPoints",listPersonalPoints);
-//        result.put("listCompanyPoints",listCompanyPoints);
 
         return result;
     }

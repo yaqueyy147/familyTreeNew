@@ -45,6 +45,7 @@ $(function () {
 
 function initFamilyTree(zNodes,setting) {
     $.fn.zTree.init($("#familyTree"), setting, zNodes);
+    $(".loading").hide();
 }
 
 function addDiyDom(treeId, treeNode) {
@@ -153,7 +154,7 @@ function initPeopleData(familyId){
             //     zNodes[i] = node;
             // }
             defer.resolve(data);
-            $(".loading").hide();
+
         },
         error:function (data) {
             var responseText = data.responseText;
@@ -200,7 +201,9 @@ function editPeople(peopleId,generation){
         $("#peopleForm").populateForm(tPeople);
     });
 
-    $("#addModalLabel").text("修改族人【" + tPeople.name + "】信息");
+    $("#srtab").text(tPeople.specialRemark);
+
+    $("#addModalLabel").text("族人【" + tPeople.name + "】信息");
 
     var imgPath = tPeople.photoUrl;
     $("#result_img").attr('src',imgPath);

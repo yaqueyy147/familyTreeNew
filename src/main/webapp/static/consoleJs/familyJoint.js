@@ -104,7 +104,53 @@ $(function () {
         });
 
 	});
-    
+
+    $("#todelete").click(function () {
+        var maintreeobj = $.fn.zTree.getZTreeObj("mainFamilyTree");
+        var mainchknodes = maintreeobj.getCheckedNodes(true);
+        if(mainchknodes.length <= 0){
+            $.messager.alert('提示','您还没有选中需要删除的族人!');
+            return;
+        }
+
+        $.messager.confirm('提示', '确定要删除选择的族人吗', function(r){
+            if (r){
+                $(".loading").show();
+                var peopleids = "";
+                for(var i=0;i<mainchknodes.length;i++){
+                    var ii = mainchknodes[i];
+                    peopleids += "," + ii.id;
+                }
+                peopleids = peopleids.substring(1);
+                $.ajax({
+                    type:'post',
+                    url:projectUrl + '/consoles/deletepeople',
+                    dataType:'json',
+                    // async:false,
+                    data:{familyId : mianFamilyId,peopleids:peopleids},
+                    success:function (data) {
+                        if(data.code){
+                            $.messager.alert('提示','删除完成!');
+                            $.when(initPeopleData(mianFamilyId)).done(function(data){
+                                initFamilyTree("mainFamilyTree",mainSetting,data);
+                                $(".loading").hide()
+                            });
+                        }
+                    },
+                    error:function (data) {
+                        var responseText = data.responseText;
+                        if(responseText.indexOf("登出跳转页面") >= 0){
+                            ajaxErrorToLogin();
+                        }else{
+                            alert(JSON.stringify(data));
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+
     mainSetting = {
         view: {
             addDiyDom: addDiyDom

@@ -2,7 +2,6 @@ package com.witkey.familyTree.service.fronts;
 
 import com.witkey.familyTree.domain.TUser1;
 import com.witkey.familyTree.domain.TUserFamily;
-import com.witkey.familyTree.domain.TUserFront;
 
 import java.util.List;
 import java.util.Map;
@@ -52,5 +51,8 @@ public interface UserService {
 
     //删除充值记录
     public int deleteMoney(Map<String,Object> params);
+
+    //设置积分排序家族
+    public int setuserrankfamily(Map<String,Object> params) throws Exception;
 
 }

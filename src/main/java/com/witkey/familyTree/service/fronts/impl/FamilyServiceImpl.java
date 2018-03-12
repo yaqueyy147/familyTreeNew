@@ -7,6 +7,7 @@ import com.witkey.familyTree.domain.*;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
+import com.witkey.familyTree.util.PeopleTree;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -179,35 +180,37 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
-    public List<TFamily> getFamilyList(Map<String,Object> params) {
-        Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where state<>9 ";
+    public List<Map<String,Object>> getFamilyList(Map<String,Object> params) {
+        int pageNumber = CommonUtil.parseInt(params.get("pageNumber"));
+        int pageSize = CommonUtil.parseInt(params.get("pageSize"));
+        int startindex = (pageNumber-1) * pageSize + 1;
+//        String sql = "select * from t_family where state<>9 ";
+        String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
+        sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
+        sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
+        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
+        sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
+        sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
+        sql += " left join (select family_id,count(id) as zspeopleCount from t_people where people_status=1 and people_type=1 and state=1 group by family_id) t3 on t3.family_id=t1.id";
+        sql += " where t1.state<>9";
         if(!CommonUtil.isBlank(params)){
         	
-//            if(!CommonUtil.isBlank(params.get("userName"))){
-////                filter.put("createMan",params.get("userName"));
-//                sql += " and (create_man='" + params.get("userName") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
-//            }
             if(!CommonUtil.isBlank(params.get("familyArea")) && !"0".equals(params.get("familyArea"))){
-//                filter.put("familyArea",params.get("familyArea"));
-                sql += " and family_area='" + params.get("familyArea") + "'";
+                sql += " and t1.family_area='" + params.get("familyArea") + "'";
             }
             if(!CommonUtil.isBlank(params.get("province"))){
-//                filter.put("province",params.get("province"));
-                sql += " and province='" + params.get("province") + "'";
+                sql += " and t1.province='" + params.get("province") + "'";
             }
             if(!CommonUtil.isBlank(params.get("city"))){
-//                filter.put("city",params.get("city"));
-                sql += " and city='" + params.get("city") + "'";
+                sql += " and t1.city='" + params.get("city") + "'";
             }
             if(!CommonUtil.isBlank(params.get("district"))){
-//                filter.put("district",params.get("district"));
-                sql += " and district='" + params.get("district") + "'";
+                sql += " and t1.district='" + params.get("district") + "'";
             }
 
             if(!CommonUtil.isBlank(params.get("familyName"))){
-//                filter.put("familyName","%" + params.get("familyName") + "%");
-                sql += " and family_name like '%" + params.get("familyName") + "%'";
+                sql += " and t1.family_name like '%" + params.get("familyName") + "%'";
             }
             if(!CommonUtil.isBlank(params.get("state"))){
                 if(!CommonUtil.isBlank(params.get("tt")) && CommonUtil.parseInt(params.get("tt")) == 1){
@@ -218,20 +221,8 @@ public class FamilyServiceImpl implements FamilyService {
 
             }
         }
-
-//        List<TFamily> list = tFamilyDao.find(filter);
-
-        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
-
-        for (TFamily tFamily : list) {
-            String photoUrl = tFamily.getPhotoUrl();
-            if(CommonUtil.isBlank(photoUrl)){
-                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-            }
-//            else if(!CommonUtil.isFile(photoUrl)){
-//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-//            }
-        }
+        sql += " limit " + startindex + "," + pageSize;
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
         return list;
     }
@@ -255,10 +246,22 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
-    public List<TFamily> getFamilyList1(Map<String,Object> params) {
+    public List<Map<String,Object>> getFamilyList1(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where state<>9 and state=1";
-        sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+        int pageNumber = CommonUtil.parseInt(params.get("pageNumber"));
+        int pageSize = CommonUtil.parseInt(params.get("pageSize"));
+        int startindex = (pageNumber-1) * pageSize + 1;
+//        String sql = "select * from t_family where state<>9 and state=1";
+        String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
+        sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
+        sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
+        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
+        sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
+        sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
+        sql += " left join (select family_id,count(id) as zspeopleCount from t_people where people_status=1 and people_type=1 and state=1 group by family_id) t3 on t3.family_id=t1.id";
+        sql += " where t1.state<>9 and t1.state=1";
+        sql += " and ((t1.create_id='" + params.get("userId") + "' or t1.id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
 //        sql += " or (supplement_flag in (1,5))";
         sql += ")";
         if(!CommonUtil.isBlank(params)){
@@ -271,20 +274,18 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("district"))){
                 sql += " and district='" + params.get("district") + "'";
             }
-
-        }
-//        List<TFamily> list = tFamilyDao.find(filter);
-
-        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
-
-        for (TFamily tFamily : list) {
-            String photoUrl = tFamily.getPhotoUrl();
-            if(CommonUtil.isBlank(photoUrl)){
-                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+            if(!CommonUtil.isBlank(params.get("familyName"))){
+                sql += " and family_name like '%" + params.get("familyName") + "%'";
             }
-//            else if(!CommonUtil.isFile(photoUrl)){
-//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-//            }
+        }
+        sql += " limit " + pageNumber + "," + pageSize;
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+
+        for (Map<String,Object> map : list) {
+            String photoUrl = map.get("photoUrl") + "";
+            if(CommonUtil.isBlank(photoUrl)){
+                map.put("photoUrl",BaseUtil.DEFAULT_FAMILY_IMG);
+            }
         }
 
         return list;
@@ -295,45 +296,48 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
-    public List<TFamily> getFamilyList2(Map<String,Object> params) {
-        Map<String,Object> filter = new HashMap<String,Object>();
-        String sql = "select * from t_family where state<>9 and state=1";
+    public List<Map<String,Object>> getFamilyList2(Map<String,Object> params) {
+//        String sql = "select * from t_family where state<>9 and state=1";
+        String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
+        sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
+        sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
+        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
+        sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
+        sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
+        sql += " left join (select family_id,count(id) as zspeopleCount from t_people where people_status=1 and people_type=1 and state=1 group by family_id) t3 on t3.family_id=t1.id";
+        sql += " where t1.state<>9 and t1.state=1";
         sql += " and supplement_flag in (1,5) ";
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("onlyInclude")) && CommonUtil.parseInt(params.get("onlyInclude")) == 1){
-                sql += " and create_id<>'" + params.get("userId") + "'";
+                sql += " and t1.create_id<>'" + params.get("userId") + "'";
             }
 
             if(!CommonUtil.isBlank(params.get("province"))){
-                sql += " and province='" + params.get("province") + "'";
+                sql += " and t1.province='" + params.get("province") + "'";
             }
             if(!CommonUtil.isBlank(params.get("city"))){
-                sql += " and city='" + params.get("city") + "'";
+                sql += " and t1.city='" + params.get("city") + "'";
             }
             if(!CommonUtil.isBlank(params.get("district"))){
-                sql += " and district='" + params.get("district") + "'";
+                sql += " and t1.district='" + params.get("district") + "'";
             }
 
             if(!CommonUtil.isBlank(params.get("familyName"))){
-                sql += " and family_name like '%" + params.get("familyName") + "%'";
+                sql += " and t1.family_name like '%" + params.get("familyName") + "%'";
             }
             if(!CommonUtil.isBlank(params.get("indexsearchfamilyid"))){
-                sql += " and id in (" + params.get("indexsearchfamilyid") + ")";
+                sql += " and t1.id in (" + params.get("indexsearchfamilyid") + ")";
             }
         }
 
-//        List<TFamily> list = tFamilyDao.find(filter);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
-        List<TFamily> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TFamily>(TFamily.class));
-
-        for (TFamily tFamily : list) {
-            String photoUrl = tFamily.getPhotoUrl();
+        for (Map<String,Object> map : list) {
+            String photoUrl = map.get("photoUrl") + "";
             if(CommonUtil.isBlank(photoUrl)){
-                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
+                map.put("photoUrl",BaseUtil.DEFAULT_FAMILY_IMG);
             }
-//            else if(!CommonUtil.isFile(photoUrl)){
-//                tFamily.setPhotoUrl(BaseUtil.DEFAULT_FAMILY_IMG);
-//            }
         }
 
         return list;
@@ -413,27 +417,18 @@ public class FamilyServiceImpl implements FamilyService {
         if(!CommonUtil.isBlank(params)){
             if(!CommonUtil.isBlank(params.get("isIndex")) && CommonUtil.parseInt(params.get("isIndex")) == 1){
                 sql += " and people_status=1";
-//            filter.put("peopleType",params.get("peopleType"));
             }
-//            if(!CommonUtil.isBlank(params.get("familyId")) && !"0".equals(params.get("familyId"))){
-//                sql += " and family_id=" + params.get("familyId");
-////            filter.put("familyId",params.get("familyId"));
-//            }
             if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
                 sql += " and people_type='" + params.get("peopleType") + "'";
-//            filter.put("peopleType",params.get("peopleType"));
             }
             if(!CommonUtil.isBlank(params.get("peopleName"))){
                 sql += " and name='" + params.get("peopleName") + "'";
-//            filter.put("name",params.get("peopleName"));
             }
             if(!CommonUtil.isBlank(params.get("generation"))){
                 sql += " and generation='" + params.get("generation") + "'";
-//            filter.put("generation",params.get("generation"));
             }
             if(!CommonUtil.isBlank(params.get("superiorId"))){
                 sql += " and superior_id='" + params.get("superiorId") + "'";
-//            filter.put("generation",params.get("generation"));
             }
             if(!CommonUtil.isBlank(params.get("state"))){
                 sql += " and state='" + params.get("state") + "'";
@@ -447,8 +442,140 @@ public class FamilyServiceImpl implements FamilyService {
             }
         }
 
-//        List<TPeople> list = tPeopleDao.find(filter);
         List<TPeople> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPeople>(TPeople.class),params.get("familyId"));
+        return list;
+    }
+
+    /**
+     * 根据族谱ID获取家族成员
+     * @param params
+     * @return
+     */
+    @Override
+    public List<PeopleTree> getPeopleList4view(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+
+//        String sql = "select * from t_people where people_status<>9 and family_id=?";
+        String sql = "select t1.id,t1.superior_id as pId";
+        sql += ",case when t1.state=0 then '/static/jquery/ztree/icon/head_die.ico' else '/static/jquery/ztree/icon/head2.ico' end as icon";
+        sql += ",t1.is_supplement as isSupplement,t1.people_status as peopleStatus,true as open";
+        sql += ",CONCAT(t1.name,'(第',t1.generation,'世)') as name,t1.generation,t1.state as isdie";
+        sql += ",t2.mateName";
+        sql += " from t_people t1";
+        sql += " left join (select t1.people_id, GROUP_CONCAT(CONCAT_WS('--',t2.name,t2.id,t2.people_status,IFNULL(t2.is_supplement,'0')) separator ',') as mateName from t_mate t1";
+        sql += " left join t_people t2 on t2.id=t1.mate_id";
+        sql += " where t2.people_status<>9";
+        sql += " GROUP BY t1.people_id) t2 on t2.people_id=t1.id";
+        sql += " where t1.people_status<>9 and t1.people_status=1 and t1.family_id=?";
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("isIndex")) && CommonUtil.parseInt(params.get("isIndex")) == 1){
+                sql += " and people_status=1";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
+                sql += " and people_type='" + params.get("peopleType") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleName"))){
+                sql += " and name='" + params.get("peopleName") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("generation"))){
+                sql += " and generation='" + params.get("generation") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("superiorId"))){
+                sql += " and superior_id='" + params.get("superiorId") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and state='" + params.get("state") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
+        }
+
+        List<PeopleTree> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<PeopleTree>(PeopleTree.class),params.get("familyId"));
+        return list;
+    }
+
+    @Override
+    public List<PeopleTree> getPeopleList4consoleview(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+
+//        String sql = "select * from t_people where people_status<>9 and family_id=?";
+        String sql = "select t1.id,t1.superior_id as pId";
+        sql += ",case when t1.state=0 then '/static/jquery/ztree/icon/head_die.ico' else '/static/jquery/ztree/icon/head2.ico' end as icon";
+        sql += ",t1.is_supplement as isSupplement,t1.people_status as peopleStatus,true as open";
+//        sql += ",CONCAT(t1.name,'(第',t1.generation,'世)') as name,t1.generation,t1.isdie";
+        sql += ",case when t1.ishide='1' then CONCAT(t1.name,'(第',t1.generation,'世)--已屏蔽') else CONCAT(t1.name,'(第',t1.generation,'世)') end as name";
+        sql += ",t2.mateName";
+        sql += " from t_people t1";
+        sql += " left join (select t1.people_id, GROUP_CONCAT(CONCAT_WS('--',t2.name,t2.id,t2.people_status,IFNULL(t2.is_supplement,'0')) separator ',') as mateName from t_mate t1";
+        sql += " left join t_people t2 on t2.id=t1.mate_id";
+        sql += " where t2.people_status<>9";
+        sql += " GROUP BY t1.people_id) t2 on t2.people_id=t1.id";
+        sql += " where t1.people_status<>9 and t1.people_status=1 and t1.family_id=?";
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("isIndex")) && CommonUtil.parseInt(params.get("isIndex")) == 1){
+                sql += " and people_status=1";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
+                sql += " and people_type='" + params.get("peopleType") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleName"))){
+                sql += " and name='" + params.get("peopleName") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("generation"))){
+                sql += " and generation='" + params.get("generation") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("superiorId"))){
+                sql += " and superior_id='" + params.get("superiorId") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and state='" + params.get("state") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
+        }
+
+        List<PeopleTree> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<PeopleTree>(PeopleTree.class),params.get("familyId"));
+        return list;
+    }
+
+    @Override
+    public List<PeopleTree> getPeopleListIndex(Map<String,Object> params){
+//        String sql = "select * from t_people where people_status<>9 and people_status=1 and family_id=?";
+        String sql = "select t1.id,t1.superior_id as pId";
+        sql += ",case when t1.state=0 then '/static/jquery/ztree/icon/head_die.ico' else '/static/jquery/ztree/icon/head2.ico' end as icon";
+        sql += ",t1.is_supplement as isSupplement,t1.people_status as peopleStatus,true as open";
+        sql += ",case when t1.ishide='1' then '***' else CONCAT(t1.name,'(第',t1.generation,'世)') end as name";
+        sql += ",case when t1.ishide='1' then '' else t2.mateName end as mateName";
+        sql += " from t_people t1";
+        sql += " left join (select t1.people_id, GROUP_CONCAT(CONCAT_WS('--',t2.name,t2.id,t2.people_status,IFNULL(t2.is_supplement,'0')) separator ',') as mateName from t_mate t1";
+        sql += " left join t_people t2 on t2.id=t1.mate_id";
+        sql += " where t2.people_status<>9";
+        sql += " GROUP BY t1.people_id) t2 on t2.people_id=t1.id";
+        sql += " where t1.people_status<>9 and t1.people_status=1 and t1.family_id=?";
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("peopleType"))){
+                sql += " and t1.people_type='" + params.get("peopleType") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
+        }
+
+        List<PeopleTree> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<PeopleTree>(PeopleTree.class),params.get("familyId"));
         return list;
     }
 
@@ -506,13 +633,73 @@ public class FamilyServiceImpl implements FamilyService {
      * @return
      */
     @Override
-    public List<TPeople> getPeopleList4Print(Map<String,Object> params) {
+    public List<PeopleTree> getPeopleList4Print(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select * from t_people where people_status=1 and family_id=? and people_type=1";
-        sql += " and generation>=? and generation<=? order by family_rank asc";
+//        String sql = "select * from t_people where people_status=1 and family_id=? and people_type=1";
+        String sql = "select t1.id,t1.superior_id as pId";
+        sql += ",case when t1.state=0 then '/static/jquery/ztree/icon/head_die.ico' else '/static/jquery/ztree/icon/head2.ico' end as icon";
+        sql += ",t1.is_supplement as isSupplement,t1.people_status as peopleStatus,true as open";
+        sql += ",CONCAT(t1.name,'(第',t1.generation,'世)') as name,t1.dieAddr";
+        sql += ",t2.mateName";
+        sql += " from t_people t1";
+        sql += " left join (select t1.people_id, GROUP_CONCAT(CONCAT_WS('--',t2.name,t2.id,t2.people_status,IFNULL(t2.is_supplement,'0')) separator ',') as mateName from t_mate t1";
+        sql += " left join t_people t2 on t2.id=t1.mate_id";
+        sql += " where t2.people_status<>9";
+        sql += " GROUP BY t1.people_id) t2 on t2.people_id=t1.id";
+        sql += " where t1.people_status<>9 and t1.people_status=1 and t1.family_id=?";
+        sql += " and t1.generation>=? and t1.generation<=? order by genneration asc,family_rank asc";
 
-        List<TPeople> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<TPeople>(TPeople.class),params.get("familyId"),params.get("beginGen"),params.get("endGen"));
+        List<PeopleTree> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<PeopleTree>(PeopleTree.class),params.get("familyId"),params.get("beginGen"),params.get("endGen"));
+        return list;
+    }
+
+    @Override
+    public List<PeopleTree> getPeopleList4merge(Map<String,Object> params) {
+        Map<String,Object> filter = new HashMap<String,Object>();
+
+//        String sql = "select * from t_people where people_status<>9 and family_id=?";
+        String sql = "select t1.id,t1.superior_id as pId";
+        sql += ",case when t1.state=0 then '/static/jquery/ztree/icon/head_die.ico' else '/static/jquery/ztree/icon/head2.ico' end as icon";
+        sql += ",t1.is_supplement as isSupplement,t1.people_status as peopleStatus,true as open,t1.createId";
+        sql += ",CONCAT(t1.name,'(第',t1.generation,'世)') as name,t1.generation,t1.isdie";
+        sql += ",case when t1.people_status<>5 and t1.people_status<>51 and t1.people_status<>52 then true else false as nocheck";
+        sql += ",t2.mateName";
+        sql += " from t_people t1";
+        sql += " left join (select t1.people_id, GROUP_CONCAT(CONCAT_WS('--',t2.name,t2.id,t2.people_status,IFNULL(t2.is_supplement,'0')) separator ',') as mateName from t_mate t1";
+        sql += " left join t_people t2 on t2.id=t1.mate_id";
+        sql += " where t2.people_status<>9";
+        sql += " GROUP BY t1.people_id) t2 on t2.people_id=t1.id";
+        sql += " where t1.people_status<>9 and t1.people_status=1 and t1.family_id=?";
+        if(!CommonUtil.isBlank(params)){
+            if(!CommonUtil.isBlank(params.get("isIndex")) && CommonUtil.parseInt(params.get("isIndex")) == 1){
+                sql += " and people_status=1";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleType"))){// && "1".equals(params.get("peopleType"))
+                sql += " and people_type='" + params.get("peopleType") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("peopleName"))){
+                sql += " and name='" + params.get("peopleName") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("generation"))){
+                sql += " and generation='" + params.get("generation") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("superiorId"))){
+                sql += " and superior_id='" + params.get("superiorId") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("state"))){
+                sql += " and state='" + params.get("state") + "'";
+            }
+
+            if(!CommonUtil.isBlank(params.get("orderBy"))){
+                sql += " " + params.get("orderBy");
+            }
+            if(!CommonUtil.isBlank(params.get("limit"))){
+                sql += " " + params.get("limit");
+            }
+        }
+
+        List<PeopleTree> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<PeopleTree>(PeopleTree.class),params.get("familyId"));
         return list;
     }
 
@@ -562,7 +749,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<TPeople> getMateList(String peopleId) {
 
-        StringBuffer sql = new StringBuffer("select * from t_people where id in(");
+        StringBuffer sql = new StringBuffer("select id,name,people_status,is_supplement,die_addr from t_people where id in(");
         sql.append(" select mate_id from t_mate where people_id=?) and people_status<>9");
 
         List<TPeople> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper<TPeople>(TPeople.class),peopleId);
@@ -672,6 +859,8 @@ public class FamilyServiceImpl implements FamilyService {
         if(listDic2 != null && listDic2.size() > 0){
         	pointsCurrent4Pay = listDic2.get(0).getPointsValue() / listDic2.get(0).getPointsNum();
         }
+
+        String rankfamilyId = params.get("rankfamilyId") + "";
         //个人
         if(CommonUtil.parseInt(params.get("type")) == 1){
             
@@ -693,22 +882,19 @@ public class FamilyServiceImpl implements FamilyService {
             if(!CommonUtil.isBlank(params.get("district"))){
                 sql += " and t2.id<>6 and t2.id<>99 and t2.id<>7 and t2.id<>9 and t2.id<>10 and t2.id<>11 and t2.id<>15";
             }
+            if(!CommonUtil.isBlank(rankfamilyId)){
+                sql += " and t2.rankfamily='" + rankfamilyId + "'";
+            }
             sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }else{//公司
-            String familyId = params.get("familyId") + "";
+
             String sql = "select t1.points,t1.total_money,t1.total_money*" + pointsCurrent4Pay + " totalPoints";
             sql += ",t1.company_id,t2.company_name,t2.company_login_name from t_company_points t1,t_company_sponsor t2";
-            sql += " where t1.company_id=t2.id and t2.state=1 and t2.rankfamily='" + familyId + "'";
-//            if(!CommonUtil.isBlank(params.get("province"))){
-//                sql += " and t2.province='" + params.get("province") + "'";
-//            }
-//            if(!CommonUtil.isBlank(params.get("city"))){
-//                sql += " and t2.city='" + params.get("city") + "'";
-//            }
-//            if(!CommonUtil.isBlank(params.get("district"))){
-//                sql += " and t2.district='" + params.get("district") + "'";
-//            }
+            sql += " where t1.company_id=t2.id and t2.state=1";
+            if(!CommonUtil.isBlank(rankfamilyId)){
+                sql += " and t2.rankfamily='" + rankfamilyId + "'";
+            }
             sql += " order by totalPoints desc";
             list = jdbcTemplate.queryForList(sql);
         }
@@ -942,6 +1128,38 @@ public class FamilyServiceImpl implements FamilyService {
         }
 
         return null;
+    }
+
+    @Override
+    public int getTotalFamilyNum(Map<String, Object> params) {
+
+        String sql = "select count(id) as num from t_family where state=1";
+        if(!CommonUtil.isBlank(params)){
+
+            if(!"1".equals(params.get("isadmin")) && CommonUtil.parseInt(params.get("isadmin")) != 1){
+                sql += " and ((create_id='" + params.get("userId") + "' or id in (select family_id from t_user_family where user_id='" + params.get("userId") + "'))";
+                sql += ")";
+            }
+
+            if(!CommonUtil.isBlank(params.get("province"))){
+                sql += " and province='" + params.get("province") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("city"))){
+                sql += " and city='" + params.get("city") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("district"))){
+                sql += " and district='" + params.get("district") + "'";
+            }
+            if(!CommonUtil.isBlank(params.get("familyName"))){
+                sql += " and family_name like '%" + params.get("familyName") + "%'";
+            }
+        }
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        int total = 0;
+        if(list != null && list.size() > 0){
+            total = CommonUtil.parseInt(list.get(0).get("num"));
+        }
+        return total;
     }
 
     /**

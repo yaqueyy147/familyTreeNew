@@ -172,6 +172,17 @@
 
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" id="doSearch2">查询</a>
 </div>
+
+<div id="familylistDialog" class="easyui-dialog" title="设置积分排名家族" style="width:400px;height:200px;padding:10px;top: 10%;left: 10%;text-align: center">
+    <input type="hidden" id="userid4set" />
+    <div id="username4set"></div>
+    <select id="rankfamily" name="rankfamily">
+        <option value="">无</option>
+        <c:forEach var="family" items="${familylist}" varStatus="status">
+            <option value="${family.id}">${family.familyName}</option>
+        </c:forEach>
+    </select>
+</div>
 <%@include file="common/springUrl.jsp"%>
 <%@include file="common/commonJs.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/distpicker.data.min.js"></script>

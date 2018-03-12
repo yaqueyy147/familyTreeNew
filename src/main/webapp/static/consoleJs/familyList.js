@@ -182,15 +182,26 @@ $(function () {
 
 });
 
+function queryfamily(pageNumber,pageSize) {
+
+    var handler = "/consoles/familyList?pageNumber=" + escape(pageNumber)+ "&pageSize=" + escape(pageSize);
+
+    $('#familyList').datagrid('options').url = handler; //设置表格数据的来源URL
+    $('#familyList').datagrid('reload'); //重新加载表格
+
+}
+
 function loadFamilyList(params){
-    var dataList = getData("/consoles/familyList",params).dataList;
-    dataList = formatDataList(dataList);
-    // $("#familyList").datagrid({loadFilter:familyFilter}).datagrid('loadData', getData("/consoles/familyList",params).dataList);
+    params.pageNumber = 1;
+    params.pageSize = 10;
+    // var dataList = getData("/consoles/familyList",params).dataList;
     $("#familyList").datagrid({
-        data:dataList,
+        url:"/consoles/familyList",
+        queryParams:params,
         loadMsg:"加载中...",
         selectOnCheck:true,
         singleSelect:false,
+        pageSize:10,
         nowrap: true,
         columns:[[
             {field:"ck",checkbox:"true"},
@@ -202,7 +213,13 @@ function loadFamilyList(params){
             {field:"familyFirstName",title:"族谱姓氏",width:"150"},
             {field:"peopleCount",title:"族谱人数",width:"80"},
             {field:"createMan",title:"创建人",width:"80"},
-            {field:"createTime",title:"创建时间",width:"180"},
+            {field:"createTime",title:"创建时间",width:"180",
+                formatter: function(value,row,index){
+                    if(value){
+                        return new Date(value).Format("yyyy-MM-dd hh:mm:ss");
+                    }
+                    return '';
+            }},
             {field:"familyAddr",title:"族谱所在地",width:"300",
                 formatter: function(value,row,index){
                     return '<span title='+ row.province + row.city + row.district + '>'+row.province + row.city + row.district+'</span>'
@@ -218,25 +235,23 @@ function loadFamilyList(params){
             {field:"city",title:"族谱所在市",width:"80",hidden:true},
             {field:"district",title:"族谱所在区",width:"80",hidden:true},
             {field:"visitStatus",title:"访问状态",width:"80",hidden:true}
-        ]],
-        loadFilter:pagerFilter
+        ]]
+        // ,
+        // loadFilter:pagerFilter
+    });
+
+    $("#familyList").datagrid('getPager').pagination({
+        pageSize:10,
+        pageList: [10, 20, 30,40,50],
+        onSelectPage: function (pageNumber, pageSize) {
+            queryfamily(pageNumber,pageSize);//分页查询
+        }
     });
 }
 
 function closeDialog(dialogId){
     $("#familyForm").form('clear');
     $("#" + dialogId).dialog("close");
-}
-
-function formatDataList(data){
-    if(data){
-
-        for(var i=0;i<data.length;i++){
-            // data[i].familyName = "<a href=\"" + projectUrl + "/consoles/familyTree?familyId=" + data[i].id + "\">" + data[i].familyName +" </a>";// onclick=\"familyDetail('" + data[i].id + "')\"
-            data[i].createTime = new Date(data[i].createTime).Format("yyyy-MM-dd hh:mm:ss");
-        }
-    }
-    return data;
 }
 
 function loadDataToForm(data) {

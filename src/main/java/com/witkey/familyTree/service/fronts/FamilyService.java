@@ -1,6 +1,7 @@
 package com.witkey.familyTree.service.fronts;
 
 import com.witkey.familyTree.domain.*;
+import com.witkey.familyTree.util.PeopleTree;
 
 import java.util.List;
 import java.util.Map;
@@ -32,12 +33,12 @@ public interface FamilyService {
     public int saveMateInfo(TMate tMate);
 
     //查询family
-    public List<TFamily> getFamilyList(Map<String,Object> params);
+    public List<Map<String,Object>> getFamilyList(Map<String,Object> params);
     public List<TFamily> getFamilyListJoint(Map<String,Object> params);
     //查询family
-    public List<TFamily> getFamilyList1(Map<String,Object> params);
+    public List<Map<String,Object>> getFamilyList1(Map<String,Object> params);
     //查询family
-    public List<TFamily> getFamilyList2(Map<String,Object> params);
+    public List<Map<String,Object>> getFamilyList2(Map<String,Object> params);
 
     //查询被收录的族谱
     public List<TFamily> getIncludeFamilyList(Map<String,Object> params);
@@ -45,10 +46,16 @@ public interface FamilyService {
     //查询族谱的成员
     public List<TPeople> getPeopleList(Map<String,Object> params);//int familyId,int peopleType
     //查询族谱的成员
+    public List<PeopleTree> getPeopleList4view(Map<String,Object> params);
+    public List<PeopleTree> getPeopleList4consoleview(Map<String,Object> params);
+    //查询族谱的成员
+    public List<PeopleTree> getPeopleListIndex(Map<String,Object> params);//int familyId,int peopleType
+
+    //查询族谱的成员
     public List<Map<String,Object>> getPeopleList4Export(Map<String,Object> params);
     //查询族谱的成员
-    public List<TPeople> getPeopleList4Print(Map<String,Object> params);
-
+    public List<PeopleTree> getPeopleList4Print(Map<String,Object> params);
+    public List<PeopleTree> getPeopleList4merge(Map<String,Object> params);
     //根据族人是第几代获取其父亲母亲
     public Map<String,Object> getParentFromGen(int familyId,int generation);
 
@@ -67,7 +74,7 @@ public interface FamilyService {
     //充值或者刷新积分
     public int setPoints(Object object,int type);
 
-    //获取积分排名
+    //获取积分排名，总排行
     public List<Map<String,Object>> getPointsRanking(Map<String, Object> params);
 
     //获取英才录
@@ -108,5 +115,8 @@ public interface FamilyService {
 
     //根据族人姓名查询族谱,返回包含有该族人的家族id的字符串
     public String getFamilyFromPeopleName(String name);
+
+    //获取所有family数量
+    public int getTotalFamilyNum(Map<String,Object> params);
 
 }

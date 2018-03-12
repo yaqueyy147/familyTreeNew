@@ -4,8 +4,6 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/4/5 0005.
@@ -38,6 +36,9 @@ public class TUser1 implements Serializable {
     private Integer isConsole;
     private Integer isFront;
     private Integer userFrom;
+
+    private String rankfamily;
+    private String rankfamilyname;
     
     public TUser1() {
     }
@@ -292,7 +293,27 @@ public class TUser1 implements Serializable {
     public void setUserFrom(Integer userFrom) {
         this.userFrom = userFrom;
     }
-    
+
+    @Basic
+    @Column(name = "rankfamily")
+    public String getRankfamily() {
+        return rankfamily;
+    }
+
+    public void setRankfamily(String rankfamily) {
+        this.rankfamily = rankfamily;
+    }
+
+    @Basic
+    @Column(name = "rankfamilyname")
+    public String getRankfamilyname() {
+        return rankfamilyname;
+    }
+
+    public void setRankfamilyname(String rankfamilyname) {
+        this.rankfamilyname = rankfamilyname;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

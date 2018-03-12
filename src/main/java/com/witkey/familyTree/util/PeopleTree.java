@@ -14,8 +14,8 @@ public class PeopleTree {
     private String isSupplement;
     private String dieAddr;
     private String createId;
-    private boolean nocheck;
-    private boolean chkDisabled;
+    private boolean nocheck = false;
+    private boolean chkDisabled = false;
     private String isdie;
     private String generation;
 

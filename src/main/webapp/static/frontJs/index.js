@@ -74,7 +74,7 @@ $(function () {
                         familyContent += "<div class='caption'>";
                         familyContent += "<h6>" + ii.familyFirstName + "（" + ii.id + "）</h6>";
                         // familyContent += "<h6>世界何氏族谱（" + ii.id + "）</h6>";
-                        familyContent += "<p>家族人数：" + ii.peopleCount + "人</p>";
+                        familyContent += "<p>家族人数：" + ii.zspeopleCount + "&nbsp;/&nbsp;" + ii.peopleCount + "人</p>";
                         familyContent += "<p>状态：" + visitDesc + "</p>";
                         familyContent += "<p>" + ii.familyName + "</p>";
                         familyContent += "<p name='familyDesc' onmouseover='pPopover(this,1)' onmouseout='pPopover(this,2)' style='text-overflow: ellipsis;white-space: nowrap;overflow: hidden' data-container='body' data-toggle='popover' data-placement='right' data-content='" + ii.familyDesc +"'>";

@@ -124,6 +124,7 @@ public class ImportFamilyController {
                         tMate = new TMate(ppid,tPeople.getId(),"",matetype);
                     }
                     tPeople.setPeopleType(peopletype);
+                    tPeople.setSpecialRemark(CommonUtil.isBlank(arr[26])?"":arr[26]);
                     tPeopleDao.save(tPeople);
                     if(!CommonUtil.isBlank(tMate)){
                         tMateDao.create(tMate);

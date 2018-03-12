@@ -6,7 +6,6 @@ import com.witkey.familyTree.service.consoles.LogService;
 import com.witkey.familyTree.service.fronts.CompanyService;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.service.fronts.UserService;
-import com.witkey.familyTree.util.BaseUtil;
 import com.witkey.familyTree.util.CommonUtil;
 import com.witkey.familyTree.util.CookieUtil;
 import net.sf.json.JSONObject;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -444,6 +442,23 @@ public class ConsoleUserController {
 
         }
         return result;
+    }
+
+    @RequestMapping(value = "setuserrankfamily")
+    @ResponseBody
+    public Map<String,Object> setuserrankfamily(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String,Object> params) throws Exception{
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        try {
+            int i = userService.setuserrankfamily(params);
+            map.put("msg","设置成功");
+            map.put("code",1);
+        }catch (Exception e){
+            LOGGER.error("操作出错了-->",e);
+            map.put("msg","系统错误");
+            map.put("code",-1);
+        }
+        return map;
     }
 
 }
