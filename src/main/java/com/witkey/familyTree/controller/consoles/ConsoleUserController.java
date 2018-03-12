@@ -112,7 +112,10 @@ public class ConsoleUserController {
      * @return
      */
     @RequestMapping(value = "user")
-    public ModelAndView user(){
+    public ModelAndView user(Model model){
+
+        List<Map<String,Object>> familylist = familyService.getFamilyList2(null);
+        model.addAttribute("familylist",familylist);
         return new ModelAndView("/consoles/userSetting");
     }
 
