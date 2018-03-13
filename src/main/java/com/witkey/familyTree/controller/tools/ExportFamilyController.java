@@ -44,9 +44,6 @@ public class ExportFamilyController {
             response.setContentType("application/txt");
             response.setHeader("content-disposition", "attachment;filename=" + familyname + ".txt");
             bos = new BufferedOutputStream(response.getOutputStream());
-//            List<String> peopleInfo = this.createPeopleInfo4Export(params);
-//
-//            TxtUtil.exportTxt(new File("D:/testtxt1.txt"),peopleInfo,null);
 
             String peopleInfo = this.createPeopleInfo4ExportStr(params);
             bos.write(peopleInfo.getBytes());

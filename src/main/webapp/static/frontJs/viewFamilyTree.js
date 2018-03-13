@@ -662,8 +662,8 @@ function selectTarget(obj) {
 }
 
 function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
-    //删除成员将会同事删除其所有的子孙，
-    if(confirm("确定要删除成员(" + peopleName + ")吗？")){
+    //删除成员将会同时删除其所有的子孙，
+    if(confirm("删除成员将会同时删除其所有的子孙，确定要删除成员(" + peopleName + ")吗？")){
         $(".loading").show();
         var treeObj = $.fn.zTree.getZTreeObj("familyTree");
         $.ajax({

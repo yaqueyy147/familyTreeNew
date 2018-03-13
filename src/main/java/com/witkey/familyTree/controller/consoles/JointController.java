@@ -166,14 +166,4 @@ public class JointController {
 
         return result;
     }
-
-    @RequestMapping(value = "deletepeople")
-    @ResponseBody
-    public Object deletepeople(@RequestParam Map<String,Object> params, HttpServletRequest request){
-        Map<String,Object> result = new HashMap<String,Object>();
-        result.put("code",1);
-
-        return result;
-    }
-
 }

@@ -625,30 +625,36 @@ public class FamilyController {
         Map<String,Object> result = new HashMap<String,Object>();
 
         //如果是本族人，查询当前成员是否含有下一代本族人
-        if(peopleType == 1){
-            Map<String,Object> params = new HashMap<String,Object>();
-            params.put("fatherId",peopleId);
-            params.put("familyId",familyId);
-            params.put("superiorId",peopleId);
-            params.put("peopleType",1);
-            //如果有下一代人，不能删除
-            List<TPeople> list = familyService.getPeopleList(params);
-            if(list != null && list.size() > 0){
-                result.put("code",-1);
-                return result;
-            }
+//        if(peopleType == 1){
+//            Map<String,Object> params = new HashMap<String,Object>();
+//            params.put("fatherId",peopleId);
+//            params.put("familyId",familyId);
+//            params.put("superiorId",peopleId);
+//            params.put("peopleType",1);
+//            //如果有下一代人，不能删除
+//            List<TPeople> list = familyService.getPeopleList(params);
+//            if(list != null && list.size() > 0){
+//                result.put("code",-1);
+//                return result;
+//            }
+//        }
+
+
+        try {
+            TPeople tPeople = familyService.getPeopleInfo(peopleId);
+//        tPeople.setPeopleStatus(9);
+            int i = familyService.deletePeople(peopleId, tPeople.getFamilyId(), tPeople.getPeopleType());
+//        int i = 0;
+//        familyService.updatePeople(tPeople);
+//        i ++ ;
+            //记录日志
+            logService.createLog(new TLog(3,userName,"删除族人-->" + tPeople.toString()));
+            result.put("code",i);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("code",0);
         }
 
-
-        TPeople tPeople = familyService.getPeopleInfo(peopleId);
-        tPeople.setPeopleStatus(9);
-//        int i = familyService.deletePeople(peopleId);
-        int i = 0;
-        familyService.updatePeople(tPeople);
-        i ++ ;
-        result.put("code",i);
-        //记录日志
-        logService.createLog(new TLog(3,userName,"删除族人-->" + tPeople.toString()));
         return result;
     }
 

@@ -153,10 +153,14 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public int deletePeople(String peopleId, int familyId, int peopleType) {
 
-//        int i = 0;
-//        tPeopleDao.removeById(peopleId);
-//        i ++;
-        int i = deletePeopleAndChildren(peopleId,familyId,peopleType);
+        int i = 0;
+        System.out.println("****\n开始 -->" + CommonUtil.getDateLong() + "\n****");
+        String deletepeopleid = getdeletePeopleAndChildrenid(peopleId,familyId,peopleType);
+        deletepeopleid = deletepeopleid.substring(1);
+        String sql = "delete from t_people where id in(" + deletepeopleid + ")";
+        i += jdbcTemplate.update(sql);
+        System.out.println("****\n结束 -->" + CommonUtil.getDateLong() + "\n****");
+        System.out.println("要删除的id -->\n****\n" + deletepeopleid + "\n****");
 
         return i;
     }
@@ -188,7 +192,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
         sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
         sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
-        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.remark,t1.family_desc as familyDesc,t1.family_area as familyArea,t1.province";
         sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
         sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
         sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
@@ -255,7 +259,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
         sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
         sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
-        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.remark,t1.family_desc as familyDesc,t1.family_area as familyArea,t1.province";
         sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
         sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
         sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
@@ -304,7 +308,7 @@ public class FamilyServiceImpl implements FamilyService {
         String sql = "select t1.id,t1.family_first_name as familyFirstName,t1.family_name as familyName";
         sql += ",t1.photo_url as photoUrl,t1.create_man as createMan,t1.visit_status as visitStatus";
         sql += ",t1.visit_password as visitPassword,t1.create_time as createTime,t1.state";
-        sql += ",t1.remark,t1.family_desc as familyDsc,t1.family_area as familyArea,t1.province";
+        sql += ",t1.remark,t1.family_desc as familyDesc,t1.family_area as familyArea,t1.province";
         sql += ",t1.city,t1.district,t1.supplement_flag as supplementFlag,t1.create_id as createId";
         sql += ",t2.peopleCount,t3.zspeopleCount from t_family t1";
         sql += " left join (select family_id,count(id) as peopleCount from t_people where people_status=1 and people_type=1 group by family_id) t2 on t2.family_id=t1.id";
@@ -1121,11 +1125,11 @@ public class FamilyServiceImpl implements FamilyService {
 
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
 
-        String result = ",";
+        String result = "";
 
         if(list != null && list.size() > 0){
             for (Map map : list) {
-                result += "'" + map.get("family_id") + "'";
+                result += ",'" + map.get("family_id") + "'";
             }
             return result.substring(1);
         }
@@ -1181,19 +1185,59 @@ public class FamilyServiceImpl implements FamilyService {
             params.put("fatherId",peopleId);
             params.put("familyId",familyId);
             params.put("superiorId",peopleId);
-            //如果有下一代人，不能删除
+            //删除下一代
             List<TPeople> list = this.getPeopleList(params);
             if(list != null && list.size() > 0){
                 for(TPeople tPeople : list){
                     deletePeopleAndChildren(tPeople.getId(),tPeople.getFamilyId(),tPeople.getPeopleType());
-                    tPeople.setPeopleStatus(9);
-                    this.updatePeople(tPeople);
+                    String sql = "delete from t_people where id in(select mate_id from t_mate where people_id=?) or id=?";
+                    i += jdbcTemplate.update(sql,tPeople.getId(),tPeople.getId());
+//                    tPeopleDao.remove(tPeople);
+//                    tPeopleDao.clear();
+                    //删除配偶
+//                    sql = "delete from t_people where id=?";
+//                    i += jdbcTemplate.update(sql,tPeople.getId());
                     i ++ ;
                 }
             }
+
         }
 
         return i;
     }
+
+    /**
+     * 递归查询要删除的族人及其子孙的id
+     * @param peopleId
+     * @param familyId
+     * @param peopleType
+     * @return
+     */
+    private String getdeletePeopleAndChildrenid(String peopleId, int familyId, int peopleType){
+        StringBuilder ss = new StringBuilder();
+        ss.append(",'" + peopleId + "'");
+        List<String> result = new ArrayList<String>();
+        int i=0;
+        //如果是本族人，查询当前成员是否含有下一代人
+        if(peopleType == 1){
+            Map<String,Object> params = new HashMap<String,Object>();
+            params.put("fatherId",peopleId);
+            params.put("familyId",familyId);
+            params.put("superiorId",peopleId);
+            //删除下一代
+            List<TPeople> list = this.getPeopleList(params);
+            if(list != null && list.size() > 0){
+                for(TPeople tPeople : list){
+//                    ss.append(",'" + tPeople.getId() + "'");
+                    ss.append(getdeletePeopleAndChildrenid(tPeople.getId(),tPeople.getFamilyId(),tPeople.getPeopleType()));
+                    i ++ ;
+                }
+            }
+
+        }
+
+        return ss.toString();
+    }
+
 
 }

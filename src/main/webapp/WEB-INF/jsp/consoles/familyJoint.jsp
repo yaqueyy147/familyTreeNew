@@ -115,6 +115,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/consoleJs/familyJoint.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery/ztree/js/jquery.ztree.exedit-3.5.js"></script>
 <script>
     var mianFamilyId = "${mianFamilyId}";
     $(function () {

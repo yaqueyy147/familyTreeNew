@@ -172,6 +172,7 @@ $(function () {
     };
 
     $.when(initPeopleData(mianFamilyId)).done(function(data){
+        $("#peopleCount").text(data.length);
         initFamilyTree("mainFamilyTree",mainSetting,data);
     });
 
@@ -189,6 +190,7 @@ function closeDialog(dialogId){
 
 function initFamilyTree(treeId,setting,zNodes) {
     $.fn.zTree.init($("#" + treeId), setting, zNodes);
+    $(".loading").hide();
 }
 
 function addDiyDom(treeId, treeNode) {
@@ -206,58 +208,17 @@ function addDiyDom(treeId, treeNode) {
     var mateName = treeNode.mateName;
     var editStr = "";
 
-    if(peopleStatus == 5){
-        editStr += "<div style='display: inline-block'>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
-        editStr += "</div>";
-    }
-    if(peopleStatus == 51){
-        editStr += "<div style='display: inline-block'>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
-        editStr += "</div>";
-    }
-    if(peopleStatus == 52){
-        editStr += "<div style='display: inline-block'>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
-        editStr += "-<a id='diyBtnInclude_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + treeNode.id + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
-        editStr += "</div>";
-    }
-
     if($.trim(mateName).length > 0){
         var mates = mateName.split(",");
         editStr += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配偶:";
         for(var i=0;i<mates.length;i++){
             var mate = mates[i].split("--");
-            var mateStatus = mate[2];
-            var mateSupplement = mate[3];
-            var mateid = mate[1];
-            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;'>" + mate[0] + "</a>";// onclick=\"editPeople('" + mate[1] + "','" + treeNode.level + "')\"
-            if(mateStatus == 5 && mateSupplement == 1){
-                editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',1,'" + treeNode.tId +　"',1)\">同意添加收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',1)\">不同意添加收录</a>";
-                editStr += "</div>";
-            }
-            if(mateStatus == 51 && mateSupplement == 1){
-                editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',1,'" + treeNode.tId +　"',2)\">同意修改收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',2)\">不同意修改收录</a>";
-                editStr += "</div>";
-            }
-            if(mateStatus == 52 && mateSupplement == 1){
-                editStr += "<div style='display: inline-block'>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_ok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',9,'" + treeNode.tId +　"',3)\">同意删除收录</a>";
-                editStr += "-<a id='diyBtnInclude_mate_" +treeNode.id+ "_nok' style='display: inline-block;color: #CC2222' onclick=\"affirmInclude(this,'" + mateid + "',7,'" + treeNode.tId +　"',3)\">不同意删除收录</a>";
-                editStr += "</div>";
-            }
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;'>" + mate[0] + "</a>";
+            editStr += "<a id='diyBtnMate" + (i+1) + "_" +treeNode.id+ "' style='display: inline-block;margin-left: 3px;color:#ff0000' onclick=\"deletePeople('" + mate[1] + "','" + mate[0] + "',2,'"+ treeNode.id +"')\">删除</a>";
         }
     }
-
-
-    if(peopleStatus == 7){
-    	editStr += "&nbsp;&nbsp;<span style='color:#FF7F00'>补录审核未通过</span>";
+    if("mainFamilyTree" == treeId){
+        editStr += "<a style='display: inline-block;margin-left: 10px;color:#ff0000' id='diyBtn2_" +treeNode.id+ "' onclick=\"deletePeople('"+ treeNode.id +"','" + treeNode.name + "',1,null)\">删除</a>";
     }
 
     aObj.after(editStr);
@@ -269,7 +230,7 @@ function addDiyDom(treeId, treeNode) {
  * @returns {Array}
  */
 function initPeopleData(familyId){
-
+    $(".loading").show();
     var defer = $.Deferred();
     var zNodes = [];
     $.ajax({
@@ -280,7 +241,6 @@ function initPeopleData(familyId){
         data:{familyId : familyId,isIndex:0},
         success:function (data) {
             defer.resolve(data);
-            $("#peopleCount").text(data.length);
         },
         error:function (data) {
             var responseText = data.responseText;
@@ -299,7 +259,6 @@ function selectTarget(obj) {
     var familyId = $(obj).val();
     var familyDesc = $(obj).find("option:selected").attr("family-desc");
     var familyAddr = $(obj).find("option:selected").attr("family-addr");
-    $(".loading").show();
     $.when(initPeopleData(familyId)).done(function(data){
         initFamilyTree("targetFamilyTree",setting,data);
         $(".loading").hide();
@@ -343,4 +302,76 @@ function initTargetFamily(){
             }
         }
     });
+}
+
+function deletePeople(peopleId,peopleName,peopleType,cNodeId) {
+    if(confirm("删除成员将会同时删除其所有的子孙，确定要删除成员(" + peopleName + ")吗？")){
+        $(".loading").show();
+        var treeObj = $.fn.zTree.getZTreeObj("mainFamilyTree");
+        $.ajax({
+            type:'post',
+            url:projectUrl + '/consoles/deletePeople',
+            dataType:'json',
+            // async:false,
+            data:{peopleId : peopleId, familyId:mianFamilyId,peopleType:peopleType},
+            success:function (data) {
+                if(data.code >= 1){
+                    alert("删除完成!");
+                    // var zNodes = initPeopleData(familyId);
+                    // initFamilyTree(zNodes,setting);
+                    if(peopleType == 1){//删除本族人,移除当前节点
+                        var cNode = treeObj.getNodeByParam("id", peopleId, null);
+                        treeObj.removeNode(cNode);
+                    }else{//删除配偶,修改当前节点
+                        var cNode = treeObj.getNodeByParam("id", cNodeId, null);
+                        // var nodeIndex =  treeObj.getNodeIndex(cNode);
+                        var nodesCount = treeObj.getNodesByParam("pId", cNode.pId, parentNode).length;
+                        var targetNode = cNode.getPreNode();
+                        var moveType = "next";
+                        if(cNode.isFirstNode){
+                            targetNode = cNode.getNextNode();
+                            moveType = "prev";
+                        }
+
+                        var parentNode = cNode.getParentNode();
+                        treeObj.removeNode(cNode);
+                        var mateStr = cNode.mateName;
+                        var mates = mateStr.split(",");
+
+                        for(var i=0;i<mates.length;i++){
+                            var mate = mates[i].split("--");
+                            var mateId = mate[1];
+                            var mateName = mate[0];
+                            if(peopleId == mateId){
+                                mates.splice(i, 1);
+                                break;
+                            }
+                        }
+
+                        cNode["mateName"] = mates.toString();
+                        treeObj.addNodes(parentNode,cNode);
+                        if(nodesCount > 1){
+                            //获取添加后的当前节点
+                            cNode = treeObj.getNodeByParam("id", cNode.id, null);
+                            //根据之前设置的规则移动当前节点
+                            treeObj.moveNode(targetNode, cNode, moveType);
+                        }
+                    }
+                }
+                if(data.code == -1){
+                    alert("该成员含有下一代，不能删除！如需删除，请先删除其后代！");
+                }
+                $(".loading").hide();
+            },
+            error:function (data) {
+                var responseText = data.responseText;
+                if(responseText.indexOf("登出跳转页面") >= 0){
+                    ajaxErrorToLogin();
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
+            }
+        });
+    }
 }
