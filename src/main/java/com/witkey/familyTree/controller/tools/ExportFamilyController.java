@@ -4,6 +4,7 @@ import com.witkey.familyTree.dao.fronts.TPeopleDao;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,8 @@ public class ExportFamilyController {
     private FamilyService familyService;
     @Autowired
     private TPeopleDao tPeopleDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "exportfamily")
     @ResponseBody
@@ -36,7 +39,7 @@ public class ExportFamilyController {
         Map<String,Object> map = new HashMap<String,Object>();
 //        params.put("generation",1);
         params.put("peopleType",1);
-        params.put("orderBy"," order by t1.generation asc,t1.family_rank asc");
+        params.put("orderBy"," order by t1.generation asc,t1.superior_id asc,t1.family_rank asc");
         BufferedOutputStream bos = null;
         try {
             String familyname = params.get("familyname") + "";
@@ -106,12 +109,25 @@ public class ExportFamilyController {
         try{
             int i = 0;
             //查询族人
+            String repetename = this.getfamilyrepetename(params.get("familyId") + "");
+            Map<String,String> repeteNo = new HashMap<String,String>();
             List<Map<String,Object>> listPeople = familyService.getPeopleList4Export(params);
             if(listPeople != null && listPeople.size() > 0){
                 //先循环创写当前代的族人信息
                 for(Map<String,Object> pp : listPeople){
                     String generation = pp.get("generation") + "";
                     String name = pp.get("name") + "";
+
+                    if(repetename.indexOf(name) > -1){
+                        String serial = repeteNo.get(name);
+                        serial = (CommonUtil.parseInt(serial) + 1) + "";
+                        if(serial.trim().length() < 2){
+                            serial = CommonUtil.leftConcat(serial,'0',2);
+                        }
+                        repeteNo.put(name,serial);
+                        name = name + serial;
+                    }
+
                     String cname = pp.get("c_name") + "";
                     String special_remark = pp.get("special_remark") + "";
                     int familyrank = CommonUtil.parseInt(pp.get("family_rank"));
@@ -132,6 +148,7 @@ public class ExportFamilyController {
                     }
                     ppinf += "|" + special_remark;
                     result.append(ppinf + "\r\n");
+
                 }
             }
         }catch (Exception e){
@@ -151,4 +168,21 @@ public class ExportFamilyController {
         }
         return desc;
     }
+
+    private String getfamilyrepetename(String familyid){
+        String result = "";
+        String sql = "select name from t_people";
+        sql += " where family_id=? and people_type=1 and people_status<>9 GROUP BY name HAVING COUNT(id)>1";
+
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql,familyid);
+        if(list != null && list.size() > 0){
+            for(Map<String,Object> map : list){
+                result += "," + map.get("name");
+            }
+            result = result.substring(1);
+        }
+
+        return result;
+    }
+
 }

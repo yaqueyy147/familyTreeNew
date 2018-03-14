@@ -62,7 +62,7 @@ public class JointController {
 
         //查询族人
         params.put("peopleType",1);
-        params.put("orderBy"," order by generation asc,family_rank asc");
+        params.put("orderBy"," order by t1.generation asc,t1.superior_id asc,t1.family_rank asc");
 //        List<TPeople> listPeople = familyService.getPeopleList(params);
         List<PeopleTree> list1 = familyService.getPeopleList4view(params);
 

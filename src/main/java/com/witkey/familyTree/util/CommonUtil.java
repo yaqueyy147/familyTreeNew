@@ -1842,7 +1842,7 @@ public class CommonUtil {
 //			}
 //		}
 		String ss = "123";
-		System.out.println(toChinese(ss));
+		System.out.println(CommonUtil.leftConcat(ss,'0',2));
 	}
 	
 }
