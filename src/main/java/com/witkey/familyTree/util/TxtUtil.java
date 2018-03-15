@@ -105,7 +105,7 @@ public class TxtUtil {
      * @param file Txt文件(路径+文件)
      * @return
      */
-    public static List<String> importTxt(File file){
+    public static List<String> importTxtasliststr(File file){
         List<String> dataList=new ArrayList<String>();
         BufferedReader br=null;
         try {
@@ -113,6 +113,36 @@ public class TxtUtil {
             String line = "";
             while ((line = br.readLine()) != null) {
                 dataList.add(line);
+            }
+        }catch (Exception e) {
+        }finally{
+            if(br!=null){
+                try {
+                    br.close();
+                    br=null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return dataList;
+    }
+
+    /**
+     * 导入
+     *
+     * @param file Txt文件(路径+文件)
+     * @return
+     */
+    public static List<String[]> importTxtaslistarr(File file){
+        List<String[]> dataList=new ArrayList<String[]>();
+        BufferedReader br=null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                String[] linearr = line.split("|");
+                dataList.add(linearr);
             }
         }catch (Exception e) {
         }finally{
@@ -150,9 +180,9 @@ public class TxtUtil {
 
         //导入数据测试
 
-        List<String> dataList= TxtUtil.importTxt(new File("E:/test/ljq.txt"));
-        for (String string : dataList) {
-            System.out.println(string);
+        List<String[]> dataList= TxtUtil.importTxtaslistarr(new File("E:/test/ljq.txt"));
+        for (String[] arr : dataList) {
+            System.out.println(arr[0] + "-->" + arr[1] + "-->" + arr[2]);
         }
 
     }
