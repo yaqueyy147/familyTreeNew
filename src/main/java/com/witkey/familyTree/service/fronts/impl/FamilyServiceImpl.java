@@ -595,8 +595,8 @@ public class FamilyServiceImpl implements FamilyService {
     public List<Map<String,Object>> getPeopleList4Export(Map<String,Object> params) {
         Map<String,Object> filter = new HashMap<String,Object>();
 
-        String sql = "select t1.*,t2.name as fathername from t_people t1";
-        sql += " left join t_people t2 on t2.id=t1.superior_id";
+        String sql = "select t1.* from t_people t1";//,t2.name as fathername
+//        sql += " left join t_people t2 on t2.id=t1.superior_id";
         sql += " where t1.people_status<>9 and t1.family_id=?";
 
         if(!CommonUtil.isBlank(params)){
@@ -1238,6 +1238,5 @@ public class FamilyServiceImpl implements FamilyService {
 
         return ss.toString();
     }
-
 
 }

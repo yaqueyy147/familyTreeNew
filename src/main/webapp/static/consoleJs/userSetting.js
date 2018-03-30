@@ -547,7 +547,7 @@ function loadDataGrid(params) {
                     }
                     return '<span title='+ address + '>'+address+'</span>';
                 }},
-            {field:"rankfamilyname",title:"积分排名家族",width:"120",
+            {field:"rankfamilyname",title:"积分排名家族",width:"200",
                 formatter: function(value,row,index){
                     var html = value;
                     html += "&nbsp;&nbsp;";

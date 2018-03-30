@@ -1,5 +1,7 @@
 package com.witkey.familyTree.util;
 
+import java.util.List;
+
 /**
  * Created by suyx on 2017/6/14 0014.
  */
@@ -18,6 +20,7 @@ public class PeopleTree {
     private boolean chkDisabled = false;
     private String isdie;
     private String generation;
+    private List<PeopleTree> children;
 
     public String getId() {
         return id;
@@ -129,5 +132,13 @@ public class PeopleTree {
 
     public void setGeneration(String generation) {
         this.generation = generation;
+    }
+
+    public List<PeopleTree> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<PeopleTree> children) {
+        this.children = children;
     }
 }

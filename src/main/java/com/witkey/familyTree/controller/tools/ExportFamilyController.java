@@ -140,7 +140,8 @@ public class ExportFamilyController {
                     if(CommonUtil.parseInt(generation) == 1){
                         ppinf += "始祖，";
                     }else{
-                        String fathername = pp.get("fathername") + "";
+//                        String fathername = pp.get("fathername") + "";
+                        String fathername = repeteNo.get(pp.get("superior_id") + "");
                         ppinf += fathername + "公" + getfamilyrankdesc(familyrank);
                     }
                     if(!CommonUtil.isBlank(cname)){
@@ -148,7 +149,7 @@ public class ExportFamilyController {
                     }
                     ppinf += "|" + special_remark;
                     result.append(ppinf + "\r\n");
-
+                    repeteNo.put(pp.get("id") + "",name);
                 }
             }
         }catch (Exception e){

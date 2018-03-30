@@ -270,7 +270,7 @@ function loadCompanyData(params) {
                 formatter: function(value,row,index){
                     return "<img src=\"" + value + "\" width=\"100px\" height=\"50px\" onclick=\"viewLicense('" + value + "')\" />";
                 }},
-            {field:"rankfamilyname",title:"积分排名家族",width:"120",
+            {field:"rankfamilyname",title:"积分排名家族",width:"200",
                 formatter: function(value,row,index){
                     var html = value;
                     html += "&nbsp;&nbsp;";
