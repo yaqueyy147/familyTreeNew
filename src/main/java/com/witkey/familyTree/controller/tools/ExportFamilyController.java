@@ -1,6 +1,9 @@
 package com.witkey.familyTree.controller.tools;
 
 import com.witkey.familyTree.dao.fronts.TPeopleDao;
+import com.witkey.familyTree.exportexcel.ExcelUtils;
+import com.witkey.familyTree.exportexcel.JsGridReportBase;
+import com.witkey.familyTree.exportexcel.TableData;
 import com.witkey.familyTree.service.fronts.FamilyService;
 import com.witkey.familyTree.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,26 @@ public class ExportFamilyController {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @RequestMapping(value = "exportfamilytoxls")
+    @ResponseBody
+    public void exportfamilytoxls(@RequestParam Map<String,Object> params, HttpServletRequest request, HttpServletResponse response){
+        Map<String,Object> map = new HashMap<String,Object>();
+        params.put("peopleType",1);
+        params.put("orderBy"," order by t1.generation asc,t1.superior_id asc,t1.family_rank asc");
+        try {
+            String familyname = params.get("familyname") + "";
+            String[] hearders = new String[]{"id","第几世","父亲id","姓名","性别","排行","出生时间","出生地","死亡时间","卒葬地","是否在世","特殊说明"};
+            String[] fields = new String[]{"id","generation","superior_id","name","sex","family_rank","birth_time","birth_addr","die_time","die_addr","state","special_remark"};
+
+            List<Map<String,Object>> listPeople = familyService.getPeopleList4Export(params);
+            TableData td = ExcelUtils.createTableData(listPeople, ExcelUtils.createTableHeader(hearders), fields);
+            JsGridReportBase report = new JsGridReportBase(request, response);
+            report.exportToExcel(familyname, "", td);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
