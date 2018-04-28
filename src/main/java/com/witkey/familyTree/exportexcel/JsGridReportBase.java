@@ -203,46 +203,10 @@ public class JsGridReportBase {
         HSSFRow row = sheet.createRow(0);// 创建新行
         HSSFCell cell = row.createCell(0);// 创建新列
         int rownum = 0;
-        cell.setCellValue(new HSSFRichTextString(title));
-        HSSFCellStyle style = styles.get("TITLE");
-        if (style != null) {
-            cell.setCellStyle(style);
-        }
 
         TableHeaderMetaData headerMetaData = tableData.getTableHeader();// 获得HTML的表头元素
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, headerMetaData
-                .getColumnCount() - 1));
-        row = sheet.createRow(1);
 
-        cell = row.createCell(0);
-        cell.setCellValue(new HSSFRichTextString("创建人:"));
-        style = styles.get("SUB_TITLE");
-        if (style != null) {
-            cell.setCellStyle(style);
-        }
-
-        cell = row.createCell(1);
-        cell.setCellValue(new HSSFRichTextString(creator));
-        style = styles.get("SUB_TITLE2");
-        if (style != null) {
-            cell.setCellStyle(style);
-        }
-
-        cell = row.createCell(2);
-        cell.setCellValue(new HSSFRichTextString("创建时间:"));
-        style = styles.get("SUB_TITLE");
-        if (style != null) {
-            cell.setCellStyle(style);
-        }
-
-        cell = row.createCell(3);
-        style = styles.get("SUB_TITLE2");
-        cell.setCellValue(new HSSFRichTextString(create_time));
-        if (style != null) {
-            cell.setCellStyle(style);
-        }
-
-        rownum = 3;// 如果rownum = 1，则去掉创建人、创建时间等副标题
+        rownum = 0;// 如果rownum = 1，则去掉创建人、创建时间等副标题
 
         HSSFCellStyle headerstyle = styles.get("TABLE_HEADER");
 

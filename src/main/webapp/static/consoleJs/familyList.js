@@ -227,6 +227,7 @@ function loadFamilyList(params){
             {field:"export",title:"操作",width:"300",
                 formatter: function(value,row,index){
                     var html = "<a href=\"" + projectUrl + "/output/exportfamily?familyId=" + row.id + "&familyname=" + row.familyName + "\" title='" + value + "' target='_blank'>导出 </a>";
+                    html += "&nbsp;&nbsp;<a href=\"" + projectUrl + "/output/exportfamilytoxls?familyId=" + row.id + "&familyname=" + row.familyName + "\" title='" + value + "' target='_blank'>导出excel </a>";
                     html += "&nbsp;&nbsp;<a href=\"javascript:void 0;\" onclick=\"loadTab('','族谱合并','" + projectUrl + "/consoles/familyJoint?familyId=" + row.id + "&familyname=" + row.familyName + "')\" title='" + value + "'>合并 </a>";
                     return html;
                 }},

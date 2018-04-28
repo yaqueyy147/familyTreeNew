@@ -518,5 +518,36 @@ public class ExcelUtil {
 		}
 		return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 	}
+
+	public static int getCellNum(MultipartFile file, String ctxPath, int sheetnum)throws IOException, FileNotFoundException{
+		String fileName = file.getOriginalFilename();
+		File uploadFile=new File(ctxPath+fileName);
+		FileCopyUtils.copy(file.getBytes(), uploadFile);
+		int coloumNum = 0;
+		if(fileName.endsWith(".xls")){
+			coloumNum =  getCellNumFromXlsFile(sheetnum, ctxPath, fileName);
+		}else if(fileName.endsWith(".xlsx")){
+			coloumNum = getCellNumFromXlsxFile(sheetnum, ctxPath, fileName);
+		}else{
+			throw new RuntimeException("文件格式不对");
+		}
+		uploadFile.delete();
+		return coloumNum;
+	}
+
+	public static int getCellNumFromXlsFile(int sheetnum, String ctxPath, String fileName) throws IOException, FileNotFoundException{
+
+		HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(ctxPath+fileName));
+		HSSFSheet sheet=wb.getSheetAt(sheetnum);
+		int coloumNum=sheet.getRow(0).getPhysicalNumberOfCells();
+		return coloumNum;
+	}
+
+	public static int getCellNumFromXlsxFile(int sheetnum, String ctxPath, String fileName) throws IOException, FileNotFoundException{
+		XSSFWorkbook xwb=new XSSFWorkbook(new FileInputStream(ctxPath+fileName));
+		XSSFSheet sheet=xwb.getSheetAt(sheetnum);
+		int coloumNum=sheet.getRow(0).getPhysicalNumberOfCells();
+		return coloumNum;
+	}
 }
 

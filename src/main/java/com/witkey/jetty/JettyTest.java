@@ -5,7 +5,7 @@ import cq.hlideal.jetty.main.server.JettyWebServer;
 public class JettyTest {
 	//实际部署时删除
 	public static int port = 8181;
-	public static String host = "10.2.12.174";
+	public static String host = "10.2.12.58";
 	public static String tempdir = "d://temp14";
 	public static String logdir = "d://temp14";
 	public static String webdir = "src/main/webapp/";
