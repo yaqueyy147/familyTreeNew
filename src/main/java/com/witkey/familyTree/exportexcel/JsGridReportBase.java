@@ -1,7 +1,9 @@
 package com.witkey.familyTree.exportexcel;
 
+import com.witkey.familyTree.util.CommonUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.http.MediaType;
 
@@ -19,7 +21,7 @@ import java.util.List;
 public class JsGridReportBase {
 	public SimpleDateFormat timeFormat = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
-    private static String MODULE_PATH = "/WEB-INF/template/Exportmodule.xls";//模板路径
+    private static String MODULE_PATH = "/static/template/Exportmodule.xls";//模板路径
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -241,6 +243,7 @@ public class JsGridReportBase {
                 index++;
 
                 String value = dataCells.get(i).getValue();
+                System.out.println("--------" + value);
                 if (tc.isGrouped()) {
                     String w = word.get(index);
                     if (w == null) {
@@ -381,72 +384,83 @@ public class JsGridReportBase {
                             HashMap<String, HSSFCellStyle> styles) {
         TableDataCell dc = data.get(i);
         HSSFCell cell = row.createCell(index);
-        switch (tc.getColumnType()) {
-            case TableColumn.COLUMN_TYPE_INTEGER:
-                cell.setCellValue(dc.getIntValue());
-                HSSFCellStyle style = styles.get("INT");
-                if (row.getRowNum() % 2 != 0) {
-                    style = styles.get("INT_C");
-                }
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            case TableColumn.COLUMN_TYPE_FLOAT_2:
-                cell.setCellValue(dc.getDoubleValue());
-                style = styles.get("D2");
-                if (row.getRowNum() % 2 != 0) {
-                    style = styles.get("D2_C");
-                }
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            case TableColumn.COLUMN_TYPE_FLOAT_3:
-                cell.setCellValue(dc.getDoubleValue());
-                style = styles.get("D3");
-                if (row.getRowNum() % 2 != 0) {
-                    style = styles.get("D3_C");
-                }
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            case TableColumn.COLUMN_TYPE_RED_BG:
-                cell.setCellValue(dc.getValue());
-                style = styles.get("RED_BG");
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            case TableColumn.COLUMN_TYPE_YELLOW_BG:
-                cell.setCellValue(dc.getValue());
-                style = styles.get("YELLOW_BG");
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            case TableColumn.COLUMN_TYPE_GREEN_BG:
-                cell.setCellValue(dc.getValue());
-                style = styles.get("GREEN_BG");
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
-                break;
-            default:
-                if (dc.getValue().equalsIgnoreCase("&nbsp;")) {
-                    cell.setCellValue("");
-                } else {
-                    cell.setCellValue(dc.getValue());
-                }
-                style = styles.get("STRING");
-                if (row.getRowNum() % 2 != 0) {
-                    style = styles.get("STRING_C");
-                }
-                if (style != null) {
-                    cell.setCellStyle(style);
-                }
+        if (dc.getValue().equalsIgnoreCase("&nbsp;")) {
+            cell.setCellValue("");
+        }else if(CommonUtil.isBlank(dc.getValue())){
+            cell.setCellValue("");
+        } else{
+            cell.setCellValue(dc.getValue());
         }
+        HSSFCellStyle style = styles.get("STRING");
+        if (style != null) {
+            cell.setCellStyle(style);
+        }
+//        switch (tc.getColumnType()) {
+//            case TableColumn.COLUMN_TYPE_INTEGER:
+//                cell.setCellValue(dc.getIntValue());
+//                HSSFCellStyle style = styles.get("INT");
+//                if (row.getRowNum() % 2 != 0) {
+//                    style = styles.get("INT_C");
+//                }
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            case TableColumn.COLUMN_TYPE_FLOAT_2:
+//                cell.setCellValue(dc.getDoubleValue());
+//                style = styles.get("D2");
+//                if (row.getRowNum() % 2 != 0) {
+//                    style = styles.get("D2_C");
+//                }
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            case TableColumn.COLUMN_TYPE_FLOAT_3:
+//                cell.setCellValue(dc.getDoubleValue());
+//                style = styles.get("D3");
+//                if (row.getRowNum() % 2 != 0) {
+//                    style = styles.get("D3_C");
+//                }
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            case TableColumn.COLUMN_TYPE_RED_BG:
+//                cell.setCellValue(dc.getValue());
+//                style = styles.get("RED_BG");
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            case TableColumn.COLUMN_TYPE_YELLOW_BG:
+//                cell.setCellValue(dc.getValue());
+//                style = styles.get("YELLOW_BG");
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            case TableColumn.COLUMN_TYPE_GREEN_BG:
+//                cell.setCellValue(dc.getValue());
+//                style = styles.get("GREEN_BG");
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//                break;
+//            default:
+//                if (dc.getValue().equalsIgnoreCase("&nbsp;")) {
+//                    cell.setCellValue("");
+//                } else {
+//                    cell.setCellValue(dc.getValue());
+//                }
+//                style = styles.get("STRING");
+//                if (row.getRowNum() % 2 != 0) {
+//                    style = styles.get("STRING_C");
+//                }
+//                if (style != null) {
+//                    cell.setCellStyle(style);
+//                }
+//        }
     }
 
     /**
@@ -466,24 +480,24 @@ public class JsGridReportBase {
                 HSSFWorkbook src = new HSSFWorkbook(fs);
                 HSSFSheet sheet = src.getSheetAt(0);
 
-                buildStyle(wb, src, sheet, 0, ret, "TITLE");
-                buildStyle(wb, src, sheet, 1, ret, "SUB_TITLE");
-                buildStyle(wb, src, sheet, 2, ret, "SUB_TITLE2");
+//                buildStyle(wb, src, sheet, 0, ret, "TITLE");
+//                buildStyle(wb, src, sheet, 1, ret, "SUB_TITLE");
+//                buildStyle(wb, src, sheet, 2, ret, "SUB_TITLE2");
 
-                buildStyle(wb, src, sheet, 4, ret, "TABLE_HEADER");
-                buildStyle(wb, src, sheet, 5, ret, "STRING");
-                buildStyle(wb, src, sheet, 6, ret, "INT");
-                buildStyle(wb, src, sheet, 7, ret, "D2");
-                buildStyle(wb, src, sheet, 8, ret, "D3");
-
-                buildStyle(wb, src, sheet, 10, ret, "STRING_C");
-                buildStyle(wb, src, sheet, 11, ret, "INT_C");
-                buildStyle(wb, src, sheet, 12, ret, "D2_C");
-                buildStyle(wb, src, sheet, 13, ret, "D3_C");
-
-                buildStyle(wb, src, sheet, 15, ret, "RED_BG");
-                buildStyle(wb, src, sheet, 16, ret, "YELLOW_BG");
-                buildStyle(wb, src, sheet, 17, ret, "GREEN_BG");
+                buildStyle(wb, src, sheet, 0, ret, "TABLE_HEADER");
+//                buildStyle(wb, src, sheet, 1, ret, "STRING");
+//                buildStyle(wb, src, sheet, 6, ret, "INT");
+//                buildStyle(wb, src, sheet, 7, ret, "D2");
+//                buildStyle(wb, src, sheet, 8, ret, "D3");
+//
+//                buildStyle(wb, src, sheet, 10, ret, "STRING_C");
+//                buildStyle(wb, src, sheet, 11, ret, "INT_C");
+//                buildStyle(wb, src, sheet, 12, ret, "D2_C");
+//                buildStyle(wb, src, sheet, 13, ret, "D3_C");
+//
+//                buildStyle(wb, src, sheet, 15, ret, "RED_BG");
+//                buildStyle(wb, src, sheet, 16, ret, "YELLOW_BG");
+//                buildStyle(wb, src, sheet, 17, ret, "GREEN_BG");
     			try{
     				in.close();
     			}catch(IOException e){

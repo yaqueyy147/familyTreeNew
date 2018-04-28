@@ -1,5 +1,7 @@
 package com.witkey.familyTree.exportexcel;
 
+import com.witkey.familyTree.util.CommonUtil;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.LinkedList;
@@ -36,6 +38,13 @@ public class TableDataRow {
     }
 
     public void addCell(Object value) {
+//        try {
+//            String ss = CommonUtil.ObjToDateStr(value,"yyyy-MM-dd HH:mm:ss");
+//            addCell(ss);
+//            return;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         if (value instanceof String) {
             addCell((String) value);
         } else if (value instanceof Integer) {

@@ -105,7 +105,7 @@ public class DateUtil {
 	
 	public static String format(String timestamp) {
 		Date date=new Date(Timestamp.valueOf(timestamp).getTime());
-		SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm:ss", getDefaultLocale());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", getDefaultLocale());
 		return sdf.format(date);
 	}
 	private static Locale getDefaultLocale() {

@@ -179,9 +179,19 @@ public class ImportFamilyController {
                 }
                 tPeople.setSex(sexcode);
                 tPeople.setFamilyRank(CommonUtil.parseInt(arr[5]));
-                tPeople.setBirthTime(CommonUtil.ObjToDate(arr[6]));
+                try {
+                    tPeople.setBirthTime(CommonUtil.ObjToDate(arr[6]));
+                }catch (Exception e){
+                    tPeople.setBirthTime(null);
+                }
+
                 tPeople.setBirthAddr(arr[7]);
-                tPeople.setDieTime(CommonUtil.ObjToDate(arr[8]));
+                try {
+                    tPeople.setDieTime(CommonUtil.ObjToDate(arr[8]));
+                }catch (Exception e){
+                    tPeople.setDieTime(null);
+                }
+
                 tPeople.setDieAddr(arr[9]);
                 tPeople.setState(CommonUtil.parseInt(arr[10]));
                 tPeople.setSpecialRemark(arr[11]);

@@ -356,7 +356,9 @@ $(function () {
     $("#toImport").click(function () {
         $("#importWorks").form('submit',{
             url:projectUrl + "/import/work",
+            dataType:'json',
             success:function (data) {
+                data = eval( '('+data+')' );
                 alert(data.message);
                 $.when(initPeopleData(familyId)).done(function(data){
                     initFamilyTree(data,setting);

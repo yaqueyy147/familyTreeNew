@@ -1841,8 +1841,8 @@ public class CommonUtil {
 //				bb = false;
 //			}
 //		}
-		String ss = "123";
-		System.out.println(CommonUtil.leftConcat(ss,'0',2));
+		Object ss = "2018-09-09 09:09:09.0";
+		System.out.println(((Double) ss).toString());
 	}
 	
 }
